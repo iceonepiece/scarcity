@@ -1,9 +1,10 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
+#include "Game.h"
 
 int main()
 {
+  Game game;
+  game.Init();
+  game.Run();
 
   return 0;
 }
