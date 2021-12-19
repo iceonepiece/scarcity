@@ -1,7 +1,7 @@
-OBJS = ./Code/*.cpp ./Code/*/*/*.c 
+OBJS = ./Code/*.cpp ./Code/Core/*.cpp ./Code/*/*/*.c
 CC = g++
 COMPILER_FLAGS = -w -std=c++17
-LINKER_FLAGS = -lglfw
+LINKER_FLAGS = -lglfw -lbox2d
 OBJ_NAME = game.exe
 
 build: $(OBJS)

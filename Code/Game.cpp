@@ -1,5 +1,7 @@
 #include "Game.h"
 
+#include "Components/Collider2D.h"
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
   glViewport(0, 0, width, height);
@@ -18,8 +20,8 @@ Game::Game(unsigned int width, unsigned int height)
   m_window = glfwCreateWindow(m_width, m_height, "SCARCITY", NULL, NULL);
   if (m_window == NULL)
   {
-      std::cout << "Failed to create GLFW window" << std::endl;
-      glfwTerminate();
+    std::cout << "Failed to create GLFW window" << std::endl;
+    glfwTerminate();
   }
   glfwMakeContextCurrent(m_window);
   glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
@@ -39,6 +41,8 @@ Game::~Game()
 
 void Game::Init()
 {
+  auto player = m_manager.CreateEntity();
+  player.AddComponent<Collider2D>(m_physics.CreateBoxBody(100, 100, 50, 50));
 }
 
 void Game::Run()
@@ -56,7 +60,6 @@ void Game::Run()
 
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
     glfwSwapBuffers(m_window);
     glfwPollEvents();
