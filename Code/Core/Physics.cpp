@@ -1,7 +1,7 @@
 #include "Physics.h"
 
 Physics::Physics()
-  : m_world(b2Vec2(0.0f, 25.0f))
+  : m_world(b2Vec2(0.0f, -20.0f))
   , m_velocityIterations(6)
   , m_positionIterations(2)
 {

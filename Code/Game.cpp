@@ -41,8 +41,13 @@ Game::~Game()
 
 void Game::Init()
 {
+  Renderer::Init();
+
   auto player = m_manager.CreateEntity();
-  player.AddComponent<Collider2D>(m_physics.CreateBoxBody(100, 100, 50, 50));
+  player.AddComponent<Collider2D>(m_physics.CreateBoxBody(2, 10, 1, 2, true));
+
+  auto platform = m_manager.CreateEntity();
+  platform.AddComponent<Collider2D>(m_physics.CreateBoxBody(0, -5, 20, 0.5));
 }
 
 void Game::Run()
@@ -58,8 +63,16 @@ void Game::Run()
 
     ProcessInput(deltaTime);
 
+    m_physics.Update(deltaTime);
+
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    auto view = m_manager.m_registry.view<Collider2D>();
+    for (auto [entity, collider]: view.each())
+    {
+      Renderer::DrawQuad(collider.body);
+    }
 
     glfwSwapBuffers(m_window);
     glfwPollEvents();

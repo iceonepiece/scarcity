@@ -9,6 +9,7 @@
 #include "Core/Entity.h"
 #include "Core/EntityManager.h"
 #include "Core/Physics.h"
+#include "Core/Renderer.h"
 
 class Game
 {
