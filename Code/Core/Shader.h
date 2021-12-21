@@ -16,6 +16,7 @@ public:
 
   void SetInt(const char* name, int value);
   void SetVector3f(const char* name, glm::vec3& value);
+  void SetVector4f(const char* name, glm::vec4& value);
   void SetMatrix4(const char* name, glm::mat4& value);
 
   unsigned int m_id;

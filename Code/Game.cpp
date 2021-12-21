@@ -31,7 +31,7 @@ Game::Game(unsigned int width, unsigned int height)
     std::cout << "Failed to initialize GLAD" << std::endl;
   }
 
-  glEnable(GL_DEPTH_TEST);
+  Renderer::Init();
 }
 
 Game::~Game()
@@ -41,13 +41,14 @@ Game::~Game()
 
 void Game::Init()
 {
-  Renderer::Init();
-
   auto player = m_manager.CreateEntity();
-  player.AddComponent<Collider2D>(m_physics.CreateBoxBody(2, 10, 1, 2, true));
+  player.AddComponent<Collider2D>(m_physics.CreateBoxBody(2, 8, 2.0, 0.5, true));
+
+  auto water = m_manager.CreateEntity();
+  water.AddComponent<Collider2D>(m_physics.CreateBoxBody(0, 0, 10, 12, false, true));
 
   auto platform = m_manager.CreateEntity();
-  platform.AddComponent<Collider2D>(m_physics.CreateBoxBody(0, -5, 20, 0.5));
+  platform.AddComponent<Collider2D>(m_physics.CreateBoxBody(0, -6, 15, 0.5));
 }
 
 void Game::Run()
@@ -66,7 +67,7 @@ void Game::Run()
     m_physics.Update(deltaTime);
 
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
 
     auto view = m_manager.m_registry.view<Collider2D>();
     for (auto [entity, collider]: view.each())

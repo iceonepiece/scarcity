@@ -21,11 +21,12 @@ const char* vertexShaderSource = R"(
 
 const char* fragmentShaderSource = R"(
   #version 330 core
+  uniform vec4 color;
   out vec4 FragColor;
 
   void main()
   {
-    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+    FragColor = color;
   }
 )";
 
@@ -75,14 +76,20 @@ void Renderer::DrawQuad(b2Body* body)
   }
 
   glm::mat4 view = glm::mat4(1.0f);
-  view = glm::translate(view, glm::vec3(0.0f, 0.0f, -40.0f));
+  view = glm::translate(view, glm::vec3(0.0f, 0.0f, -20.0f));
 
   glm::mat4 projection = glm::mat4(1.0f);
   projection = glm::perspective(glm::radians(45.0f), (float)1280 / (float)720, 0.1f, 100.0f);
 
+  glm::vec4 color = glm::vec4(0.2f, 0.5f, 0.2f, 0.2f);
+
+  if (body->GetType() == b2_dynamicBody)
+    color = glm::vec4(0.5f, 0.2f, 0.2f, 1.0f);
+
   m_shader.SetMatrix4("model", model);
   m_shader.SetMatrix4("view", view);
   m_shader.SetMatrix4("projection", projection);
+  m_shader.SetVector4f("color", color);
 
   glBindVertexArray(m_VAO);
   glDrawArrays(GL_TRIANGLES, 0, 6);
