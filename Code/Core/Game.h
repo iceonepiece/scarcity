@@ -11,6 +11,7 @@
 #include "Physics.h"
 #include "Input.h"
 #include "Renderer.h"
+#include "Camera.h"
 
 class Game
 {
@@ -32,6 +33,7 @@ private:
   EntityManager m_manager;
   Physics m_physics;
   Input m_input;
+  Camera m_camera;
 
   void ProcessInput(float deltaTime);
   void Update(float deltaTime);

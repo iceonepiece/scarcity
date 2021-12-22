@@ -20,6 +20,12 @@ public:
 		return component;
 	}
 
+	template<typename T>
+	T* GetComponent()
+	{
+		return m_manager->m_registry.try_get<T>(m_id);
+	}
+
 protected:
 	entt::entity m_id;
 	EntityManager* m_manager;

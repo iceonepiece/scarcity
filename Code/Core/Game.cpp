@@ -15,6 +15,7 @@ Game::Game(unsigned int width, unsigned int height)
   : m_width(width)
   , m_height(height)
   , m_input(this)
+  , m_camera(glm::vec3(0.0f, 0.0f, -20.0f), glm::vec2(0.8f, 1.0f))
 {
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -47,7 +48,7 @@ Game::~Game()
 void Game::Init()
 {
   auto player = m_manager.CreateEntity();
-  player.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(2, 4, 1, 2, true));
+  player.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(1, 12, 0.5, 1.5, true));
   player.AddComponent<ControllerComponent>(
     std::vector<InputCommand> {
       { GLFW_KEY_LEFT, "MOVE_LEFT" },
@@ -55,6 +56,7 @@ void Game::Init()
     }
   );
   player.AddComponent<MovementComponent>();
+  m_camera.SetBody(player.GetComponent<Collider2DComponent>()->body);
 
   auto platform = m_manager.CreateEntity();
   platform.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(0, -5, 15, 0.5));
@@ -64,6 +66,8 @@ void Game::Run()
 {
   float deltaTime = 0.0f;
   float lastFrame = 0.0f;
+
+  m_camera.Update();
 
   while (!glfwWindowShouldClose(m_window))
   {
@@ -139,6 +143,7 @@ void Game::Update(float deltaTime)
   }
 
   m_physics.Update(deltaTime);
+  m_camera.Update();
 }
 
 void Game::Render()
@@ -149,7 +154,7 @@ void Game::Render()
   auto view = m_manager.m_registry.view<Collider2DComponent>();
   for (auto [entity, collider]: view.each())
   {
-    Renderer::DrawQuad(collider.body);
+    Renderer::DrawQuad(collider.body, m_camera);
   }
 
   glfwSwapBuffers(m_window);
