@@ -6,10 +6,11 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-#include "Core/Entity.h"
-#include "Core/EntityManager.h"
-#include "Core/Physics.h"
-#include "Core/Renderer.h"
+#include "Entity.h"
+#include "EntityManager.h"
+#include "Physics.h"
+#include "Input.h"
+#include "Renderer.h"
 
 class Game
 {
@@ -30,6 +31,9 @@ private:
 
   EntityManager m_manager;
   Physics m_physics;
+  Input m_input;
 
   void ProcessInput(float deltaTime);
+  void Update(float deltaTime);
+  void Render();
 };

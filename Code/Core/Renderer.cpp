@@ -81,10 +81,10 @@ void Renderer::DrawQuad(b2Body* body)
   glm::mat4 projection = glm::mat4(1.0f);
   projection = glm::perspective(glm::radians(45.0f), (float)1280 / (float)720, 0.1f, 100.0f);
 
-  glm::vec4 color = glm::vec4(0.2f, 0.5f, 0.2f, 0.2f);
+  glm::vec4 color = glm::vec4(0.188f, 0.278f, 0.369f, 0.2f);
 
   if (body->GetType() == b2_dynamicBody)
-    color = glm::vec4(0.5f, 0.2f, 0.2f, 1.0f);
+    color = glm::vec4(0.941f, 0.329f, 0.329f, 1.0f);
 
   m_shader.SetMatrix4("model", model);
   m_shader.SetMatrix4("view", view);
