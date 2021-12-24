@@ -1,8 +1,7 @@
 #include "Game.h"
 
 #include "../Components/Collider2DComponent.h"
-#include "../Components/ControllerComponent.h"
-#include "../Components/MovementComponent.h"
+#include "../Components/PlayerComponent.h"
 
 const float PLAYER_MOVE_SPEED = 7.0f;
 
@@ -48,18 +47,15 @@ Game::~Game()
 void Game::Init()
 {
   auto player = m_manager.CreateEntity();
-  player.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(1, 12, 0.5, 1.5, true));
-  player.AddComponent<ControllerComponent>(
-    std::vector<InputCommand> {
-      { GLFW_KEY_LEFT, "MOVE_LEFT" },
-      { GLFW_KEY_RIGHT, "MOVE_RIGHT" },
-    }
-  );
-  player.AddComponent<MovementComponent>();
+  player.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(1, 8, 0.5, 1.5, true));
+  player.AddComponent<PlayerComponent>();
   m_camera.SetBody(player.GetComponent<Collider2DComponent>()->body);
 
   auto platform = m_manager.CreateEntity();
-  platform.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(0, -5, 15, 0.5));
+  platform.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(0, 0, 15, 0.5));
+
+  auto platform2 = m_manager.CreateEntity();
+  platform2.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(-10, -4, 10, 0.5));
 }
 
 void Game::Run()
@@ -86,41 +82,24 @@ void Game::ProcessInput(float deltaTime)
   if (m_input.IsKeyPressed(GLFW_KEY_ESCAPE))
     glfwSetWindowShouldClose(m_window, true);
 
-  auto view = m_manager.m_registry.view<ControllerComponent>();
-  for (auto [entity, controller]: view.each())
+  auto view = m_manager.m_registry.view<PlayerComponent>();
+  for (auto [entity, player]: view.each())
   {
-    for (auto& inputCommand : controller.inputCommands)
-    {
-      if (m_input.IsKeyPressed(inputCommand.keyCode))
-        inputCommand.isActive = true;
-      else
-        inputCommand.isActive = false;
-    }
-  }
+    player.movementState = MS_IDLE;
 
-  auto xview = m_manager.m_registry.view<ControllerComponent, MovementComponent>();
-  for (auto [entity, controller, movement]: xview.each())
-  {
-    movement.state = MS_IDLE;
+    if (m_input.IsKeyPressed(GLFW_KEY_LEFT))
+      player.movementState = MS_LEFT;
 
-    for (auto inputCommand : controller.inputCommands)
-    {
-      if (!inputCommand.isActive)
-        continue;
-
-      if (inputCommand.name == "MOVE_LEFT")
-        movement.state = MS_LEFT;
-      else if (inputCommand.name == "MOVE_RIGHT")
-        movement.state = MS_RIGHT;
-    }
+    if (m_input.IsKeyPressed(GLFW_KEY_RIGHT))
+      player.movementState = MS_RIGHT;
   }
 }
 
 void Game::Update(float deltaTime)
 {
-  auto view = m_manager.m_registry.view<MovementComponent, Collider2DComponent>();
+  auto view = m_manager.m_registry.view<PlayerComponent, Collider2DComponent>();
 
-  for (auto [entity, movement, collider]: view.each())
+  for (auto [entity, player, collider]: view.each())
   {
     b2Body* body = collider.body;
     if (body)
@@ -128,7 +107,7 @@ void Game::Update(float deltaTime)
       b2Vec2 velocity = body->GetLinearVelocity();
       float desiredVelocity = 0;
 
-      switch (movement.state)
+      switch (player.movementState)
       {
         case MS_LEFT:
           desiredVelocity = -PLAYER_MOVE_SPEED; break;
