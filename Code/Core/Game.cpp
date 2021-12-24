@@ -2,8 +2,10 @@
 
 #include "../Components/Collider2DComponent.h"
 #include "../Components/PlayerComponent.h"
+#include "PlayerFixtureData.h"
 
 const float PLAYER_MOVE_SPEED = 7.0f;
+const float PLAYER_JUMP_FORCE = 4.2f;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -47,7 +49,8 @@ Game::~Game()
 void Game::Init()
 {
   auto player = m_manager.CreateEntity();
-  player.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(1, 8, 0.5, 1.5, true));
+  b2Body* playerBody = m_physics.CreateBodyWithFixture(b2Vec2 {1, 8}, b2Vec2 {0.5, 1.5}, new PlayerFixtureData(player), true);
+  player.AddComponent<Collider2DComponent>(playerBody);
   player.AddComponent<PlayerComponent>();
   m_camera.SetBody(player.GetComponent<Collider2DComponent>()->body);
 
@@ -55,7 +58,7 @@ void Game::Init()
   platform.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(0, 0, 15, 0.5));
 
   auto platform2 = m_manager.CreateEntity();
-  platform2.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(-10, -4, 10, 0.5));
+  platform2.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(-10, -3, 10, 0.5));
 }
 
 void Game::Run()
@@ -86,13 +89,18 @@ void Game::ProcessInput(float deltaTime)
   for (auto [entity, player]: view.each())
   {
     player.movementState = MS_IDLE;
+    player.jump = false;
 
     if (m_input.IsKeyPressed(GLFW_KEY_LEFT))
       player.movementState = MS_LEFT;
 
     if (m_input.IsKeyPressed(GLFW_KEY_RIGHT))
       player.movementState = MS_RIGHT;
+
+    if (m_input.IsKeyPressed(GLFW_KEY_SPACE))
+      player.jump = true;
   }
+
 }
 
 void Game::Update(float deltaTime)
@@ -118,6 +126,9 @@ void Game::Update(float deltaTime)
       }
 
       body->SetLinearVelocity(b2Vec2(desiredVelocity, velocity.y));
+
+      if (player.jump && player.numGrounds > 0)
+        body->ApplyLinearImpulse(b2Vec2(0, PLAYER_JUMP_FORCE), body->GetWorldCenter(), true);
     }
   }
 
