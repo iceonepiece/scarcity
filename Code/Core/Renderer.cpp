@@ -78,8 +78,9 @@ void Renderer::DrawQuad(b2Body* body, Camera& camera)
   glm::mat4 view = glm::mat4(1.0f);
   view = glm::translate(view, camera.GetPosition());
 
+  glm::vec2 screenSize = camera.GetScreenSize();
   glm::mat4 projection = glm::mat4(1.0f);
-  projection = glm::perspective(glm::radians(45.0f), (float)1280 / (float)720, 0.1f, 100.0f);
+  projection = glm::perspective(glm::radians(45.0f), screenSize.x / screenSize.y, 0.1f, 100.0f);
 
   glm::vec4 color = glm::vec4(0.188f, 0.278f, 0.369f, 0.2f);
 

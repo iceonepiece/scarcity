@@ -12,6 +12,7 @@
 #include "Input.h"
 #include "Renderer.h"
 #include "Camera.h"
+#include "ParticleSystem.h"
 
 class Game
 {
@@ -34,6 +35,8 @@ private:
   Physics m_physics;
   Input m_input;
   Camera m_camera;
+  ParticleSystem m_particleSystem;
+  ParticleProps m_particle;
 
   void ProcessInput(float deltaTime);
   void Update(float deltaTime);

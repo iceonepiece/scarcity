@@ -19,7 +19,6 @@ public:
 
     if (worldManifold.normal.x == 0 && worldManifold.normal.y == yTarget)
   	{
-			std::cout << "GROUNDED" << std::endl;
   		auto player = m_entity.GetComponent<PlayerComponent>();
   		player->numGrounds++;
   		player->groundFixtures.emplace_back(otherFixtureData);

@@ -16,7 +16,7 @@ Game::Game(unsigned int width, unsigned int height)
   : m_width(width)
   , m_height(height)
   , m_input(this)
-  , m_camera(glm::vec3(0.0f, 0.0f, -20.0f), glm::vec2(0.8f, 1.0f))
+  , m_camera(glm::vec3(0.0f, 0.0f, -16.0f), glm::vec2(0.8f, 1.0f), glm::vec2(width, height))
 {
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -39,6 +39,7 @@ Game::Game(unsigned int width, unsigned int height)
   }
 
   Renderer::Init();
+  m_particleSystem.Init();
 }
 
 Game::~Game()
@@ -49,16 +50,25 @@ Game::~Game()
 void Game::Init()
 {
   auto player = m_manager.CreateEntity();
-  b2Body* playerBody = m_physics.CreateBodyWithFixture(b2Vec2 {1, 8}, b2Vec2 {0.5, 1.5}, new PlayerFixtureData(player), true);
+  b2Body* playerBody = m_physics.CreateBodyWithFixture(b2Vec2 {0, 8}, b2Vec2 {0.5, 1.5}, new PlayerFixtureData(player), true);
   player.AddComponent<Collider2DComponent>(playerBody);
   player.AddComponent<PlayerComponent>();
-  m_camera.SetBody(player.GetComponent<Collider2DComponent>()->body);
 
   auto platform = m_manager.CreateEntity();
   platform.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(0, 0, 15, 0.5));
 
   auto platform2 = m_manager.CreateEntity();
   platform2.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(-10, -3, 10, 0.5));
+
+  m_camera.SetBody(player.GetComponent<Collider2DComponent>()->body);
+
+  m_particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
+	m_particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
+	m_particle.SizeBegin = 0.5f, m_particle.SizeVariation = 0.3f, m_particle.SizeEnd = 0.0f;
+	m_particle.LifeTime = 1.0f;
+	m_particle.Velocity = { 0.0f, 0.0f };
+	m_particle.VelocityVariation = { 3.0f, 1.0f };
+	m_particle.Position = { 0.0f, 0.0f };
 }
 
 void Game::Run()
@@ -101,6 +111,12 @@ void Game::ProcessInput(float deltaTime)
       player.jump = true;
   }
 
+  if (m_input.IsKeyPressed(GLFW_KEY_F))
+  {
+    m_particle.Position = { 0, 0 };
+    for (int i = 0; i < 5; i++)
+      m_particleSystem.Emit(m_particle);
+  }
 }
 
 void Game::Update(float deltaTime)
@@ -132,6 +148,7 @@ void Game::Update(float deltaTime)
     }
   }
 
+  m_particleSystem.Update(deltaTime);
   m_physics.Update(deltaTime);
   m_camera.Update();
 }
@@ -146,6 +163,8 @@ void Game::Render()
   {
     Renderer::DrawQuad(collider.body, m_camera);
   }
+
+  m_particleSystem.Render(m_camera);
 
   glfwSwapBuffers(m_window);
   glfwPollEvents();
