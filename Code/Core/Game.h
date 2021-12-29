@@ -13,6 +13,7 @@
 #include "Renderer.h"
 #include "Camera.h"
 #include "ParticleSystem.h"
+#include "GUI.h"
 
 class Game
 {
@@ -22,7 +23,7 @@ public:
 
   void Init();
   void Run();
-
+  
   GLFWwindow* GetWindow() { return m_window; }
 
 private:
@@ -37,6 +38,7 @@ private:
   Camera m_camera;
   ParticleSystem m_particleSystem;
   ParticleProps m_particle;
+  GUI m_gui;
 
   void ProcessInput(float deltaTime);
   void Update(float deltaTime);

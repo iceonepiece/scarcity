@@ -38,12 +38,15 @@ Game::Game(unsigned int width, unsigned int height)
     std::cout << "Failed to initialize GLAD" << std::endl;
   }
 
+  m_gui.Init(m_window, "#version 330");
   Renderer::Init();
   m_particleSystem.Init();
 }
 
 Game::~Game()
 {
+  m_gui.Destroy();
+  glfwDestroyWindow(m_window);
   glfwTerminate();
 }
 
@@ -92,6 +95,8 @@ void Game::Run()
 
 void Game::ProcessInput(float deltaTime)
 {
+  glfwPollEvents();
+  
   if (m_input.IsKeyPressed(GLFW_KEY_ESCAPE))
     glfwSetWindowShouldClose(m_window, true);
 
@@ -155,6 +160,12 @@ void Game::Update(float deltaTime)
 
 void Game::Render()
 {
+  m_gui.NewFrame();
+
+  int width, height;
+  glfwGetFramebufferSize(m_window, &width, &height);
+  m_camera.SetScreenSize(glm::vec2(width, height));
+
   glClearColor(0.133f, 0.157f, 0.192f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
 
@@ -165,7 +176,7 @@ void Game::Render()
   }
 
   m_particleSystem.Render(m_camera);
+  m_gui.Draw();
 
   glfwSwapBuffers(m_window);
-  glfwPollEvents();
 }

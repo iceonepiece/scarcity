@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../External/entt/entt.hpp"
+#include <entt/entt.hpp>
 
 class Entity;
 
