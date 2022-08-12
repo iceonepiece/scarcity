@@ -14,6 +14,7 @@
 #include "Camera.h"
 #include "ParticleSystem.h"
 #include "GUI.h"
+#include "GUIComponent.h"
 
 class Game
 {
@@ -23,7 +24,7 @@ public:
 
   void Init();
   void Run();
-  
+
   GLFWwindow* GetWindow() { return m_window; }
 
 private:
@@ -43,4 +44,7 @@ private:
   void ProcessInput(float deltaTime);
   void Update(float deltaTime);
   void Render();
+
+  friend class GUI;
+  friend class GUIComponent;
 };

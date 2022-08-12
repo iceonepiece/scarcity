@@ -1,13 +1,17 @@
 #pragma once
 
+#include <vector>
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
+#include "GUIComponent.h"
+
+class Game;
 
 class GUI
 {
 public:
-  GUI();
+  GUI(Game* game);
   ~GUI();
 
   void Init(GLFWwindow* window, const char* glslVersion);
@@ -15,4 +19,12 @@ public:
 
   void NewFrame();
   void Draw();
+
+  void AddComponent(GUIComponent* component);
+
+private:
+  Game* m_game;
+  std::vector<GUIComponent*> m_components;
+
+  friend class GUIComponent;
 };

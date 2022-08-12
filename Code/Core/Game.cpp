@@ -3,6 +3,8 @@
 #include "../Components/Collider2DComponent.h"
 #include "../Components/PlayerComponent.h"
 #include "PlayerFixtureData.h"
+#include "../GUIs/GUIWindow.h"
+#include "../GUIs/GUIList.h"
 
 const float PLAYER_MOVE_SPEED = 7.0f;
 const float PLAYER_JUMP_FORCE = 4.2f;
@@ -16,11 +18,12 @@ Game::Game(unsigned int width, unsigned int height)
   : m_width(width)
   , m_height(height)
   , m_input(this)
+  , m_gui(this)
   , m_camera(glm::vec3(0.0f, 0.0f, -16.0f), glm::vec2(0.8f, 1.0f), glm::vec2(width, height))
 {
   glfwInit();
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
@@ -38,14 +41,14 @@ Game::Game(unsigned int width, unsigned int height)
     std::cout << "Failed to initialize GLAD" << std::endl;
   }
 
-  m_gui.Init(m_window, "#version 330");
+  //m_gui.Init(m_window, "#version 410");
   Renderer::Init();
   m_particleSystem.Init();
 }
 
 Game::~Game()
 {
-  m_gui.Destroy();
+  //m_gui.Destroy();
   glfwDestroyWindow(m_window);
   glfwTerminate();
 }
@@ -72,6 +75,12 @@ void Game::Init()
 	m_particle.Velocity = { 0.0f, 0.0f };
 	m_particle.VelocityVariation = { 3.0f, 1.0f };
 	m_particle.Position = { 0.0f, 0.0f };
+
+  /*
+  GUIWindow* guiWindow = new GUIWindow(&m_gui, "Hello World");
+  guiWindow->AddChild(new GUIList(&m_gui));
+  */
+  //m_gui.AddComponent(new GUIWindow(&m_gui, "Hello World"));
 }
 
 void Game::Run()
@@ -96,7 +105,7 @@ void Game::Run()
 void Game::ProcessInput(float deltaTime)
 {
   glfwPollEvents();
-  
+
   if (m_input.IsKeyPressed(GLFW_KEY_ESCAPE))
     glfwSetWindowShouldClose(m_window, true);
 
@@ -118,8 +127,9 @@ void Game::ProcessInput(float deltaTime)
 
   if (m_input.IsKeyPressed(GLFW_KEY_F))
   {
+    std::cout << "FFFF" << std::endl;
     m_particle.Position = { 0, 0 };
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 1; i++)
       m_particleSystem.Emit(m_particle);
   }
 }
@@ -160,7 +170,7 @@ void Game::Update(float deltaTime)
 
 void Game::Render()
 {
-  m_gui.NewFrame();
+  //m_gui.NewFrame();
 
   int width, height;
   glfwGetFramebufferSize(m_window, &width, &height);
@@ -176,7 +186,7 @@ void Game::Render()
   }
 
   m_particleSystem.Render(m_camera);
-  m_gui.Draw();
+  //m_gui.Draw();
 
   glfwSwapBuffers(m_window);
 }
