@@ -5,9 +5,7 @@
 #include "PlayerFixtureData.h"
 #include "../GUIs/GUIWindow.h"
 #include "../GUIs/GUIList.h"
-
-const float PLAYER_MOVE_SPEED = 7.0f;
-const float PLAYER_JUMP_FORCE = 4.2f;
+#include "../Systems/PlayerSystem.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -76,6 +74,11 @@ void Game::Init()
 	m_particle.VelocityVariation = { 3.0f, 1.0f };
 	m_particle.Position = { 0.0f, 0.0f };
 
+  m_input.AddInputCommand(GLFW_KEY_ESCAPE, "ESCAPE");
+  m_input.AddInputCommand(GLFW_KEY_LEFT, "LEFT");
+  m_input.AddInputCommand(GLFW_KEY_RIGHT, "RIGHT");
+  m_input.AddInputCommand(GLFW_KEY_SPACE, "SPACE");
+
   /*
   GUIWindow* guiWindow = new GUIWindow(&m_gui, "Hello World");
   guiWindow->AddChild(new GUIList(&m_gui));
@@ -105,29 +108,15 @@ void Game::Run()
 void Game::ProcessInput(float deltaTime)
 {
   glfwPollEvents();
+  m_input.PollInputs();
 
   if (m_input.IsKeyPressed(GLFW_KEY_ESCAPE))
     glfwSetWindowShouldClose(m_window, true);
 
-  auto view = m_manager.m_registry.view<PlayerComponent>();
-  for (auto [entity, player]: view.each())
-  {
-    player.movementState = MS_IDLE;
-    player.jump = false;
-
-    if (m_input.IsKeyPressed(GLFW_KEY_LEFT))
-      player.movementState = MS_LEFT;
-
-    if (m_input.IsKeyPressed(GLFW_KEY_RIGHT))
-      player.movementState = MS_RIGHT;
-
-    if (m_input.IsKeyPressed(GLFW_KEY_SPACE))
-      player.jump = true;
-  }
+  PlayerSystem::ProcessInput(m_input, m_manager.m_registry);
 
   if (m_input.IsKeyPressed(GLFW_KEY_F))
   {
-    std::cout << "FFFF" << std::endl;
     m_particle.Position = { 0, 0 };
     for (int i = 0; i < 1; i++)
       m_particleSystem.Emit(m_particle);
@@ -136,32 +125,7 @@ void Game::ProcessInput(float deltaTime)
 
 void Game::Update(float deltaTime)
 {
-  auto view = m_manager.m_registry.view<PlayerComponent, Collider2DComponent>();
-
-  for (auto [entity, player, collider]: view.each())
-  {
-    b2Body* body = collider.body;
-    if (body)
-    {
-      b2Vec2 velocity = body->GetLinearVelocity();
-      float desiredVelocity = 0;
-
-      switch (player.movementState)
-      {
-        case MS_LEFT:
-          desiredVelocity = -PLAYER_MOVE_SPEED; break;
-        case MS_IDLE:
-          desiredVelocity = 0; break;
-        case MS_RIGHT:
-          desiredVelocity = PLAYER_MOVE_SPEED; break;
-      }
-
-      body->SetLinearVelocity(b2Vec2(desiredVelocity, velocity.y));
-
-      if (player.jump && player.numGrounds > 0)
-        body->ApplyLinearImpulse(b2Vec2(0, PLAYER_JUMP_FORCE), body->GetWorldCenter(), true);
-    }
-  }
+  PlayerSystem::Update(deltaTime, m_manager.m_registry);
 
   m_particleSystem.Update(deltaTime);
   m_physics.Update(deltaTime);

@@ -6,8 +6,44 @@ Input::Input(Game* game)
 {
 }
 
+void Input::AddInputCommand(int keyCode, std::string name)
+{
+  m_inputCommands.push_back(InputCommand(keyCode, name));
+}
+
+void Input::PollInputs()
+{
+  for (auto& inputCommand : m_inputCommands)
+  {
+    inputCommand.previousState = inputCommand.currentState;
+    inputCommand.currentState = glfwGetKey(m_game->GetWindow(), inputCommand.keyCode);
+  }
+}
+
 bool Input::IsKeyPressed(int keyCode)
 {
-  auto state = glfwGetKey(m_game->GetWindow(), keyCode);
-  return state == GLFW_PRESS || state == GLFW_REPEAT;
+  for (auto inputCommand : m_inputCommands)
+  {
+    if (
+      inputCommand.keyCode == keyCode &&
+      inputCommand.previousState == GLFW_RELEASE &&
+      inputCommand.currentState == GLFW_PRESS
+    ) return true;
+  }
+
+  return false;
+}
+
+bool Input::IsKeyHeld(int keyCode)
+{
+  for (auto inputCommand : m_inputCommands)
+  {
+    if (
+      inputCommand.keyCode == keyCode &&
+      inputCommand.previousState == GLFW_PRESS &&
+      inputCommand.currentState == GLFW_PRESS
+    ) return true;
+  }
+
+  return false;
 }
