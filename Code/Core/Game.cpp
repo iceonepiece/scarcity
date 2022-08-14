@@ -39,7 +39,7 @@ Game::Game(unsigned int width, unsigned int height)
     std::cout << "Failed to initialize GLAD" << std::endl;
   }
 
-  //m_gui.Init(m_window, "#version 410");
+  //m_gui.Init(m_window, "#version 330");
   Renderer::Init();
   m_particleSystem.Init();
 }
@@ -66,6 +66,8 @@ void Game::Init()
 
   m_camera.SetBody(player.GetComponent<Collider2DComponent>()->body);
 
+  /*
+  m_particle.amount = 10;
   m_particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
 	m_particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
 	m_particle.SizeBegin = 0.5f, m_particle.SizeVariation = 0.3f, m_particle.SizeEnd = 0.0f;
@@ -73,17 +75,64 @@ void Game::Init()
 	m_particle.Velocity = { 0.0f, 0.0f };
 	m_particle.VelocityVariation = { 3.0f, 1.0f };
 	m_particle.Position = { 0.0f, 0.0f };
+  */
 
   m_input.AddInputCommand(GLFW_KEY_ESCAPE, "ESCAPE");
   m_input.AddInputCommand(GLFW_KEY_LEFT, "LEFT");
   m_input.AddInputCommand(GLFW_KEY_RIGHT, "RIGHT");
   m_input.AddInputCommand(GLFW_KEY_SPACE, "SPACE");
+  m_input.AddInputCommand(GLFW_KEY_F, "F");
+
+  LoadParticles();
 
   /*
   GUIWindow* guiWindow = new GUIWindow(&m_gui, "Hello World");
   guiWindow->AddChild(new GUIList(&m_gui));
   */
   //m_gui.AddComponent(new GUIWindow(&m_gui, "Hello World"));
+}
+
+void Game::LoadParticles()
+{
+  m_lua.script_file("./Code/Scripts/particles.lua");
+
+  sol::table particles = m_lua["particles"];
+  for (int i = 0 ;; i++)
+  {
+    sol::optional<sol::table> isExist = particles[i];
+
+    if (isExist == sol::nullopt)
+      break;
+
+    sol::table node = particles[i];
+
+    ParticleProps particleProps;
+    particleProps.amount = node["amount"];
+
+    particleProps.colorBegin = {
+      node["colorBegin"]["r"],
+      node["colorBegin"]["g"],
+      node["colorBegin"]["b"],
+      node["colorBegin"]["a"]
+    };
+
+    particleProps.colorEnd = {
+      node["colorEnd"]["r"],
+      node["colorEnd"]["g"],
+      node["colorEnd"]["b"],
+      node["colorEnd"]["a"]
+    };
+
+  	particleProps.sizeBegin = node["sizeBegin"];
+    particleProps.sizeVariation = node["sizeVariation"];
+    particleProps.sizeEnd = node["sizeEnd"];
+  	particleProps.lifeTime = node["lifeTime"];
+  	particleProps.velocity = { node["velocity"]["x"], node["velocity"]["y"] };
+  	particleProps.velocityVariation = { node["velocityVariation"]["x"], node["velocityVariation"]["y"] };
+  	particleProps.position = { node["position"]["x"], node["position"]["y"] };
+
+    m_particles.emplace(node["name"], particleProps);
+  }
 }
 
 void Game::Run()
@@ -117,9 +166,10 @@ void Game::ProcessInput(float deltaTime)
 
   if (m_input.IsKeyPressed(GLFW_KEY_F))
   {
-    m_particle.Position = { 0, 0 };
-    for (int i = 0; i < 1; i++)
-      m_particleSystem.Emit(m_particle);
+    ParticleProps props = m_particles["fire"];
+    props.position = { 0, 0 };
+    for (int i = 0; i < props.amount; i++)
+      m_particleSystem.Emit(props);
   }
 }
 

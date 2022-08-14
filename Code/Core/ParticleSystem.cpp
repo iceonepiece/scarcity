@@ -72,18 +72,18 @@ void ParticleSystem::Update(float deltaTime)
 {
 	for (auto& particle : m_ParticlePool)
 	{
-		if (!particle.Active)
+		if (!particle.active)
 			continue;
 
-		if (particle.LifeRemaining <= 0.0f)
+		if (particle.lifeRemaining <= 0.0f)
 		{
-			particle.Active = false;
+			particle.active = false;
 			continue;
 		}
 
-		particle.LifeRemaining -= deltaTime;
-		particle.Position += particle.Velocity * deltaTime;
-		particle.Rotation += 0.01f * deltaTime;
+		particle.lifeRemaining -= deltaTime;
+		particle.position += particle.velocity * deltaTime;
+		particle.rotation += 0.01f * deltaTime;
 	}
 }
 
@@ -103,17 +103,17 @@ void ParticleSystem::Render(Camera& camera)
 
 	for (auto& particle : m_ParticlePool)
 	{
-		if (!particle.Active)
+		if (!particle.active)
 			continue;
 
-		float life = particle.LifeRemaining / particle.LifeTime;
-		glm::vec4 color = glm::lerp(particle.ColorEnd, particle.ColorBegin, life);
+		float life = particle.lifeRemaining / particle.lifeTime;
+		glm::vec4 color = glm::lerp(particle.colorEnd, particle.colorBegin, life);
 		//color.a = color.a * life;
 
-		float size = glm::lerp(particle.SizeEnd, particle.SizeBegin, life);
+		float size = glm::lerp(particle.sizeEnd, particle.sizeBegin, life);
 
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), { particle.Position.x, particle.Position.y, 0.0f })
-			* glm::rotate(glm::mat4(1.0f), particle.Rotation, { 0.0f, 0.0f, 1.0f })
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), { particle.position.x, particle.position.y, 0.0f })
+			* glm::rotate(glm::mat4(1.0f), particle.rotation, { 0.0f, 0.0f, 1.0f })
 			* glm::scale(glm::mat4(1.0f), { size, size, 1.0f });
 
 		m_shader.SetMatrix4("u_Transform", transform);
@@ -127,23 +127,23 @@ void ParticleSystem::Render(Camera& camera)
 void ParticleSystem::Emit(const ParticleProps& particleProps)
 {
 	Particle& particle = m_ParticlePool[m_PoolIndex];
-	particle.Active = true;
-	particle.Position = particleProps.Position;
-	particle.Rotation = Random::Float() * 2.0f * glm::pi<float>();
+	particle.active = true;
+	particle.position = particleProps.position;
+	particle.rotation = Random::Float() * 2.0f * glm::pi<float>();
 
 	// Velocity
-	particle.Velocity = particleProps.Velocity;
-	particle.Velocity.x += particleProps.VelocityVariation.x * (Random::Float() - 0.5f);
-	particle.Velocity.y += particleProps.VelocityVariation.y * (Random::Float() - 0.5f);
+	particle.velocity = particleProps.velocity;
+	particle.velocity.x += particleProps.velocityVariation.x * (Random::Float() - 0.5f);
+	particle.velocity.y += particleProps.velocityVariation.y * (Random::Float() - 0.5f);
 
 	// Color
-	particle.ColorBegin = particleProps.ColorBegin;
-	particle.ColorEnd = particleProps.ColorEnd;
+	particle.colorBegin = particleProps.colorBegin;
+	particle.colorEnd = particleProps.colorEnd;
 
-	particle.LifeTime = particleProps.LifeTime;
-	particle.LifeRemaining = particleProps.LifeTime;
-	particle.SizeBegin = particleProps.SizeBegin + particleProps.SizeVariation * (Random::Float() - 0.5f);
-	particle.SizeEnd = particleProps.SizeEnd;
+	particle.lifeTime = particleProps.lifeTime;
+	particle.lifeRemaining = particleProps.lifeTime;
+	particle.sizeBegin = particleProps.sizeBegin + particleProps.sizeVariation * (Random::Float() - 0.5f);
+	particle.sizeEnd = particleProps.sizeEnd;
 
 	m_PoolIndex = --m_PoolIndex % m_ParticlePool.size();
 }

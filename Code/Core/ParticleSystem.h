@@ -10,11 +10,12 @@
 
 struct ParticleProps
 {
-	glm::vec2 Position;
-	glm::vec2 Velocity, VelocityVariation;
-	glm::vec4 ColorBegin, ColorEnd;
-	float SizeBegin, SizeEnd, SizeVariation;
-	float LifeTime = 1.0f;
+	glm::vec2 position;
+	glm::vec2 velocity, velocityVariation;
+	glm::vec4 colorBegin, colorEnd;
+	float sizeBegin, sizeEnd, sizeVariation;
+	float lifeTime = 1.0f;
+	int amount = 1;
 };
 
 class ParticleSystem
@@ -30,16 +31,16 @@ public:
 private:
 	struct Particle
 	{
-		glm::vec2 Position;
-		glm::vec2 Velocity;
-		glm::vec4 ColorBegin, ColorEnd;
-		float Rotation = 0.0f;
-		float SizeBegin, SizeEnd;
+		glm::vec2 position;
+		glm::vec2 velocity;
+		glm::vec4 colorBegin, colorEnd;
+		float rotation = 0.0f;
+		float sizeBegin, sizeEnd;
 
-		float LifeTime = 1.0f;
-		float LifeRemaining = 0.0f;
+		float lifeTime = 1.0f;
+		float lifeRemaining = 0.0f;
 
-		bool Active = false;
+		bool active = false;
 	};
 	std::vector<Particle> m_ParticlePool;
 	uint32_t m_PoolIndex = 999;

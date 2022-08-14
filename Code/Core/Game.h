@@ -1,10 +1,13 @@
 #pragma once
 
 #include <iostream>
+#include <string>
+#include <unordered_map>
 #include <vector>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <sol/sol.hpp>
 
 #include "Entity.h"
 #include "EntityManager.h"
@@ -38,8 +41,13 @@ private:
   Input m_input;
   Camera m_camera;
   ParticleSystem m_particleSystem;
-  ParticleProps m_particle;
+  std::unordered_map<std::string, ParticleProps> m_particles;
+
   GUI m_gui;
+
+  sol::state m_lua;
+
+  void LoadParticles();
 
   void ProcessInput(float deltaTime);
   void Update(float deltaTime);
