@@ -24,9 +24,9 @@ public:
 	{
 	}
 
-	virtual void BeginContact(FixtureData* other, b2Contact* contact, bool isA) = 0;
-	virtual void EndContact(FixtureData* other, b2Contact* contact, bool isA) = 0;
-	virtual void PreSolve(FixtureData* other, b2Contact* contact, const b2Manifold* oldManifold, bool isA) = 0;
+	virtual void BeginContact(FixtureData* other, b2Contact* contact, bool isA) {}
+	virtual void EndContact(FixtureData* other, b2Contact* contact, bool isA) {}
+	virtual void PreSolve(FixtureData* other, b2Contact* contact, const b2Manifold* oldManifold, bool isA) {}
 
 	std::string m_tag;
 	Entity m_entity;

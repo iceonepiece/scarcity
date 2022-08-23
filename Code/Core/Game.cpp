@@ -66,6 +66,11 @@ void Game::Init()
 
   m_camera.SetBody(player.GetComponent<Collider2DComponent>()->body);
 
+  auto enemy = m_manager.CreateEntity();
+  b2Body* enemyBody = m_physics.CreateBodyWithFixture(b2Vec2 {1, 8}, b2Vec2 {0.5, 1.5}, new FixtureData(enemy, "ENEMY"), true);
+  enemy.AddComponent<Collider2DComponent>(enemyBody);
+  //enemy.AddComponent<AIComponent>();
+
   /*
   m_particle.amount = 10;
   m_particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
@@ -175,7 +180,7 @@ void Game::ProcessInput(float deltaTime)
 
 void Game::Update(float deltaTime)
 {
-  PlayerSystem::Update(deltaTime, m_manager.m_registry);
+  PlayerSystem::Update(deltaTime, m_manager.m_registry, this);
 
   m_particleSystem.Update(deltaTime);
   m_physics.Update(deltaTime);

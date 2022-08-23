@@ -30,6 +30,9 @@ public:
 
   GLFWwindow* GetWindow() { return m_window; }
 
+  ParticleSystem m_particleSystem;
+  std::unordered_map<std::string, ParticleProps> m_particles;
+
 private:
   GLFWwindow* m_window;
 
@@ -40,8 +43,6 @@ private:
   Physics m_physics;
   Input m_input;
   Camera m_camera;
-  ParticleSystem m_particleSystem;
-  std::unordered_map<std::string, ParticleProps> m_particles;
 
   GUI m_gui;
 

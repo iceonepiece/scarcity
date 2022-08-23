@@ -29,7 +29,7 @@ public:
     }
   }
 
-  static void Update(float deltaTime, entt::registry& m_registry)
+  static void Update(float deltaTime, entt::registry& m_registry, Game* game)
   {
     auto view = m_registry.view<PlayerComponent, Collider2DComponent>();
 
@@ -50,6 +50,15 @@ public:
             desiredVelocity = 0; break;
           case MS_RIGHT:
             desiredVelocity = velocity.x > 0 ? velocity.x + (PLAYER_MOVE_ACCELERATION * deltaTime) : PLAYER_MOVE_ACCELERATION * deltaTime; break;
+        }
+
+        if (player.movementState == MS_LEFT || player.movementState == MS_RIGHT && !(desiredVelocity < 2 && desiredVelocity > -2))
+        {
+          ParticleProps props = game->m_particles["running"];
+          b2Vec2 position = body->GetPosition();
+          props.position = { position.x, position.y - 0.8 };
+          for (int i = 0; i < props.amount; i++)
+            game->m_particleSystem.Emit(props);
         }
 
         if (desiredVelocity == 0)
