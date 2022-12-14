@@ -105,7 +105,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
       <AdditionalDependencies>glfw3.lib;box2d.lib;lua54.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -122,6 +122,7 @@
     <ClCompile Include="code\core\Physics.cpp" />
     <ClCompile Include="code\core\Random.cpp" />
     <ClCompile Include="code\core\Renderer.cpp" />
+    <ClCompile Include="Code\Core\Scene.cpp" />
     <ClCompile Include="code\core\Shader.cpp" />
     <ClCompile Include="code\external\glad\glad.c" />
     <ClCompile Include="code\external\imgui\imgui.cpp" />
@@ -165,7 +166,9 @@
     <ClInclude Include="code\external\sol\sol.hpp" />
     <ClInclude Include="code\guis\GUIList.h" />
     <ClInclude Include="code\guis\GUIWindow.h" />
+    <ClInclude Include="Code\Scenes\LevelScene.h" />
     <ClInclude Include="code\systems\PlayerSystem.h" />
+    <ClInclude Include="Code\Core\Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

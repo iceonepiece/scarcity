@@ -54,11 +54,11 @@ public:
 
         if (player.movementState == MS_LEFT || player.movementState == MS_RIGHT && !(desiredVelocity < 2 && desiredVelocity > -2))
         {
-          ParticleProps props = game->m_particles["running"];
+          ParticleProps props = game->GetParticleProps("running");
           b2Vec2 position = body->GetPosition();
           props.position = { position.x, position.y - 0.8 };
           for (int i = 0; i < props.amount; i++)
-            game->m_particleSystem.Emit(props);
+            ParticleSystem::Emit(props);
         }
 
         if (desiredVelocity == 0)

@@ -18,33 +18,34 @@ struct ParticleProps
 	int amount = 1;
 };
 
+struct Particle
+{
+	glm::vec2 position;
+	glm::vec2 velocity;
+	glm::vec4 colorBegin, colorEnd;
+	float rotation = 0.0f;
+	float sizeBegin, sizeEnd;
+
+	float lifeTime = 1.0f;
+	float lifeRemaining = 0.0f;
+
+	bool active = false;
+};
+
 class ParticleSystem
 {
 public:
 	ParticleSystem();
 
-	void Init();
-	void Update(float deltaTime);
-	void Render(Camera& camera);
-	void Emit(const ParticleProps& particleProps);
+	static void Init();
+	static void Update(float deltaTime);
+	static void Render(Camera& camera);
+	static void Emit(const ParticleProps& particleProps);
 
 private:
-	struct Particle
-	{
-		glm::vec2 position;
-		glm::vec2 velocity;
-		glm::vec4 colorBegin, colorEnd;
-		float rotation = 0.0f;
-		float sizeBegin, sizeEnd;
+	static std::vector<Particle> m_ParticlePool;
+	static uint32_t m_PoolIndex;
 
-		float lifeTime = 1.0f;
-		float lifeRemaining = 0.0f;
-
-		bool active = false;
-	};
-	std::vector<Particle> m_ParticlePool;
-	uint32_t m_PoolIndex = 999;
-
-	Shader m_shader;
-	unsigned int m_VAO = 0;
+	static Shader m_shader;
+	static unsigned int m_VAO;
 };

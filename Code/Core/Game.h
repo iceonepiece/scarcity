@@ -18,6 +18,7 @@
 #include "ParticleSystem.h"
 #include "GUI.h"
 #include "GUIComponent.h"
+#include "Scene.h"
 
 class Game
 {
@@ -30,8 +31,7 @@ public:
 
   GLFWwindow* GetWindow() { return m_window; }
 
-  ParticleSystem m_particleSystem;
-  std::unordered_map<std::string, ParticleProps> m_particles;
+  ParticleProps GetParticleProps(std::string name);
 
 private:
   GLFWwindow* m_window;
@@ -39,10 +39,14 @@ private:
   unsigned int m_width;
   unsigned int m_height;
 
+  int m_currentSceneIndex = 0;
+  std::vector<Scene*> m_scenes;
   EntityManager m_manager;
   Physics m_physics;
   Input m_input;
-  Camera m_camera;
+
+  std::unordered_map<std::string, ParticleProps> m_particles;
+
 
   GUI m_gui;
 

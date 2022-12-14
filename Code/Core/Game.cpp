@@ -6,6 +6,7 @@
 #include "../GUIs/GUIWindow.h"
 #include "../GUIs/GUIList.h"
 #include "../Systems/PlayerSystem.h"
+#include "../Scenes/LevelScene.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -17,7 +18,6 @@ Game::Game(unsigned int width, unsigned int height)
   , m_height(height)
   , m_input(this)
   , m_gui(this)
-  , m_camera(glm::vec3(0.0f, 0.0f, -16.0f), glm::vec2(0.8f, 1.0f), glm::vec2(width, height))
 {
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -41,7 +41,7 @@ Game::Game(unsigned int width, unsigned int height)
 
   //m_gui.Init(m_window, "#version 330");
   Renderer::Init();
-  m_particleSystem.Init();
+  ParticleSystem::Init();
 }
 
 Game::~Game()
@@ -53,42 +53,21 @@ Game::~Game()
 
 void Game::Init()
 {
-  auto player = m_manager.CreateEntity();
-  b2Body* playerBody = m_physics.CreateBodyWithFixture(b2Vec2 {0, 8}, b2Vec2 {0.5, 1.5}, new PlayerFixtureData(player), true);
-  player.AddComponent<Collider2DComponent>(playerBody);
-  player.AddComponent<PlayerComponent>();
+    m_scenes.push_back(new LevelScene(this));
+    
+    
+    for (int i = 0; i < m_scenes.size(); i++)
+    {
+        m_scenes[i]->Init();
+    }
 
-  auto platform = m_manager.CreateEntity();
-  platform.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(0, 0, 15, 0.5));
+    m_input.AddInputCommand(GLFW_KEY_ESCAPE, "ESCAPE");
+    m_input.AddInputCommand(GLFW_KEY_LEFT, "LEFT");
+    m_input.AddInputCommand(GLFW_KEY_RIGHT, "RIGHT");
+    m_input.AddInputCommand(GLFW_KEY_SPACE, "SPACE");
+    m_input.AddInputCommand(GLFW_KEY_F, "F");
 
-  auto platform2 = m_manager.CreateEntity();
-  platform2.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(-10, -3, 10, 0.5));
-
-  m_camera.SetBody(player.GetComponent<Collider2DComponent>()->body);
-
-  auto enemy = m_manager.CreateEntity();
-  b2Body* enemyBody = m_physics.CreateBodyWithFixture(b2Vec2 {1, 8}, b2Vec2 {0.5, 1.5}, new FixtureData(enemy, "ENEMY"), true);
-  enemy.AddComponent<Collider2DComponent>(enemyBody);
-  //enemy.AddComponent<AIComponent>();
-
-  /*
-  m_particle.amount = 10;
-  m_particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
-	m_particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
-	m_particle.SizeBegin = 0.5f, m_particle.SizeVariation = 0.3f, m_particle.SizeEnd = 0.0f;
-	m_particle.LifeTime = 1.0f;
-	m_particle.Velocity = { 0.0f, 0.0f };
-	m_particle.VelocityVariation = { 3.0f, 1.0f };
-	m_particle.Position = { 0.0f, 0.0f };
-  */
-
-  m_input.AddInputCommand(GLFW_KEY_ESCAPE, "ESCAPE");
-  m_input.AddInputCommand(GLFW_KEY_LEFT, "LEFT");
-  m_input.AddInputCommand(GLFW_KEY_RIGHT, "RIGHT");
-  m_input.AddInputCommand(GLFW_KEY_SPACE, "SPACE");
-  m_input.AddInputCommand(GLFW_KEY_F, "F");
-
-  LoadParticles();
+    LoadParticles();
 
   /*
   GUIWindow* guiWindow = new GUIWindow(&m_gui, "Hello World");
@@ -145,8 +124,6 @@ void Game::Run()
   float deltaTime = 0.0f;
   float lastFrame = 0.0f;
 
-  m_camera.Update();
-
   while (!glfwWindowShouldClose(m_window))
   {
     float currentFrame = glfwGetTime();
@@ -161,51 +138,38 @@ void Game::Run()
 
 void Game::ProcessInput(float deltaTime)
 {
-  glfwPollEvents();
-  m_input.PollInputs();
+    glfwPollEvents();
+    m_input.PollInputs();
 
-  if (m_input.IsKeyPressed(GLFW_KEY_ESCAPE))
-    glfwSetWindowShouldClose(m_window, true);
+    if (m_input.IsKeyPressed(GLFW_KEY_ESCAPE))
+        glfwSetWindowShouldClose(m_window, true);
 
-  PlayerSystem::ProcessInput(m_input, m_manager.m_registry);
-
-  if (m_input.IsKeyPressed(GLFW_KEY_F))
-  {
-    ParticleProps props = m_particles["fire"];
-    props.position = { 0, 0 };
-    for (int i = 0; i < props.amount; i++)
-      m_particleSystem.Emit(props);
-  }
+    m_scenes[m_currentSceneIndex]->ProcessInput(m_input);
 }
 
 void Game::Update(float deltaTime)
 {
-  PlayerSystem::Update(deltaTime, m_manager.m_registry, this);
-
-  m_particleSystem.Update(deltaTime);
-  m_physics.Update(deltaTime);
-  m_camera.Update();
+    m_scenes[m_currentSceneIndex]->Update(deltaTime);
 }
 
 void Game::Render()
 {
-  //m_gui.NewFrame();
+    //m_gui.NewFrame();
 
-  int width, height;
-  glfwGetFramebufferSize(m_window, &width, &height);
-  m_camera.SetScreenSize(glm::vec2(width, height));
+    int width, height;
+    glfwGetFramebufferSize(m_window, &width, &height);
 
-  glClearColor(0.133f, 0.157f, 0.192f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(0.133f, 0.157f, 0.192f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
 
-  auto view = m_manager.m_registry.view<Collider2DComponent>();
-  for (auto [entity, collider]: view.each())
-  {
-    Renderer::DrawQuad(collider.body, m_camera);
-  }
+    m_scenes[m_currentSceneIndex]->Render();
 
-  m_particleSystem.Render(m_camera);
-  //m_gui.Draw();
+    //m_gui.Draw();
 
-  glfwSwapBuffers(m_window);
+    glfwSwapBuffers(m_window);
+}
+
+ParticleProps Game::GetParticleProps(std::string name)
+{
+    return m_particles[name];
 }

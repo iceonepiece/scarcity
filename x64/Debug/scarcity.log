@@ -1,4 +1,6 @@
-﻿  EntityManager.cpp
-  Physics.cpp
+﻿  Main.cpp
+  GUI.cpp
+  Game.cpp
+  Input.cpp
   Generating Code...
   scarcity.vcxproj -> C:\works\scarcity\x64\Debug\scarcity.exe

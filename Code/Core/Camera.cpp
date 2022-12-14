@@ -1,9 +1,10 @@
 #include "Camera.h"
 
 Camera::Camera(glm::vec3 position, glm::vec2 boxSize, glm::vec2 screenSize)
-  : m_position(position)
-  , m_boxSize(boxSize)
-  , m_screenSize(screenSize)
+    : m_position(position)
+    , m_boxSize(boxSize)
+    , m_screenSize(screenSize)
+    , m_body(nullptr)
 {
 }
 

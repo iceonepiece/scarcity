@@ -5,6 +5,11 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/compatibility.hpp>
 
+unsigned int ParticleSystem::m_VAO = 0;
+uint32_t ParticleSystem::m_PoolIndex = 999;
+Shader ParticleSystem::m_shader;
+std::vector<Particle> ParticleSystem::m_ParticlePool;
+
 const char* particleVertexShaderSource = R"(
 	#version 330 core
 
@@ -34,7 +39,7 @@ const char* particleFragmentShaderSource = R"(
 
 ParticleSystem::ParticleSystem()
 {
-	m_ParticlePool.resize(1000);
+
 }
 
 void ParticleSystem::Init()
@@ -66,6 +71,8 @@ void ParticleSystem::Init()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	m_shader.Compile(particleVertexShaderSource, particleFragmentShaderSource);
+
+	m_ParticlePool.resize(1000);
 }
 
 void ParticleSystem::Update(float deltaTime)
