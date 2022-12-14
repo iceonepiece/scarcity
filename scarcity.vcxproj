@@ -124,6 +124,7 @@
     <ClCompile Include="code\core\Renderer.cpp" />
     <ClCompile Include="Code\Core\Scene.cpp" />
     <ClCompile Include="code\core\Shader.cpp" />
+    <ClCompile Include="Code\Core\StateMachine.cpp" />
     <ClCompile Include="code\external\glad\glad.c" />
     <ClCompile Include="code\external\imgui\imgui.cpp" />
     <ClCompile Include="code\external\imgui\imgui_demo.cpp" />
@@ -135,6 +136,7 @@
     <ClCompile Include="code\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\Components\AIComponent.h" />
     <ClInclude Include="code\components\Collider2DComponent.h" />
     <ClInclude Include="code\components\PlayerComponent.h" />
     <ClInclude Include="Code\Core\AIState.h" />

@@ -6,6 +6,7 @@
 class AIState
 {
 public:
+
     virtual void OnEnter(StateMachine* stateMachine)
     {
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Core/Scene.h"
+#include "../Components/AIComponent.h"
 
 class LevelScene : public Scene
 {
@@ -29,6 +30,7 @@ public:
 		auto enemy = m_manager.CreateEntity();
 		b2Body* enemyBody = m_physics.CreateBodyWithFixture(b2Vec2{ 1, 8 }, b2Vec2{ 0.5, 1.5 }, new FixtureData(enemy, "ENEMY"), true);
 		enemy.AddComponent<Collider2DComponent>(enemyBody);
+		enemy.AddComponent<AIComponent>(enemy);
 	}
 
 	virtual void ProcessInput(Input& input) override
@@ -47,6 +49,12 @@ public:
 	virtual void Update(float deltaTime) override
 	{
 		PlayerSystem::Update(deltaTime, m_manager.m_registry, m_game);
+
+		auto agent = m_manager.m_registry.view<AIComponent>();
+		for (auto [entity, ai] : agent.each())
+		{
+			ai.stateMachine.Process();
+		}
 
 		ParticleSystem::Update(deltaTime);
 		m_physics.Update(deltaTime);
