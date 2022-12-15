@@ -50,7 +50,6 @@ void StateMachine::ChangeState(std::string name)
 
 void StateMachine::Process()
 {
-    std::cout << "StateMachine.Process()" << std::endl;
     if (m_states.find(currentStateName) != m_states.end())
     {
         m_states[currentStateName]->Process(entity, this);
