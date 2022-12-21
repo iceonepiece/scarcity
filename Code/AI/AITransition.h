@@ -1,7 +1,7 @@
 #pragma once
 
 #include "StateMachine.h"
-#include "Entity.h"
+#include "../Core/Entity.h"
 
 class AITransition
 {

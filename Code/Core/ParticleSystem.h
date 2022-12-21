@@ -5,7 +5,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include "Shader.h"
+#include "../Rendering/Shader.h"
 #include "Camera.h"
 
 struct ParticleProps

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Core/StateMachine.h"
+#include "../AI/StateMachine.h"
 
 struct AIComponent
 {

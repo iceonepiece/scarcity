@@ -1,9 +1,9 @@
 #include "Physics.h"
 
 Physics::Physics()
-  : m_world(b2Vec2(0.0f, -18.0f))
-  , m_velocityIterations(6)
-  , m_positionIterations(2)
+	: m_world(b2Vec2(0.0f, -18.0f))
+	, m_velocityIterations(6)
+	, m_positionIterations(2)
 {
   m_world.SetContactListener(&m_contactListener);
 }
@@ -16,10 +16,11 @@ Physics::~Physics()
   }
 }
 
-void Physics::Update(float deltaTime)
+void Physics::Update(float deltaTime) 
 {
-  m_world.Step(deltaTime, m_velocityIterations, m_positionIterations);
+	m_world.Step(deltaTime, m_velocityIterations, m_positionIterations);
 }
+
 
 void Physics::CreateFixtureDef(b2Body* body, b2Vec2 size, b2Vec2 offset, bool isSensor, FixtureData* fixtureData)
 {
@@ -76,7 +77,7 @@ b2Body* Physics::CreateBodyWithFixture(b2Vec2 position, b2Vec2 size, FixtureData
   return body;
 }
 
-b2Body* Physics::CreateBoxBody(float x, float y, float width, float height, bool isDynamic, bool isSensor)
+b2Body* Physics::CreateBoxBody(float x, float y, float width, float height, bool isDynamic, bool isSensor, float gravityScale)
 {
   b2BodyDef bodyDef;
 	bodyDef.position.Set(x, y);
@@ -84,7 +85,7 @@ b2Body* Physics::CreateBoxBody(float x, float y, float width, float height, bool
 	if (isDynamic)
 	{
 		bodyDef.type = b2_dynamicBody;
-		bodyDef.gravityScale = 1.0f;
+		bodyDef.gravityScale = gravityScale;
 	}
 	else
 	{

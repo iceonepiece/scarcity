@@ -2,11 +2,10 @@
 
 #include "../Components/Collider2DComponent.h"
 #include "../Components/PlayerComponent.h"
-#include "PlayerFixtureData.h"
 #include "../GUIs/GUIWindow.h"
 #include "../GUIs/GUIList.h"
 #include "../Systems/PlayerSystem.h"
-#include "../Scenes/LevelScene.h"
+#include "../Scenes/Level1.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -39,22 +38,21 @@ Game::Game(unsigned int width, unsigned int height)
     std::cout << "Failed to initialize GLAD" << std::endl;
   }
 
-  //m_gui.Init(m_window, "#version 330");
+  m_gui.Init(m_window, "#version 330");
   Renderer::Init();
   ParticleSystem::Init();
 }
 
 Game::~Game()
 {
-  //m_gui.Destroy();
+  m_gui.Destroy();
   glfwDestroyWindow(m_window);
   glfwTerminate();
 }
 
 void Game::Init()
 {
-    m_scenes.push_back(new LevelScene(this));
-    
+    m_scenes.push_back(new Level1(this));
     
     for (int i = 0; i < m_scenes.size(); i++)
     {
@@ -66,57 +64,16 @@ void Game::Init()
     m_input.AddInputCommand(GLFW_KEY_RIGHT, "RIGHT");
     m_input.AddInputCommand(GLFW_KEY_SPACE, "SPACE");
     m_input.AddInputCommand(GLFW_KEY_F, "F");
+    m_input.AddInputCommand(GLFW_KEY_Z, "Z");
+    m_input.AddInputCommand(GLFW_KEY_X, "X");
+    m_input.AddInputCommand(GLFW_KEY_Q, "Q");
 
-    LoadParticles();
+    ResourceManager::LoadParticles("./Code/Scripts/particles.lua");
 
-  /*
-  GUIWindow* guiWindow = new GUIWindow(&m_gui, "Hello World");
-  guiWindow->AddChild(new GUIList(&m_gui));
-  */
-  //m_gui.AddComponent(new GUIWindow(&m_gui, "Hello World"));
-}
+    GUIWindow* guiWindow = new GUIWindow(&m_gui, "Hello World");
+    guiWindow->AddChild(new GUIList(&m_gui));
 
-void Game::LoadParticles()
-{
-  m_lua.script_file("./Code/Scripts/particles.lua");
-
-  sol::table particles = m_lua["particles"];
-  for (int i = 0 ;; i++)
-  {
-    sol::optional<sol::table> isExist = particles[i];
-
-    if (isExist == sol::nullopt)
-      break;
-
-    sol::table node = particles[i];
-
-    ParticleProps particleProps;
-    particleProps.amount = node["amount"];
-
-    particleProps.colorBegin = {
-      node["colorBegin"]["r"],
-      node["colorBegin"]["g"],
-      node["colorBegin"]["b"],
-      node["colorBegin"]["a"]
-    };
-
-    particleProps.colorEnd = {
-      node["colorEnd"]["r"],
-      node["colorEnd"]["g"],
-      node["colorEnd"]["b"],
-      node["colorEnd"]["a"]
-    };
-
-  	particleProps.sizeBegin = node["sizeBegin"];
-    particleProps.sizeVariation = node["sizeVariation"];
-    particleProps.sizeEnd = node["sizeEnd"];
-  	particleProps.lifeTime = node["lifeTime"];
-  	particleProps.velocity = { node["velocity"]["x"], node["velocity"]["y"] };
-  	particleProps.velocityVariation = { node["velocityVariation"]["x"], node["velocityVariation"]["y"] };
-  	particleProps.position = { node["position"]["x"], node["position"]["y"] };
-
-    m_particles.emplace(node["name"], particleProps);
-  }
+    m_gui.AddComponent(guiWindow);
 }
 
 void Game::Run()
@@ -154,7 +111,7 @@ void Game::Update(float deltaTime)
 
 void Game::Render()
 {
-    //m_gui.NewFrame();
+    m_gui.NewFrame();
 
     int width, height;
     glfwGetFramebufferSize(m_window, &width, &height);
@@ -164,12 +121,7 @@ void Game::Render()
 
     m_scenes[m_currentSceneIndex]->Render();
 
-    //m_gui.Draw();
+    m_gui.Draw();
 
     glfwSwapBuffers(m_window);
-}
-
-ParticleProps Game::GetParticleProps(std::string name)
-{
-    return m_particles[name];
 }

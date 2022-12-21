@@ -9,11 +9,11 @@
 #include <glm/glm.hpp>
 #include <sol/sol.hpp>
 
+#include "ResourceManager.h"
 #include "Entity.h"
 #include "EntityManager.h"
-#include "Physics.h"
 #include "Input.h"
-#include "Renderer.h"
+#include "../Rendering/Renderer.h"
 #include "Camera.h"
 #include "ParticleSystem.h"
 #include "GUI.h"
@@ -30,8 +30,7 @@ public:
   void Run();
 
   GLFWwindow* GetWindow() { return m_window; }
-
-  ParticleProps GetParticleProps(std::string name);
+  Input& GetInput() { return m_input;  }
 
 private:
   GLFWwindow* m_window;
@@ -42,17 +41,11 @@ private:
   int m_currentSceneIndex = 0;
   std::vector<Scene*> m_scenes;
   EntityManager m_manager;
-  Physics m_physics;
   Input m_input;
-
-  std::unordered_map<std::string, ParticleProps> m_particles;
-
 
   GUI m_gui;
 
   sol::state m_lua;
-
-  void LoadParticles();
 
   void ProcessInput(float deltaTime);
   void Update(float deltaTime);

@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "Entity.h"
+#include "../Core/Entity.h"
 
 class AIState;
 class AITransition;

@@ -2,7 +2,7 @@
 
 #include <string>
 #include <box2d/box2d.h>
-#include "Entity.h"
+#include "../Core/Entity.h"
 
 class FixtureData
 {

@@ -4,7 +4,7 @@
 #include <box2d/box2d.h>
 
 #include "Shader.h"
-#include "Camera.h"
+#include "../Core/Camera.h"
 
 class Renderer
 {

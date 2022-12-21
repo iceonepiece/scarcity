@@ -39,16 +39,16 @@
     <ClCompile Include="code\core\ParticleSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="code\core\Physics.cpp">
+    <ClCompile Include="Code\Physics\Physics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="code\core\Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="code\core\Renderer.cpp">
+    <ClCompile Include="Code\Rendering\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="code\core\Shader.cpp">
+    <ClCompile Include="Code\Rendering\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="code\external\glad\glad.c">
@@ -78,7 +78,13 @@
     <ClCompile Include="Code\Core\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Core\StateMachine.cpp">
+    <ClCompile Include="Code\AI\StateMachine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Core\ScriptManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Core\ResourceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,7 +98,7 @@
     <ClInclude Include="code\core\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="code\core\ContactListener.h">
+    <ClInclude Include="Code\Physics\ContactListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="code\core\Entity.h">
@@ -101,7 +107,7 @@
     <ClInclude Include="code\core\EntityManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="code\core\FixtureData.h">
+    <ClInclude Include="Code\Physics\FixtureData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="code\core\Game.h">
@@ -119,19 +125,19 @@
     <ClInclude Include="code\core\ParticleSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="code\core\Physics.h">
+    <ClInclude Include="Code\Physics\Physics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="code\core\PlayerFixtureData.h">
+    <ClInclude Include="Code\Physics\PlayerFixtureData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="code\core\Random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="code\core\Renderer.h">
+    <ClInclude Include="Code\Rendering\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="code\core\Shader.h">
+    <ClInclude Include="Code\Rendering\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="code\external\entt\entt.hpp">
@@ -185,16 +191,43 @@
     <ClInclude Include="Code\Scenes\LevelScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Core\AIState.h">
+    <ClInclude Include="Code\AI\AIState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Core\AITransition.h">
+    <ClInclude Include="Code\AI\AITransition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Components\AIComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Core\StateMachine.h">
+    <ClInclude Include="Code\AI\StateMachine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Components\ScriptComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Core\ScriptManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Scenes\Level1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Prefabs\Projectile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Core\ResourceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Core\System.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Core\GameState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\RunningState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\PausedState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -205,5 +238,6 @@
     <None Include="imgui.ini" />
     <None Include=".gitignore" />
     <None Include="Code\Scripts\particles.lua" />
+    <None Include="Code\Scripts\parameters.lua" />
   </ItemGroup>
 </Project>

@@ -45,26 +45,10 @@ void GUI::NewFrame()
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
 
-  //ImGui::ShowDemoWindow();
-
-  ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-
-  ImGui::End();
-
-  /*
   for (auto component : m_components)
   {
     component->Draw();
   }
-  */
-
-  /*
-  ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-
-  ImGui::End();
-  */
 
   ImGui::Render();
 }
