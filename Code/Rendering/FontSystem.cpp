@@ -1,5 +1,6 @@
 #include "FontSystem.h"
 #include "../UIs/UIText.h"
+#include "Renderer.h"
 
 std::map<GLchar, Character> FontSystem::Characters;
 unsigned int FontSystem::VBO = 0;
@@ -9,9 +10,6 @@ Shader FontSystem::shader;
 int FontSystem::Init()
 {
     shader.Compile("Code/Shaders/font.vert", "Code/Shaders/font.frag");
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(1280), 0.0f, static_cast<float>(720));
-    shader.Use();
-    shader.SetMatrix4("projection", projection);
 
     FT_Library ft;
     // All functions return a value different than 0 whenever an error occurred
@@ -105,11 +103,42 @@ void FontSystem::RenderText(UIText *uiText)
     shader.Use();
     shader.SetVector3f("textColor", uiText->color);
 
+    glm::vec2 screenSize = Renderer::GetScreenSize();
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(screenSize.x), 0.0f, static_cast<float>(screenSize.y));
+    shader.SetMatrix4("projection", projection);
+
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
 
     float x = uiText->position.x;
     float y = uiText->position.y;
+
+    float screenSizePercentage = Renderer::GetScreenSizePercentage();
+    
+    float realScale = uiText->scale * screenSizePercentage;
+
+    float xOffset = 0;
+
+    if (uiText->alignment == UIAlignment::CENTER)
+    {
+        x = screenSize.x / 2;
+        y = screenSize.y / 2;
+
+        float leftX = x;
+        float rightX = leftX;
+        float _x = x;
+        std::string::const_iterator i;
+        for (i = uiText->text.begin(); i != uiText->text.end(); i++)
+        {
+            Character ch = Characters[*i];
+
+            float xpos = _x + ch.Bearing.x * realScale;
+            float w = ch.Size.x * realScale;
+            _x += (ch.Advance >> 6) * realScale;
+            rightX = xpos + w;
+        }
+        xOffset = (rightX - leftX) / 2;
+    }
 
     // iterate through all characters
     std::string::const_iterator c;
@@ -117,11 +146,11 @@ void FontSystem::RenderText(UIText *uiText)
     {
         Character ch = Characters[*c];
 
-        float xpos = x + ch.Bearing.x * uiText->scale;
-        float ypos = y - (ch.Size.y - ch.Bearing.y) * uiText->scale;
+        float xpos = x + ch.Bearing.x * realScale - xOffset;
+        float ypos = y - (ch.Size.y - ch.Bearing.y) * realScale;
 
-        float w = ch.Size.x * uiText->scale;
-        float h = ch.Size.y * uiText->scale;
+        float w = ch.Size.x * realScale;
+        float h = ch.Size.y * realScale;
         // update VBO for each character
         float vertices[6][4] = {
             { xpos,     ypos + h,   0.0f, 0.0f },
@@ -142,7 +171,7 @@ void FontSystem::RenderText(UIText *uiText)
         // render quad
         glDrawArrays(GL_TRIANGLES, 0, 6);
         // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-        x += (ch.Advance >> 6) * uiText->scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+        x += (ch.Advance >> 6) * realScale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
     }
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);

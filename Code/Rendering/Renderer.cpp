@@ -3,9 +3,28 @@
 
 unsigned int Renderer::m_VBO = 0;
 unsigned int Renderer::m_VAO = 0;
+glm::vec2 Renderer::s_screenSize;
+glm::vec2 Renderer::s_defaultScreenSize = glm::vec2(1280, 720);
 
 Shader Renderer::s_basicShader;
 Shader Renderer::s_uiShader;
+
+
+void Renderer::SetScreenSize(int width, int height)
+{
+    s_screenSize.x = width;
+    s_screenSize.y = height;
+}
+
+glm::vec2 Renderer::GetScreenSize()
+{
+    return glm::vec2(s_screenSize.x, s_screenSize.y);
+}
+
+float Renderer::GetScreenSizePercentage()
+{
+    return s_screenSize.x / s_defaultScreenSize.x;
+}
 
 void Renderer::Init()
 {
@@ -56,9 +75,10 @@ void Renderer::DrawQuad(b2Body* body, Camera& camera)
     glm::mat4 view = glm::mat4(1.0f);
     view = glm::translate(view, camera.GetPosition());
 
-    glm::vec2 screenSize = camera.GetScreenSize();
+   //glm::vec2 screenSize = camera.GetScreenSize();
+
     glm::mat4 projection = glm::mat4(1.0f);
-    projection = glm::perspective(glm::radians(45.0f), screenSize.x / screenSize.y, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(45.0f), s_screenSize.x / s_screenSize.y, 0.1f, 100.0f);
 
     glm::vec4 color = glm::vec4(0.188f, 0.278f, 0.369f, 0.2f);
 
@@ -74,15 +94,24 @@ void Renderer::DrawQuad(b2Body* body, Camera& camera)
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void Renderer::DrawQuadUI(glm::vec2 position, glm::vec2 scale, glm::vec4 color)
+void Renderer::DrawQuadUI(glm::vec2 position, glm::vec2 scale, glm::vec4 color, UIAlignment alignment)
 {
     s_uiShader.Use();
 
+    float x = position.x;
+    float y = position.y;
+
+    if (alignment == UIAlignment::CENTER)
+    {
+        x = s_screenSize.x / 2;
+        y = s_screenSize.y / 2;
+    }
+
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
+    model = glm::translate(model, glm::vec3(x, y, 0.0f));
     model = glm::scale(model, glm::vec3(scale.x, scale.y, 0.0f));
 
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(1280), 0.0f, static_cast<float>(720));
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(s_screenSize.x), 0.0f, static_cast<float>(s_screenSize.y));
 
     s_uiShader.SetMatrix4("model", model);
     s_uiShader.SetMatrix4("projection", projection);

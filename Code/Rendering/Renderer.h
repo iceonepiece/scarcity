@@ -5,16 +5,23 @@
 
 #include "Shader.h"
 #include "../Core/Camera.h"
+#include "../UIs/UI.h"
 
 class Renderer
 {
 public:
   static void Init();
   static void DrawQuad(b2Body* body, Camera& camera);
-  static void DrawQuadUI(glm::vec2 position, glm::vec2 scale, glm::vec4 color);
+  static void DrawQuadUI(glm::vec2 position, glm::vec2 scale, glm::vec4 color, UIAlignment alignment = UIAlignment::NONE);
+  static void SetScreenSize(int width, int height);
+  static glm::vec2 GetScreenSize();
+  static float GetScreenSizePercentage();
 
 private:
   static unsigned int m_VBO, m_VAO;
   static Shader s_basicShader;
   static Shader s_uiShader;
+  static glm::vec2 s_screenSize;
+  static glm::vec2 s_defaultScreenSize;
+  
 };
