@@ -2,126 +2,135 @@
 
 #include "../Components/Collider2DComponent.h"
 #include "../Components/PlayerComponent.h"
-#include "../GUIs/GUIWindow.h"
-#include "../GUIs/GUIList.h"
 #include "../Systems/PlayerSystem.h"
 #include "../Scenes/Level1.h"
+#include "../Scenes/MenuScene.h"
+#include "../Scenes/IntroScene.h"
+#include "../UIs/UIText.h"
+#include "../Input/KeyCodes.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-  glViewport(0, 0, width, height);
+    glViewport(0, 0, width, height);
 }
 
-Game::Game(unsigned int width, unsigned int height)
-  : m_width(width)
-  , m_height(height)
-  , m_input(this)
-  , m_gui(this)
+Game::Game(int width, int height)
+    : m_width(width)
+    , m_height(height)
+    , m_currentSceneName("")
 {
-  glfwInit();
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-  m_window = glfwCreateWindow(m_width, m_height, "SCARCITY", NULL, NULL);
-  if (m_window == NULL)
-  {
-    std::cout << "Failed to create GLFW window" << std::endl;
-    glfwTerminate();
-  }
-  glfwMakeContextCurrent(m_window);
-  glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
+    m_window = glfwCreateWindow(m_width, m_height, "SCARCITY", NULL, NULL);
+    if (m_window == NULL)
+    {
+        std::cout << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+    }
+    glfwMakeContextCurrent(m_window);
+    glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
+    glfwSetWindowContentScaleCallback(m_window, WindowContentScaleCallback);
 
-  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-  {
-    std::cout << "Failed to initialize GLAD" << std::endl;
-  }
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+    }
 
-  m_gui.Init(m_window, "#version 330");
-  Renderer::Init();
-  ParticleSystem::Init();
+    Renderer::Init();
+    ParticleSystem::Init();
+    FontSystem::Init();
+    Input::Init();
 }
 
 Game::~Game()
 {
-  m_gui.Destroy();
-  glfwDestroyWindow(m_window);
-  glfwTerminate();
+    for (auto scene : m_scenes)
+    {
+        delete scene.second;
+    }
+    m_scenes.clear();
+
+    glfwDestroyWindow(m_window);
+    glfwTerminate();
+}
+
+void Game::ChangeScene(std::string sceneName)
+{
+    if (m_scenes.find(sceneName) != m_scenes.end())
+    {
+        m_currentSceneName = sceneName;
+    }
 }
 
 void Game::Init()
 {
-    m_scenes.push_back(new Level1(this));
+    m_scenes.insert({ "menu", new MenuScene(this) });
+    m_scenes.insert({ "intro", new Level1(this)});
+    ChangeScene("menu");
     
-    for (int i = 0; i < m_scenes.size(); i++)
+    for (auto& [name, scene] : m_scenes)
     {
-        m_scenes[i]->Init();
+        scene->Init();
     }
 
-    m_input.AddInputCommand(GLFW_KEY_ESCAPE, "ESCAPE");
-    m_input.AddInputCommand(GLFW_KEY_LEFT, "LEFT");
-    m_input.AddInputCommand(GLFW_KEY_RIGHT, "RIGHT");
-    m_input.AddInputCommand(GLFW_KEY_SPACE, "SPACE");
-    m_input.AddInputCommand(GLFW_KEY_F, "F");
-    m_input.AddInputCommand(GLFW_KEY_Z, "Z");
-    m_input.AddInputCommand(GLFW_KEY_X, "X");
-    m_input.AddInputCommand(GLFW_KEY_Q, "Q");
-
     ResourceManager::LoadParticles("./Code/Scripts/particles.lua");
-
-    GUIWindow* guiWindow = new GUIWindow(&m_gui, "Hello World");
-    guiWindow->AddChild(new GUIList(&m_gui));
-
-    m_gui.AddComponent(guiWindow);
 }
 
 void Game::Run()
 {
-  float deltaTime = 0.0f;
-  float lastFrame = 0.0f;
+    float deltaTime = 0.0f;
+    float lastFrame = 0.0f;
 
-  while (!glfwWindowShouldClose(m_window))
-  {
-    float currentFrame = glfwGetTime();
-    deltaTime = currentFrame - lastFrame;
-    lastFrame = currentFrame;
+    while (!glfwWindowShouldClose(m_window))
+    {
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
 
-    ProcessInput(deltaTime);
-    Update(deltaTime);
-    Render();
-  }
+        ProcessInput(deltaTime);
+        Update(deltaTime);
+        Render();
+    }
 }
 
 void Game::ProcessInput(float deltaTime)
 {
     glfwPollEvents();
-    m_input.PollInputs();
+    Input::PollInputs(m_window);
 
-    if (m_input.IsKeyPressed(GLFW_KEY_ESCAPE))
+    if (Input::IsKeyPressed(Key::Escape))
         glfwSetWindowShouldClose(m_window, true);
 
-    m_scenes[m_currentSceneIndex]->ProcessInput(m_input);
+    m_scenes[m_currentSceneName]->ProcessInput();
+
 }
 
 void Game::Update(float deltaTime)
 {
-    m_scenes[m_currentSceneIndex]->Update(deltaTime);
+    m_scenes[m_currentSceneName]->Update(deltaTime);
 }
 
 void Game::Render()
 {
-    m_gui.NewFrame();
+    glfwGetFramebufferSize(m_window, &m_width, &m_height);
 
-    int width, height;
-    glfwGetFramebufferSize(m_window, &width, &height);
+    float scaleX, scaleY;
+    glfwGetWindowContentScale(m_window, &scaleX, &scaleY);
+    //std::cout << "scale " << scaleX << ", " << scaleY << std::endl;
+
+    Renderer::SetScreenSize(m_width, m_height);
 
     glClearColor(0.133f, 0.157f, 0.192f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    m_scenes[m_currentSceneIndex]->Render();
+    m_scenes[m_currentSceneName]->Render();
 
-    m_gui.Draw();
+    //m_gui.Draw();
+    m_scenes[m_currentSceneName]->RenderUI();
 
     glfwSwapBuffers(m_window);
 }

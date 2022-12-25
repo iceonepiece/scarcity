@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <string>
-#include <unordered_map>
+#include <map>
 #include <vector>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -12,45 +12,41 @@
 #include "ResourceManager.h"
 #include "Entity.h"
 #include "EntityManager.h"
-#include "Input.h"
+#include "../Input/Input.h"
 #include "../Rendering/Renderer.h"
+#include "../Rendering/FontSystem.h"
 #include "Camera.h"
 #include "ParticleSystem.h"
-#include "GUI.h"
-#include "GUIComponent.h"
 #include "Scene.h"
 
 class Game
 {
 public:
-  Game(unsigned int width = 1280, unsigned int height = 720);
-  ~Game();
+	Game(int width = 1280, int height = 720);
+	~Game();
 
-  void Init();
-  void Run();
+	void Init();
+	void Run();
 
-  GLFWwindow* GetWindow() { return m_window; }
-  Input& GetInput() { return m_input;  }
+	GLFWwindow* GetWindow() { return m_window; }
+	void ChangeScene(std::string sceneName);
 
 private:
-  GLFWwindow* m_window;
+	GLFWwindow* m_window;
 
-  unsigned int m_width;
-  unsigned int m_height;
+	int m_width;
+	int m_height;
 
-  int m_currentSceneIndex = 0;
-  std::vector<Scene*> m_scenes;
-  EntityManager m_manager;
-  Input m_input;
+	std::string m_currentSceneName;
+	std::map<std::string, Scene*> m_scenes;
+	EntityManager m_manager;
 
-  GUI m_gui;
+	sol::state m_lua;
 
-  sol::state m_lua;
+	void ProcessInput(float deltaTime);
+	void Update(float deltaTime);
+	void Render();
 
-  void ProcessInput(float deltaTime);
-  void Update(float deltaTime);
-  void Render();
-
-  friend class GUI;
-  friend class GUIComponent;
+	friend class GUI;
+	friend class GUIComponent;
 };

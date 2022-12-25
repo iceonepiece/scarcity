@@ -10,7 +10,7 @@ public:
 	{
 	}
 
-	virtual void ProcessInput(Input& input, entt::registry& registry) = 0;
+	virtual void ProcessInput(entt::registry& registry) = 0;
 	virtual void Update(float deltaTime, entt::registry& registry) = 0;
 
 	bool active = true;

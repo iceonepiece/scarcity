@@ -10,32 +10,6 @@ uint32_t ParticleSystem::m_PoolIndex = 999;
 Shader ParticleSystem::m_shader;
 std::vector<Particle> ParticleSystem::m_ParticlePool;
 
-const char* particleVertexShaderSource = R"(
-	#version 330 core
-
-	layout (location = 0) in vec3 a_Position;
-
-	uniform mat4 u_ViewProj;
-	uniform mat4 u_Transform;
-
-	void main()
-	{
-		gl_Position = u_ViewProj * u_Transform * vec4(a_Position, 1.0);
-	}
-)";
-
-const char* particleFragmentShaderSource = R"(
-	#version 330 core
-
-	layout (location = 0) out vec4 o_Color;
-
-	uniform vec4 u_Color;
-
-	void main()
-	{
-		o_Color = u_Color;
-	}
-)";
 
 ParticleSystem::ParticleSystem()
 {
@@ -70,7 +44,7 @@ void ParticleSystem::Init()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadIB);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-	m_shader.Compile(particleVertexShaderSource, particleFragmentShaderSource);
+	m_shader.Compile("Code/Shaders/particle.vert", "Code/Shaders/particle.frag");
 
 	m_ParticlePool.resize(1000);
 }

@@ -4,7 +4,8 @@
 
 Scene::Scene(Game* game)
 	: m_game(game)
-	, m_camera(glm::vec3(0.0f, 0.0f, -16.0f), glm::vec2(1.0f, 1.0f), glm::vec2(1280, 720))
+	, m_camera(glm::vec3(0.0f, 0.0f, -16.0f), glm::vec2(0.5f, 0.25f), glm::vec2(1280, 720))
+    , m_ui(this)
 {
 }
 
@@ -27,7 +28,7 @@ void Scene::Init()
 {
 }
 
-void Scene::ProcessInput(Input& input)
+void Scene::ProcessInput()
 {
 }
 
@@ -37,6 +38,11 @@ void Scene::Update(float deltaTime)
 
 void Scene::Render()
 {
+}
+
+void Scene::RenderUI()
+{
+    m_ui.Render();
 }
 
 

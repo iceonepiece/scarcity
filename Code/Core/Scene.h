@@ -3,7 +3,8 @@
 #include "EntityManager.h"
 #include "Camera.h"
 #include "../Physics/Physics.h"
-#include "Input.h"
+#include "../Input/Input.h"
+#include "../UIs/UI.h"
 
 class System;
 class GameState;
@@ -15,9 +16,10 @@ public:
 	~Scene();
 
 	virtual void Init();
-	virtual void ProcessInput(Input& input);
+	virtual void ProcessInput();
 	virtual void Update(float deltaTime);
 	virtual void Render();
+	void RenderUI();
 
 	template<typename T, typename... Args>
 	void Instantiate(Args&&... args)
@@ -40,4 +42,5 @@ public:
 	Camera m_camera;
 	Physics m_physics;
 	EntityManager m_manager;
+	UI m_ui;
 };

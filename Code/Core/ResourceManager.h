@@ -15,5 +15,5 @@ public:
 	static void LoadParticles(std::string fileName);
 
 private:
-	ResourceManager() {}
+	ResourceManager() { std::cout << "ResourceManager constructor" << std::endl; }
 };
