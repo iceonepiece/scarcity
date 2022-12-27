@@ -13,9 +13,7 @@ public:
 
 	virtual void Process() override
 	{
-		Input& input = m_scene->m_game->GetInput();
-
-		if (input.IsKeyPressed(GLFW_KEY_Q))
+		if (Input::IsKeyPressed(Key::Q))
 		{
 			m_scene->ChangeGameState("paused");
 		}
