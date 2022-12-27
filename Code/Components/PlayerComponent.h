@@ -21,12 +21,14 @@ struct PlayerComponent
     bool attack;
     int numGrounds;
     std::vector<FixtureData*> groundFixtures;
+    int direction;
 
     PlayerComponent()
         : movementState(MS_IDLE)
         , jump(false)
         , attack(false)
         , numGrounds(0)
+        , direction(1)
     {
     }
 };

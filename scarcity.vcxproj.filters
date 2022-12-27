@@ -15,6 +15,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <None Include="README.md" />
+    <None Include="Makefile" />
+    <None Include="LICENSE" />
+    <None Include="imgui.ini" />
+    <None Include=".gitignore" />
+    <None Include="Code\Scripts\particles.lua" />
+    <None Include="Code\Scripts\parameters.lua" />
+    <None Include="Code\Shaders\basic.frag" />
+    <None Include="Code\Shaders\ui.vert" />
+    <None Include="Code\Shaders\ui.frag" />
+    <None Include="Code\Shaders\particle.vert" />
+    <None Include="Code\Shaders\particle.frag" />
+    <None Include="Code\Shaders\font.vert" />
+    <None Include="Code\Shaders\font.frag" />
+    <None Include="Code\Shaders\basic.vert" />
+    <None Include="Code\Shaders\circle.frag" />
+    <None Include="Code\Shaders\circle.vert" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="code\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -27,28 +46,40 @@
     <ClCompile Include="code\core\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="code\core\GUI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code\core\GUIComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code\core\Input.cpp">
+    <ClCompile Include="Code\Input\Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="code\core\ParticleSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Physics\Physics.cpp">
+    <ClCompile Include="Code\Core\ResourceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="code\core\Random.cpp">
+    <ClCompile Include="Code\Core\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UIs\UI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UIs\UIList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UIs\UIListItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\AI\StateMachine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Rendering\FontSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Rendering\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Rendering\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Physics\Physics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="code\external\glad\glad.c">
@@ -75,30 +106,24 @@
     <ClCompile Include="code\external\imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Core\Scene.cpp">
+    <ClCompile Include="Code\Core\Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\AI\StateMachine.cpp">
+    <ClCompile Include="Code\Core\GUIComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Core\GUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Core\ScriptManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Core\ResourceManager.cpp">
+    <ClCompile Include="Code\Core\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="code\components\Collider2DComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="code\components\PlayerComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="code\core\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Physics\ContactListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="code\core\Entity.h">
@@ -107,22 +132,76 @@
     <ClInclude Include="code\core\EntityManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Physics\FixtureData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="code\core\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="code\core\GUI.h">
+    <ClInclude Include="Code\Core\GameState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="code\core\GUIComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="code\core\Input.h">
+    <ClInclude Include="Code\Input\Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="code\core\ParticleSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Core\ResourceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Core\Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Core\System.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\UIs\UI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\UIs\UIComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\UIs\UIList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\UIs\UIListItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\UIs\UIText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\AI\AIState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\AI\AITransition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\AI\StateMachine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="code\systems\PlayerSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Scenes\Level1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Scenes\LevelScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rendering\FontSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rendering\Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rendering\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Prefabs\Projectile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Physics\ContactListener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Physics\FixtureData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Physics\Physics.h">
@@ -131,13 +210,10 @@
     <ClInclude Include="Code\Physics\PlayerFixtureData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="code\core\Random.h">
+    <ClInclude Include="Code\Game\PausedState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Rendering\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Rendering\Shader.h">
+    <ClInclude Include="Code\Game\RunningState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="code\external\entt\entt.hpp">
@@ -176,68 +252,64 @@
     <ClInclude Include="code\external\sol\sol.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="code\guis\GUIList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="code\guis\GUIWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="code\systems\PlayerSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Core\Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Scenes\LevelScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\AI\AIState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\AI\AITransition.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Code\Components\AIComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\AI\StateMachine.h">
+    <ClInclude Include="code\components\Collider2DComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="code\components\PlayerComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Components\ScriptComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Code\Core\Random.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Core\GUIComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Core\GUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GUIs\GUIList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GUIs\GUIWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Code\Core\ScriptManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Scenes\Level1.h">
+    <ClInclude Include="Code\Scenes\MenuScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Prefabs\Projectile.h">
+    <ClInclude Include="Code\Game\MenuState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Core\ResourceManager.h">
+    <ClInclude Include="Code\Input\KeyCodes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Core\System.h">
+    <ClInclude Include="Code\Scenes\IntroScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Core\GameState.h">
+    <ClInclude Include="Code\UIs\UIContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Game\RunningState.h">
+    <ClInclude Include="Code\External\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Game\PausedState.h">
+    <ClInclude Include="Code\Core\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="README.md" />
-    <None Include="Makefile" />
-    <None Include="LICENSE" />
-    <None Include="imgui.ini" />
-    <None Include=".gitignore" />
-    <None Include="Code\Scripts\particles.lua" />
-    <None Include="Code\Scripts\parameters.lua" />
+    <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Images\awesomeface.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

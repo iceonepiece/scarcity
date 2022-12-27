@@ -108,25 +108,43 @@
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glfw3.lib;box2d.lib;lua54.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;box2d.lib;lua54.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>
+      </SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include=".gitignore" />
+    <None Include="Code\Scripts\parameters.lua" />
+    <None Include="Code\Scripts\particles.lua" />
+    <None Include="Code\Shaders\basic.frag" />
+    <None Include="Code\Shaders\basic.vert" />
+    <None Include="Code\Shaders\circle.frag" />
+    <None Include="Code\Shaders\circle.vert" />
+    <None Include="Code\Shaders\font.frag" />
+    <None Include="Code\Shaders\font.vert" />
+    <None Include="Code\Shaders\particle.frag" />
+    <None Include="Code\Shaders\particle.vert" />
+    <None Include="Code\Shaders\ui.frag" />
+    <None Include="Code\Shaders\ui.vert" />
+    <None Include="imgui.ini" />
+    <None Include="LICENSE" />
+    <None Include="Makefile" />
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Code\AI\StateMachine.cpp" />
     <ClCompile Include="code\core\Camera.cpp" />
     <ClCompile Include="code\core\EntityManager.cpp" />
     <ClCompile Include="code\core\Game.cpp" />
-    <ClCompile Include="code\core\GUI.cpp" />
-    <ClCompile Include="code\core\GUIComponent.cpp" />
-    <ClCompile Include="code\core\Input.cpp" />
+    <ClCompile Include="Code\Core\GUI.cpp" />
+    <ClCompile Include="Code\Core\GUIComponent.cpp" />
+    <ClCompile Include="Code\Input\Input.cpp" />
     <ClCompile Include="code\core\ParticleSystem.cpp" />
-    <ClCompile Include="Code\Physics\Physics.cpp" />
-    <ClCompile Include="code\core\Random.cpp" />
-    <ClCompile Include="Code\Rendering\Renderer.cpp" />
+    <ClCompile Include="Code\Core\Random.cpp" />
     <ClCompile Include="Code\Core\ResourceManager.cpp" />
     <ClCompile Include="Code\Core\Scene.cpp" />
     <ClCompile Include="Code\Core\ScriptManager.cpp" />
-    <ClCompile Include="Code\Rendering\Shader.cpp" />
-    <ClCompile Include="Code\AI\StateMachine.cpp" />
     <ClCompile Include="code\external\glad\glad.c" />
     <ClCompile Include="code\external\imgui\imgui.cpp" />
     <ClCompile Include="code\external\imgui\imgui_demo.cpp" />
@@ -136,36 +154,38 @@
     <ClCompile Include="code\external\imgui\imgui_tables.cpp" />
     <ClCompile Include="code\external\imgui\imgui_widgets.cpp" />
     <ClCompile Include="code\Main.cpp" />
+    <ClCompile Include="Code\Physics\Physics.cpp" />
+    <ClCompile Include="Code\Rendering\FontSystem.cpp" />
+    <ClCompile Include="Code\Rendering\Renderer.cpp" />
+    <ClCompile Include="Code\Rendering\Shader.cpp" />
+    <ClCompile Include="Code\UIs\UI.cpp" />
+    <ClCompile Include="Code\UIs\UIList.cpp" />
+    <ClCompile Include="Code\UIs\UIListItem.cpp" />
+    <ClCompile Include="Code\Core\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\AI\AIState.h" />
+    <ClInclude Include="Code\AI\AITransition.h" />
+    <ClInclude Include="Code\AI\StateMachine.h" />
     <ClInclude Include="Code\Components\AIComponent.h" />
     <ClInclude Include="code\components\Collider2DComponent.h" />
     <ClInclude Include="code\components\PlayerComponent.h" />
     <ClInclude Include="Code\Components\ScriptComponent.h" />
-    <ClInclude Include="Code\AI\AIState.h" />
-    <ClInclude Include="Code\AI\AITransition.h" />
     <ClInclude Include="code\core\Camera.h" />
-    <ClInclude Include="Code\Core\GameState.h" />
-    <ClInclude Include="Code\Core\System.h" />
-    <ClInclude Include="Code\Game\PausedState.h" />
-    <ClInclude Include="Code\Game\RunningState.h" />
-    <ClInclude Include="Code\Physics\ContactListener.h" />
     <ClInclude Include="code\core\Entity.h" />
     <ClInclude Include="code\core\EntityManager.h" />
-    <ClInclude Include="Code\Physics\FixtureData.h" />
     <ClInclude Include="code\core\Game.h" />
-    <ClInclude Include="code\core\GUI.h" />
-    <ClInclude Include="code\core\GUIComponent.h" />
-    <ClInclude Include="code\core\Input.h" />
+    <ClInclude Include="Code\Core\GameState.h" />
+    <ClInclude Include="Code\Core\GUI.h" />
+    <ClInclude Include="Code\Core\GUIComponent.h" />
+    <ClInclude Include="Code\External\stb_image.h" />
+    <ClInclude Include="Code\Input\Input.h" />
     <ClInclude Include="code\core\ParticleSystem.h" />
-    <ClInclude Include="Code\Physics\Physics.h" />
-    <ClInclude Include="Code\Physics\PlayerFixtureData.h" />
-    <ClInclude Include="code\core\Random.h" />
-    <ClInclude Include="Code\Rendering\Renderer.h" />
+    <ClInclude Include="Code\Core\Random.h" />
     <ClInclude Include="Code\Core\ResourceManager.h" />
+    <ClInclude Include="Code\Core\Scene.h" />
     <ClInclude Include="Code\Core\ScriptManager.h" />
-    <ClInclude Include="Code\Rendering\Shader.h" />
-    <ClInclude Include="Code\AI\StateMachine.h" />
+    <ClInclude Include="Code\Core\System.h" />
     <ClInclude Include="code\external\entt\entt.hpp" />
     <ClInclude Include="code\external\imgui\imconfig.h" />
     <ClInclude Include="code\external\imgui\imgui.h" />
@@ -178,22 +198,38 @@
     <ClInclude Include="code\external\sol\config.hpp" />
     <ClInclude Include="code\external\sol\forward.hpp" />
     <ClInclude Include="code\external\sol\sol.hpp" />
-    <ClInclude Include="code\guis\GUIList.h" />
-    <ClInclude Include="code\guis\GUIWindow.h" />
+    <ClInclude Include="Code\Game\MenuState.h" />
+    <ClInclude Include="Code\Game\PausedState.h" />
+    <ClInclude Include="Code\Game\RunningState.h" />
+    <ClInclude Include="Code\GUIs\GUIList.h" />
+    <ClInclude Include="Code\GUIs\GUIWindow.h" />
+    <ClInclude Include="Code\Input\KeyCodes.h" />
+    <ClInclude Include="Code\Physics\ContactListener.h" />
+    <ClInclude Include="Code\Physics\FixtureData.h" />
+    <ClInclude Include="Code\Physics\Physics.h" />
+    <ClInclude Include="Code\Physics\PlayerFixtureData.h" />
     <ClInclude Include="Code\Prefabs\Projectile.h" />
+    <ClInclude Include="Code\Rendering\FontSystem.h" />
+    <ClInclude Include="Code\Rendering\Renderer.h" />
+    <ClInclude Include="Code\Rendering\Shader.h" />
+    <ClInclude Include="Code\Scenes\IntroScene.h" />
     <ClInclude Include="Code\Scenes\Level1.h" />
     <ClInclude Include="Code\Scenes\LevelScene.h" />
+    <ClInclude Include="Code\Scenes\MenuScene.h" />
     <ClInclude Include="code\systems\PlayerSystem.h" />
-    <ClInclude Include="Code\Core\Scene.h" />
+    <ClInclude Include="Code\UIs\UIContainer.h" />
+    <ClInclude Include="Code\UIs\UI.h" />
+    <ClInclude Include="Code\UIs\UIComponent.h" />
+    <ClInclude Include="Code\UIs\UIList.h" />
+    <ClInclude Include="Code\UIs\UIListItem.h" />
+    <ClInclude Include="Code\UIs\UIText.h" />
+    <ClInclude Include="Code\Core\Texture.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".gitignore" />
-    <None Include="Code\Scripts\parameters.lua" />
-    <None Include="Code\Scripts\particles.lua" />
-    <None Include="imgui.ini" />
-    <None Include="LICENSE" />
-    <None Include="Makefile" />
-    <None Include="README.md" />
+    <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Images\awesomeface.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

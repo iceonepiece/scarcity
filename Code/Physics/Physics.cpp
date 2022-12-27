@@ -39,9 +39,48 @@ void Physics::CreateFixtureDef(b2Body* body, b2Vec2 size, b2Vec2 offset, bool is
 	body->CreateFixture(&fixtureDef);
 }
 
+b2Body* Physics::CreateCircle(b2Vec2 position, float radius)
+{
+	b2CircleShape circle;
+	circle.m_p = position;
+	circle.m_radius = radius;
+
+	return nullptr;
+}
+
+b2Body* Physics::CreateStaticBox(b2Vec2 position, b2Vec2 size, float angle, FixtureData* fixtureData)
+{
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_staticBody;
+	bodyDef.position = position;
+	bodyDef.angle = angle;
+
+	b2Body* body = m_world.CreateBody(&bodyDef);
+
+	b2PolygonShape shape;
+	shape.SetAsBox(size.x / 2, size.y / 2);
+
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &shape;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.0f;
+	fixtureDef.isSensor = false;
+
+	if (fixtureData)
+	{
+		m_fixtureDatum.push_back(fixtureData);
+		fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
+	}
+
+	body->SetFixedRotation(true);
+	body->CreateFixture(&fixtureDef);
+
+	return body;
+}
+
 b2Body* Physics::CreateBodyWithFixture(b2Vec2 position, b2Vec2 size, FixtureData* fixtureData, bool isDynamic, bool isSensor)
 {
-  b2BodyDef bodyDef;
+	b2BodyDef bodyDef;
 	bodyDef.position.Set(position.x, position.y);
 
 	if (isDynamic)
@@ -55,31 +94,32 @@ b2Body* Physics::CreateBodyWithFixture(b2Vec2 position, b2Vec2 size, FixtureData
 	}
 
 	b2Body* body = m_world.CreateBody(&bodyDef);
-  body->SetFixedRotation(true);
+	body->SetFixedRotation(true);
 
-  b2PolygonShape shape;
-  shape.SetAsBox(size.x / 2, size.y / 2);
+	b2PolygonShape shape;
+	shape.SetAsBox(size.x / 2, size.y / 2);
 
-  b2FixtureDef fixtureDef;
-  fixtureDef.shape = &shape;
-  fixtureDef.density = isSensor ? 0.0f : 1.0f;
-  fixtureDef.friction = 0.0f;
-  fixtureDef.isSensor = isSensor;
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &shape;
+	fixtureDef.density = isSensor ? 0.0f : 1.0f;
+	fixtureDef.friction = 0.0f;
+	fixtureDef.isSensor = isSensor;
+	
 
-  if (fixtureData)
-  {
-    m_fixtureDatum.push_back(fixtureData);
-    fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
-  }
+	if (fixtureData)
+	{
+		m_fixtureDatum.push_back(fixtureData);
+		fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
+	}
 
-  body->CreateFixture(&fixtureDef);
+	body->CreateFixture(&fixtureDef);
 
-  return body;
+	return body;
 }
 
 b2Body* Physics::CreateBoxBody(float x, float y, float width, float height, bool isDynamic, bool isSensor, float gravityScale)
 {
-  b2BodyDef bodyDef;
+	b2BodyDef bodyDef;
 	bodyDef.position.Set(x, y);
 
 	if (isDynamic)
@@ -94,17 +134,17 @@ b2Body* Physics::CreateBoxBody(float x, float y, float width, float height, bool
 
 	b2Body* body = m_world.CreateBody(&bodyDef);
 
-  b2PolygonShape shape;
+	b2PolygonShape shape;
 	shape.SetAsBox(width / 2, height / 2);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &shape;
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.0f;
-  fixtureDef.isSensor = isSensor;
+	fixtureDef.isSensor = isSensor;
 
-  body->SetFixedRotation(true);
+	body->SetFixedRotation(true);
 	body->CreateFixture(&fixtureDef);
 
-  return body;
+	return body;
 }

@@ -13,29 +13,21 @@ public:
 	LevelScene(Game* game)
 		: Scene(game)
 	{
-		m_systems.emplace_back(new PlayerSystem(this));
-		//m_systems.emplace_back(new ParticleSystem(this));
-		//m_systems.emplace_back(new CameraSystem(this));
-
-		m_gameStates.emplace("running", new RunningState(this));
-		m_gameStates.emplace("paused", new PausedState(this));
-
-		ChangeGameState("running");
 	}
 
-	virtual void ProcessInput(Input& input) override
+	virtual void ProcessInput() override
 	{
 		for (System* system : m_systems)
 		{
 			if (system->active)
 			{
-				system->ProcessInput(input, m_manager.m_registry);
+				system->ProcessInput(m_manager.m_registry);
 			}
 		}
 
 
 		/*
-		if (input.IsKeyPressed(GLFW_KEY_F))
+		if (Input::IsKeyPressed(GLFW_KEY_F))
 		{
 			ParticleProps props = m_game->GetParticleProps("fire");
 			props.position = { 0, 0 };
@@ -66,6 +58,8 @@ public:
 		if (physicsActive)
 			m_physics.Update(deltaTime);
 
+		m_ui.Update(deltaTime);
+
 		m_camera.Update();
 	}
 
@@ -78,5 +72,7 @@ public:
 		}
 
 		ParticleSystem::Render(m_camera);
+
+		Renderer::DrawCircle(glm::vec2(-8, 0), 4, glm::vec4(0.7, 0.2, 0.5, 1), m_camera);
 	}
 };

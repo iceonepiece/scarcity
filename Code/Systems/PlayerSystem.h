@@ -15,7 +15,7 @@ public:
 
     }
 
-    virtual void ProcessInput(Input& input, entt::registry& registry) override
+    virtual void ProcessInput(entt::registry& registry) override
     {
         auto view = registry.view<PlayerComponent>();
 
@@ -24,14 +24,20 @@ public:
             player.movementState = MS_IDLE;
             player.jump = false;
 
-            if (input.IsKeyHeld(GLFW_KEY_LEFT))
+            if (Input::IsKeyHeld(Key::Left))
                 player.movementState = MS_LEFT;
 
-            if (input.IsKeyHeld(GLFW_KEY_RIGHT))
+            if (Input::IsKeyHeld(Key::Right))
                 player.movementState = MS_RIGHT;
 
-            if (input.IsKeyPressed(GLFW_KEY_SPACE))
+            if (Input::IsKeyPressed(Key::Space))
                 player.jump = true;
+
+            if ((player.direction == 1 && player.movementState == MS_LEFT) ||
+                (player.direction == -1 && player.movementState == MS_RIGHT))
+            {
+                player.direction *= -1;
+            }
         }
     }
 
@@ -57,7 +63,9 @@ public:
             b2Vec2 position = body->GetPosition();
             props.position = { position.x, position.y - 0.8 };
             for (int i = 0; i < props.amount; i++)
+            {
                 ParticleSystem::Emit(props);
+            }
         }
 
         if (desiredVelocity == 0)
@@ -108,18 +116,16 @@ public:
                 b2Vec2 position = body->GetPosition();
                 
                 auto projectile = scene->m_manager.CreateEntity();
-                Projectile(projectile, scene, position, 0.25, 0.25, 10);
+                Projectile(projectile, scene, position, 0.25, 0.25, player.direction * 10);
             }
 
-            Input& input = scene->m_game->GetInput();
-
-            if (input.IsKeyPressed(GLFW_KEY_Z))
+            if (Input::IsKeyPressed(Key::Z))
             {
                 std::cout << "Pressed Z" << std::endl;
                 player.attack = true;
             }
             
-            if (input.IsKeyPressed(GLFW_KEY_X))
+            if (Input::IsKeyPressed(Key::X))
             {
                 std::cout << "Pressed X" << std::endl;
             }

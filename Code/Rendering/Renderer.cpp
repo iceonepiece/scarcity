@@ -8,6 +8,7 @@ glm::vec2 Renderer::s_defaultScreenSize = glm::vec2(1280, 720);
 
 Shader Renderer::s_basicShader;
 Shader Renderer::s_uiShader;
+Shader Renderer::s_circleShader;
 
 
 void Renderer::SetScreenSize(int width, int height)
@@ -52,6 +53,7 @@ void Renderer::Init()
 
     s_basicShader.Compile("Code/Shaders/basic.vert", "Code/Shaders/basic.frag");
     s_uiShader.Compile("Code/Shaders/ui.vert", "Code/Shaders/ui.frag");
+    s_circleShader.Compile("Code/Shaders/circle.vert", "Code/Shaders/circle.frag");
 }
 
 void Renderer::DrawQuad(b2Body* body, Camera& camera)
@@ -59,8 +61,10 @@ void Renderer::DrawQuad(b2Body* body, Camera& camera)
     s_basicShader.Use();
 
     b2Vec2 position = body->GetPosition();
+
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
+    model = glm::rotate(model, body->GetAngle(), glm::vec3(0, 0, 1));
 
     b2Fixture* fixture = body->GetFixtureList();
     if (fixture)
@@ -89,6 +93,42 @@ void Renderer::DrawQuad(b2Body* body, Camera& camera)
     s_basicShader.SetMatrix4("view", view);
     s_basicShader.SetMatrix4("projection", projection);
     s_basicShader.SetVector4f("color", color);
+
+    glBindVertexArray(m_VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+
+void Renderer::DrawCircle(glm::vec2 position, float radius, glm::vec4 color, Camera& camera)
+{
+    s_circleShader.Use();
+
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
+    model = glm::scale(model, glm::vec3(radius, radius, 0.0f));
+
+    glm::mat4 view = glm::mat4(1.0f);
+    view = glm::translate(view, camera.GetPosition());
+
+    glm::mat4 projection = glm::mat4(1.0f);
+    projection = glm::perspective(glm::radians(45.0f), s_screenSize.x / s_screenSize.y, 0.1f, 100.0f);
+
+    glm::vec4 pos = projection * view * model * glm::vec4(0, 0, 0, 1);
+    glm::vec2 ndcPos = glm::vec2(pos.x / pos.w, pos.y / pos.w);
+    glm::vec2 pixelPos = glm::vec2((ndcPos.x * 0.5 + 0.5) * s_screenSize.x, (ndcPos.y * 0.5 + 0.5) * s_screenSize.y);
+    
+    glm::vec4 leftPos = projection * view * model * glm::vec4(-0.5, 0, 0, 1);
+    glm::vec2 ndcLeftPos = glm::vec2(leftPos.x / leftPos.w, leftPos.y / leftPos.w);
+    glm::vec2 pixelLeftPos = glm::vec2((ndcLeftPos.x * 0.5 + 0.5) * s_screenSize.x, (ndcLeftPos.y * 0.5 + 0.5) * s_screenSize.y);
+
+    float pixelRadius = pixelPos.x - pixelLeftPos.x;
+
+    s_circleShader.SetMatrix4("model", model);
+    s_circleShader.SetMatrix4("view", view);
+    s_circleShader.SetMatrix4("projection", projection);
+    s_circleShader.SetVector4f("color", color);
+    s_circleShader.SetVector3f("resolution", glm::vec3(s_screenSize.x, s_screenSize.y, 0));
+    s_circleShader.SetVector3f("pixelPos", glm::vec3(pixelPos.x, pixelPos.y, 0));
+    s_circleShader.SetFloat("pixelRadius", pixelRadius);
 
     glBindVertexArray(m_VAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
