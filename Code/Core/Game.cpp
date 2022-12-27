@@ -33,7 +33,6 @@ Game::Game(int width, int height)
     }
     glfwMakeContextCurrent(m_window);
     glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
-    glfwSetWindowContentScaleCallback(m_window, WindowContentScaleCallback);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
