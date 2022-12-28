@@ -1,6 +1,7 @@
 #pragma once
 
 #include "LevelScene.h"
+#include "../Core/LevelManager.h"
 #include "../Components/Collider2DComponent.h"
 #include "../Components/PlayerComponent.h"
 #include "../Physics/PlayerFixtureData.h"
@@ -26,17 +27,7 @@ public:
 		player.AddComponent<Collider2DComponent>(playerBody);
 		player.AddComponent<PlayerComponent>();
 
-		auto platform = m_manager.CreateEntity();
-		//platform.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(0, 0, 15, 0.5));
-		platform.AddComponent<Collider2DComponent>(m_physics.CreateBodyWithFixture(b2Vec2{ 0, 0 }, b2Vec2{ 15, 0.5 }, new FixtureData(platform, "PLATFORM")));
-
-		auto platform2 = m_manager.CreateEntity();
-		//platform2.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(-10, -3, 10, 0.5));
-		platform2.AddComponent<Collider2DComponent>(m_physics.CreateBodyWithFixture(b2Vec2{ -10, -3 }, b2Vec2{ 10, 0.5 }, new FixtureData(platform2, "PLATFORM")));
-
-		auto platform3 = m_manager.CreateEntity();
-		//platform2.AddComponent<Collider2DComponent>(m_physics.CreateBoxBody(-10, -3, 10, 0.5));
-		platform3.AddComponent<Collider2DComponent>(m_physics.CreateStaticBox(b2Vec2{ 10, 3 }, b2Vec2{ 10, 0.5 }, glm::radians(15.0f), new FixtureData(platform3, "PLATFORM")));
+		LevelManager::LoadLevel(this, "Assets/Levels/Level1.lua");
 
 		m_camera.SetBody(player.GetComponent<Collider2DComponent>()->body);
 

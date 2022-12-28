@@ -115,6 +115,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="Assets\Levels\Level1.lua" />
     <None Include="Code\Scripts\parameters.lua" />
     <None Include="Code\Scripts\particles.lua" />
     <None Include="Code\Shaders\basic.frag" />
@@ -139,6 +140,7 @@
     <ClCompile Include="code\core\Game.cpp" />
     <ClCompile Include="Code\Core\GUI.cpp" />
     <ClCompile Include="Code\Core\GUIComponent.cpp" />
+    <ClCompile Include="Code\Core\LevelManager.cpp" />
     <ClCompile Include="Code\Input\Input.cpp" />
     <ClCompile Include="code\core\ParticleSystem.cpp" />
     <ClCompile Include="Code\Core\Random.cpp" />
@@ -178,6 +180,7 @@
     <ClInclude Include="Code\Core\GameState.h" />
     <ClInclude Include="Code\Core\GUI.h" />
     <ClInclude Include="Code\Core\GUIComponent.h" />
+    <ClInclude Include="Code\Core\LevelManager.h" />
     <ClInclude Include="Code\External\stb_image.h" />
     <ClInclude Include="Code\Input\Input.h" />
     <ClInclude Include="code\core\ParticleSystem.h" />

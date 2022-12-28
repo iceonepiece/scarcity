@@ -147,11 +147,13 @@ void Renderer::DrawQuadUI(glm::vec2 position, glm::vec2 scale, glm::vec4 color, 
         y = s_screenSize.y / 2;
     }
 
+    glm::vec2 realScale = scale * Renderer::GetScreenSizePercentage();
+
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(x, y, 0.0f));
-    model = glm::scale(model, glm::vec3(scale.x, scale.y, 0.0f));
+    model = glm::scale(model, glm::vec3(realScale.x, realScale.y, 0.0f));
 
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(s_screenSize.x), 0.0f, static_cast<float>(s_screenSize.y));
+    glm::mat4 projection = glm::ortho(0.0f, s_screenSize.x, 0.0f, s_screenSize.y);
 
     s_uiShader.SetMatrix4("model", model);
     s_uiShader.SetMatrix4("projection", projection);
