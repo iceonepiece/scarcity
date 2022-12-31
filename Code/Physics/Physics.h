@@ -13,7 +13,7 @@ public:
   ~Physics();
 
   void Update(float deltaTime);
-  b2Body* CreateCircle(b2Vec2 position, float radius);
+  b2Body* CreateCircleBody(b2Vec2 position, float radius, FixtureData* fixtureData, bool isSensor = false);
   b2Body* CreateBodyWithFixture(b2Vec2 position, b2Vec2 size, FixtureData* fixtureData, bool isDynamic = false, bool isSensor = false);
   b2Body* CreateBoxBody(float x, float y, float width, float height, bool isDynamic = false, bool isSensor = false, float gravityScale = 1.0f);
   b2Body* CreateStaticBox(b2Vec2 position, b2Vec2 size, float angle, FixtureData* fixtureData);
