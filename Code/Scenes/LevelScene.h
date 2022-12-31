@@ -6,6 +6,7 @@
 #include "../Core/GameState.h"
 #include "../Game/RunningState.h"
 #include "../Game/PausedState.h"
+#include "../Components/CircleCollider2DComponent.h"
 
 class LevelScene : public Scene
 {
@@ -71,8 +72,14 @@ public:
 			Renderer::DrawQuad(collider.body, m_camera);
 		}
 
+		auto view2 = m_manager.m_registry.view<CircleCollider2DComponent>();
+		for (auto [entity, collider] : view2.each())
+		{
+			Renderer::DrawCircle(collider.body, glm::vec4(1, 1, 1, 1), m_camera);
+		}
+
 		ParticleSystem::Render(m_camera);
 
-		Renderer::DrawCircle(glm::vec2(-8, 0), 4, glm::vec4(0.7, 0.2, 0.5, 1), m_camera);
+		//Renderer::DrawCircle(glm::vec2(-8, 0), 4, glm::vec4(0.7, 0.2, 0.5, 1), m_camera);
 	}
 };

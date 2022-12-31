@@ -56,5 +56,6 @@ public:
 
 	virtual void Render() override
 	{
+
 	}
 };

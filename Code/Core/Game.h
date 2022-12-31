@@ -36,6 +36,7 @@ private:
 
 	int m_width;
 	int m_height;
+	float m_screenRatio;
 
 	std::string m_currentSceneName;
 	std::map<std::string, Scene*> m_scenes;

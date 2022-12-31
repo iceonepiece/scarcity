@@ -170,6 +170,7 @@
     <ClInclude Include="Code\AI\AITransition.h" />
     <ClInclude Include="Code\AI\StateMachine.h" />
     <ClInclude Include="Code\Components\AIComponent.h" />
+    <ClInclude Include="Code\Components\CircleCollider2DComponent.h" />
     <ClInclude Include="code\components\Collider2DComponent.h" />
     <ClInclude Include="code\components\PlayerComponent.h" />
     <ClInclude Include="Code\Components\ScriptComponent.h" />
