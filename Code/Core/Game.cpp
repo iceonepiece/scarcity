@@ -8,6 +8,7 @@
 #include "../Scenes/IntroScene.h"
 #include "../UIs/UIText.h"
 #include "../Input/KeyCodes.h"
+#include "../Audio/Audio.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -44,6 +45,7 @@ Game::Game(int width, int height)
     ParticleSystem::Init();
     FontSystem::Init();
     Input::Init();
+    Audio::Init();
 }
 
 Game::~Game()
@@ -53,6 +55,8 @@ Game::~Game()
         delete scene.second;
     }
     m_scenes.clear();
+
+    Audio::Destroy();
 
     glfwDestroyWindow(m_window);
     glfwTerminate();
@@ -129,8 +133,10 @@ void Game::Render()
     
     glViewport(xOffset, yOffset, width, height);
 
-    glClearColor(0.133f, 0.157f, 0.192f, 1.0f);
+    glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    Renderer::DrawQuadUI(glm::vec2(0, 0), glm::vec2(2000, 2000), glm::vec4(0.15, 0.15, 0.15, 1), UIAlignment::CENTER);
 
     m_scenes[m_currentSceneName]->Render();
     m_scenes[m_currentSceneName]->RenderUI();
