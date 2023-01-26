@@ -24,6 +24,6 @@ public:
         ImGui::End();
     }
 
-private:
+protected:
     std::string m_name;
 };

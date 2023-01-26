@@ -18,9 +18,9 @@ public:
   b2Body* CreateBoxBody(float x, float y, float width, float height, bool isDynamic = false, bool isSensor = false, float gravityScale = 1.0f);
   b2Body* CreateStaticBox(b2Vec2 position, b2Vec2 size, float angle, FixtureData* fixtureData);
   void CreateFixtureDef(b2Body* body, b2Vec2 size, b2Vec2 offset, bool isSensor, FixtureData* fixtureData);
-
-private:
   b2World m_world;
+private:
+  //b2World m_world;
   ContactListener m_contactListener;
   int32 m_velocityIterations;
   int32 m_positionIterations;

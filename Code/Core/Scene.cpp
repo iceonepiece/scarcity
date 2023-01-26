@@ -45,6 +45,10 @@ void Scene::RenderUI()
     m_ui.Render();
 }
 
+EntityManager& Scene::GetEntityManager()
+{
+    return m_manager;
+}
 
 void Scene::ChangeGameState(std::string gameStateName)
 {

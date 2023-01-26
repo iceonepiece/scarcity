@@ -13,7 +13,7 @@ class Scene
 {
 public:
 	Scene(Game* game);
-	~Scene();
+	virtual ~Scene();
 
 	virtual void Init();
 	virtual void ProcessInput();
@@ -30,6 +30,8 @@ public:
 	}
 
 	void ChangeGameState(std::string gameStateName);
+
+	EntityManager& GetEntityManager();
 
 	std::unordered_map<std::string, GameState*> m_gameStates;
 	std::string m_currentGameStateName;

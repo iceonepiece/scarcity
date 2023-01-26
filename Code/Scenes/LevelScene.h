@@ -7,13 +7,16 @@
 #include "../Game/RunningState.h"
 #include "../Game/PausedState.h"
 #include "../Components/CircleCollider2DComponent.h"
+#include "../Game/Car.h"
 
 class LevelScene : public Scene
 {
 public:
 	LevelScene(Game* game)
 		: Scene(game)
+		, m_car(&(m_physics.m_world))
 	{
+
 	}
 
 	virtual void ProcessInput() override
@@ -78,8 +81,13 @@ public:
 			Renderer::DrawCircle(collider.body, glm::vec4(1, 1, 1, 1), m_camera);
 		}
 
+		m_car.Render(m_camera);
+
 		ParticleSystem::Render(m_camera);
 
 		//Renderer::DrawCircle(glm::vec2(-8, 0), 4, glm::vec4(0.7, 0.2, 0.5, 1), m_camera);
 	}
+
+protected:
+	Car m_car;
 };

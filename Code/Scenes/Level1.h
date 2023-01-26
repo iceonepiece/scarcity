@@ -28,10 +28,10 @@ public:
 		player.AddComponent<Collider2DComponent>(playerBody);
 		player.AddComponent<PlayerComponent>();
 
-		auto circle = m_manager.CreateEntity();
-		b2Body* circleBody = m_physics.CreateCircleBody(b2Vec2{ 1, 8 }, 0.5, new FixtureData(circle, "ENEMY"));
-		circle.AddComponent<CircleCollider2DComponent>(circleBody);
-
+		//auto circle = m_manager.CreateEntity();
+		//b2Body* circleBody = m_physics.CreateCircleBody(b2Vec2{ 1, 8 }, 0.5, new FixtureData(circle, "ENEMY"));
+		//circle.AddComponent<CircleCollider2DComponent>(circleBody);
+		
 		LevelManager::LoadLevel(this, "Assets/Levels/Level1.lua");
 
 		m_camera.SetBody(player.GetComponent<Collider2DComponent>()->body);

@@ -26,12 +26,17 @@ void GUI::Destroy()
 
 void GUI::Init(GLFWwindow* window, const char* glslVersion)
 {
-  IMGUI_CHECKVERSION();
-  ImGui::CreateContext();
-  ImGuiIO& io = ImGui::GetIO(); (void)io;
-  ImGui::StyleColorsDark();
-  ImGui_ImplGlfw_InitForOpenGL(window, true);
-  ImGui_ImplOpenGL3_Init(glslVersion);
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init(glslVersion);
+
+    //io.Fonts->AddFontFromFileTTF("fonts/ProggyClean.ttf", 20);
+    //io.Fonts->AddFontFromFileTTF("fonts/DroidSans.ttf", 20);
+    io.Fonts->AddFontFromFileTTF("Assets/Fonts/Xolonium-Regular.ttf", 20);
+    //io.Fonts->AddFontFromFileTTF("fonts/Roboto-Medium.ttf", 18);
 }
 
 void GUI::AddComponent(GUIComponent* component)

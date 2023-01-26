@@ -104,11 +104,11 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glfw3.lib;box2d.lib;lua54.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;box2d.lib;lua54.lib;freetype.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>
       </SubSystem>
     </Link>
@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\AI\StateMachine.cpp" />
+    <ClCompile Include="Code\Audio\Audio.cpp" />
     <ClCompile Include="code\core\Camera.cpp" />
     <ClCompile Include="code\core\EntityManager.cpp" />
     <ClCompile Include="code\core\Game.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="Code\Rendering\FontSystem.cpp" />
     <ClCompile Include="Code\Rendering\Renderer.cpp" />
     <ClCompile Include="Code\Rendering\Shader.cpp" />
+    <ClCompile Include="Code\Scenes\EditorScene.cpp" />
     <ClCompile Include="Code\UIs\UI.cpp" />
     <ClCompile Include="Code\UIs\UIList.cpp" />
     <ClCompile Include="Code\UIs\UIListItem.cpp" />
@@ -169,6 +171,8 @@
     <ClInclude Include="Code\AI\AIState.h" />
     <ClInclude Include="Code\AI\AITransition.h" />
     <ClInclude Include="Code\AI\StateMachine.h" />
+    <ClInclude Include="Code\Audio\Audio.h" />
+    <ClInclude Include="Code\Audio\Wav.h" />
     <ClInclude Include="Code\Components\AIComponent.h" />
     <ClInclude Include="Code\Components\CircleCollider2DComponent.h" />
     <ClInclude Include="code\components\Collider2DComponent.h" />
@@ -182,6 +186,8 @@
     <ClInclude Include="Code\Core\GUI.h" />
     <ClInclude Include="Code\Core\GUIComponent.h" />
     <ClInclude Include="Code\Core\LevelManager.h" />
+    <ClInclude Include="Code\Editor\EntitiesWindow.h" />
+    <ClInclude Include="Code\Editor\InspectorWindow.h" />
     <ClInclude Include="Code\External\stb_image.h" />
     <ClInclude Include="Code\Input\Input.h" />
     <ClInclude Include="code\core\ParticleSystem.h" />
@@ -216,6 +222,7 @@
     <ClInclude Include="Code\Rendering\FontSystem.h" />
     <ClInclude Include="Code\Rendering\Renderer.h" />
     <ClInclude Include="Code\Rendering\Shader.h" />
+    <ClInclude Include="Code\Scenes\EditorScene.h" />
     <ClInclude Include="Code\Scenes\IntroScene.h" />
     <ClInclude Include="Code\Scenes\Level1.h" />
     <ClInclude Include="Code\Scenes\LevelScene.h" />

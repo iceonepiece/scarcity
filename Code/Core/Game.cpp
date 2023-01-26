@@ -6,6 +6,7 @@
 #include "../Scenes/Level1.h"
 #include "../Scenes/MenuScene.h"
 #include "../Scenes/IntroScene.h"
+#include "../Scenes/EditorScene.h"
 #include "../UIs/UIText.h"
 #include "../Input/KeyCodes.h"
 #include "../Audio/Audio.h"
@@ -72,9 +73,10 @@ void Game::ChangeScene(std::string sceneName)
 
 void Game::Init()
 {
-    m_scenes.insert({ "menu", new MenuScene(this) });
-    m_scenes.insert({ "intro", new Level1(this)});
-    ChangeScene("menu");
+    m_scenes.insert({ "editor", new EditorScene(this) });
+    //m_scenes.insert({ "menu", new MenuScene(this) });
+    //m_scenes.insert({ "intro", new Level1(this)});
+    ChangeScene("editor");
     
     for (auto& [name, scene] : m_scenes)
     {
