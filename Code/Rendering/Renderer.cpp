@@ -11,7 +11,6 @@ Shader Renderer::s_basicShader;
 Shader Renderer::s_uiShader;
 Shader Renderer::s_circleShader;
 
-
 void Renderer::SetScreenSize(int width, int height, int xOffset, int yOffset)
 {
     s_screenSize.x = width;
@@ -58,6 +57,50 @@ void Renderer::Init()
     s_uiShader.Compile("Code/Shaders/ui.vert", "Code/Shaders/ui.frag");
     s_circleShader.Compile("Code/Shaders/circle.vert", "Code/Shaders/circle.frag");
 }
+
+/*
+void Renderer::DrawPolygon(b2Body* body, Camera& camera)
+{
+    s_basicShader.Use();
+
+    b2Vec2 position = body->GetPosition();
+
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
+    model = glm::rotate(model, body->GetAngle(), glm::vec3(0, 0, 1));
+
+    b2Fixture* fixture = body->GetFixtureList();
+    if (fixture)
+    {
+        b2PolygonShape* shape = (b2PolygonShape*)fixture->GetShape();
+        float width = shape->m_vertices[1].x - shape->m_vertices[0].x;
+        float height = shape->m_vertices[2].y - shape->m_vertices[0].y;
+
+        model = glm::scale(model, glm::vec3(width, height, 0.0f));
+    }
+
+    glm::mat4 view = glm::mat4(1.0f);
+    view = glm::translate(view, camera.GetPosition());
+
+    //glm::vec2 screenSize = camera.GetScreenSize();
+
+    glm::mat4 projection = glm::mat4(1.0f);
+    projection = glm::perspective(glm::radians(45.0f), s_screenSize.x / s_screenSize.y, 0.1f, 100.0f);
+
+    glm::vec4 color = glm::vec4(0.188f, 0.278f, 0.369f, 0.2f);
+
+    if (body->GetType() == b2_dynamicBody)
+        color = glm::vec4(0.941f, 0.329f, 0.329f, 1.0f);
+
+    s_basicShader.SetMatrix4("model", model);
+    s_basicShader.SetMatrix4("view", view);
+    s_basicShader.SetMatrix4("projection", projection);
+    s_basicShader.SetVector4f("color", color);
+
+    glBindVertexArray(m_VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+*/
 
 void Renderer::DrawQuad(b2Body* body, Camera& camera)
 {
