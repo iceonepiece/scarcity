@@ -2,6 +2,8 @@
 #include "../Core/Game.h"
 
 std::vector<InputCommand> Input::s_inputCommands;
+std::vector<MouseCommand> Input::s_mouseCommands;
+glm::vec2 Input::s_cursorPosition;
 
 void Input::Init()
 {
@@ -16,11 +18,20 @@ void Input::Init()
     AddInputCommand(GLFW_KEY_Z, Key::Z);
     AddInputCommand(GLFW_KEY_X, Key::X);
     AddInputCommand(GLFW_KEY_Q, Key::Q);
+
+    AddMouseCommand(GLFW_MOUSE_BUTTON_LEFT, Mouse::ButtonLeft);
+    AddMouseCommand(GLFW_MOUSE_BUTTON_RIGHT, Mouse::ButtonRight);
+    AddMouseCommand(GLFW_MOUSE_BUTTON_MIDDLE, Mouse::ButtonMiddle);
 }
 
 void Input::AddInputCommand(int glfwKeyCode, KeyCode keyCode)
 {
     s_inputCommands.push_back(InputCommand(glfwKeyCode, keyCode));
+}
+
+void Input::AddMouseCommand(int glfwMouseCode, MouseCode mouseCode)
+{
+    s_mouseCommands.push_back(MouseCommand(glfwMouseCode, mouseCode));
 }
 
 void Input::PollInputs(GLFWwindow* glfwWindow)
@@ -29,6 +40,12 @@ void Input::PollInputs(GLFWwindow* glfwWindow)
     {
         inputCommand.previousState = inputCommand.currentState;
         inputCommand.currentState = glfwGetKey(glfwWindow, inputCommand.glfwKeyCode);
+    }
+
+    for (auto& mouseCommand : s_mouseCommands)
+    {
+        mouseCommand.previousState = mouseCommand.currentState;
+        mouseCommand.currentState = glfwGetMouseButton(glfwWindow, mouseCommand.glfwMouseCode);
     }
 }
 
@@ -58,4 +75,43 @@ bool Input::IsKeyHeld(KeyCode keyCode)
     }
 
     return false;
+}
+
+bool Input::IsMouseButtonPressed(MouseCode mouseCode)
+{
+    for (auto& mouseCommand : s_mouseCommands)
+    {
+        if (mouseCommand.mouseCode == mouseCode
+            && mouseCommand.previousState == GLFW_RELEASE
+            && mouseCommand.currentState == GLFW_PRESS
+            )
+            return true;
+    }
+
+    return false;
+}
+
+bool Input::IsMouseButtonHeld(MouseCode mouseCode)
+{
+    for (auto& mouseCommand : s_mouseCommands)
+    {
+        if (mouseCommand.mouseCode == mouseCode
+            && mouseCommand.previousState == GLFW_PRESS
+            && mouseCommand.currentState == GLFW_PRESS
+            )
+            return true;
+    }
+
+    return false;
+}
+
+void Input::SetCursorPosition(float xPos, float yPos)
+{
+    s_cursorPosition.x = xPos;
+    s_cursorPosition.y = yPos;
+}
+
+glm::vec2 Input::GetCursorPosition()
+{
+    return s_cursorPosition;
 }

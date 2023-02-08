@@ -10,6 +10,7 @@
 #include "../UIs/UIText.h"
 #include "../Input/KeyCodes.h"
 #include "../Audio/Audio.h"
+#include "../Events/MouseEvent.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -35,7 +36,17 @@ Game::Game(int width, int height)
         glfwTerminate();
     }
     glfwMakeContextCurrent(m_window);
+
+    glfwSetWindowUserPointer(m_window, &m_data);
+
     glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
+
+    glfwSetCursorPosCallback(m_window, [](GLFWwindow* window, double x, double y)
+    {
+        MouseMovedEvent *e = new MouseMovedEvent(x, y);
+        WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+        data.events.push_back(e);
+    });
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -63,6 +74,11 @@ Game::~Game()
     glfwTerminate();
 }
 
+void Game::OnEvent(Event* e)
+{
+    //m_scenes[m_currentSceneName]->OnEvent(e);
+}
+
 void Game::ChangeScene(std::string sceneName)
 {
     if (m_scenes.find(sceneName) != m_scenes.end())
@@ -74,8 +90,8 @@ void Game::ChangeScene(std::string sceneName)
 void Game::Init()
 {
     m_scenes.insert({ "editor", new EditorScene(this) });
-    //m_scenes.insert({ "menu", new MenuScene(this) });
-    //m_scenes.insert({ "intro", new Level1(this)});
+    m_scenes.insert({ "menu", new MenuScene(this) });
+    m_scenes.insert({ "intro", new Level1(this)});
     ChangeScene("editor");
     
     for (auto& [name, scene] : m_scenes)
@@ -107,6 +123,21 @@ void Game::ProcessInput(float deltaTime)
 {
     glfwPollEvents();
     Input::PollInputs(m_window);
+
+    for (int i = 0; i < m_data.events.size(); i++)
+    {
+        Event* e = m_data.events[i];
+        std::cout << e->ToString() << std::endl;
+        m_scenes[m_currentSceneName]->OnEvent(e);
+        delete e;
+    }
+    m_data.events.clear();
+
+    double xPos;
+    double yPos;
+    glfwGetCursorPos(m_window, &xPos, &yPos);
+
+    Input::SetCursorPosition(xPos, yPos);
 
     if (Input::IsKeyPressed(Key::Escape))
         glfwSetWindowShouldClose(m_window, true);

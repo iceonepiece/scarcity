@@ -18,6 +18,7 @@
 #include "Camera.h"
 #include "ParticleSystem.h"
 #include "Scene.h"
+#include "../Events/Event.h"
 
 class Game
 {
@@ -27,12 +28,20 @@ public:
 
 	void Init();
 	void Run();
+	void OnEvent(Event* e);
 
 	GLFWwindow* GetWindow() { return m_window; }
 	void ChangeScene(std::string sceneName);
 
 private:
 	GLFWwindow* m_window;
+
+	struct WindowData
+	{
+		std::vector<Event*> events;
+	};
+
+	WindowData m_data;
 
 	int m_width;
 	int m_height;

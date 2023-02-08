@@ -36,12 +36,20 @@ void EditorScene::Init()
 
 void EditorScene::ProcessInput()
 {
+	
+}
 
+void EditorScene::OnEvent(Event* e)
+{
+	if (!m_gui.BlockEvent(e))
+	{
+		m_editorMouse.Update(m_camera);;
+	}
 }
 
 void EditorScene::Update(float deltaTime)
 {
-
+	//m_editorMouse.Update(m_camera);
 }
 
 void EditorScene::Render()

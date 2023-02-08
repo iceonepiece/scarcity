@@ -181,13 +181,16 @@
     <ClInclude Include="code\core\Camera.h" />
     <ClInclude Include="code\core\Entity.h" />
     <ClInclude Include="code\core\EntityManager.h" />
+    <ClInclude Include="Code\Events\Event.h" />
     <ClInclude Include="code\core\Game.h" />
     <ClInclude Include="Code\Core\GameState.h" />
     <ClInclude Include="Code\Core\GUI.h" />
     <ClInclude Include="Code\Core\GUIComponent.h" />
     <ClInclude Include="Code\Core\LevelManager.h" />
+    <ClInclude Include="Code\Editor\EditorMouse.h" />
     <ClInclude Include="Code\Editor\EntitiesWindow.h" />
     <ClInclude Include="Code\Editor\InspectorWindow.h" />
+    <ClInclude Include="Code\Events\MouseEvent.h" />
     <ClInclude Include="Code\External\stb_image.h" />
     <ClInclude Include="Code\Input\Input.h" />
     <ClInclude Include="code\core\ParticleSystem.h" />
@@ -214,6 +217,7 @@
     <ClInclude Include="Code\GUIs\GUIList.h" />
     <ClInclude Include="Code\GUIs\GUIWindow.h" />
     <ClInclude Include="Code\Input\KeyCodes.h" />
+    <ClInclude Include="Code\Input\MouseCodes.h" />
     <ClInclude Include="Code\Physics\ContactListener.h" />
     <ClInclude Include="Code\Physics\FixtureData.h" />
     <ClInclude Include="Code\Physics\Physics.h" />

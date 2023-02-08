@@ -24,6 +24,11 @@ Scene::~Scene()
     m_gameStates.clear();
 }
 
+void Scene::OnEvent(Event* e)
+{
+
+}
+
 void Scene::Init()
 {
 }

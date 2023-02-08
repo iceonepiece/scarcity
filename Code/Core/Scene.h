@@ -5,6 +5,7 @@
 #include "../Physics/Physics.h"
 #include "../Input/Input.h"
 #include "../UIs/UI.h"
+#include "../Events/Event.h"
 
 class System;
 class GameState;
@@ -16,6 +17,7 @@ public:
 	virtual ~Scene();
 
 	virtual void Init();
+	virtual void OnEvent(Event* e);
 	virtual void ProcessInput();
 	virtual void Update(float deltaTime);
 	virtual void Render();

@@ -5,6 +5,7 @@
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
 #include "GUIComponent.h"
+#include "../Events/Event.h"
 
 class Game;
 
@@ -21,6 +22,8 @@ public:
   void Draw();
 
   void AddComponent(GUIComponent* component);
+
+  bool BlockEvent(Event* e);
 
 private:
   Game* m_game;

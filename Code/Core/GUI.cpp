@@ -10,6 +10,25 @@ GUI::~GUI()
 {
 }
 
+bool GUI::BlockEvent(Event* e)
+{
+    ImGuiIO& io = ImGui::GetIO();
+
+    if (io.WantCaptureMouse)
+        std::cout << "WantCaptureMouse" << std::endl;
+
+    if (io.WantCaptureMouse &&
+        (
+            e->GetType() == EventType::MouseMoved ||
+            e->GetType() == EventType::MouseButtonPressed
+        )
+    )
+        return true;
+
+
+    return false;
+}
+
 void GUI::Destroy()
 {
   std::cout << "GUI Destroy" << std::endl;
@@ -46,6 +65,14 @@ void GUI::AddComponent(GUIComponent* component)
 
 void GUI::NewFrame()
 {
+
+    ImGuiIO& io = ImGui::GetIO();
+
+    bool moused = io.WantCaptureMouse;
+
+    if (moused)
+        std::cout << "MOUSED" << std::endl;
+
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
