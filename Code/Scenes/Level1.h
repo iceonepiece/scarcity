@@ -5,6 +5,7 @@
 #include "../Components/Collider2DComponent.h"
 #include "../Components/CircleCollider2DComponent.h"
 #include "../Components/PlayerComponent.h"
+#include "../Components/SpriteAnimationComponent.h"
 #include "../Physics/PlayerFixtureData.h"
 #include "../UIs/UIText.h"
 #include "../UIs/UIList.h"
@@ -23,10 +24,19 @@ public:
 	{
 		std::cout << "Init Level1" << std::endl;
 
+		ResourceManager::LoadTexture("heroKnight", "Assets/Images/HeroKnight.png", true);
+
 		auto player = m_manager.CreateEntity();
 		b2Body* playerBody = m_physics.CreateBodyWithFixture(b2Vec2{ 0, 8 }, b2Vec2{ 0.5, 1.2 }, new PlayerFixtureData(player), true);
 		player.AddComponent<Collider2DComponent>(playerBody);
 		player.AddComponent<PlayerComponent>();
+		player.AddComponent<SpriteAnimationComponent>(
+			ResourceManager::s_textures["heroKnight"],
+			std::vector<glm::vec2> { { 0, 5 }, { 1, 5 }, { 2, 5 }, { 3, 5 }, { 4, 5 }, { 5, 5 } },
+			glm::vec2{ 100, 55 },
+			0.1,
+			3.5
+			);
 
 		//auto circle = m_manager.CreateEntity();
 		//b2Body* circleBody = m_physics.CreateCircleBody(b2Vec2{ 1, 8 }, 0.5, new FixtureData(circle, "ENEMY"));

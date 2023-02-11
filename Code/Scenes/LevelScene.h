@@ -7,6 +7,7 @@
 #include "../Game/RunningState.h"
 #include "../Game/PausedState.h"
 #include "../Components/CircleCollider2DComponent.h"
+#include "../Components/SpriteAnimationComponent.h"
 #include "../Game/Car.h"
 
 class LevelScene : public Scene
@@ -56,6 +57,22 @@ public:
 			}
 		}
 
+		auto spriteView = m_manager.m_registry.view<SpriteAnimationComponent>();
+		for (auto [entity, sprite] : spriteView.each())
+		{
+			sprite.timer += deltaTime;
+
+			if (sprite.timer > sprite.frameSpeed)
+			{
+				sprite.currentFrame += 1;
+
+				if (sprite.currentFrame == sprite.positions.size())
+					sprite.currentFrame = 0;
+
+				sprite.timer = 0;
+			}
+		}
+
 		if (particleActive)
 			ParticleSystem::Update(deltaTime);
 
@@ -74,6 +91,26 @@ public:
 		{
 			Renderer::DrawQuad(collider.body, m_camera);
 		}
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		auto view1 = m_manager.m_registry.view<Collider2DComponent, SpriteAnimationComponent>();
+		for (auto [entity, collider, spriteAnim] : view1.each())
+		{
+			int x = spriteAnim.positions[spriteAnim.currentFrame].x;
+			int y = spriteAnim.positions[spriteAnim.currentFrame].y;
+
+			glm::vec2 grid{ x, y };
+
+			Sprite sprite(&(spriteAnim.texture), spriteAnim.size, grid);
+
+			b2Vec2 position = collider.body->GetPosition();
+
+			Renderer::DrawSprite(sprite, glm::vec2{ position.x, position.y }, glm::vec2{ spriteAnim.scale, spriteAnim.scale }, m_camera);
+		}
+
+		glDisable(GL_BLEND);
 
 		auto view2 = m_manager.m_registry.view<CircleCollider2DComponent>();
 		for (auto [entity, collider] : view2.each())

@@ -33,6 +33,8 @@
     <None Include="Code\Shaders\circle.frag" />
     <None Include="Code\Shaders\circle.vert" />
     <None Include="Assets\Levels\Level1.lua" />
+    <None Include="Code\Shaders\texture.vert" />
+    <None Include="Code\Shaders\texture.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="code\Main.cpp">
@@ -346,12 +348,24 @@
     <ClInclude Include="Code\Events\MouseEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Code\Core\SpriteAnimation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Core\Sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Components\SpriteAnimationComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\awesomeface.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\HeroKnight.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

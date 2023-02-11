@@ -11,6 +11,8 @@ enum EditorMouseMode
 class EditorMouse
 {
 public:
+	EditorMouse() = default;
+
 	void Update(Camera& camera)
 	{
 		glm::vec2 pos = Input::GetCursorPosition();

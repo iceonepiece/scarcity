@@ -1,6 +1,8 @@
 #include "Texture.h"
 
 Texture::Texture()
+    : m_width(0)
+    , m_height(0)
 {
     glGenTextures(1, &m_id);
 }
@@ -16,7 +18,7 @@ void Texture::Generate(const char* filename, bool alpha)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     int width, height, nrChannels;
-    stbi_set_flip_vertically_on_load(false);
+    stbi_set_flip_vertically_on_load(true);
 
     unsigned int internalFormat = GL_RGB;
     unsigned int imageFormat = GL_RGB;
@@ -32,6 +34,9 @@ void Texture::Generate(const char* filename, bool alpha)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, imageFormat, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
+
+        m_width = width;
+        m_height = height;
     }
     else
     {

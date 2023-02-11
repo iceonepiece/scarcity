@@ -126,6 +126,8 @@
     <None Include="Code\Shaders\font.vert" />
     <None Include="Code\Shaders\particle.frag" />
     <None Include="Code\Shaders\particle.vert" />
+    <None Include="Code\Shaders\texture.frag" />
+    <None Include="Code\Shaders\texture.vert" />
     <None Include="Code\Shaders\ui.frag" />
     <None Include="Code\Shaders\ui.vert" />
     <None Include="imgui.ini" />
@@ -178,9 +180,12 @@
     <ClInclude Include="code\components\Collider2DComponent.h" />
     <ClInclude Include="code\components\PlayerComponent.h" />
     <ClInclude Include="Code\Components\ScriptComponent.h" />
+    <ClInclude Include="Code\Components\SpriteAnimationComponent.h" />
     <ClInclude Include="code\core\Camera.h" />
     <ClInclude Include="code\core\Entity.h" />
     <ClInclude Include="code\core\EntityManager.h" />
+    <ClInclude Include="Code\Core\Sprite.h" />
+    <ClInclude Include="Code\Core\SpriteAnimation.h" />
     <ClInclude Include="Code\Events\Event.h" />
     <ClInclude Include="code\core\Game.h" />
     <ClInclude Include="Code\Core\GameState.h" />
@@ -245,6 +250,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\awesomeface.png" />
+    <Image Include="Assets\Images\HeroKnight.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
