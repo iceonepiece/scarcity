@@ -48,6 +48,13 @@ Game::Game(int width, int height)
         data.events.push_back(e);
     });
 
+    glfwSetScrollCallback(m_window, [](GLFWwindow* window, double x, double y)
+    {
+        MouseScrolledEvent* e = new MouseScrolledEvent(x, y);
+        WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+        data.events.push_back(e);
+    });
+
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;

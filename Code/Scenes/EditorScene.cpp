@@ -8,6 +8,7 @@
 EditorScene::EditorScene(Game* game)
 	: Scene(game)
 	, m_gui(game)
+	, m_editorMouse(this)
 {
 
 }
@@ -43,7 +44,8 @@ void EditorScene::OnEvent(Event* e)
 {
 	if (!m_gui.BlockEvent(e))
 	{
-		m_editorMouse.Update(m_camera);;
+		m_editorMouse.OnEvent(e);
+		//m_editorMouse.Update(m_camera);;
 	}
 }
 

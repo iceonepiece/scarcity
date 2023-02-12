@@ -20,7 +20,8 @@ bool GUI::BlockEvent(Event* e)
     if (io.WantCaptureMouse &&
         (
             e->GetType() == EventType::MouseMoved ||
-            e->GetType() == EventType::MouseButtonPressed
+            e->GetType() == EventType::MouseButtonPressed ||
+            e->GetType() == EventType::MouseScrolled
         )
     )
         return true;
