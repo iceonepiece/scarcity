@@ -2,7 +2,7 @@
 #include "Game.h"
 
 GUI::GUI(Game* game)
-  : m_game(game)
+    : m_game(game)
 {
 }
 
@@ -32,16 +32,16 @@ bool GUI::BlockEvent(Event* e)
 
 void GUI::Destroy()
 {
-  std::cout << "GUI Destroy" << std::endl;
-  for (auto component : m_components)
-  {
-    delete component;
-  }
-  m_components.clear();
+    std::cout << "GUI Destroy" << std::endl;
+    for (auto component : m_components)
+    {
+        delete component;
+    }
+    m_components.clear();
 
-  ImGui_ImplOpenGL3_Shutdown();
-  ImGui_ImplGlfw_Shutdown();
-  ImGui::DestroyContext();
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 }
 
 void GUI::Init(GLFWwindow* window, const char* glslVersion)
@@ -61,32 +61,28 @@ void GUI::Init(GLFWwindow* window, const char* glslVersion)
 
 void GUI::AddComponent(GUIComponent* component)
 {
-  m_components.push_back(component);
+    m_components.push_back(component);
 }
 
 void GUI::NewFrame()
 {
-
     ImGuiIO& io = ImGui::GetIO();
 
-    bool moused = io.WantCaptureMouse;
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
 
-    if (moused)
-        std::cout << "MOUSED" << std::endl;
+    for (auto component : m_components)
+    {
+        component->Draw();
+    }
 
-  ImGui_ImplOpenGL3_NewFrame();
-  ImGui_ImplGlfw_NewFrame();
-  ImGui::NewFrame();
+    ImGui::ShowDemoWindow();
 
-  for (auto component : m_components)
-  {
-    component->Draw();
-  }
-
-  ImGui::Render();
+    ImGui::Render();
 }
 
 void GUI::Draw()
 {
-  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
