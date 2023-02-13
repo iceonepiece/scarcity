@@ -11,6 +11,7 @@
 #include "../Input/KeyCodes.h"
 #include "../Audio/Audio.h"
 #include "../Events/MouseEvent.h"
+#include "Timer.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -111,22 +112,17 @@ void Game::Init()
 
 void Game::Run()
 {
-    float deltaTime = 0.0f;
-    float lastFrame = 0.0f;
-
     while (!glfwWindowShouldClose(m_window))
     {
-        float currentFrame = glfwGetTime();
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
+        Timer::Tick();
 
-        ProcessInput(deltaTime);
-        Update(deltaTime);
+        ProcessInput();
+        Update();
         Render();
     }
 }
 
-void Game::ProcessInput(float deltaTime)
+void Game::ProcessInput()
 {
     glfwPollEvents();
     Input::PollInputs(m_window);
@@ -152,9 +148,9 @@ void Game::ProcessInput(float deltaTime)
     m_scenes[m_currentSceneName]->ProcessInput();
 }
 
-void Game::Update(float deltaTime)
+void Game::Update()
 {
-    m_scenes[m_currentSceneName]->Update(deltaTime);
+    m_scenes[m_currentSceneName]->Update(Timer::GetDeltaTime());
 }
 
 void Game::Render()

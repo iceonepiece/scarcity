@@ -53,8 +53,8 @@ private:
 
 	sol::state m_lua;
 
-	void ProcessInput(float deltaTime);
-	void Update(float deltaTime);
+	void ProcessInput();
+	void Update();
 	void Render();
 
 	friend class GUI;
