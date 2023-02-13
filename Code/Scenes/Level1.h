@@ -1,11 +1,12 @@
 #pragma once
 
 #include "LevelScene.h"
+#include "../Core/SpriteAnimation.h"
 #include "../Core/LevelManager.h"
 #include "../Components/Collider2DComponent.h"
 #include "../Components/CircleCollider2DComponent.h"
 #include "../Components/PlayerComponent.h"
-#include "../Components/SpriteAnimationComponent.h"
+#include "../Components/SpriteAnimatorComponent.h"
 #include "../Physics/PlayerFixtureData.h"
 #include "../UIs/UIText.h"
 #include "../UIs/UIList.h"
@@ -30,13 +31,26 @@ public:
 		b2Body* playerBody = m_physics.CreateBodyWithFixture(b2Vec2{ 0, 8 }, b2Vec2{ 0.5, 1.2 }, new PlayerFixtureData(player), true);
 		player.AddComponent<Collider2DComponent>(playerBody);
 		player.AddComponent<PlayerComponent>();
-		player.AddComponent<SpriteAnimationComponent>(
+
+		std::unordered_map<std::string, SpriteAnimation*> playerSpriteAnimation;
+
+		playerSpriteAnimation["Idle"] = new SpriteAnimation {
 			ResourceManager::s_textures["heroKnight"],
-			std::vector<glm::vec2> { { 0, 5 }, { 1, 5 }, { 2, 5 }, { 3, 5 }, { 4, 5 }, { 5, 5 } },
+			{ { 0, 8 }, { 1, 8 }, { 2, 8 }, { 3, 8 }, { 4, 8 }, { 5, 8 }, { 6, 8 }, { 7, 8 } },
 			glm::vec2{ 100, 55 },
 			0.1,
 			3.5
-			);
+		};
+
+		playerSpriteAnimation["Attack"] = new SpriteAnimation {
+			ResourceManager::s_textures["heroKnight"],
+			{ { 0, 5 }, { 1, 5 }, { 2, 5 }, { 3, 5 }, { 4, 5 }, { 5, 5 } },
+			glm::vec2{ 100, 55 },
+			0.1,
+			3.5
+		};
+
+		player.AddComponent<SpriteAnimatorComponent>("Idle", playerSpriteAnimation);
 
 		//auto circle = m_manager.CreateEntity();
 		//b2Body* circleBody = m_physics.CreateCircleBody(b2Vec2{ 1, 8 }, 0.5, new FixtureData(circle, "ENEMY"));

@@ -180,7 +180,7 @@
     <ClInclude Include="code\components\Collider2DComponent.h" />
     <ClInclude Include="code\components\PlayerComponent.h" />
     <ClInclude Include="Code\Components\ScriptComponent.h" />
-    <ClInclude Include="Code\Components\SpriteAnimationComponent.h" />
+    <ClInclude Include="Code\Components\SpriteAnimatorComponent.h" />
     <ClInclude Include="code\core\Camera.h" />
     <ClInclude Include="code\core\Entity.h" />
     <ClInclude Include="code\core\EntityManager.h" />

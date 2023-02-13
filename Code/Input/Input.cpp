@@ -14,6 +14,10 @@ void Input::Init()
     AddInputCommand(GLFW_KEY_RIGHT, Key::Right);
     AddInputCommand(GLFW_KEY_SPACE, Key::Space);
     AddInputCommand(GLFW_KEY_ENTER, Key::Enter);
+    AddInputCommand(GLFW_KEY_W, Key::W);
+    AddInputCommand(GLFW_KEY_A, Key::A);
+    AddInputCommand(GLFW_KEY_S, Key::S);
+    AddInputCommand(GLFW_KEY_D, Key::D);
     AddInputCommand(GLFW_KEY_F, Key::F);
     AddInputCommand(GLFW_KEY_Z, Key::Z);
     AddInputCommand(GLFW_KEY_X, Key::X);
