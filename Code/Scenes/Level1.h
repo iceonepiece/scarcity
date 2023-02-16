@@ -12,6 +12,9 @@
 #include "../UIs/UIList.h"
 #include "../UIs/UIListItem.h"
 #include "../UIs/UIContainer.h"
+#include "../Animations/AnimationState.h"
+#include "../FSM/EqualTransition.h"
+#include "../Core/Value.h"
 
 class Level1 : public LevelScene
 {
@@ -31,26 +34,51 @@ public:
 		b2Body* playerBody = m_physics.CreateBodyWithFixture(b2Vec2{ 0, 8 }, b2Vec2{ 0.5, 1.2 }, new PlayerFixtureData(player), true);
 		player.AddComponent<Collider2DComponent>(playerBody);
 		player.AddComponent<PlayerComponent>();
+	
+		FiniteStateMachine* fsm = new FiniteStateMachine(player);
+		player.AddComponent<SpriteAnimatorComponent>(fsm);
 
-		std::unordered_map<std::string, SpriteAnimation*> playerSpriteAnimation;
-
-		playerSpriteAnimation["Idle"] = new SpriteAnimation {
+		AnimationState* idleState = new AnimationState({
 			ResourceManager::s_textures["heroKnight"],
 			{ { 0, 8 }, { 1, 8 }, { 2, 8 }, { 3, 8 }, { 4, 8 }, { 5, 8 }, { 6, 8 }, { 7, 8 } },
 			glm::vec2{ 100, 55 },
 			0.1,
 			3.5
-		};
+		});
 
-		playerSpriteAnimation["Attack"] = new SpriteAnimation {
+		AnimationState* walkState = new AnimationState({
+			ResourceManager::s_textures["heroKnight"],
+			{ { 8, 8 }, { 9, 8 }, { 0, 7 }, { 1, 7 }, { 2, 7 }, { 3, 7 }, { 4, 7 }, { 5, 7 }, { 6, 7 }, { 7, 7 } },
+			glm::vec2{ 100, 55 },
+			0.1,
+			3.5
+		});
+
+		AnimationState* attackState = new AnimationState({
 			ResourceManager::s_textures["heroKnight"],
 			{ { 0, 5 }, { 1, 5 }, { 2, 5 }, { 3, 5 }, { 4, 5 }, { 5, 5 } },
 			glm::vec2{ 100, 55 },
 			0.1,
 			3.5
-		};
+		});
 
-		player.AddComponent<SpriteAnimatorComponent>("Idle", playerSpriteAnimation);
+		FSMTransition* startAttack = new EqualTransition<int>("attacking", 1);
+		FSMTransition* endAttack = new EqualTransition<int>("attacking", 0);
+		FSMTransition* startWalk = new EqualTransition<bool>("walking", true);
+		FSMTransition* endWalk = new EqualTransition<bool>("walking", false);
+
+		idleState->AddTransition(startAttack, attackState);
+		idleState->AddTransition(startWalk, walkState);
+		attackState->AddTransition(endAttack, idleState);
+		walkState->AddTransition(endWalk, idleState);
+
+		fsm->AddState("Idle", idleState);
+		fsm->AddState("Attack", attackState);
+		fsm->AddState("Walk", walkState);
+		fsm->SetCurrentState(idleState);
+
+		fsm->AddValue("attacking", new IntValue(0));
+		fsm->AddValue("walking", new BoolValue(false));
 
 		//auto circle = m_manager.CreateEntity();
 		//b2Body* circleBody = m_physics.CreateCircleBody(b2Vec2{ 1, 8 }, 0.5, new FixtureData(circle, "ENEMY"));

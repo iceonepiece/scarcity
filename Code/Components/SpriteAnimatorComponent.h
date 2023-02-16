@@ -6,20 +6,14 @@
 
 struct SpriteAnimatorComponent
 {
-	std::unordered_map<std::string, SpriteAnimation*> animations;
-	std::string currentAnimationName;
+	FiniteStateMachine *fsm;
 
-	SpriteAnimatorComponent(std::string currentAnimationName, std::unordered_map<std::string, SpriteAnimation*> animations)
-		: currentAnimationName(currentAnimationName)
-		, animations(animations)
+	SpriteAnimatorComponent(FiniteStateMachine *fsm)
+		: fsm(fsm)
 	{}
 
 	~SpriteAnimatorComponent()
 	{
-		for (auto anime : animations)
-		{
-			delete anime.second;
-		}
-		animations.clear();
+		delete fsm;
 	}
 };

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../AI/StateMachine.h"
+#include "../Core/FiniteStateMachine.h"
 
 struct AIComponent
 {
-	StateMachine stateMachine;
+	FiniteStateMachine stateMachine;
 
 	AIComponent(Entity entity)
 		: stateMachine(entity)

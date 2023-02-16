@@ -70,7 +70,7 @@
     <ClCompile Include="Code\UIs\UIListItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\AI\StateMachine.cpp">
+    <ClCompile Include="Code\Core\FiniteStateMachine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Rendering\FontSystem.cpp">
@@ -133,6 +133,9 @@
     <ClCompile Include="Code\Scenes\EditorScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Core\Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="code\core\Camera.h">
@@ -180,13 +183,13 @@
     <ClInclude Include="Code\UIs\UIText.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\AI\AIState.h">
+    <ClInclude Include="Code\Core\FSMState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\AI\AITransition.h">
+    <ClInclude Include="Code\Core\FSMTransition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\AI\StateMachine.h">
+    <ClInclude Include="Code\Core\FiniteStateMachine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="code\systems\PlayerSystem.h">
@@ -355,6 +358,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Components\SpriteAnimatorComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Animations\AnimationState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Core\Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\FSM\EqualTransition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Core\Value.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

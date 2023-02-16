@@ -9,6 +9,7 @@
 #include "../Components/CircleCollider2DComponent.h"
 #include "../Components/SpriteAnimatorComponent.h"
 #include "../Game/Car.h"
+#include "../Animations/AnimationState.h"
 
 class LevelScene : public Scene
 {
@@ -33,18 +34,29 @@ public:
 		auto spriteView = m_manager.m_registry.view<SpriteAnimatorComponent>();
 		for (auto [entity, animator] : spriteView.each())
 		{
+			if (Input::IsKeyHeld(Key::Left) || Input::IsKeyHeld(Key::Right))
+			{
+				animator.fsm->SetBool("walking", true);
+			}
+			else
+			{
+				animator.fsm->SetBool("walking", false);
+			}
+
 			if (Input::IsKeyPressed(Key::A))
 			{
 				std::cout << "Pressed A" << std::endl;
-				animator.currentAnimationName = "Attack";
+				animator.fsm->SetInt("attacking", 1);
+				//animator.fsm->SetTrigger("attacking", 1);
+				//animator.currentAnimationName = "Attack";
 			}
 			else if (Input::IsKeyPressed(Key::S))
 			{
 				std::cout << "Pressed S" << std::endl;
-				animator.currentAnimationName = "Idle";
+				animator.fsm->SetInt("attacking", 0);
+				//animator.currentAnimationName = "Idle";
 			}
 		}
-
 
 		/*
 		if (Input::IsKeyPressed(GLFW_KEY_F))
@@ -75,6 +87,8 @@ public:
 		auto spriteView = m_manager.m_registry.view<SpriteAnimatorComponent>();
 		for (auto [entity, animator] : spriteView.each())
 		{
+			animator.fsm->Process();
+			/*
 			SpriteAnimation *sprite = animator.animations[animator.currentAnimationName];
 			sprite->timer += deltaTime;
 
@@ -87,6 +101,7 @@ public:
 
 				sprite->timer = 0;
 			}
+			*/
 		}
 
 		if (particleActive)
@@ -114,17 +129,21 @@ public:
 		auto view1 = m_manager.m_registry.view<Collider2DComponent, SpriteAnimatorComponent>();
 		for (auto [entity, collider, animator] : view1.each())
 		{
-			SpriteAnimation *spriteAnim = animator.animations[animator.currentAnimationName];
-			int x = spriteAnim->positions[spriteAnim->currentFrame].x;
-			int y = spriteAnim->positions[spriteAnim->currentFrame].y;
+			AnimationState* animState = (AnimationState*)animator.fsm->GetCurrentState();
 
-			glm::vec2 grid{ x, y };
+			if (animState != nullptr)
+			{
+				SpriteAnimation& spriteAnim = animState->GetSpriteAnimation();
 
-			Sprite sprite(&(spriteAnim->texture), spriteAnim->size, grid);
+				//SpriteAnimation *spriteAnim = animator.animations[animator.currentAnimationName];
+				int x = spriteAnim.positions[spriteAnim.currentFrame].x;
+				int y = spriteAnim.positions[spriteAnim.currentFrame].y;
 
-			b2Vec2 position = collider.body->GetPosition();
-
-			Renderer::DrawSprite(sprite, glm::vec2{ position.x, position.y }, glm::vec2{ spriteAnim->scale, spriteAnim->scale }, m_camera);
+				glm::vec2 grid{ x, y };
+				Sprite sprite(&(spriteAnim.texture), spriteAnim.size, grid);
+				b2Vec2 position = collider.body->GetPosition();
+				Renderer::DrawSprite(sprite, glm::vec2{ position.x, position.y }, glm::vec2{ spriteAnim.scale, spriteAnim.scale }, m_camera);
+			}
 		}
 
 		glDisable(GL_BLEND);

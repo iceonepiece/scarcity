@@ -136,7 +136,7 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Code\AI\StateMachine.cpp" />
+    <ClCompile Include="Code\Core\FiniteStateMachine.cpp" />
     <ClCompile Include="Code\Audio\Audio.cpp" />
     <ClCompile Include="code\core\Camera.cpp" />
     <ClCompile Include="code\core\EntityManager.cpp" />
@@ -144,6 +144,7 @@
     <ClCompile Include="Code\Core\GUI.cpp" />
     <ClCompile Include="Code\Core\GUIComponent.cpp" />
     <ClCompile Include="Code\Core\LevelManager.cpp" />
+    <ClCompile Include="Code\Core\Timer.cpp" />
     <ClCompile Include="Code\Input\Input.cpp" />
     <ClCompile Include="code\core\ParticleSystem.cpp" />
     <ClCompile Include="Code\Core\Random.cpp" />
@@ -170,9 +171,11 @@
     <ClCompile Include="Code\Core\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\AI\AIState.h" />
-    <ClInclude Include="Code\AI\AITransition.h" />
-    <ClInclude Include="Code\AI\StateMachine.h" />
+    <ClInclude Include="Code\Core\Value.h" />
+    <ClInclude Include="Code\Core\FSMState.h" />
+    <ClInclude Include="Code\Core\FSMTransition.h" />
+    <ClInclude Include="Code\Core\FiniteStateMachine.h" />
+    <ClInclude Include="Code\Animations\AnimationState.h" />
     <ClInclude Include="Code\Audio\Audio.h" />
     <ClInclude Include="Code\Audio\Wav.h" />
     <ClInclude Include="Code\Components\AIComponent.h" />
@@ -186,6 +189,7 @@
     <ClInclude Include="code\core\EntityManager.h" />
     <ClInclude Include="Code\Core\Sprite.h" />
     <ClInclude Include="Code\Core\SpriteAnimation.h" />
+    <ClInclude Include="Code\Core\Timer.h" />
     <ClInclude Include="Code\Events\Event.h" />
     <ClInclude Include="code\core\Game.h" />
     <ClInclude Include="Code\Core\GameState.h" />
@@ -197,6 +201,7 @@
     <ClInclude Include="Code\Editor\InspectorWindow.h" />
     <ClInclude Include="Code\Events\MouseEvent.h" />
     <ClInclude Include="Code\External\stb_image.h" />
+    <ClInclude Include="Code\FSM\EqualTransition.h" />
     <ClInclude Include="Code\Input\Input.h" />
     <ClInclude Include="code\core\ParticleSystem.h" />
     <ClInclude Include="Code\Core\Random.h" />
