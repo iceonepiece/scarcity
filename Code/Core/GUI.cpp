@@ -1,8 +1,9 @@
 #include "GUI.h"
-#include "Game.h"
+#include "GameApplication.h"
+#include <iostream>
 
-GUI::GUI(Game* game)
-    : m_game(game)
+GUI::GUI(EditorApplication* editor)
+    : m_editor(editor)
 {
 }
 

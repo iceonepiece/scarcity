@@ -7,12 +7,12 @@
 #include "GUIComponent.h"
 #include "../Events/Event.h"
 
-class Game;
+class EditorApplication;
 
 class GUI
 {
 public:
-  GUI(Game* game);
+  GUI(EditorApplication* editor);
   ~GUI();
 
   void Init(GLFWwindow* window, const char* glslVersion);
@@ -26,8 +26,8 @@ public:
   bool BlockEvent(Event* e);
 
 private:
-  Game* m_game;
-  std::vector<GUIComponent*> m_components;
-
-  friend class GUIComponent;
+	EditorApplication* m_editor;
+	std::vector<GUIComponent*> m_components;
+	
+	friend class GUIComponent;
 };

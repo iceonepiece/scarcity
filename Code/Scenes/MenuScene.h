@@ -14,7 +14,7 @@ typedef void(*ActionFn)();
 class MenuScene : public Scene
 {
 public:
-	MenuScene(Game* game)
+	MenuScene(GameApplication* game)
 		: Scene(game)
 	{
 		m_gameStates.emplace("menu", new MenuState(this));
@@ -29,7 +29,7 @@ public:
 		
 
 		UIListItem* startItem = new UIListItem(list->position, "Start Game", glm::vec2(5, 5));
-		startItem->actionFunction = ([&]() { m_game->ChangeScene("intro");  });
+		startItem->actionFunction = ([&]() { m_game->ChangeScene("level1");  });
 		list->AddItem(startItem);
 
 		list->AddItem(new UIListItem(list->position, "Options", glm::vec2(5, 5)));

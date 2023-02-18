@@ -12,7 +12,7 @@
 class IntroScene : public Scene
 {
 public:
-	IntroScene(Game* game)
+	IntroScene(GameApplication* game)
 		: Scene(game)
 	{
 		m_gameStates.emplace("menu", new MenuState(this));

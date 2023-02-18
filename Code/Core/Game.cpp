@@ -97,10 +97,12 @@ void Game::ChangeScene(std::string sceneName)
 
 void Game::Init()
 {
+    /*
     m_scenes.insert({ "editor", new EditorScene(this) });
     m_scenes.insert({ "menu", new MenuScene(this) });
     m_scenes.insert({ "intro", new Level1(this)});
-    ChangeScene("intro");
+    ChangeScene("editor");
+    */
     
     for (auto& [name, scene] : m_scenes)
     {

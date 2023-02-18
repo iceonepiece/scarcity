@@ -5,7 +5,7 @@
 #include "../Editor/EntitiesWindow.h"
 #include "../Editor/InspectorWindow.h"
 
-EditorScene::EditorScene(Game* game)
+EditorScene::EditorScene(GameApplication* game)
 	: Scene(game)
 	, m_gui(game)
 	, m_editorMouse(this)
@@ -20,7 +20,7 @@ EditorScene::~EditorScene()
 
 void EditorScene::Init()
 {
-	m_gui.Init(m_game->GetWindow(), "#version 330");
+	//m_gui.Init(m_game->GetWindow(), "#version 330");
 
 	EntitiesWindow* entitiesWindow = new EntitiesWindow(&m_gui, this);
 	m_gui.AddComponent(entitiesWindow);

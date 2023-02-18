@@ -19,7 +19,7 @@
 class Level1 : public LevelScene
 {
 public:
-	Level1(Game* game)
+	Level1(GameApplication* game)
 		: LevelScene(game)
 	{
 	}

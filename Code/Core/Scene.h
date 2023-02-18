@@ -5,6 +5,7 @@
 #include "../Physics/Physics.h"
 #include "../Input/Input.h"
 #include "../UIs/UI.h"
+#include "GameApplication.h"
 #include "../Events/Event.h"
 
 class System;
@@ -13,7 +14,7 @@ class GameState;
 class Scene
 {
 public:
-	Scene(Game* game);
+	Scene(GameApplication* game);
 	virtual ~Scene();
 
 	virtual void Init();
@@ -42,7 +43,7 @@ public:
 	bool particleActive = true;
 
 	std::vector<System*> m_systems;
-	Game* m_game;
+	GameApplication* m_game;
 	Camera m_camera;
 	Physics m_physics;
 	EntityManager m_manager;

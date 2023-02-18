@@ -7,7 +7,7 @@
 class EditorScene : public Scene
 {
 public:
-	EditorScene(Game* game);
+	EditorScene(GameApplication* game);
 	virtual ~EditorScene();
 
 	virtual void Init() override;
