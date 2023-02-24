@@ -11,6 +11,7 @@
 #include "../Input/KeyCodes.h"
 #include "../Audio/Audio.h"
 #include "../Events/MouseEvent.h"
+#include "../Graphics/OpenGLRenderer.h"
 #include "Timer.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -66,6 +67,7 @@ Game::Game(int width, int height)
     FontSystem::Init();
     Input::Init();
     Audio::Init();
+    RendererAPI::Initialize(new OpenGLRenderer());
 }
 
 Game::~Game()
@@ -77,6 +79,7 @@ Game::~Game()
     m_scenes.clear();
 
     Audio::Destroy();
+    RendererAPI::Terminate();
 
     glfwDestroyWindow(m_window);
     glfwTerminate();
@@ -168,6 +171,7 @@ void Game::Render()
     int yOffset = (m_height - height) / 2;
 
     Renderer::SetScreenSize(width, height, xOffset, yOffset);
+    RendererAPI::SetScreenSize(width, height, xOffset, yOffset);
     
     glViewport(xOffset, yOffset, width, height);
 
@@ -178,6 +182,8 @@ void Game::Render()
 
     m_scenes[m_currentSceneName]->Render();
     m_scenes[m_currentSceneName]->RenderUI();
+
+    
 
     glfwSwapBuffers(m_window);
 }

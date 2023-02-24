@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Core/Scene.h"
-#include "../Rendering/Renderer.h"
+#include "../Graphics/Renderer.h"
 #include "../Components/Collider2DComponent.h"
 
 class LevelEditorScene : public Scene

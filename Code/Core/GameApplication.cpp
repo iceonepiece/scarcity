@@ -1,13 +1,13 @@
 #include "GameApplication.h"
 #include "Timer.h"
 #include "../Audio/Audio.h"
-#include "../Rendering/Renderer.h"
+#include "../Graphics/Renderer.h"
 #include "ResourceManager.h"
 #include "Scene.h"
 #include "../Scenes/MenuScene.h"
 #include "../Scenes/Level1.h"
 #include "OpenGLWindow.h"
-
+#include "../Graphics/OpenGLRenderer.h"
 
 GameApplication::GameApplication()
 {
@@ -19,6 +19,8 @@ GameApplication::~GameApplication()
         delete scene.second;
     m_scenes.clear();
 
+    RendererAPI::Terminate();
+
     delete m_window;
 }
 
@@ -27,6 +29,7 @@ void GameApplication::Initialize()
     m_window = new OpenGLWindow(1280, 720);
 
     Renderer::Init();
+    RendererAPI::Initialize(new OpenGLRenderer());
     ParticleSystem::Init();
     FontSystem::Init();
     Input::Init();
@@ -71,7 +74,7 @@ void GameApplication::ProcessInput()
 {
     m_window->ProcessInput();
 
-    if (m_window->WindowShouldClose() || Input::IsKeyPressed(Key::Escape))
+    if (m_window->WindowShouldClose())
         m_running = false;
 
     m_scenes[m_currentSceneName]->ProcessInput();

@@ -10,6 +10,7 @@
 #include "../Components/SpriteAnimatorComponent.h"
 #include "../Game/Car.h"
 #include "../Animations/AnimationState.h"
+#include "../Graphics/RendererAPI.h"
 
 class LevelScene : public Scene
 {
@@ -34,6 +35,7 @@ public:
 		auto spriteView = m_manager.m_registry.view<SpriteAnimatorComponent>();
 		for (auto [entity, animator] : spriteView.each())
 		{
+			
 			if (Input::IsKeyHeld(Key::Left) || Input::IsKeyHeld(Key::Right))
 			{
 				animator.fsm->SetBool("walking", true);
@@ -53,8 +55,12 @@ public:
 			else if (Input::IsKeyPressed(Key::S))
 			{
 				std::cout << "Pressed S" << std::endl;
-				animator.fsm->SetInt("attacking", 0);
+				//animator.fsm->SetInt("attacking", 0);
 				//animator.currentAnimationName = "Idle";
+			}
+			else
+			{
+				animator.fsm->SetInt("attacking", 0);
 			}
 		}
 
@@ -117,6 +123,8 @@ public:
 
 	virtual void Render() override
 	{
+		Renderer& renderer = RendererAPI::GetRenderer();
+
 		auto view = m_manager.m_registry.view<Collider2DComponent>();
 		for (auto [entity, collider] : view.each())
 		{
@@ -142,7 +150,15 @@ public:
 				glm::vec2 grid{ x, y };
 				Sprite sprite(&(spriteAnim.texture), spriteAnim.size, grid);
 				b2Vec2 position = collider.body->GetPosition();
-				Renderer::DrawSprite(sprite, glm::vec2{ position.x, position.y }, glm::vec2{ spriteAnim.scale, spriteAnim.scale }, m_camera);
+				//Renderer::DrawSprite(sprite, glm::vec2{ position.x, position.y }, glm::vec2{ spriteAnim.scale, spriteAnim.scale }, m_camera);
+				
+				glm::mat4 model{ 1 };
+				model = glm::translate(model, glm::vec3{ position.x, position.y, 0 });
+
+				glm::vec2 ratio = sprite.GetRatio();
+				model = glm::scale(model, glm::vec3{ spriteAnim.scale * ratio.x, spriteAnim.scale * ratio.y, 1 });
+				
+				renderer.Draw(sprite, model, m_camera);
 			}
 		}
 

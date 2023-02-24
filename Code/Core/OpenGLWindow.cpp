@@ -1,6 +1,7 @@
 #include <iostream>
 #include "OpenGLWindow.h"
-#include "../Rendering/Renderer.h"
+#include "../Graphics/Renderer.h"
+#include "../Graphics/RendererAPI.h"
 #include "../Input/Input.h"
 
 OpenGLWindow::OpenGLWindow(int width, int height)
@@ -61,6 +62,7 @@ void OpenGLWindow::PreRender()
     int yOffset = (m_height - height) / 2;
 
     Renderer::SetScreenSize(width, height, xOffset, yOffset);
+    RendererAPI::SetScreenSize(width, height, xOffset, yOffset);
 
     glViewport(xOffset, yOffset, width, height);
 

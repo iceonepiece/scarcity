@@ -6,7 +6,7 @@
 
 #include "Texture.h"
 #include "ParticleSystem.h"
-#include "../Rendering/Shader.h"
+#include "../Graphics/Shader.h"
 
 class ResourceManager
 {

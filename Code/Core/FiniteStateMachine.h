@@ -34,10 +34,12 @@ public:
     T GetValue(std::string name);
 
     FSMState* GetCurrentState();
+    FSMState* GetAnyState();
 
 protected:
-    FSMState* m_currentState;
+    FSMState *m_anyState;
+    FSMState *m_currentState;
     std::unordered_map<std::string, Value*> m_values;
     std::unordered_map<std::string, FSMState*> m_states;
-    Entity entity;
+    Entity m_entity;
 };

@@ -1,6 +1,6 @@
 #include "UIListItem.h"
 #include "UIList.h"
-#include "../Rendering/Renderer.h"
+#include "../Graphics/Renderer.h"
 
 UIListItem::UIListItem(glm::vec2 position, std::string text, glm::vec2 padding)
 	: UIComponent(position)

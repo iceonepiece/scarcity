@@ -3,19 +3,22 @@
 #include "FSMTransition.h"
 
 FiniteStateMachine::FiniteStateMachine(Entity entity)
-    : entity(entity)
+    : m_entity(entity)
     , m_currentState(nullptr)
+    , m_anyState(new FSMState())
 {
+
 }
 
 FiniteStateMachine::~FiniteStateMachine()
 {
-    std::cout << "~FiniteStateMachine" << std::endl;
     for (auto& i : m_states)
     {
         delete i.second;
     }
     m_states.clear();
+
+    delete m_anyState;
 
     for (auto& i : m_values)
     {
@@ -60,7 +63,13 @@ void FiniteStateMachine::AddState(std::string name, FSMState* state)
 
 void FiniteStateMachine::SetCurrentState(FSMState *state)
 {
-    std::cout << "ChangeState to " << std::endl;
+    for (auto& s : m_states)
+    {
+        if (s.second == state)
+        {
+            std::cout << "Change State to " << s.first << std::endl;
+        }
+    }
 
     if (m_currentState != nullptr)
         m_currentState->OnExit();
@@ -73,20 +82,24 @@ void FiniteStateMachine::SetCurrentState(FSMState *state)
 
 void FiniteStateMachine::Process()
 {
-    if (m_currentState !=  nullptr)
+
+    if (m_currentState != nullptr)
     {
-        std::vector<FSMTransition*> transitions = m_currentState->GetTransitions();
+        std::vector<FSMTransition*> transitions = m_anyState->GetTransitions();
+        std::vector<FSMTransition*> currentTransitions = m_currentState->GetTransitions();
+
+        transitions.insert(transitions.end(), currentTransitions.begin(), currentTransitions.end());
 
         for (auto t : transitions)
         {
-            if (t->CheckConditions(entity, this))
+            if (t->CheckConditions(m_entity, this))
             {
                 SetCurrentState(t->GetNextState());
                 break;
             }
         }
 
-        m_currentState->Process(entity, this);
+        m_currentState->Process(m_entity, this);
     }
 }
 
@@ -95,10 +108,16 @@ FSMState* FiniteStateMachine::GetCurrentState()
     return m_currentState;
 }
 
+FSMState* FiniteStateMachine::GetAnyState()
+{
+    return m_anyState;
+}
+
 void FiniteStateMachine::AddValue(std::string name, Value* value)
 {
     m_values[name] = value;
 }
+
 
 template<typename T>
 T FiniteStateMachine::GetValue(std::string name)

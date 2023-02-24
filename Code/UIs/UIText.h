@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 #include "UIComponent.h"
 
-#include "../Rendering/FontSystem.h"
+#include "../Graphics/FontSystem.h"
 
 class UIText : public UIComponent
 {

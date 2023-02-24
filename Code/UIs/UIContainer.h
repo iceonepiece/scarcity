@@ -1,7 +1,7 @@
 #pragma once
 
 #include "UIComponent.h"
-#include "../Rendering/Renderer.h"
+#include "../Graphics/Renderer.h"
 
 class UIContainer : public UIComponent
 {

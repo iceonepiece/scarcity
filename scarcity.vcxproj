@@ -289,6 +289,8 @@
     <ClCompile Include="Code\Editor\ImGuiComponent.cpp" />
     <ClCompile Include="Code\Editor\ImGuiLayer.cpp" />
     <ClCompile Include="Code\Editor\SceneLayer.cpp" />
+    <ClCompile Include="Code\Graphics\OpenGLRenderer.cpp" />
+    <ClCompile Include="Code\Graphics\RendererAPI.cpp" />
     <ClCompile Include="Code\Input\Input.cpp" />
     <ClCompile Include="code\core\ParticleSystem.cpp" />
     <ClCompile Include="Code\Core\Random.cpp" />
@@ -297,9 +299,9 @@
     <ClCompile Include="Code\Core\ScriptManager.cpp" />
     <ClCompile Include="code\Main.cpp" />
     <ClCompile Include="Code\Physics\Physics.cpp" />
-    <ClCompile Include="Code\Rendering\FontSystem.cpp" />
-    <ClCompile Include="Code\Rendering\Renderer.cpp" />
-    <ClCompile Include="Code\Rendering\Shader.cpp" />
+    <ClCompile Include="Code\Graphics\FontSystem.cpp" />
+    <ClCompile Include="Code\Graphics\Renderer.cpp" />
+    <ClCompile Include="Code\Graphics\Shader.cpp" />
     <ClCompile Include="Code\UIs\UI.cpp" />
     <ClCompile Include="Code\UIs\UIList.cpp" />
     <ClCompile Include="Code\UIs\UIListItem.cpp" />
@@ -354,6 +356,7 @@
     <ClInclude Include="Code\Editor\SceneLayer.h" />
     <ClInclude Include="Code\Events\Event.h" />
     <ClInclude Include="Code\Events\MouseEvent.h" />
+    <ClInclude Include="Code\FSM\AnimationDoneTransition.h" />
     <ClInclude Include="Code\FSM\EqualTransition.h" />
     <ClInclude Include="Code\Input\Input.h" />
     <ClInclude Include="code\core\ParticleSystem.h" />
@@ -374,10 +377,11 @@
     <ClInclude Include="Code\Physics\Physics.h" />
     <ClInclude Include="Code\Physics\PlayerFixtureData.h" />
     <ClInclude Include="Code\Prefabs\Projectile.h" />
-    <ClInclude Include="Code\Rendering\FontSystem.h" />
-    <ClInclude Include="Code\Rendering\OpenGLRenderer.h" />
-    <ClInclude Include="Code\Rendering\Renderer.h" />
-    <ClInclude Include="Code\Rendering\Shader.h" />
+    <ClInclude Include="Code\Graphics\FontSystem.h" />
+    <ClInclude Include="Code\Graphics\OpenGLRenderer.h" />
+    <ClInclude Include="Code\Graphics\Renderer.h" />
+    <ClInclude Include="Code\Graphics\RendererAPI.h" />
+    <ClInclude Include="Code\Graphics\Shader.h" />
     <ClInclude Include="Code\Scenes\IntroScene.h" />
     <ClInclude Include="Code\Scenes\Level1.h" />
     <ClInclude Include="Code\Scenes\LevelEditorScene.h" />

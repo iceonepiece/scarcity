@@ -14,6 +14,7 @@
 #include "../UIs/UIContainer.h"
 #include "../Animations/AnimationState.h"
 #include "../FSM/EqualTransition.h"
+#include "../FSM/AnimationDoneTransition.h"
 #include "../Core/Value.h"
 
 class Level1 : public LevelScene
@@ -63,11 +64,13 @@ public:
 		});
 
 		FSMTransition* startAttack = new EqualTransition<int>("attacking", 1);
-		FSMTransition* endAttack = new EqualTransition<int>("attacking", 0);
+		FSMTransition* endAttack = new AnimationDoneTransition();
 		FSMTransition* startWalk = new EqualTransition<bool>("walking", true);
 		FSMTransition* endWalk = new EqualTransition<bool>("walking", false);
 
-		idleState->AddTransition(startAttack, attackState);
+		FSMState *anyState = fsm->GetAnyState();
+
+		anyState->AddTransition(startAttack, attackState);
 		idleState->AddTransition(startWalk, walkState);
 		attackState->AddTransition(endAttack, idleState);
 		walkState->AddTransition(endWalk, idleState);

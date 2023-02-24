@@ -13,6 +13,11 @@ public:
 
 	}
 
+	virtual void OnEnter(FiniteStateMachine* stateMachine) override
+	{
+		m_done = false;
+	}
+
 	virtual void Process(Entity entity, FiniteStateMachine* stateMachine) override
 	{
 		m_spriteAnimation.timer += Timer::GetDeltaTime();
@@ -22,7 +27,10 @@ public:
 			m_spriteAnimation.currentFrame += 1;
 
 			if (m_spriteAnimation.currentFrame == m_spriteAnimation.positions.size())
+			{
+				m_done = true;
 				m_spriteAnimation.currentFrame = 0;
+			}
 
 			m_spriteAnimation.timer = 0;
 		}
@@ -33,7 +41,12 @@ public:
 		return m_spriteAnimation;
 	}
 
+	bool IsDone()
+	{
+		return m_done;
+	}
+
 protected:
 	SpriteAnimation m_spriteAnimation;
-
+	bool m_done = false;
 };
