@@ -7,6 +7,7 @@
 
 #include "ImGuiComponent.h"
 #include "../Events/Event.h"
+#include "../Core/EntityManager.h"
 
 class ImGuiLayer
 {
@@ -22,7 +23,9 @@ public:
 	void AddComponent(ImGuiComponent* component);
 
 	bool BlockEvent(Event* e);
+	EntityManager& GetEntityManager();
 
 protected:
 	std::vector<ImGuiComponent*> m_components;
+	EntityManager m_manager;
 };

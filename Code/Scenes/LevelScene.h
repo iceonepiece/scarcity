@@ -14,7 +14,7 @@
 class LevelScene : public Scene
 {
 public:
-	LevelScene(GameApplication* game)
+	LevelScene(Application* game)
 		: Scene(game)
 		, m_car(&(m_physics.m_world))
 	{

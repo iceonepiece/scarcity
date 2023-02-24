@@ -8,13 +8,13 @@ class ImGuiLayer;
 class ImGuiComponent
 {
 public:
-	ImGuiComponent(ImGuiLayer* gui);
 	virtual ~ImGuiComponent();
 	virtual void Draw() = 0;
 
+	void SetImGuiLayer(ImGuiLayer* layer);
 	void AddChild(ImGuiComponent* component);
 
 protected:
-	ImGuiLayer* m_gui;
+	ImGuiLayer* m_gui = nullptr;
 	std::vector<ImGuiComponent*> m_children;
 };

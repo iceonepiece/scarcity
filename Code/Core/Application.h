@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include "Window.h"
 
 class Application
@@ -9,6 +10,8 @@ public:
 
 	virtual void Initialize() = 0;
 	virtual void Run() = 0;
+
+	virtual void ChangeScene(std::string name) {}
 
 protected:
 	virtual void ProcessInput() = 0;

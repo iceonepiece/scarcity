@@ -5,7 +5,7 @@
 #include "../Editor/EntitiesWindow.h"
 #include "../Editor/InspectorWindow.h"
 
-EditorScene::EditorScene(GameApplication* game)
+EditorScene::EditorScene(Application* game)
 	: Scene(game)
 	, m_gui(game)
 	, m_editorMouse(this)

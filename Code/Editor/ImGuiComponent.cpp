@@ -2,11 +2,6 @@
 #include "ImGuiLayer.h"
 #include <iostream>
 
-ImGuiComponent::ImGuiComponent(ImGuiLayer* gui)
-    : m_gui(gui)
-{
-}
-
 ImGuiComponent::~ImGuiComponent()
 {
     std::cout << "ImGuiComponent Destructor" << std::endl;
@@ -15,6 +10,11 @@ ImGuiComponent::~ImGuiComponent()
         delete child;
     }
     m_children.clear();
+}
+
+void ImGuiComponent::SetImGuiLayer(ImGuiLayer* layer)
+{
+    m_gui = layer;
 }
 
 void ImGuiComponent::AddChild(ImGuiComponent* component)

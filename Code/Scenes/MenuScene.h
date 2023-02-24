@@ -14,7 +14,7 @@ typedef void(*ActionFn)();
 class MenuScene : public Scene
 {
 public:
-	MenuScene(GameApplication* game)
+	MenuScene(Application* game)
 		: Scene(game)
 	{
 		m_gameStates.emplace("menu", new MenuState(this));

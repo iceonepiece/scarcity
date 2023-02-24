@@ -47,6 +47,7 @@ void ImGuiLayer::Destroy()
 
 void ImGuiLayer::AddComponent(ImGuiComponent *component)
 {
+    component->SetImGuiLayer(this);
     m_components.push_back(component);
 }
 
@@ -71,4 +72,9 @@ void ImGuiLayer::NewFrame()
 void ImGuiLayer::Draw()
 {
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+EntityManager& ImGuiLayer::GetEntityManager()
+{
+    return m_manager;
 }

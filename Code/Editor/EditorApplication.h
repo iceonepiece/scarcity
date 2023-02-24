@@ -4,10 +4,12 @@
 #include "../Core/Application.h"
 #include "../Scenes/EditorScene.h"
 #include "ImGuiLayer.h"
+#include "SceneLayer.h"
 
 class EditorApplication : public Application
 {
 public:
+	EditorApplication();
 	virtual ~EditorApplication();
 
 	virtual void Initialize() override;
@@ -19,4 +21,5 @@ protected:
 	virtual void Render() override;
 
 	ImGuiLayer m_imGuiLayer;
+	SceneLayer m_sceneLayer;
 };

@@ -64,7 +64,7 @@ void OpenGLWindow::PreRender()
 
     glViewport(xOffset, yOffset, width, height);
 
-    glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
