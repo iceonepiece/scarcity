@@ -12,6 +12,9 @@
 class Renderer
 {
 public:
+	virtual void Initialize() = 0;
+	virtual void Draw(Sprite& sprite, const glm::mat4& modelMatrix, Camera& camera) = 0;
+
   static void Init();
   static void DrawQuad(b2Body* body, Camera& camera);
   static void DrawCircle(b2Body* body, glm::vec4 color, Camera& camera);
