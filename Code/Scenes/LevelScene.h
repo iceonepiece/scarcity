@@ -19,7 +19,6 @@ public:
 		: Scene(game)
 		, m_car(&(m_physics.m_world))
 	{
-
 	}
 
 	virtual void ProcessInput() override
@@ -124,6 +123,7 @@ public:
 	virtual void Render() override
 	{
 		Renderer& renderer = RendererAPI::GetRenderer();
+		renderer.SetCamera(&m_camera);
 
 		auto view = m_manager.m_registry.view<Collider2DComponent>();
 		for (auto [entity, collider] : view.each())
@@ -169,6 +169,8 @@ public:
 		{
 			Renderer::DrawCircle(collider.body, glm::vec4(1, 1, 1, 1), m_camera);
 		}
+
+		renderer.DrawLine(glm::vec3{ -5, -5, 0 }, glm::vec3{5, 5, 0 }, glm::vec4(1.0f, 0.5f, 0.5f, 1.0f));
 
 		m_car.Render(m_camera);
 

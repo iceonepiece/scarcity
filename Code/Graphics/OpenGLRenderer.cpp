@@ -16,13 +16,13 @@ void OpenGLRenderer::Initialize()
         -0.5f,   0.5f,   0.0f,   1.0f
     };
 
-    glGenVertexArrays(1, &m_VAO);
-    glGenBuffers(1, &m_VBO);
+    glGenVertexArrays(1, &m_quadVAO);
+    glGenBuffers(1, &m_quadVBO);
 
-    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_quadVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glBindVertexArray(m_VAO);
+    glBindVertexArray(m_quadVAO);
 
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -30,15 +30,37 @@ void OpenGLRenderer::Initialize()
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
+    // setup line
+    m_lineVAO = 0;
+    m_lineVBO = 0;
+
+    glGenVertexArrays(1, &m_lineVAO);
+    glGenBuffers(1, &m_lineVBO);
+
+    glBindVertexArray(m_lineVAO);
+
+    float line[] = {
+        0.0f, 0.0f,
+        0.0f, 0.0f
+    };
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_lineVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(line), line, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    
+    // clear
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    m_basicShader.Compile("Code/Shaders/basic.vert", "Code/Shaders/basic.frag");
     m_spriteShader.Compile("Code/Shaders/texture.vert", "Code/Shaders/texture.frag");
 }
 
 void OpenGLRenderer::Draw(Sprite& sprite, const glm::mat4& modelMatrix, Camera& camera)
 {
-    
+
     m_spriteShader.Use();
 
     glm::mat4 view = glm::mat4(1.0f);
@@ -70,9 +92,39 @@ void OpenGLRenderer::Draw(Sprite& sprite, const glm::mat4& modelMatrix, Camera& 
        -0.5f,  0.5f,   left,   top
     };
 
-    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBindVertexArray(m_quadVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_quadVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glBindVertexArray(m_VAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+
+void OpenGLRenderer::DrawLine(const glm::vec3& v1, const glm::vec3& v2, const glm::vec4& color)
+{
+    m_basicShader.Use();
+
+    glm::mat4 projection = glm::mat4(1.0f);
+    glm::vec2 screenSize = RendererAPI::GetScreenSize();
+    projection = glm::perspective(glm::radians(45.0f), screenSize.x / screenSize.y, 0.1f, 100.0f);
+
+    m_basicShader.SetMatrix4("model", glm::mat4(1));
+
+    glm::mat4 view = glm::mat4(1.0f);
+    if (m_camera != nullptr)
+        view = m_camera->GetViewMatrix();
+
+    m_basicShader.SetMatrix4("view", view);
+    m_basicShader.SetMatrix4("projection", projection);
+    m_basicShader.SetVector4f("color", color);
+
+    glBindVertexArray(m_lineVAO);
+
+    float line[] = {
+        v1.x, v1.y,
+        v2.x, v2.y
+    };
+    glBindBuffer(GL_ARRAY_BUFFER, m_lineVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(line), line, GL_STATIC_DRAW);
+
+    glDrawArrays(GL_LINES, 0, 2);
 }

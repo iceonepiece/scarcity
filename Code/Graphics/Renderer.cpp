@@ -12,6 +12,11 @@ Shader Renderer::s_uiShader;
 Shader Renderer::s_circleShader;
 Shader Renderer::s_textureShader;
 
+void Renderer::SetCamera(Camera *camera)
+{
+    m_camera = camera;
+}
+
 void Renderer::SetScreenSize(int width, int height, int xOffset, int yOffset)
 {
     s_screenSize.x = width;

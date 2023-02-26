@@ -38,6 +38,11 @@ glm::vec2 Camera::GetScreenSize()
   return m_screenSize;
 }
 
+glm::mat4 Camera::GetViewMatrix()
+{
+    return glm::translate(glm::mat4(1.0f), m_position);
+}
+
 void Camera::SetPosition(glm::vec3 position)
 {
   m_position = position;

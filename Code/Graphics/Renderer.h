@@ -14,6 +14,9 @@ class Renderer
 public:
 	virtual void Initialize() = 0;
 	virtual void Draw(Sprite& sprite, const glm::mat4& modelMatrix, Camera& camera) = 0;
+	virtual void DrawLine(const glm::vec3& v1, const glm::vec3& v2, const glm::vec4& color = glm::vec4(1)) = 0;
+	
+	void SetCamera(Camera* camera);
 
   static void Init();
   static void DrawQuad(b2Body* body, Camera& camera);
@@ -25,7 +28,9 @@ public:
   static glm::vec2 GetScreenSize();
   static float GetScreenSizePercentage();
 
-private:
+protected:
+	Camera *m_camera;
+
   static unsigned int m_VBO, m_VAO;
   static Shader s_basicShader;
   static Shader s_uiShader;

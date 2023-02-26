@@ -2,6 +2,7 @@
 
 #include <box2d/box2d.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
 class Camera
@@ -12,6 +13,7 @@ public:
 	void Update();
 	glm::vec3 GetPosition();
 	glm::vec2 GetScreenSize();
+	glm::mat4 GetViewMatrix();
 	void SetPosition(glm::vec3 position);
 	void SetScreenSize(glm::vec2 screenSize);
 	void SetBody(b2Body* body);
