@@ -11,9 +11,9 @@ public:
 	Camera(glm::vec3 position, glm::vec2 boxSize, glm::vec2 screenSize);
 	
 	void Update();
-	glm::vec3 GetPosition();
-	glm::vec2 GetScreenSize();
-	glm::mat4 GetViewMatrix();
+	glm::vec3 GetPosition() const;
+	glm::vec2 GetScreenSize() const;
+	glm::mat4 GetViewMatrix() const;
 	void SetPosition(glm::vec3 position);
 	void SetScreenSize(glm::vec2 screenSize);
 	void SetBody(b2Body* body);

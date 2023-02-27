@@ -28,17 +28,17 @@ void Camera::Update()
   }
 }
 
-glm::vec3 Camera::GetPosition()
+glm::vec3 Camera::GetPosition() const
 {
   return m_position;
 }
 
-glm::vec2 Camera::GetScreenSize()
+glm::vec2 Camera::GetScreenSize() const
 {
   return m_screenSize;
 }
 
-glm::mat4 Camera::GetViewMatrix()
+glm::mat4 Camera::GetViewMatrix() const
 {
     return glm::translate(glm::mat4(1.0f), m_position);
 }
