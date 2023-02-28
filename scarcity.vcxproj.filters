@@ -2025,6 +2025,15 @@
     <ClInclude Include="Code\FSM\AnimationDoneTransition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Code\Scenes\LuaScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Systems\AnimationSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Components\TransformComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />

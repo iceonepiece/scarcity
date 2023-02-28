@@ -40,6 +40,8 @@ void Scene::ProcessInput()
 
 void Scene::Update(float deltaTime)
 {
+    for (auto system : m_systems)
+        system->Update(deltaTime);
 }
 
 void Scene::Render()

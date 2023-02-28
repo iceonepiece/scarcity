@@ -7,6 +7,7 @@
 #include "../Components/CircleCollider2DComponent.h"
 #include "../Components/PlayerComponent.h"
 #include "../Components/SpriteAnimatorComponent.h"
+#include "../Components/TransformComponent.h"
 #include "../Physics/PlayerFixtureData.h"
 #include "../UIs/UIText.h"
 #include "../UIs/UIList.h"
@@ -16,6 +17,7 @@
 #include "../FSM/EqualTransition.h"
 #include "../FSM/AnimationDoneTransition.h"
 #include "../Core/Value.h"
+#include "../Systems/AnimationSystem.h"
 
 class Level1 : public LevelScene
 {
@@ -33,6 +35,7 @@ public:
 
 		auto player = m_manager.CreateEntity();
 		b2Body* playerBody = m_physics.CreateBodyWithFixture(b2Vec2{ 0, 8 }, b2Vec2{ 0.5, 1.2 }, new PlayerFixtureData(player), true);
+		player.AddComponent<TransformComponent>();
 		player.AddComponent<Collider2DComponent>(playerBody);
 		player.AddComponent<PlayerComponent>();
 	
@@ -104,6 +107,9 @@ public:
 
 		PlayerSystem* playerSystem = new PlayerSystem(this);
 		m_systems.emplace_back(playerSystem);
+
+		AnimationSystem* animSystem = new AnimationSystem(this);
+		m_systems.emplace_back(animSystem);
 
 		m_gameStates.emplace("running", new RunningState(this));
 		m_gameStates.emplace("paused", new PausedState(this, playerSystem, pausedMenuModal));

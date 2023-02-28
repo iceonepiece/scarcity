@@ -4,6 +4,7 @@
 #include "../Core/System.h"
 #include "../Components/PlayerComponent.h"
 #include "../Components/Collider2DComponent.h"
+#include "../Components/TransformComponent.h"
 #include "../Prefabs/Projectile.h"
 
 class PlayerSystem : public System
@@ -15,11 +16,11 @@ public:
 
     }
 
-    virtual void ProcessInput(entt::registry& registry) override
+    virtual void ProcessInput() override
     {
-        auto view = registry.view<PlayerComponent>();
+        auto view = m_registry.view<TransformComponent, PlayerComponent>();
 
-        for (auto [entity, player]: view.each())
+        for (auto [entity, transform, player]: view.each())
         {
             player.movementState = MS_IDLE;
             player.jump = false;
@@ -33,10 +34,10 @@ public:
             if (Input::IsKeyPressed(Key::Space))
                 player.jump = true;
 
-            if ((player.direction == 1 && player.movementState == MS_LEFT) ||
-                (player.direction == -1 && player.movementState == MS_RIGHT))
+            if ((player.direction == 1 && player.movementState == MS_LEFT) || (player.direction == -1 && player.movementState == MS_RIGHT))
             {
                 player.direction *= -1;
+                transform.scale.x = player.direction;
             }
         }
     }
@@ -98,9 +99,9 @@ public:
             body->ApplyLinearImpulse(b2Vec2(0, player.PLAYER_JUMP_FORCE), body->GetWorldCenter(), true);
     }
 
-    virtual void Update(float deltaTime, entt::registry& registry) override
+    virtual void Update(float deltaTime) override
     {
-        auto view = registry.view<PlayerComponent, Collider2DComponent>();
+        auto view = m_registry.view<PlayerComponent, Collider2DComponent>();
 
         for (auto [entity, player, collider] : view.each())
         {
@@ -115,8 +116,8 @@ public:
 
                 b2Vec2 position = body->GetPosition();
                 
-                auto projectile = scene->m_manager.CreateEntity();
-                Projectile(projectile, scene, position, 0.25, 0.25, player.direction * 10);
+                auto projectile = m_scene->m_manager.CreateEntity();
+                Projectile(projectile, m_scene, position, 0.25, 0.25, player.direction * 10);
             }
 
             if (Input::IsKeyPressed(Key::Z))
@@ -131,5 +132,10 @@ public:
             }
 
         }
+    }
+
+    virtual void Render() override
+    {
+
     }
 };

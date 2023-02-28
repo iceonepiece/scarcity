@@ -26,41 +26,7 @@ public:
 		for (System* system : m_systems)
 		{
 			if (system->active)
-			{
-				system->ProcessInput(m_manager.m_registry);
-			}
-		}
-
-		auto spriteView = m_manager.m_registry.view<SpriteAnimatorComponent>();
-		for (auto [entity, animator] : spriteView.each())
-		{
-			
-			if (Input::IsKeyHeld(Key::Left) || Input::IsKeyHeld(Key::Right))
-			{
-				animator.fsm->SetBool("walking", true);
-			}
-			else
-			{
-				animator.fsm->SetBool("walking", false);
-			}
-
-			if (Input::IsKeyPressed(Key::A))
-			{
-				std::cout << "Pressed A" << std::endl;
-				animator.fsm->SetInt("attacking", 1);
-				//animator.fsm->SetTrigger("attacking", 1);
-				//animator.currentAnimationName = "Attack";
-			}
-			else if (Input::IsKeyPressed(Key::S))
-			{
-				std::cout << "Pressed S" << std::endl;
-				//animator.fsm->SetInt("attacking", 0);
-				//animator.currentAnimationName = "Idle";
-			}
-			else
-			{
-				animator.fsm->SetInt("attacking", 0);
-			}
+				system->ProcessInput();
 		}
 
 		/*
@@ -84,29 +50,7 @@ public:
 		for (System* system : m_systems)
 		{
 			if (system->active)
-			{
-				system->Update(deltaTime, m_manager.m_registry);
-			}
-		}
-
-		auto spriteView = m_manager.m_registry.view<SpriteAnimatorComponent>();
-		for (auto [entity, animator] : spriteView.each())
-		{
-			animator.fsm->Process();
-			/*
-			SpriteAnimation *sprite = animator.animations[animator.currentAnimationName];
-			sprite->timer += deltaTime;
-
-			if (sprite->timer > sprite->frameSpeed)
-			{
-				sprite->currentFrame += 1;
-
-				if (sprite->currentFrame == sprite->positions.size())
-					sprite->currentFrame = 0;
-
-				sprite->timer = 0;
-			}
-			*/
+				system->Update(deltaTime);
 		}
 
 		if (particleActive)
@@ -131,39 +75,12 @@ public:
 			//Renderer::DrawQuad(collider.body, m_camera);
 			renderer.DrawRect(collider.body, m_camera);
 		}
-
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		auto view1 = m_manager.m_registry.view<Collider2DComponent, SpriteAnimatorComponent>();
-		for (auto [entity, collider, animator] : view1.each())
+		
+		for (auto system : m_systems)
 		{
-			AnimationState* animState = (AnimationState*)animator.fsm->GetCurrentState();
-
-			if (animState != nullptr)
-			{
-				SpriteAnimation& spriteAnim = animState->GetSpriteAnimation();
-
-				//SpriteAnimation *spriteAnim = animator.animations[animator.currentAnimationName];
-				int x = spriteAnim.positions[spriteAnim.currentFrame].x;
-				int y = spriteAnim.positions[spriteAnim.currentFrame].y;
-
-				glm::vec2 grid{ x, y };
-				Sprite sprite(&(spriteAnim.texture), spriteAnim.size, grid);
-				b2Vec2 position = collider.body->GetPosition();
-				//Renderer::DrawSprite(sprite, glm::vec2{ position.x, position.y }, glm::vec2{ spriteAnim.scale, spriteAnim.scale }, m_camera);
-				
-				glm::mat4 model{ 1 };
-				model = glm::translate(model, glm::vec3{ position.x, position.y, 0 });
-
-				glm::vec2 ratio = sprite.GetRatio();
-				model = glm::scale(model, glm::vec3{ spriteAnim.scale * ratio.x, spriteAnim.scale * ratio.y, 1 });
-				
-				renderer.Draw(sprite, model, m_camera);
-			}
+			if (system->active)
+				system->Render();
 		}
-
-		glDisable(GL_BLEND);
 
 		auto view2 = m_manager.m_registry.view<CircleCollider2DComponent>();
 		for (auto [entity, collider] : view2.each())

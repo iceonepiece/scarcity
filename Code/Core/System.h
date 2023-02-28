@@ -6,15 +6,18 @@ class System
 {
 public:
 	System(Scene *scene)
-		: scene(scene)
+		: m_scene(scene)
+		, m_registry(scene->GetEntityManager().m_registry)
 	{
 	}
 
-	virtual void ProcessInput(entt::registry& registry) = 0;
-	virtual void Update(float deltaTime, entt::registry& registry) = 0;
+	virtual void ProcessInput() = 0;
+	virtual void Update(float deltaTime) = 0;
+	virtual void Render() = 0;
 
 	bool active = true;
 
 protected:
-	Scene *scene;
+	Scene *m_scene;
+	entt::registry& m_registry;
 };

@@ -58,13 +58,13 @@ void OpenGLRenderer::Initialize()
     m_spriteShader.Compile("Code/Shaders/texture.vert", "Code/Shaders/texture.frag");
 }
 
-void OpenGLRenderer::Draw(Sprite& sprite, const glm::mat4& modelMatrix, const Camera& camera)
+void OpenGLRenderer::Draw(Sprite& sprite, const glm::mat4& modelMatrix)
 {
 
     m_spriteShader.Use();
 
     glm::mat4 view = glm::mat4(1.0f);
-    view = glm::translate(view, camera.GetPosition());
+    view = glm::translate(view, m_camera->GetPosition());
   
     glm::mat4 projection = glm::mat4(1.0f);
     glm::vec2 screenSize = RendererAPI::GetScreenSize();

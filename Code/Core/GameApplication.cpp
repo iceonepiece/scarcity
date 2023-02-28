@@ -6,6 +6,7 @@
 #include "Scene.h"
 #include "../Scenes/MenuScene.h"
 #include "../Scenes/Level1.h"
+#include "../Scenes/LuaScene.h"
 #include "OpenGLWindow.h"
 #include "../Graphics/OpenGLRenderer.h"
 
@@ -42,9 +43,10 @@ void GameApplication::Initialize()
 
 void GameApplication::LoadScenes()
 {
-    m_scenes.insert({ "menu", new MenuScene(this) });
+    //m_scenes.insert({ "menu", new MenuScene(this) });
     m_scenes.insert({ "level1", new Level1(this) });
-    ChangeScene("menu");
+    //m_scenes.insert({ "lua", new LuaScene(this) });
+    ChangeScene("level1");
 
     for (auto& [name, scene] : m_scenes)
         scene->Init();

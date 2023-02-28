@@ -48,7 +48,7 @@ public:
 		{
 			if (system->active)
 			{
-				system->ProcessInput(m_manager.m_registry);
+				system->ProcessInput();
 			}
 		}
 	}
@@ -64,7 +64,7 @@ public:
 		{
 			if (system->active)
 			{
-				system->Update(deltaTime, m_manager.m_registry);
+				system->Update(deltaTime);
 			}
 		}
 

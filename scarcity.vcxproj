@@ -317,6 +317,7 @@
     <ClCompile Include="External\Include\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\Components\TransformComponent.h" />
     <ClInclude Include="Code\Core\Application.h" />
     <ClInclude Include="Code\Editor\Components\ImGuiWindow.h" />
     <ClInclude Include="Code\Editor\EditorApplication.h" />
@@ -386,8 +387,10 @@
     <ClInclude Include="Code\Scenes\Level1.h" />
     <ClInclude Include="Code\Scenes\LevelEditorScene.h" />
     <ClInclude Include="Code\Scenes\LevelScene.h" />
+    <ClInclude Include="Code\Scenes\LuaScene.h" />
     <ClInclude Include="Code\Scenes\MenuScene.h" />
     <ClInclude Include="code\systems\PlayerSystem.h" />
+    <ClInclude Include="Code\Systems\AnimationSystem.h" />
     <ClInclude Include="Code\UIs\UIContainer.h" />
     <ClInclude Include="Code\UIs\UI.h" />
     <ClInclude Include="Code\UIs\UIComponent.h" />
