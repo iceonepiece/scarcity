@@ -9,20 +9,18 @@ class FixtureData
 public:
 	static FixtureData* GetFixtureData(b2Fixture* fixture)
 	{
-	  b2FixtureUserData fixtureUserData = fixture->GetUserData();
-	  FixtureData* fixtureData = (FixtureData*)fixtureUserData.pointer;
-	  return fixtureData;
+		b2FixtureUserData fixtureUserData = fixture->GetUserData();
+		FixtureData* fixtureData = (FixtureData*)fixtureUserData.pointer;
+		return fixtureData;
 	}
 
 	FixtureData(Entity entity, std::string tag = "")
-    : m_entity(entity)
-    , m_tag(tag)
-  {
-  }
-
-	virtual ~FixtureData()
+		: m_entity(entity)
+		, m_tag(tag)
 	{
 	}
+
+	virtual ~FixtureData() = default;
 
 	virtual void BeginContact(FixtureData* other, b2Contact* contact, bool isA) {}
 	virtual void EndContact(FixtureData* other, b2Contact* contact, bool isA) {}

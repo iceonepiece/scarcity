@@ -375,6 +375,7 @@
     <ClInclude Include="Code\Input\MouseCodes.h" />
     <ClInclude Include="Code\Physics\ContactListener.h" />
     <ClInclude Include="Code\Physics\FixtureData.h" />
+    <ClInclude Include="Code\Physics\NullFixtureData.h" />
     <ClInclude Include="Code\Physics\Physics.h" />
     <ClInclude Include="Code\Physics\PlayerFixtureData.h" />
     <ClInclude Include="Code\Prefabs\Projectile.h" />

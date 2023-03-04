@@ -1,11 +1,17 @@
 #include "Physics.h"
+#include "../Physics/NullFixtureData.h"
 
 Physics::Physics()
 	: m_world(b2Vec2(0.0f, -18.0f))
 	, m_velocityIterations(6)
 	, m_positionIterations(2)
 {
-  m_world.SetContactListener(&m_contactListener);
+	m_world.SetContactListener(&m_contactListener);
+	
+	m_maskMap[None] = None;
+	m_maskMap[Player] = Platform;
+	m_maskMap[Enemy] = Platform;
+	m_maskMap[Platform] = Player | Enemy;
 }
 
 Physics::~Physics()
@@ -99,7 +105,7 @@ b2Body* Physics::CreateStaticBox(b2Vec2 position, b2Vec2 size, float angle, Fixt
 	return body;
 }
 
-b2Body* Physics::CreateBodyWithFixture(b2Vec2 position, b2Vec2 size, FixtureData* fixtureData, bool isDynamic, bool isSensor)
+b2Body* Physics::CreateBodyWithFixture(b2Vec2 position, b2Vec2 size, FixtureData* fixtureData, bool isDynamic, bool isSensor, PhysicsLayer layer)
 {
 	b2BodyDef bodyDef;
 	bodyDef.position.Set(position.x, position.y);
@@ -125,8 +131,9 @@ b2Body* Physics::CreateBodyWithFixture(b2Vec2 position, b2Vec2 size, FixtureData
 	fixtureDef.density = isSensor ? 0.0f : 1.0f;
 	fixtureDef.friction = 0.0f;
 	fixtureDef.isSensor = isSensor;
+	fixtureDef.filter.categoryBits = layer;
+	fixtureDef.filter.maskBits = m_maskMap[layer];
 	
-
 	if (fixtureData)
 	{
 		m_fixtureDatum.push_back(fixtureData);
@@ -138,7 +145,7 @@ b2Body* Physics::CreateBodyWithFixture(b2Vec2 position, b2Vec2 size, FixtureData
 	return body;
 }
 
-b2Body* Physics::CreateBoxBody(float x, float y, float width, float height, bool isDynamic, bool isSensor, float gravityScale)
+b2Body* Physics::CreateBoxBody(Entity& entity, float x, float y, float width, float height, bool isDynamic, bool isSensor, float gravityScale)
 {
 	b2BodyDef bodyDef;
 	bodyDef.position.Set(x, y);
@@ -163,6 +170,10 @@ b2Body* Physics::CreateBoxBody(float x, float y, float width, float height, bool
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.0f;
 	fixtureDef.isSensor = isSensor;
+
+	FixtureData* fixtureData = new NullFixtureData(entity);
+	m_fixtureDatum.push_back(fixtureData);
+	fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
 
 	body->SetFixedRotation(true);
 	body->CreateFixture(&fixtureDef);

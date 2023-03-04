@@ -12,7 +12,7 @@ public:
 
 	virtual void BeginContact(FixtureData* otherFixtureData, b2Contact* contact, bool isA)
 	{
-        if (otherFixtureData && otherFixtureData->m_tag == "PLATFORM")
+        if (otherFixtureData->m_tag == "PLATFORM")
         {
             b2WorldManifold worldManifold;
             contact->GetWorldManifold(&worldManifold);
@@ -26,6 +26,13 @@ public:
                 player->groundFixtures.emplace_back(otherFixtureData);
             }
         }
+        else if (otherFixtureData->m_tag == "ENEMY")
+        {
+            std::cout << "Collided with an enemey" << std::endl;
+            auto player = m_entity.GetComponent<PlayerComponent>();
+            player->health -= 1;
+        }
+
 	}
 
 	virtual void EndContact(FixtureData* otherFixtureData, b2Contact* contact, bool isA)
@@ -49,9 +56,9 @@ public:
 
     virtual void PreSolve(FixtureData* other, b2Contact* contact, const b2Manifold* oldManifold, bool isA)
 	{
-		if (other && other->m_tag == "ENEMY")
+		if (other->m_tag == "ENEMY")
 		{
-			contact->SetEnabled(false);
+			//contact->SetEnabled(false);
 		}
 	}
 };

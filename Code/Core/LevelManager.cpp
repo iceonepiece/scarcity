@@ -19,7 +19,7 @@ void LevelManager::LoadLevel(Scene* scene, std::string filePath)
         auto platform = scene->m_manager.CreateEntity();
         b2Vec2 position { node["x"], node["y"]};
         b2Vec2 size { node["width"], node["height"] };
-        b2Body* body = scene->m_physics.CreateBodyWithFixture(position, size, new FixtureData(platform, "PLATFORM"));
+        b2Body* body = scene->m_physics.CreateBodyWithFixture(position, size, new FixtureData(platform, "PLATFORM"), false, false, PhysicsLayer::Platform);
         platform.AddComponent<Collider2DComponent>(body);
     }
 }

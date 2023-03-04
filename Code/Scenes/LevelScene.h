@@ -17,7 +17,6 @@ class LevelScene : public Scene
 public:
 	LevelScene(Application* game)
 		: Scene(game)
-		, m_car(&(m_physics.m_world))
 	{
 	}
 
@@ -66,6 +65,7 @@ public:
 
 	virtual void Render() override
 	{
+
 		Renderer& renderer = RendererAPI::GetRenderer();
 		renderer.SetCamera(&m_camera);
 
@@ -90,13 +90,8 @@ public:
 
 		renderer.DrawLine(glm::vec3{ -5, -5, 0 }, glm::vec3{5, 5, 0 }, glm::vec4(1.0f, 0.5f, 0.5f, 1.0f));
 
-		m_car.Render(m_camera);
-
 		ParticleSystem::Render(m_camera);
 
 		//Renderer::DrawCircle(glm::vec2(-8, 0), 4, glm::vec4(0.7, 0.2, 0.5, 1), m_camera);
 	}
-
-protected:
-	Car m_car;
 };

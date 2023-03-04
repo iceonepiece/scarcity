@@ -22,6 +22,7 @@ struct PlayerComponent
     int numGrounds;
     std::vector<FixtureData*> groundFixtures;
     int direction;
+    int health;
 
     PlayerComponent()
         : movementState(MS_IDLE)
@@ -29,6 +30,7 @@ struct PlayerComponent
         , attack(false)
         , numGrounds(0)
         , direction(1)
+        , health(5)
     {
     }
 };

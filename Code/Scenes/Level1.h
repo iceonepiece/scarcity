@@ -34,7 +34,7 @@ public:
 		ResourceManager::LoadTexture("heroKnight", "Assets/Images/HeroKnight.png", true);
 
 		auto player = m_manager.CreateEntity();
-		b2Body* playerBody = m_physics.CreateBodyWithFixture(b2Vec2{ 0, 8 }, b2Vec2{ 0.5, 1.2 }, new PlayerFixtureData(player), true);
+		b2Body* playerBody = m_physics.CreateBodyWithFixture(b2Vec2{ 0, 8 }, b2Vec2{ 0.5, 1.2 }, new PlayerFixtureData(player), true, false, PhysicsLayer::Player);
 		player.AddComponent<TransformComponent>();
 		player.AddComponent<Collider2DComponent>(playerBody);
 		player.AddComponent<PlayerComponent>();
@@ -94,12 +94,11 @@ public:
 
 		m_camera.SetBody(player.GetComponent<Collider2DComponent>()->body);
 
-		/*
 		auto enemy = m_manager.CreateEntity();
-		b2Body* enemyBody = m_physics.CreateBodyWithFixture(b2Vec2{ 1, 8 }, b2Vec2{ 0.5, 1.5 }, new FixtureData(enemy, "ENEMY"), true);
+		b2Body* enemyBody = m_physics.CreateBodyWithFixture(b2Vec2{ 1, 8 }, b2Vec2{ 0.5, 1.5 }, new FixtureData(enemy, "ENEMY"), true, false, PhysicsLayer::Enemy);
+		enemy.AddComponent<TransformComponent>();
 		enemy.AddComponent<Collider2DComponent>(enemyBody);
 		enemy.AddComponent<AIComponent>(enemy);
-		*/
 
 		UIContainer* pausedMenuModal = new UIContainer(glm::vec2(0, 0), glm::vec2(400, 240), glm::vec4(1, 1, 1, 0.5));
 		pausedMenuModal->SetAligment(UIAlignment::CENTER);
