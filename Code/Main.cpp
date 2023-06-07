@@ -6,6 +6,9 @@
 #include "Editor/EditorApplication.h"
 #include "Core/GameApplication.h"
 
+#include "Scenes/MenuScene.h"
+#include "Scenes/Level1.h"
+
 int main()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -17,7 +20,13 @@ int main()
 	*/
 	
 	GameApplication game;
-	game.Initialize();
+
+	game.AddScene("menu", new MenuScene(&game));
+	game.AddScene("level1", new Level1(&game));
+
+	game.Initialize("Scarcity", 1280, 720);
+	game.ChangeScene("menu");
+
 	game.Run();
 
 	//_CrtDumpMemoryLeaks();

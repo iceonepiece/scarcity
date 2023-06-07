@@ -89,7 +89,7 @@ void ParticleSystem::Render(Camera& camera)
 
 		float life = particle.lifeRemaining / particle.lifeTime;
 		glm::vec4 color = glm::lerp(particle.colorEnd, particle.colorBegin, life);
-		//color.a = color.a * life;
+		color.a = color.a * life;
 
 		float size = glm::lerp(particle.sizeEnd, particle.sizeBegin, life);
 

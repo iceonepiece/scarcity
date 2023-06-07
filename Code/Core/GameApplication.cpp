@@ -16,18 +16,12 @@ GameApplication::GameApplication()
 
 GameApplication::~GameApplication()
 {
-    for (auto& scene : m_scenes)
-        delete scene.second;
-    m_scenes.clear();
-
     RendererAPI::Terminate();
-
-    delete m_window;
 }
 
-void GameApplication::Initialize()
+void GameApplication::Initialize(std::string title, int width, int height)
 {
-    m_window = new OpenGLWindow(1280, 720);
+    m_window = std::make_unique<OpenGLWindow>(title, width, height);
 
     Renderer::Init();
     RendererAPI::Initialize(new OpenGLRenderer());
@@ -41,13 +35,13 @@ void GameApplication::Initialize()
     LoadScenes();
 }
 
+void GameApplication::AddScene(std::string name, Scene *scene)
+{
+    m_scenes.insert({ name, std::unique_ptr<Scene>(scene) });
+}
+
 void GameApplication::LoadScenes()
 {
-    //m_scenes.insert({ "menu", new MenuScene(this) });
-    m_scenes.insert({ "level1", new Level1(this) });
-    //m_scenes.insert({ "lua", new LuaScene(this) });
-    ChangeScene("level1");
-
     for (auto& [name, scene] : m_scenes)
         scene->Init();
 }
@@ -91,7 +85,7 @@ void GameApplication::Render()
 {
     m_window->PreRender();
 
-    Renderer::DrawQuadUI(glm::vec2(0, 0), glm::vec2(2000, 2000), glm::vec4(0.15, 0.15, 0.15, 1), UIAlignment::CENTER);
+    Renderer::DrawQuadUI(glm::vec2(0, 0), glm::vec2(2000, 2000), glm::vec4(0.25, 0.25, 0.25, 1), UIAlignment::CENTER);
 
     m_scenes[m_currentSceneName]->Render();
     m_scenes[m_currentSceneName]->RenderUI();

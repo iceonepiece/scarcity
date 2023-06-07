@@ -4,8 +4,8 @@
 #include "../Graphics/RendererAPI.h"
 #include "../Input/Input.h"
 
-OpenGLWindow::OpenGLWindow(int width, int height)
-	: Window(width, height)
+OpenGLWindow::OpenGLWindow(std::string title, int width, int height)
+	: Window(title, width, height)
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -13,7 +13,7 @@ OpenGLWindow::OpenGLWindow(int width, int height)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    m_glfwWindow = glfwCreateWindow(m_width, m_height, "GLFW Window", NULL, NULL);
+    m_glfwWindow = glfwCreateWindow(m_width, m_height, m_title.c_str(), NULL, NULL);
     if (m_glfwWindow == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;

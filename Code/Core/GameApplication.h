@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <map>
 #include <string>
 #include "Application.h"
@@ -12,9 +13,10 @@ public:
 	GameApplication();
 	virtual ~GameApplication();
 
-	virtual void Initialize() override;
+	virtual void Initialize(std::string title, int width, int height) override;
 	virtual void Run() override;
 
+	void AddScene(std::string name, Scene *scene);
 	void ChangeScene(std::string sceneName);
 
 protected:
@@ -25,5 +27,5 @@ protected:
 	void LoadScenes();
 
 	std::string m_currentSceneName;
-	std::map<std::string, Scene*> m_scenes;
+	std::map<std::string, std::unique_ptr<Scene>> m_scenes;
 };

@@ -13,15 +13,14 @@ EditorApplication::EditorApplication()
 EditorApplication::~EditorApplication()
 {
     m_imGuiLayer.Destroy();
-	delete m_window;
 }
 
-void EditorApplication::Initialize()
+void EditorApplication::Initialize(std::string title, int width, int height)
 {
-    m_window = new OpenGLWindow(1280, 720);
+    m_window = std::make_unique<OpenGLWindow>(title, width, height);
 
-    OpenGLWindow* openGLWindow = (OpenGLWindow*)m_window;
-    m_imGuiLayer.Initialize(openGLWindow->GetGLFWwindow(), "#version 330");
+    if (OpenGLWindow *openGLWindow = dynamic_cast<OpenGLWindow*>(m_window.get()))
+        m_imGuiLayer.Initialize(openGLWindow->GetGLFWwindow(), "#version 330");
 
     EntityListWindow* entityListWindow = new EntityListWindow();
     m_imGuiLayer.AddComponent(entityListWindow);

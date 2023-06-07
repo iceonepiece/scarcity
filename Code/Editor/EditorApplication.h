@@ -12,7 +12,7 @@ public:
 	EditorApplication();
 	virtual ~EditorApplication();
 
-	virtual void Initialize() override;
+	virtual void Initialize(std::string title, int width, int height) override;
 	virtual void Run() override;
 
 protected:

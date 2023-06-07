@@ -1,6 +1,6 @@
 particles = {
   [0] = {
-    name = "fire",
+    name = "running",
     amount = 25,
     colorBegin = { r = 204 / 255.0, g = 212 / 255.0, b = 123 / 255.0, a = 1.0 },
   	colorEnd = { r = 204 / 255.0, g = 109 / 255.0, b = 41 / 255.0, a = 1.0 },
@@ -14,7 +14,7 @@ particles = {
   },
 
   [1] = {
-    name = "running",
+    name = "fire",
     amount = 1,
     colorBegin = { r = 1, g = 1, b = 1, a = 1.0 },
   	colorEnd = { r = 1, g = 1, b = 1, a = 1.0 },

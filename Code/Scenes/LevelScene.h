@@ -65,7 +65,6 @@ public:
 
 	virtual void Render() override
 	{
-
 		Renderer& renderer = RendererAPI::GetRenderer();
 		renderer.SetCamera(&m_camera);
 

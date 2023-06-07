@@ -5,7 +5,7 @@
 
 Scene::Scene(Application* game)
 	: m_game(game)
-	, m_camera(glm::vec3(0.0f, 0.0f, -16.0f), glm::vec2(0.5f, 0.25f), glm::vec2(1280, 720))
+	, m_camera(glm::vec3(0.0f, 0.0f, -14.0f), glm::vec2(0.5f, 0.25f), glm::vec2(1280, 720))
     , m_ui(this)
 {
 }

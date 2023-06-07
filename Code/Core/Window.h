@@ -1,10 +1,13 @@
 #pragma once
 
+#include <string>
+
 class Window
 {
 public:
-	Window(int width = 1280, int height = 720)
-		: m_width(width)
+	Window(std::string title, int width = 1280, int height = 720)
+		: m_title(title)
+		, m_width(width)
 		, m_height(height)
 		, m_ratio(width / (float)height)
 	{}
@@ -16,6 +19,7 @@ public:
 	virtual bool WindowShouldClose() = 0;
 
 protected:
+	std::string m_title;
 	int m_width;
 	int m_height;
 	float m_ratio;

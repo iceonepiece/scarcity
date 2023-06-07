@@ -8,7 +8,7 @@
 class OpenGLWindow : public Window
 {
 public:
-	OpenGLWindow(int width, int height);
+	OpenGLWindow(std::string title, int width, int height);
 	virtual ~OpenGLWindow();
 	
 	virtual void ProcessInput() override;

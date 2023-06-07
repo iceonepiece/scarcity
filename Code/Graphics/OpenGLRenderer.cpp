@@ -168,3 +168,8 @@ void OpenGLRenderer::DrawRect(b2Body* body, const Camera& camera)
     DrawLine(points[2], points[3], color);
     DrawLine(points[3], points[0], color);
 }
+
+void OpenGLRenderer::DrawCircle(const glm::vec2& position, float radius)
+{
+
+}
