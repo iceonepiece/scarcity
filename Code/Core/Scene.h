@@ -14,14 +14,17 @@ class GameState;
 class Scene
 {
 public:
-	Scene(Application* game);
+	Scene();
 	virtual ~Scene();
 
-	virtual void Init();
+	virtual void Initialize();
 	virtual void OnEvent(Event* e);
-	virtual void ProcessInput();
 	virtual void Update(float deltaTime);
 	virtual void Render();
+
+	virtual void Enter();
+	virtual void Exit();
+
 	void RenderUI();
 
 	template<typename T, typename... Args>
@@ -43,7 +46,7 @@ public:
 	bool particleActive = true;
 
 	std::vector<System*> m_systems;
-	Application* m_game;
+	Application *m_game;
 	Camera m_camera;
 	Physics m_physics;
 	EntityManager m_manager;

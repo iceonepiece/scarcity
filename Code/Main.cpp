@@ -8,6 +8,7 @@
 
 #include "Scenes/MenuScene.h"
 #include "Scenes/Level1.h"
+#include "Game/MyLevel.h"
 
 int main()
 {
@@ -20,11 +21,13 @@ int main()
 	*/
 	
 	GameApplication game;
-
-	game.AddScene("menu", new MenuScene(&game));
-	game.AddScene("level1", new Level1(&game));
-
 	game.Initialize("Scarcity", 1280, 720);
+
+	game.AddScene("menu", new MenuScene(game));
+	game.AddScene("level1", new MyLevel());
+	game.LoadScenes();
+
+
 	game.ChangeScene("menu");
 
 	game.Run();

@@ -41,7 +41,7 @@
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
@@ -70,7 +70,7 @@
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)\External\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\works\scarcity\Code;$(ProjectDir)\External\Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)\External\Library;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -106,6 +106,8 @@
     <ClCompile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
     </ClCompile>
     <Link>
       <AdditionalDependencies>glfw3.lib;box2d.lib;lua54.lib;freetype.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -272,19 +274,20 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\Core\ResourceAPI.cpp" />
     <ClCompile Include="Code\Editor\Components\EntityListWindow.cpp" />
     <ClCompile Include="Code\Editor\Components\InspectorWindow.cpp" />
     <ClCompile Include="Code\Editor\EditorApplication.cpp" />
     <ClCompile Include="Code\Core\FiniteStateMachine.cpp" />
     <ClCompile Include="Code\Audio\Audio.cpp" />
-    <ClCompile Include="code\core\Camera.cpp" />
-    <ClCompile Include="code\core\EntityManager.cpp" />
-    <ClCompile Include="code\core\Game.cpp" />
+    <ClCompile Include="Code\Core\Camera.cpp" />
+    <ClCompile Include="Code\Core\EntityManager.cpp" />
+    <ClCompile Include="Code\Core\Game.cpp" />
     <ClCompile Include="Code\Core\GameApplication.cpp" />
-    <ClCompile Include="Code\Core\GUI.cpp" />
-    <ClCompile Include="Code\Core\GUIComponent.cpp" />
+    <ClCompile Include="Code\GUIs\GUI.cpp" />
+    <ClCompile Include="Code\GUIs\GUIComponent.cpp" />
     <ClCompile Include="Code\Core\LevelManager.cpp" />
-    <ClCompile Include="Code\Core\OpenGLWindow.cpp" />
+    <ClCompile Include="Code\Platforms\OpenGLWindow.cpp" />
     <ClCompile Include="Code\Core\Timer.cpp" />
     <ClCompile Include="Code\Editor\ImGuiComponent.cpp" />
     <ClCompile Include="Code\Editor\ImGuiLayer.cpp" />
@@ -292,9 +295,8 @@
     <ClCompile Include="Code\Graphics\OpenGLRenderer.cpp" />
     <ClCompile Include="Code\Graphics\RendererAPI.cpp" />
     <ClCompile Include="Code\Input\Input.cpp" />
-    <ClCompile Include="code\core\ParticleSystem.cpp" />
+    <ClCompile Include="Code\Core\ParticleSystem.cpp" />
     <ClCompile Include="Code\Core\Random.cpp" />
-    <ClCompile Include="Code\Core\ResourceManager.cpp" />
     <ClCompile Include="Code\Core\Scene.cpp" />
     <ClCompile Include="Code\Core\ScriptManager.cpp" />
     <ClCompile Include="code\Main.cpp" />
@@ -305,7 +307,7 @@
     <ClCompile Include="Code\UIs\UI.cpp" />
     <ClCompile Include="Code\UIs\UIList.cpp" />
     <ClCompile Include="Code\UIs\UIListItem.cpp" />
-    <ClCompile Include="Code\Core\Texture.cpp" />
+    <ClCompile Include="Code\Platforms\OpenGLTexture.cpp" />
     <ClCompile Include="External\Include\glad\glad.c" />
     <ClCompile Include="External\Include\glm\detail\glm.cpp" />
     <ClCompile Include="External\Include\imgui\imgui.cpp" />
@@ -315,14 +317,22 @@
     <ClCompile Include="External\Include\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="External\Include\imgui\imgui_tables.cpp" />
     <ClCompile Include="External\Include\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Code\Platforms\OpenGLResourceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\Animations\Animation2D.h" />
+    <ClInclude Include="Code\Components\ScriptableComponent.h" />
     <ClInclude Include="Code\Components\TransformComponent.h" />
     <ClInclude Include="Code\Core\Application.h" />
+    <ClInclude Include="Code\Core\ResourceAPI.h" />
+    <ClInclude Include="Code\Core\Scriptable.h" />
     <ClInclude Include="Code\Editor\Components\ImGuiWindow.h" />
     <ClInclude Include="Code\Editor\EditorApplication.h" />
     <ClInclude Include="Code\Core\GameApplication.h" />
-    <ClInclude Include="Code\Core\OpenGLWindow.h" />
+    <ClInclude Include="Code\Game\MyLevel.h" />
+    <ClInclude Include="Code\Game\Player.h" />
+    <ClInclude Include="Code\Graphics\Texture.h" />
+    <ClInclude Include="Code\Platforms\OpenGLWindow.h" />
     <ClInclude Include="Code\Core\Value.h" />
     <ClInclude Include="Code\Core\FSMState.h" />
     <ClInclude Include="Code\Core\FSMTransition.h" />
@@ -336,17 +346,17 @@
     <ClInclude Include="code\components\PlayerComponent.h" />
     <ClInclude Include="Code\Components\ScriptComponent.h" />
     <ClInclude Include="Code\Components\SpriteAnimatorComponent.h" />
-    <ClInclude Include="code\core\Camera.h" />
-    <ClInclude Include="code\core\Entity.h" />
-    <ClInclude Include="code\core\EntityManager.h" />
-    <ClInclude Include="Code\Core\Sprite.h" />
-    <ClInclude Include="Code\Core\SpriteAnimation.h" />
+    <ClInclude Include="Code\Core\Camera.h" />
+    <ClInclude Include="Code\Core\Entity.h" />
+    <ClInclude Include="Code\Core\EntityManager.h" />
+    <ClInclude Include="Code\Animations\Sprite.h" />
+    <ClInclude Include="Code\Animations\SpriteAnimation.h" />
     <ClInclude Include="Code\Core\Timer.h" />
     <ClInclude Include="Code\Core\Window.h" />
-    <ClInclude Include="code\core\Game.h" />
+    <ClInclude Include="Code\Core\Game.h" />
     <ClInclude Include="Code\Core\GameState.h" />
-    <ClInclude Include="Code\Core\GUI.h" />
-    <ClInclude Include="Code\Core\GUIComponent.h" />
+    <ClInclude Include="Code\GUIs\GUI.h" />
+    <ClInclude Include="Code\GUIs\GUIComponent.h" />
     <ClInclude Include="Code\Core\LevelManager.h" />
     <ClInclude Include="Code\Editor\EditorMouse.h" />
     <ClInclude Include="Code\Editor\Components\EntityListWindow.h" />
@@ -360,7 +370,7 @@
     <ClInclude Include="Code\FSM\AnimationDoneTransition.h" />
     <ClInclude Include="Code\FSM\EqualTransition.h" />
     <ClInclude Include="Code\Input\Input.h" />
-    <ClInclude Include="code\core\ParticleSystem.h" />
+    <ClInclude Include="Code\Core\ParticleSystem.h" />
     <ClInclude Include="Code\Core\Random.h" />
     <ClInclude Include="Code\Core\ResourceManager.h" />
     <ClInclude Include="Code\Core\Scene.h" />
@@ -390,15 +400,17 @@
     <ClInclude Include="Code\Scenes\LevelScene.h" />
     <ClInclude Include="Code\Scenes\LuaScene.h" />
     <ClInclude Include="Code\Scenes\MenuScene.h" />
+    <ClInclude Include="Code\Systems\Collider2DSystem.h" />
     <ClInclude Include="code\systems\PlayerSystem.h" />
     <ClInclude Include="Code\Systems\AnimationSystem.h" />
+    <ClInclude Include="Code\Systems\ScriptableSystem.h" />
     <ClInclude Include="Code\UIs\UIContainer.h" />
     <ClInclude Include="Code\UIs\UI.h" />
     <ClInclude Include="Code\UIs\UIComponent.h" />
     <ClInclude Include="Code\UIs\UIList.h" />
     <ClInclude Include="Code\UIs\UIListItem.h" />
     <ClInclude Include="Code\UIs\UIText.h" />
-    <ClInclude Include="Code\Core\Texture.h" />
+    <ClInclude Include="Code\Platforms\OpenGLTexture.h" />
     <ClInclude Include="External\Include\AL\al.h" />
     <ClInclude Include="External\Include\AL\alc.h" />
     <ClInclude Include="External\Include\AL\alext.h" />
@@ -804,6 +816,7 @@
     <ClInclude Include="External\Include\sol\forward.hpp" />
     <ClInclude Include="External\Include\sol\sol.hpp" />
     <ClInclude Include="External\Include\stb_image.h" />
+    <ClInclude Include="Code\Platforms\OpenGLResourceManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />

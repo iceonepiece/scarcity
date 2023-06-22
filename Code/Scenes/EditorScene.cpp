@@ -5,7 +5,7 @@
 #include "../Editor/EntitiesWindow.h"
 #include "../Editor/InspectorWindow.h"
 
-EditorScene::EditorScene(Application* game)
+EditorScene::EditorScene(Application& game)
 	: Scene(game)
 	, m_gui(game)
 	, m_editorMouse(this)
@@ -33,11 +33,6 @@ void EditorScene::Init()
 	auto platform2 = m_manager.CreateEntity();
 	b2Body* body2 = m_physics.CreateBodyWithFixture(b2Vec2{ 3, 3 }, b2Vec2{ 1, 3 }, new FixtureData(platform2, "PLATFORM"));
 	platform2.AddComponent<Collider2DComponent>(body2);
-}
-
-void EditorScene::ProcessInput()
-{
-	
 }
 
 void EditorScene::OnEvent(Event* e)

@@ -1,22 +1,20 @@
-#include "ResourceManager.h"
+#include "OpenGLResourceManager.h"
+#include "OpenGLTexture.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-std::unordered_map<std::string, Texture> ResourceManager::s_textures;
-std::unordered_map<std::string, ParticleProps> ResourceManager::s_particles;
-
-Texture ResourceManager::LoadTexture(std::string name, const char* filename, bool alpha)
+Texture* OpenGLResourceManager::LoadTexture(std::string name, const char* filename, bool alpha)
 {
-    Texture texture;
-    texture.Generate(filename, alpha);
+    OpenGLTexture* texture = new OpenGLTexture();
+    texture->Generate(filename, alpha);
 
-    s_textures.emplace(name, texture);
+    m_textures.emplace(name, texture);
 
-    return s_textures[name];
+    return m_textures[name].get();
 }
 
-void ResourceManager::LoadParticles(std::string fileName)
+void OpenGLResourceManager::LoadParticles(std::string fileName)
 {
     sol::state luaState;
     luaState.script_file(fileName);
@@ -56,6 +54,6 @@ void ResourceManager::LoadParticles(std::string fileName)
         particleProps.velocityVariation = { node["velocityVariation"]["x"], node["velocityVariation"]["y"] };
         particleProps.position = { node["position"]["x"], node["position"]["y"] };
 
-        s_particles.emplace(node["name"], particleProps);
+        m_particles.emplace(node["name"], particleProps);
     }
 }

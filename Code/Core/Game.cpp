@@ -1,17 +1,17 @@
 #include "Game.h"
 
-#include "../Components/Collider2DComponent.h"
-#include "../Components/PlayerComponent.h"
-#include "../Systems/PlayerSystem.h"
-#include "../Scenes/Level1.h"
-#include "../Scenes/MenuScene.h"
-#include "../Scenes/IntroScene.h"
-#include "../Scenes/EditorScene.h"
-#include "../UIs/UIText.h"
-#include "../Input/KeyCodes.h"
-#include "../Audio/Audio.h"
-#include "../Events/MouseEvent.h"
-#include "../Graphics/OpenGLRenderer.h"
+#include "Components/Collider2DComponent.h"
+#include "Components/PlayerComponent.h"
+#include "Systems/PlayerSystem.h"
+#include "Scenes/Level1.h"
+#include "Scenes/MenuScene.h"
+#include "Scenes/IntroScene.h"
+#include "Scenes/EditorScene.h"
+#include "UIs/UIText.h"
+#include "Input/KeyCodes.h"
+#include "Audio/Audio.h"
+#include "Events/MouseEvent.h"
+#include "Graphics/OpenGLRenderer.h"
 #include "Timer.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -109,10 +109,10 @@ void Game::Init()
     
     for (auto& [name, scene] : m_scenes)
     {
-        scene->Init();
+        scene->Initialize();
     }
 
-    ResourceManager::LoadParticles("./Code/Scripts/particles.lua");
+    //ResourceAPI::LoadParticles("./Code/Scripts/particles.lua");
 }
 
 void Game::Run()
@@ -150,7 +150,6 @@ void Game::ProcessInput()
     if (Input::IsKeyPressed(Key::Escape))
         glfwSetWindowShouldClose(m_window, true);
 
-    m_scenes[m_currentSceneName]->ProcessInput();
 }
 
 void Game::Update()

@@ -3,6 +3,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "OpenGLRenderer.h"
+#include "../Platforms/OpenGLTexture.h"
 #include "RendererAPI.h"
 
 void OpenGLRenderer::Initialize()
@@ -75,7 +76,7 @@ void OpenGLRenderer::Draw(Sprite& sprite, const glm::mat4& modelMatrix)
     m_spriteShader.SetMatrix4("projection", projection);
 
     glActiveTexture(GL_TEXTURE0);
-    Texture* texture = sprite.GetTexture();
+    OpenGLTexture *texture = static_cast<OpenGLTexture*>(sprite.GetTexture());
     texture->Bind();
 
     float left = sprite.GetLeft();
@@ -133,19 +134,28 @@ void OpenGLRenderer::DrawRect(b2Body* body, const Camera& camera)
 {
     b2Vec2 position = body->GetPosition();
 
+ 
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
-    model = glm::rotate(model, body->GetAngle(), glm::vec3(0, 0, 1));
+
+    float posX = position.x;
+    float posY = position.y;
+    float width = 1;
+    float height = 1;
 
     b2Fixture* fixture = body->GetFixtureList();
     if (fixture)
     {
         b2PolygonShape* shape = (b2PolygonShape*)fixture->GetShape();
-        float width = shape->m_vertices[1].x - shape->m_vertices[0].x;
-        float height = shape->m_vertices[2].y - shape->m_vertices[0].y;
+        width = shape->m_vertices[1].x - shape->m_vertices[0].x;
+        height = shape->m_vertices[2].y - shape->m_vertices[0].y;
 
-        model = glm::scale(model, glm::vec3(width, height, 0.0f));
+        posX += shape->m_centroid.x;
+        posY += shape->m_centroid.y;
     }
+
+    model = glm::translate(model, glm::vec3(posX, posY, 0.0f));
+    model = glm::rotate(model, body->GetAngle(), glm::vec3(0, 0, 1));
+    model = glm::scale(model, glm::vec3(width, height, 0.0f));
 
     float vertices[4][3] = {
         {  0.5f,   0.5f,  0.0f },

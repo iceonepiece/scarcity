@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Core/FSMState.h"
-#include "../Core/SpriteAnimation.h"
+#include "SpriteAnimation.h"
 #include "../Core/Timer.h"
 
 class AnimationState : public FSMState
@@ -26,13 +26,14 @@ public:
 		{
 			m_spriteAnimation.currentFrame += 1;
 
-			if (m_spriteAnimation.currentFrame == m_spriteAnimation.positions.size())
+			//if (m_spriteAnimation.currentFrame == m_spriteAnimation.positions.size())
+			if (m_spriteAnimation.currentFrame == m_spriteAnimation.startFrame + m_spriteAnimation.maxFame)
 			{
 				m_done = true;
-				m_spriteAnimation.currentFrame = 0;
+				m_spriteAnimation.currentFrame = m_spriteAnimation.startFrame;
 			}
 
-			m_spriteAnimation.timer = 0;
+			m_spriteAnimation.timer = 0.0f;
 		}
 	}
 

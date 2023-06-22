@@ -1,8 +1,8 @@
 #pragma once
 
 #include <vector>
-#include "Sprite.h"
 
+/*
 class SpriteAnimation
 {
 public:
@@ -26,4 +26,18 @@ public:
 	{
 
 	}
+};
+*/
+
+struct SpriteAnimation
+{
+	Texture& texture;
+	int startFrame;
+	int maxFame;
+	int rows;
+	int cols;
+	float frameSpeed;
+	glm::vec2 scale { 1.0f, 1.0f };
+	int currentFrame = 0;
+	float timer = 0.0f;
 };

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <vector>
-#include "../Core/Sprite.h"
-#include "../Core/SpriteAnimation.h"
+#include "../Animations/Sprite.h"
+#include "../Animations/SpriteAnimation.h"
 
 struct SpriteAnimatorComponent
 {

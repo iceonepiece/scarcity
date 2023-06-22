@@ -6,8 +6,8 @@
 #include "Shader.h"
 #include "../Core/Camera.h"
 #include "../UIs/UI.h"
-#include "../Core/Texture.h"
-#include "../Core/Sprite.h"
+#include "../Graphics/Texture.h"
+#include "../Animations/Sprite.h"
 
 class Renderer
 {

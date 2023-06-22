@@ -6,6 +6,7 @@
 #include "../Components/Collider2DComponent.h"
 #include "../Components/TransformComponent.h"
 #include "../Prefabs/Projectile.h"
+#include "../Core/ResourceAPI.h"
 
 class PlayerSystem : public System
 {
@@ -14,32 +15,6 @@ public:
         : System(scene)
     {
 
-    }
-
-    virtual void ProcessInput() override
-    {
-        auto view = m_registry.view<TransformComponent, PlayerComponent>();
-
-        for (auto [entity, transform, player]: view.each())
-        {
-            player.movementState = MS_IDLE;
-            player.jump = false;
-
-            if (Input::IsKeyHeld(Key::Left))
-                player.movementState = MS_LEFT;
-
-            if (Input::IsKeyHeld(Key::Right))
-                player.movementState = MS_RIGHT;
-
-            if (Input::IsKeyPressed(Key::Space))
-                player.jump = true;
-
-            if ((player.direction == 1 && player.movementState == MS_LEFT) || (player.direction == -1 && player.movementState == MS_RIGHT))
-            {
-                player.direction *= -1;
-                transform.scale.x = player.direction;
-            }
-        }
     }
 
     void Move(PlayerComponent& player, b2Body *body, float deltaTime)
@@ -60,7 +35,7 @@ public:
 
         if (player.movementState == MS_LEFT || player.movementState == MS_RIGHT && !(desiredVelocity < 2 && desiredVelocity > -2))
         {
-            ParticleProps props = ResourceManager::s_particles["running"];
+            ParticleProps props = ResourceAPI::GetParticle("running");
             b2Vec2 position = body->GetPosition();
             props.position = { position.x, position.y - 0.8 };
             for (int i = 0; i < props.amount; i++)
@@ -101,9 +76,34 @@ public:
 
     virtual void Update(float deltaTime) override
     {
-        auto view = m_registry.view<PlayerComponent, Collider2DComponent>();
+        /*
+        auto view = m_registry.view<TransformComponent, PlayerComponent>();
 
-        for (auto [entity, player, collider] : view.each())
+        for (auto [entity, transform, player] : view.each())
+        {
+            player.movementState = MS_IDLE;
+            player.jump = false;
+
+            if (Input::IsKeyHeld(Key::Left))
+                player.movementState = MS_LEFT;
+
+            if (Input::IsKeyHeld(Key::Right))
+                player.movementState = MS_RIGHT;
+
+            if (Input::IsKeyPressed(Key::Space))
+                player.jump = true;
+
+            if ((player.direction == 1 && player.movementState == MS_LEFT) || (player.direction == -1 && player.movementState == MS_RIGHT))
+            {
+                player.direction *= -1;
+                transform.scale.x = player.direction;
+            }
+        }
+        */
+
+        auto view2 = m_registry.view<PlayerComponent, Collider2DComponent>();
+
+        for (auto [entity, player, collider] : view2.each())
         {
             b2Body* body = collider.body;
 

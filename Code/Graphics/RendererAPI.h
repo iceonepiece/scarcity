@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include "../Core/Sprite.h"
+#include "../Animations/Sprite.h"
 #include "../Core/Camera.h"
 #include "Renderer.h"
 

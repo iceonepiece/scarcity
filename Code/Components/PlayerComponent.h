@@ -11,10 +11,10 @@ enum MovementState
 
 struct PlayerComponent
 {
-    float PLAYER_MOVE_SPEED = 6.0f;
-    float PLAYER_MOVE_ACCELERATION = 16.0f;
-    float PLAYER_MOVE_DECELERATION = 23.0f;
-    float PLAYER_JUMP_FORCE = 7.5f;
+    float PLAYER_MOVE_SPEED = 3.25f;
+    float PLAYER_MOVE_ACCELERATION = 15.0f;
+    float PLAYER_MOVE_DECELERATION = 25.0f;
+    float PLAYER_JUMP_FORCE = 6.25f;
 
     MovementState movementState;
     bool jump;

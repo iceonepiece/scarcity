@@ -3,21 +3,30 @@
 #include <unordered_map>
 #include <string>
 #include <sol/sol.hpp>
+#include <memory>
 
-#include "Texture.h"
+#include "../Graphics/Texture.h"
 #include "ParticleSystem.h"
 #include "../Graphics/Shader.h"
 
 class ResourceManager
 {
 public:
-	static std::unordered_map<std::string, Texture> s_textures;
-	static std::unordered_map<std::string, ParticleProps> s_particles;
+	virtual Texture* LoadTexture(std::string name, const char* filename, bool alpha = false) = 0;
+	virtual void LoadParticles(std::string fileName) = 0;
 
-	static Texture LoadTexture(std::string name, const char* filename, bool alpha = false);
-	static void LoadParticles(std::string fileName);
+	
+	Texture& GetTexture(const std::string& name)
+	{
+		return *m_textures[name];
+	}
 
+	ParticleProps GetParticle(const std::string& name)
+	{
+		return m_particles[name];
+	}
 
-private:
-	ResourceManager() { std::cout << "ResourceManager constructor" << std::endl; }
+protected:
+	std::unordered_map<std::string, std::unique_ptr<Texture>> m_textures;
+	std::unordered_map<std::string, ParticleProps> m_particles;
 };

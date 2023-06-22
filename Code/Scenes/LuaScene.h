@@ -6,8 +6,7 @@
 class LuaScene : public Scene
 {
 public:
-	LuaScene(Application* game)
-		: Scene(game)
+	LuaScene(Application& game)
 	{
 
 	}

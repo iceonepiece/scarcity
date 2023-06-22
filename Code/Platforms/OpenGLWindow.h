@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "Window.h"
+#include "../Core/Window.h"
 
 class OpenGLWindow : public Window
 {

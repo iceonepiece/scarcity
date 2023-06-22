@@ -4,10 +4,13 @@ class Timer
 {
 public:
     static void Tick();
-	static float GetDeltaTime();
-
+	static double GetDeltaTime();
+    static void DisplayFPS();
 
 private:
-    static float m_deltaTime;
-    static float m_lastFrame;
+    static double m_deltaTime;
+    static double m_lastFrame;
+
+    static double m_lastSecond;
+    static int m_frameCount;
 };

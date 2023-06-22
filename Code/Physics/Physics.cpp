@@ -8,10 +8,10 @@ Physics::Physics()
 {
 	m_world.SetContactListener(&m_contactListener);
 	
-	m_maskMap[None] = None;
-	m_maskMap[Player] = Platform;
-	m_maskMap[Enemy] = Platform;
-	m_maskMap[Platform] = Player | Enemy;
+	m_maskMap[Layer_None] = Layer_None;
+	m_maskMap[Layer_Player] = Layer_Platform;
+	m_maskMap[Layer_Enemy] = Layer_Platform;
+	m_maskMap[Layer_Platform] = Layer_Player | Layer_Enemy;
 }
 
 Physics::~Physics()
@@ -105,7 +105,7 @@ b2Body* Physics::CreateStaticBox(b2Vec2 position, b2Vec2 size, float angle, Fixt
 	return body;
 }
 
-b2Body* Physics::CreateBodyWithFixture(b2Vec2 position, b2Vec2 size, FixtureData* fixtureData, bool isDynamic, bool isSensor, PhysicsLayer layer)
+b2Body* Physics::CreateBodyWithFixture(b2Vec2 position, b2Vec2 size, FixtureData* fixtureData, bool isDynamic, bool isSensor, PhysicsLayer layer, b2Vec2 center)
 {
 	b2BodyDef bodyDef;
 	bodyDef.position.Set(position.x, position.y);
@@ -124,7 +124,7 @@ b2Body* Physics::CreateBodyWithFixture(b2Vec2 position, b2Vec2 size, FixtureData
 	body->SetFixedRotation(true);
 
 	b2PolygonShape shape;
-	shape.SetAsBox(size.x / 2, size.y / 2);
+	shape.SetAsBox(size.x / 2, size.y / 2, center, 0);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &shape;

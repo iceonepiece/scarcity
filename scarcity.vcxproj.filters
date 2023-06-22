@@ -448,22 +448,19 @@
     <ClCompile Include="code\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="code\core\Camera.cpp">
+    <ClCompile Include="Code\Core\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="code\core\EntityManager.cpp">
+    <ClCompile Include="Code\Core\EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="code\core\Game.cpp">
+    <ClCompile Include="Code\Core\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Input\Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="code\core\ParticleSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Core\ResourceManager.cpp">
+    <ClCompile Include="Code\Core\ParticleSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Core\Scene.cpp">
@@ -496,16 +493,16 @@
     <ClCompile Include="Code\Core\Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Core\GUIComponent.cpp">
+    <ClCompile Include="Code\GUIs\GUIComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Core\GUI.cpp">
+    <ClCompile Include="Code\GUIs\GUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Core\ScriptManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Core\Texture.cpp">
+    <ClCompile Include="Code\Platforms\OpenGLTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Core\LevelManager.cpp">
@@ -517,7 +514,7 @@
     <ClCompile Include="Code\Core\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Core\OpenGLWindow.cpp">
+    <ClCompile Include="Code\Platforms\OpenGLWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Editor\EditorApplication.cpp">
@@ -574,18 +571,24 @@
     <ClCompile Include="Code\Graphics\OpenGLRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Platforms\OpenGLResourceManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Core\ResourceAPI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="code\core\Camera.h">
+    <ClInclude Include="Code\Core\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="code\core\Entity.h">
+    <ClInclude Include="Code\Core\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="code\core\EntityManager.h">
+    <ClInclude Include="Code\Core\EntityManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="code\core\Game.h">
+    <ClInclude Include="Code\Core\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Core\GameState.h">
@@ -594,7 +597,7 @@
     <ClInclude Include="Code\Input\Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="code\core\ParticleSystem.h">
+    <ClInclude Include="Code\Core\ParticleSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Core\ResourceManager.h">
@@ -684,10 +687,10 @@
     <ClInclude Include="Code\Core\Random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Core\GUIComponent.h">
+    <ClInclude Include="Code\GUIs\GUIComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Core\GUI.h">
+    <ClInclude Include="Code\GUIs\GUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\GUIs\GUIList.h">
@@ -714,7 +717,7 @@
     <ClInclude Include="Code\UIs\UIContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Core\Texture.h">
+    <ClInclude Include="Code\Platforms\OpenGLTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Core\LevelManager.h">
@@ -744,10 +747,10 @@
     <ClInclude Include="Code\Events\MouseEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Core\SpriteAnimation.h">
+    <ClInclude Include="Code\Animations\SpriteAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Core\Sprite.h">
+    <ClInclude Include="Code\Animations\Sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Components\SpriteAnimatorComponent.h">
@@ -771,7 +774,7 @@
     <ClInclude Include="Code\Core\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Core\OpenGLWindow.h">
+    <ClInclude Include="Code\Platforms\OpenGLWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Editor\EditorApplication.h">
@@ -2035,6 +2038,36 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Physics\NullFixtureData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Core\Scriptable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Systems\ScriptableSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Components\ScriptableComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\MyLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Animations\Animation2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Systems\Collider2DSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Graphics\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Core\ResourceAPI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Platforms\OpenGLResourceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

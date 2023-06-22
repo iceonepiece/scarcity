@@ -7,11 +7,10 @@
 class LevelEditorScene : public Scene
 {
 public:
-	LevelEditorScene(Application *editor)
-		: Scene(editor)
+	LevelEditorScene(Application& editor)
 	{}
 
-	virtual void Init() override
+	virtual void Initialize() override
 	{
 		auto platform = m_manager.CreateEntity();
 		b2Body* body = m_physics.CreateBodyWithFixture(b2Vec2{ 0, 0 }, b2Vec2{ 2, 2 }, new FixtureData(platform, "PLATFORM"));

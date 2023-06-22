@@ -1,7 +1,7 @@
 #pragma once
 
 #include "FiniteStateMachine.h"
-#include "../Core/Entity.h"
+#include "Core/Entity.h"
 #include "FSMTransition.h"
 
 class FSMState

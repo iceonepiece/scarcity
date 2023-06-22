@@ -15,28 +15,8 @@
 class LevelScene : public Scene
 {
 public:
-	LevelScene(Application* game)
-		: Scene(game)
+	LevelScene(Application& game)
 	{
-	}
-
-	virtual void ProcessInput() override
-	{
-		for (System* system : m_systems)
-		{
-			if (system->active)
-				system->ProcessInput();
-		}
-
-		/*
-		if (Input::IsKeyPressed(GLFW_KEY_F))
-		{
-			ParticleProps props = m_game->GetParticleProps("fire");
-			props.position = { 0, 0 };
-			for (int i = 0; i < props.amount; i++)
-				ParticleSystem::Emit(props);
-		}
-		*/
 	}
 
 	virtual void Update(float deltaTime) override

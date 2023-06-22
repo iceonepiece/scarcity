@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "../Platforms/OpenGLTexture.h"
 #include <iostream>
 
 unsigned int Renderer::m_VBO = 0;
@@ -288,7 +289,7 @@ void Renderer::DrawSprite(Sprite& sprite, glm::vec2 position, glm::vec2 scale, C
     s_textureShader.SetMatrix4("projection", projection);
 
     glActiveTexture(GL_TEXTURE0);
-    Texture* texture = sprite.GetTexture();
+    OpenGLTexture* texture = static_cast<OpenGLTexture*>(sprite.GetTexture());
     texture->Bind();
 
     float left = sprite.GetLeft();

@@ -8,10 +8,10 @@
 
 enum PhysicsLayer : uint16_t
 {
-	None,
-	Platform,
-	Player,
-	Enemy
+	Layer_None,
+	Layer_Platform,
+	Layer_Player,
+	Layer_Enemy
 };
 
 class Physics
@@ -22,7 +22,7 @@ public:
 
 	void Update(float deltaTime);
 	b2Body* CreateCircleBody(b2Vec2 position, float radius, FixtureData* fixtureData, bool isSensor = false);
-	b2Body* CreateBodyWithFixture(b2Vec2 position, b2Vec2 size, FixtureData* fixtureData, bool isDynamic = false, bool isSensor = false, PhysicsLayer layer = None);
+	b2Body* CreateBodyWithFixture(b2Vec2 position, b2Vec2 size, FixtureData* fixtureData, bool isDynamic = false, bool isSensor = false, PhysicsLayer layer = Layer_None, b2Vec2 center = {0, 0});
 	b2Body* CreateBoxBody(Entity& entity, float x, float y, float width, float height, bool isDynamic = false, bool isSensor = false, float gravityScale = 1.0f);
 	b2Body* CreateStaticBox(b2Vec2 position, b2Vec2 size, float angle, FixtureData* fixtureData);
 	void CreateFixtureDef(b2Body* body, b2Vec2 size, b2Vec2 offset, bool isSensor, FixtureData* fixtureData);

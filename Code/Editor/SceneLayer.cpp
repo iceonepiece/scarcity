@@ -3,7 +3,7 @@
 SceneLayer::SceneLayer(Scene *scene)
 	: m_scene{ scene }
 {
-	m_scene->Init();
+	m_scene->Initialize();
 }
 
 SceneLayer::~SceneLayer()

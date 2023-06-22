@@ -1,5 +1,5 @@
 #include "GUI.h"
-#include "GameApplication.h"
+#include "Core/GameApplication.h"
 #include <iostream>
 
 GUI::GUI(EditorApplication* editor)

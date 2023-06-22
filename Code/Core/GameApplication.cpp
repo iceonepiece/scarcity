@@ -2,13 +2,13 @@
 #include "Timer.h"
 #include "../Audio/Audio.h"
 #include "../Graphics/Renderer.h"
-#include "ResourceManager.h"
 #include "Scene.h"
-#include "../Scenes/MenuScene.h"
-#include "../Scenes/Level1.h"
-#include "../Scenes/LuaScene.h"
-#include "OpenGLWindow.h"
+#include "../Graphics/RendererAPI.h"
+#include "../Graphics/FontSystem.h"
+#include "../Platforms/OpenGLWindow.h"
+#include "../Platforms/OpenGLResourceManager.h"
 #include "../Graphics/OpenGLRenderer.h"
+#include "ResourceAPI.h"
 
 GameApplication::GameApplication()
 {
@@ -24,26 +24,26 @@ void GameApplication::Initialize(std::string title, int width, int height)
     m_window = std::make_unique<OpenGLWindow>(title, width, height);
 
     Renderer::Init();
+    ResourceAPI::Initialize(new OpenGLResourceManager());
     RendererAPI::Initialize(new OpenGLRenderer());
     ParticleSystem::Init();
     FontSystem::Init();
     Input::Init();
     Audio::Init();
 
-    ResourceManager::LoadParticles("./Code/Scripts/particles.lua");
-
-    LoadScenes();
+    ResourceAPI::LoadParticles("./Code/Scripts/particles.lua");
 }
 
 void GameApplication::AddScene(std::string name, Scene *scene)
 {
+    scene->m_game = this;
     m_scenes.insert({ name, std::unique_ptr<Scene>(scene) });
 }
 
 void GameApplication::LoadScenes()
 {
     for (auto& [name, scene] : m_scenes)
-        scene->Init();
+        scene->Initialize();
 }
 
 void GameApplication::ChangeScene(std::string sceneName)
@@ -51,6 +51,7 @@ void GameApplication::ChangeScene(std::string sceneName)
     if (m_scenes.find(sceneName) != m_scenes.end())
     {
         m_currentSceneName = sceneName;
+        m_scenes[m_currentSceneName]->Enter();
     }
 }
 
@@ -63,6 +64,8 @@ void GameApplication::Run()
         ProcessInput();
         Update();
         Render();
+
+        Timer::DisplayFPS();
     }
 }
 
@@ -72,8 +75,6 @@ void GameApplication::ProcessInput()
 
     if (m_window->WindowShouldClose())
         m_running = false;
-
-    m_scenes[m_currentSceneName]->ProcessInput();
 }
 
 void GameApplication::Update()

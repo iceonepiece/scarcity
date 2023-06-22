@@ -1,13 +1,13 @@
-#include "Texture.h"
+#include "OpenGLTexture.h"
 
-Texture::Texture()
+OpenGLTexture::OpenGLTexture()
     : m_width(0)
     , m_height(0)
 {
     glGenTextures(1, &m_id);
 }
 
-void Texture::Generate(const char* filename, bool alpha)
+void OpenGLTexture::Generate(const char* filename, bool alpha)
 {
     glBindTexture(GL_TEXTURE_2D, m_id); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
     // set the texture wrapping parameters
@@ -28,7 +28,7 @@ void Texture::Generate(const char* filename, bool alpha)
         internalFormat = GL_RGBA;
         imageFormat = GL_RGBA;
     }
-
+    
     unsigned char* data = stbi_load(filename, &width, &height, &nrChannels, 0);
     if (data)
     {
@@ -46,12 +46,12 @@ void Texture::Generate(const char* filename, bool alpha)
     stbi_image_free(data);
 }
 
-Texture::~Texture()
+OpenGLTexture::~OpenGLTexture()
 {
 
 }
 
-void Texture::Bind()
+void OpenGLTexture::Bind()
 {
     glBindTexture(GL_TEXTURE_2D, m_id);
 }
