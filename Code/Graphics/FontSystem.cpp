@@ -9,7 +9,7 @@ Shader FontSystem::shader;
 
 int FontSystem::Init()
 {
-    shader.Compile("Code/Shaders/font.vert", "Code/Shaders/font.frag");
+    shader.Compile("Shaders/font.vert", "Shaders/font.frag");
 
     FT_Library ft;
     // All functions return a value different than 0 whenever an error occurred

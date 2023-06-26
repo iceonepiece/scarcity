@@ -56,7 +56,7 @@ void GUI::Init(GLFWwindow* window, const char* glslVersion)
 
     //io.Fonts->AddFontFromFileTTF("fonts/ProggyClean.ttf", 20);
     //io.Fonts->AddFontFromFileTTF("fonts/DroidSans.ttf", 20);
-    io.Fonts->AddFontFromFileTTF("Assets/Fonts/Xolonium-Regular.ttf", 20);
+    //io.Fonts->AddFontFromFileTTF("Fonts/Xolonium-Regular.ttf", 20);
     //io.Fonts->AddFontFromFileTTF("fonts/Roboto-Medium.ttf", 18);
 }
 

@@ -55,8 +55,8 @@ void OpenGLRenderer::Initialize()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    m_basicShader.Compile("Code/Shaders/basic.vert", "Code/Shaders/basic.frag");
-    m_spriteShader.Compile("Code/Shaders/texture.vert", "Code/Shaders/texture.frag");
+    m_basicShader.Compile("Shaders/basic.vert", "Shaders/basic.frag");
+    m_spriteShader.Compile("Shaders/texture.vert", "Shaders/texture.frag");
 }
 
 void OpenGLRenderer::Draw(Sprite& sprite, const glm::mat4& modelMatrix)

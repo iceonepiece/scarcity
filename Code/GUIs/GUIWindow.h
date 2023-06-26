@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "../Core/GUIComponent.h"
+#include "GUIComponent.h"
 
 class GUIWindow : public GUIComponent
 {

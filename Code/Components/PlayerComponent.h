@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include "Physics/FixtureData.h"
 
 enum MovementState
 {

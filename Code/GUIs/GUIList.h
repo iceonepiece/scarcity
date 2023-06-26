@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include "../Core/GUIComponent.h"
+#include "GUIComponent.h"
 
 class GUIList : public GUIComponent
 {

@@ -31,7 +31,7 @@ void GameApplication::Initialize(std::string title, int width, int height)
     Input::Init();
     Audio::Init();
 
-    ResourceAPI::LoadParticles("./Code/Scripts/particles.lua");
+    ResourceAPI::LoadParticles("Scripts/particles.lua");
 }
 
 void GameApplication::AddScene(std::string name, Scene *scene)
@@ -81,6 +81,7 @@ void GameApplication::Update()
 {
     m_scenes[m_currentSceneName]->Update(Timer::GetDeltaTime());
 }
+
 
 void GameApplication::Render()
 {

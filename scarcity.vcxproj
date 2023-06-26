@@ -36,7 +36,7 @@
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
@@ -108,6 +108,7 @@
       <LanguageStandard_C>Default</LanguageStandard_C>
       <PrecompiledHeader>
       </PrecompiledHeader>
+      <AdditionalIncludeDirectories>C:\works\scarcity\Code;$(ProjectDir)\External\Include;$(IncludePath)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>glfw3.lib;box2d.lib;lua54.lib;freetype.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -118,20 +119,20 @@
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="Assets\Levels\Level1.lua" />
-    <None Include="Code\Scripts\parameters.lua" />
-    <None Include="Code\Scripts\particles.lua" />
-    <None Include="Code\Shaders\basic.frag" />
-    <None Include="Code\Shaders\basic.vert" />
-    <None Include="Code\Shaders\circle.frag" />
-    <None Include="Code\Shaders\circle.vert" />
-    <None Include="Code\Shaders\font.frag" />
-    <None Include="Code\Shaders\font.vert" />
-    <None Include="Code\Shaders\particle.frag" />
-    <None Include="Code\Shaders\particle.vert" />
-    <None Include="Code\Shaders\texture.frag" />
-    <None Include="Code\Shaders\texture.vert" />
-    <None Include="Code\Shaders\ui.frag" />
-    <None Include="Code\Shaders\ui.vert" />
+    <None Include="Assets\Scripts\parameters.lua" />
+    <None Include="Assets\Scripts\particles.lua" />
+    <None Include="Assets\Shaders\basic.frag" />
+    <None Include="Assets\Shaders\basic.vert" />
+    <None Include="Assets\Shaders\circle.frag" />
+    <None Include="Assets\Shaders\circle.vert" />
+    <None Include="Assets\Shaders\font.frag" />
+    <None Include="Assets\Shaders\font.vert" />
+    <None Include="Assets\Shaders\particle.frag" />
+    <None Include="Assets\Shaders\particle.vert" />
+    <None Include="Assets\Shaders\texture.frag" />
+    <None Include="Assets\Shaders\texture.vert" />
+    <None Include="Assets\Shaders\ui.frag" />
+    <None Include="Assets\Shaders\ui.vert" />
     <None Include="External\Include\glm\detail\func_common.inl" />
     <None Include="External\Include\glm\detail\func_common_simd.inl" />
     <None Include="External\Include\glm\detail\func_exponential.inl" />
@@ -274,7 +275,9 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\Components\Components.cpp" />
     <ClCompile Include="Code\Core\ResourceAPI.cpp" />
+    <ClCompile Include="Code\Core\ScriptingEngine.cpp" />
     <ClCompile Include="Code\Editor\Components\EntityListWindow.cpp" />
     <ClCompile Include="Code\Editor\Components\InspectorWindow.cpp" />
     <ClCompile Include="Code\Editor\EditorApplication.cpp" />
@@ -321,11 +324,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Animations\Animation2D.h" />
+    <ClInclude Include="Code\Components\Components.h" />
     <ClInclude Include="Code\Components\ScriptableComponent.h" />
     <ClInclude Include="Code\Components\TransformComponent.h" />
     <ClInclude Include="Code\Core\Application.h" />
     <ClInclude Include="Code\Core\ResourceAPI.h" />
     <ClInclude Include="Code\Core\Scriptable.h" />
+    <ClInclude Include="Code\Core\ScriptingEngine.h" />
     <ClInclude Include="Code\Editor\Components\ImGuiWindow.h" />
     <ClInclude Include="Code\Editor\EditorApplication.h" />
     <ClInclude Include="Code\Core\GameApplication.h" />

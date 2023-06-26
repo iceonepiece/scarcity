@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include "Window.h"
+#include "ScriptingEngine.h"
 
 class Application
 {
@@ -21,4 +22,6 @@ protected:
 
 	bool m_running = true;
 	std::unique_ptr<Window> m_window;
+
+	ScriptingEngine m_scriptingEngine;
 };

@@ -29,7 +29,7 @@ void Shader::Compile(const char* vertexPath, const char* fragmentPath)
 
         vShaderFile.close();
         fShaderFile.close();
-
+        
         vertexCode = vShaderStream.str();
         fragmentCode = fShaderStream.str();
     }

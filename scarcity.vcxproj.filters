@@ -20,21 +20,21 @@
     <None Include="LICENSE" />
     <None Include="imgui.ini" />
     <None Include=".gitignore" />
-    <None Include="Code\Scripts\particles.lua" />
-    <None Include="Code\Scripts\parameters.lua" />
-    <None Include="Code\Shaders\basic.frag" />
-    <None Include="Code\Shaders\ui.vert" />
-    <None Include="Code\Shaders\ui.frag" />
-    <None Include="Code\Shaders\particle.vert" />
-    <None Include="Code\Shaders\particle.frag" />
-    <None Include="Code\Shaders\font.vert" />
-    <None Include="Code\Shaders\font.frag" />
-    <None Include="Code\Shaders\basic.vert" />
-    <None Include="Code\Shaders\circle.frag" />
-    <None Include="Code\Shaders\circle.vert" />
+    <None Include="Assets\Scripts\particles.lua" />
+    <None Include="Assets\Scripts\parameters.lua" />
+    <None Include="Assets\Shaders\basic.frag" />
+    <None Include="Assets\Shaders\ui.vert" />
+    <None Include="Assets\Shaders\ui.frag" />
+    <None Include="Assets\Shaders\particle.vert" />
+    <None Include="Assets\Shaders\particle.frag" />
+    <None Include="Assets\Shaders\font.vert" />
+    <None Include="Assets\Shaders\font.frag" />
+    <None Include="Assets\Shaders\basic.vert" />
+    <None Include="Assets\Shaders\circle.frag" />
+    <None Include="Assets\Shaders\circle.vert" />
     <None Include="Assets\Levels\Level1.lua" />
-    <None Include="Code\Shaders\texture.vert" />
-    <None Include="Code\Shaders\texture.frag" />
+    <None Include="Assets\Shaders\texture.vert" />
+    <None Include="Assets\Shaders\texture.frag" />
     <None Include="External\Include\glm\detail\func_common.inl">
       <Filter>Header Files</Filter>
     </None>
@@ -575,6 +575,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Core\ResourceAPI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Components\Components.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Core\ScriptingEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -2068,6 +2074,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Platforms\OpenGLResourceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Components\Components.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Core\ScriptingEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -64,10 +64,10 @@ void Renderer::Init()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    s_basicShader.Compile("Code/Shaders/basic.vert", "Code/Shaders/basic.frag");
-    s_uiShader.Compile("Code/Shaders/ui.vert", "Code/Shaders/ui.frag");
-    s_circleShader.Compile("Code/Shaders/circle.vert", "Code/Shaders/circle.frag");
-    s_textureShader.Compile("Code/Shaders/texture.vert", "Code/Shaders/texture.frag");
+    s_basicShader.Compile("Shaders/basic.vert", "Shaders/basic.frag");
+    s_uiShader.Compile("Shaders/ui.vert", "Shaders/ui.frag");
+    s_circleShader.Compile("Shaders/circle.vert", "Shaders/circle.frag");
+    s_textureShader.Compile("Shaders/texture.vert", "Shaders/texture.frag");
 }
 
 /*

@@ -44,7 +44,7 @@ void ParticleSystem::Init()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadIB);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-	m_shader.Compile("Code/Shaders/particle.vert", "Code/Shaders/particle.frag");
+	m_shader.Compile("Shaders/particle.vert", "Shaders/particle.frag");
 
 	m_ParticlePool.resize(1000);
 }
