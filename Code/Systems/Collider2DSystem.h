@@ -20,8 +20,8 @@ public:
 
 	virtual void Render() override
 	{
-		Renderer& renderer = RendererAPI::GetRenderer();
-		Camera& camera = m_scene->m_camera;
+		Renderer& renderer = m_scene->m_game->GetRenderer();
+		Camera& camera = *m_scene->m_camera;
 		renderer.SetCamera(&camera);
 
 		auto view = m_registry.view<Collider2DComponent>();

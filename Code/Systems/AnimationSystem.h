@@ -25,7 +25,9 @@ public:
 
 	virtual void Render() override
 	{		
-		Renderer& renderer = RendererAPI::GetRenderer();
+		//Renderer& renderer = RendererAPI::GetRenderer();
+		Renderer& renderer = m_scene->m_game->GetRenderer();
+
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

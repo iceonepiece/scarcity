@@ -144,6 +144,9 @@
     <ClInclude Include="Stages\MenuScene.h" />
     <ClInclude Include="Stages\MyLevel.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\Player.as" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

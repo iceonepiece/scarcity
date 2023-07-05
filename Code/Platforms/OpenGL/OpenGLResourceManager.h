@@ -5,10 +5,10 @@
 #include <sol/sol.hpp>
 #include <memory>
 
-#include "../Graphics/Texture.h"
-#include "../Core/ParticleSystem.h"
-#include "../Graphics/Shader.h"
-#include "../Core/ResourceManager.h"
+#include "Graphics/Texture.h"
+#include "Core/ParticleSystem.h"
+#include "Graphics/Shader.h"
+#include "Core/ResourceManager.h"
 
 class OpenGLResourceManager : public ResourceManager
 {

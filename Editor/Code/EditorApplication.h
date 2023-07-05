@@ -2,7 +2,7 @@
 
 #include <vector>
 #include "Core/Application.h"
-#include "Scenes/EditorScene.h"
+#include "EditorScene.h"
 #include "ImGuiLayer.h"
 #include "SceneLayer.h"
 

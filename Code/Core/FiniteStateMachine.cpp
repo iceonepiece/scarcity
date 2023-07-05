@@ -63,14 +63,6 @@ void FiniteStateMachine::AddState(std::string name, FSMState* state)
 
 void FiniteStateMachine::SetCurrentState(FSMState *state)
 {
-    for (auto& s : m_states)
-    {
-        if (s.second == state)
-        {
-            std::cout << "Change State to " << s.first << std::endl;
-        }
-    }
-
     if (m_currentState != nullptr)
         m_currentState->OnExit();
 

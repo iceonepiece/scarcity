@@ -1,9 +1,9 @@
 #include "EditorApplication.h"
-#include "../Platforms/OpenGLWindow.h"
-#include "../Core/Timer.h"
+#include "Platforms/OpenGL/OpenGLWindow.h"
+#include "Core/Timer.h"
 #include "Components/EntityListWindow.h"
 #include "Components/InspectorWindow.h"
-#include "../Scenes/LevelEditorScene.h"
+#include "Scenes/LevelEditorScene.h"
 
 EditorApplication::EditorApplication()
     : m_sceneLayer{ new LevelEditorScene(*this) }

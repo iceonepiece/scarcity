@@ -1,9 +1,10 @@
 #pragma once
 
-#include <memory>
 #include <string>
+#include "Common.h"
 #include "Window.h"
 #include "ScriptingEngine.h"
+#include "Graphics/Renderer.h"
 
 class Application
 {
@@ -14,6 +15,8 @@ public:
 	virtual void Run() = 0;
 
 	virtual void ChangeScene(std::string name) {}
+	inline ScriptingEngine* GetScriptingEngine() { return &m_scriptingEngine; }
+	inline Renderer& GetRenderer() { return *m_renderer; }
 
 protected:
 	virtual void ProcessInput() = 0;
@@ -21,7 +24,8 @@ protected:
 	virtual void Render() = 0;
 
 	bool m_running = true;
-	std::unique_ptr<Window> m_window;
+	Unique<Window> m_window;
+	Unique<Renderer> m_renderer;
 
 	ScriptingEngine m_scriptingEngine;
 };

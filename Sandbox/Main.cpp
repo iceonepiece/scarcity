@@ -16,7 +16,7 @@ int main()
 	game.AddScene("menu", new MenuScene(game));
 	game.AddScene("level1", new MyLevel());
 	game.LoadScenes();
-	game.ChangeScene("menu");
+	game.ChangeScene("level1");
 
 	game.Run();
 

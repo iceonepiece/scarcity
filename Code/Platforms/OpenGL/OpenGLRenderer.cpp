@@ -3,8 +3,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "OpenGLRenderer.h"
-#include "../Platforms/OpenGLTexture.h"
-#include "RendererAPI.h"
+#include "OpenGLTexture.h"
+#include "Graphics/RendererAPI.h"
 
 void OpenGLRenderer::Initialize()
 {
@@ -61,19 +61,11 @@ void OpenGLRenderer::Initialize()
 
 void OpenGLRenderer::Draw(Sprite& sprite, const glm::mat4& modelMatrix)
 {
-
     m_spriteShader.Use();
 
-    glm::mat4 view = glm::mat4(1.0f);
-    view = glm::translate(view, m_camera->GetPosition());
-  
-    glm::mat4 projection = glm::mat4(1.0f);
-    glm::vec2 screenSize = RendererAPI::GetScreenSize();
-    projection = glm::perspective(glm::radians(45.0f), screenSize.x / screenSize.y, 0.1f, 100.0f);
-
     m_spriteShader.SetMatrix4("model", modelMatrix);
-    m_spriteShader.SetMatrix4("view", view);
-    m_spriteShader.SetMatrix4("projection", projection);
+    m_spriteShader.SetMatrix4("view", m_camera->GetViewMatrix());
+    m_spriteShader.SetMatrix4("projection", m_camera->GetProjectionMatrix());
 
     glActiveTexture(GL_TEXTURE0);
     OpenGLTexture *texture = static_cast<OpenGLTexture*>(sprite.GetTexture());

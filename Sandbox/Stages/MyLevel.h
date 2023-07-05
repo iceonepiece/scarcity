@@ -22,8 +22,8 @@ public:
 	{
 		LevelManager::LoadLevel(this, "Levels/Level1.lua");
 
-		Renderer& renderer = RendererAPI::GetRenderer();
-		renderer.SetCamera(&m_camera);
+		Renderer& renderer = m_game->GetRenderer();
+		renderer.SetCamera(m_camera.get());
 
 		ResourceAPI::LoadTexture("cat-idle", "Images/cat/Sprites-Idle-no shadow.png", true);
 		ResourceAPI::LoadTexture("cat-walk", "Images/cat/Sprites-walk-no shadow .png", true);
@@ -36,7 +36,7 @@ public:
 		player.AddComponent<PlayerComponent>();
 		player.AddComponent<ScriptableComponent>(new Player(player));
 
-		m_camera.SetBody(player.GetComponent<Collider2DComponent>()->body);
+		m_camera->SetBody(player.GetComponent<Collider2DComponent>()->body);
 
 		FiniteStateMachine* fsm = new FiniteStateMachine(player);
 		player.AddComponent<SpriteAnimatorComponent>(fsm);

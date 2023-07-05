@@ -8,6 +8,7 @@
 #include "UIs/UIListItem.h"
 #include "UIs/UIList.h"
 #include "UIs/UIText.h"
+#include "Core/ScriptingEngine.h"
 
 typedef void(*ActionFn)();
 
@@ -23,6 +24,8 @@ public:
 
 	virtual void Initialize() override
 	{
+		m_game->GetScriptingEngine()->Execute("Scripts/Player.as");
+
 		m_ui.AddComponent(new UIText(glm::vec2(10, 620), "Ghost Lumber", 1.0f, glm::vec3(1.f, 1.f, 1.f)));
 		UIList* list = new UIList(glm::vec2(150, 520), glm::vec2(240, 40), glm::vec4(0.188f, 0.278f, 0.369f, 0.2f));
 

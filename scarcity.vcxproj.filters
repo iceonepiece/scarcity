@@ -443,12 +443,13 @@
     <None Include="External\Include\glm\gtx\wrap.inl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="Assets\Scripts\Player.as" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="code\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Core\Camera.cpp">
+    <ClCompile Include="Code\Core\Camera2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Core\EntityManager.cpp">
@@ -502,7 +503,7 @@
     <ClCompile Include="Code\Core\ScriptManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Platforms\OpenGLTexture.cpp">
+    <ClCompile Include="Code\Platforms\OpenGL\OpenGLTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Core\LevelManager.cpp">
@@ -514,7 +515,7 @@
     <ClCompile Include="Code\Core\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Platforms\OpenGLWindow.cpp">
+    <ClCompile Include="Code\Platforms\OpenGL\OpenGLWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Editor\EditorApplication.cpp">
@@ -568,10 +569,10 @@
     <ClCompile Include="Code\Graphics\RendererAPI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Graphics\OpenGLRenderer.cpp">
+    <ClCompile Include="Code\Platforms\OpenGL\OpenGLRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Platforms\OpenGLResourceManager.cpp">
+    <ClCompile Include="Code\Platforms\OpenGL\OpenGLResourceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Core\ResourceAPI.cpp">
@@ -583,9 +584,21 @@
     <ClCompile Include="Code\Core\ScriptingEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="External\Include\angelscript\scriptstdstring\scriptstdstring.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="External\Include\angelscript\scriptstdstring\scriptstdstring_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="External\Include\angelscript\scriptarray\scriptarray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="External\Include\imgui\ImGuizmo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\Core\Camera.h">
+    <ClInclude Include="Code\Core\Camera2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Core\Entity.h">
@@ -723,7 +736,7 @@
     <ClInclude Include="Code\UIs\UIContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Platforms\OpenGLTexture.h">
+    <ClInclude Include="Code\Platforms\OpenGL\OpenGLTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Core\LevelManager.h">
@@ -780,7 +793,7 @@
     <ClInclude Include="Code\Core\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Platforms\OpenGLWindow.h">
+    <ClInclude Include="Code\Platforms\OpenGL\OpenGLWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Editor\EditorApplication.h">
@@ -798,7 +811,7 @@
     <ClInclude Include="Code\Editor\ImGuiComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Graphics\OpenGLRenderer.h">
+    <ClInclude Include="Code\Platforms\OpenGL\OpenGLRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Editor\Components\ImGuiWindow.h">
@@ -2073,13 +2086,37 @@
     <ClInclude Include="Code\Core\ResourceAPI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Platforms\OpenGLResourceManager.h">
+    <ClInclude Include="Code\Platforms\OpenGL\OpenGLResourceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Components\Components.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Core\ScriptingEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="External\Include\angelscript\scriptstdstring\scriptstdstring.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="External\Include\angelscript\angelscript.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="External\Include\angelscript\scriptarray\scriptarray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="External\Include\imgui\imgui_impl_opengl3_loader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="External\Include\imgui\ImGuizmo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Core\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Core\ServiceLocator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Core\Common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

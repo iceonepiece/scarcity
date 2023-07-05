@@ -1,26 +1,31 @@
 #pragma once
 
-#include <box2d/box2d.h>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <iostream>
+#include <box2d/box2d.h>
 
 class Camera
 {
 public:
-	Camera(glm::vec3 position, glm::vec2 boxSize, glm::vec2 screenSize);
-	
-	void Update();
-	glm::vec3 GetPosition() const;
-	glm::vec2 GetScreenSize() const;
-	glm::mat4 GetViewMatrix() const;
-	void SetPosition(glm::vec3 position);
-	void SetScreenSize(glm::vec2 screenSize);
-	void SetBody(b2Body* body);
+	Camera() = default;
+	Camera(const glm::vec3& position, const glm::vec2& screenSize)
+		: m_position(position)
+		, m_screenSize(screenSize)
+	{}
 
-private:
-	b2Body* m_body;
-	glm::vec3 m_position;
-	glm::vec2 m_boxSize;
+	inline glm::vec3 GetPosition() const { return m_position; }
+	inline void SetPosition(const glm::vec3& position) { m_position = position; }
+
+	inline glm::vec2 GetScreenSize() const { return m_screenSize; }
+	inline void SetScreenSize(glm::vec2 screenSize) { m_screenSize = screenSize; }
+
+	virtual void SetBody(b2Body* body) = 0;
+
+	virtual void Update() = 0;
+	virtual glm::mat4 GetViewMatrix() const = 0;
+	virtual glm::mat4 GetProjectionMatrix() const = 0;
+
+protected:
+	glm::vec3 m_position = glm::vec3(0.0f);
 	glm::vec2 m_screenSize;
 };
+

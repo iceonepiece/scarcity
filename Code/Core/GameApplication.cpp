@@ -1,13 +1,13 @@
 #include "GameApplication.h"
 #include "Timer.h"
-#include "../Audio/Audio.h"
-#include "../Graphics/Renderer.h"
+#include "Audio/Audio.h"
+#include "Graphics/Renderer.h"
 #include "Scene.h"
-#include "../Graphics/RendererAPI.h"
-#include "../Graphics/FontSystem.h"
-#include "../Platforms/OpenGLWindow.h"
-#include "../Platforms/OpenGLResourceManager.h"
-#include "../Graphics/OpenGLRenderer.h"
+#include "Graphics/RendererAPI.h"
+#include "Graphics/FontSystem.h"
+#include "Platforms/OpenGL/OpenGLWindow.h"
+#include "Platforms/OpenGL/OpenGLResourceManager.h"
+#include "Platforms/OpenGL/OpenGLRenderer.h"
 #include "ResourceAPI.h"
 
 GameApplication::GameApplication()
@@ -22,10 +22,12 @@ GameApplication::~GameApplication()
 void GameApplication::Initialize(std::string title, int width, int height)
 {
     m_window = std::make_unique<OpenGLWindow>(title, width, height);
+    m_renderer = std::make_unique<OpenGLRenderer>();
+    m_renderer->Initialize();
 
     Renderer::Init();
     ResourceAPI::Initialize(new OpenGLResourceManager());
-    RendererAPI::Initialize(new OpenGLRenderer());
+    //RendererAPI::Initialize(new OpenGLRenderer());
     ParticleSystem::Init();
     FontSystem::Init();
     Input::Init();

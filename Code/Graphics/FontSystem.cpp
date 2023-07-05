@@ -20,7 +20,7 @@ int FontSystem::Init()
     }
 
     // find path to font
-    std::string font_name = "Assets/fonts/Xolonium-Regular.ttf";
+    std::string font_name = "Fonts/Xolonium-Regular.ttf";
     if (font_name.empty())
     {
         std::cout << "ERROR::FREETYPE: Failed to load font_name" << std::endl;

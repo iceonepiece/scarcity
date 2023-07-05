@@ -40,19 +40,19 @@ public:
 
 		m_ui.Update(deltaTime);
 
-		m_camera.Update();
+		m_camera->Update();
 	}
 
 	virtual void Render() override
 	{
 		Renderer& renderer = RendererAPI::GetRenderer();
-		renderer.SetCamera(&m_camera);
+		renderer.SetCamera(m_camera.get());
 
 		auto view = m_manager.m_registry.view<Collider2DComponent>();
 		for (auto [entity, collider] : view.each())
 		{
 			//Renderer::DrawQuad(collider.body, m_camera);
-			renderer.DrawRect(collider.body, m_camera);
+			renderer.DrawRect(collider.body, *m_camera);
 		}
 		
 		for (auto system : m_systems)
@@ -64,12 +64,12 @@ public:
 		auto view2 = m_manager.m_registry.view<CircleCollider2DComponent>();
 		for (auto [entity, collider] : view2.each())
 		{
-			Renderer::DrawCircle(collider.body, glm::vec4(1, 1, 1, 1), m_camera);
+			Renderer::DrawCircle(collider.body, glm::vec4(1, 1, 1, 1), *m_camera);
 		}
 
 		renderer.DrawLine(glm::vec3{ -5, -5, 0 }, glm::vec3{5, 5, 0 }, glm::vec4(1.0f, 0.5f, 0.5f, 1.0f));
 
-		ParticleSystem::Render(m_camera);
+		ParticleSystem::Render(*m_camera);
 
 		//Renderer::DrawCircle(glm::vec2(-8, 0), 4, glm::vec4(0.7, 0.2, 0.5, 1), m_camera);
 	}

@@ -1,14 +1,14 @@
-#include "Camera.h"
+#include "Camera2D.h"
+#include <glm/gtc/matrix_transform.hpp>
 
-Camera::Camera(glm::vec3 position, glm::vec2 boxSize, glm::vec2 screenSize)
-    : m_position(position)
+Camera2D::Camera2D(glm::vec3 position, glm::vec2 boxSize, glm::vec2 screenSize)
+    : Camera(position, screenSize)
     , m_boxSize(boxSize)
-    , m_screenSize(screenSize)
     , m_body(nullptr)
 {
 }
 
-void Camera::Update()
+void Camera2D::Update()
 {
   if (m_body)
   {
@@ -28,32 +28,17 @@ void Camera::Update()
   }
 }
 
-glm::vec3 Camera::GetPosition() const
-{
-  return m_position;
-}
-
-glm::vec2 Camera::GetScreenSize() const
-{
-  return m_screenSize;
-}
-
-glm::mat4 Camera::GetViewMatrix() const
+glm::mat4 Camera2D::GetViewMatrix() const
 {
     return glm::translate(glm::mat4(1.0f), m_position);
 }
 
-void Camera::SetPosition(glm::vec3 position)
+glm::mat4 Camera2D::GetProjectionMatrix() const
 {
-  m_position = position;
+    return glm::perspective(glm::radians(45.0f), m_screenSize.x / m_screenSize.y, 0.1f, 100.0f);
 }
 
-void Camera::SetScreenSize(glm::vec2 screenSize)
-{
-  m_screenSize = screenSize;
-}
-
-void Camera::SetBody(b2Body* body)
+void Camera2D::SetBody(b2Body* body)
 {
   m_body = body;
 }

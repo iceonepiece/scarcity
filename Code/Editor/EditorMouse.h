@@ -40,11 +40,11 @@ public:
 			float xDiff = m_previousPosition.x - pos.x;
 			float yDiff = m_previousPosition.y - pos.y;
 
-			glm::vec3 camPos = m_scene->m_camera.GetPosition();
+			glm::vec3 camPos = m_scene->m_camera->GetPosition();
 			camPos.x += xDiff / 20;
 			camPos.y -= yDiff / 20;
 
-			m_scene->m_camera.SetPosition(camPos);
+			m_scene->m_camera->SetPosition(camPos);
 		}
 
 		m_previousPosition = pos;
@@ -52,13 +52,13 @@ public:
 
 	void HandleMouseScrolled(Event* e)
 	{
-		glm::vec3 camPos = m_scene->m_camera.GetPosition();
+		glm::vec3 camPos = m_scene->m_camera->GetPosition();
 
 		MouseScrolledEvent* event = (MouseScrolledEvent*)e;
 
 		camPos.z += event->GetY() * 1;
 
-		m_scene->m_camera.SetPosition(camPos);
+		m_scene->m_camera->SetPosition(camPos);
 	}
 
 	float DragCamera(glm::vec2 currentPosition)

@@ -1,5 +1,5 @@
 #include "Renderer.h"
-#include "../Platforms/OpenGLTexture.h"
+#include "Platforms/OpenGL/OpenGLTexture.h"
 #include <iostream>
 
 unsigned int Renderer::m_VBO = 0;

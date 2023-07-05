@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "EntityManager.h"
 #include "Camera.h"
 #include "../Physics/Physics.h"
@@ -47,7 +48,9 @@ public:
 
 	std::vector<System*> m_systems;
 	Application *m_game;
-	Camera m_camera;
+	
+	std::unique_ptr<Camera> m_camera;
+	
 	Physics m_physics;
 	EntityManager m_manager;
 	UI m_ui;

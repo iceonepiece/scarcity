@@ -1,9 +1,10 @@
 #pragma once
 
-#include <memory>
+#include "Common.h"
 #include <map>
 #include <string>
 #include "Application.h"
+#include "Graphics/Renderer.h"
 
 class Scene;
 
@@ -27,4 +28,5 @@ protected:
 
 	std::string m_currentSceneName;
 	std::map<std::string, std::unique_ptr<Scene>> m_scenes;
+
 };

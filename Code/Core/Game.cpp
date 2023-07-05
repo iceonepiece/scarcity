@@ -11,7 +11,7 @@
 #include "Input/KeyCodes.h"
 #include "Audio/Audio.h"
 #include "Events/MouseEvent.h"
-#include "Graphics/OpenGLRenderer.h"
+#include "Platforms/OpenGL/OpenGLRenderer.h"
 #include "Timer.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)

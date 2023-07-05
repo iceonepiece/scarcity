@@ -9,7 +9,7 @@ Texture* OpenGLResourceManager::LoadTexture(std::string name, const char* filena
     OpenGLTexture* texture = new OpenGLTexture();
     texture->Generate(filename, alpha);
 
-    m_textures.emplace(name, texture);
+    m_textures.emplace(name, std::unique_ptr<Texture>(texture));
 
     return m_textures[name].get();
 }

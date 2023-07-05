@@ -3,9 +3,12 @@
 #include "System.h"
 #include "GameState.h"
 #include "../Systems/ScriptableSystem.h"
+#include "Camera2D.h"
 
 Scene::Scene()
-	: m_camera(glm::vec3(0.0f, 0.0f, -14.0f), glm::vec2(0.5f, 0.25f), glm::vec2(1280, 720))
+	: m_camera(
+        new Camera2D({ 0.0f, 0.0f, -14.0f }, { 0.5f, 0.25f }, { 1280, 720 })
+    )
     , m_ui(this)
 {
     m_systems.emplace_back(new ScriptableSystem(this));
@@ -43,7 +46,7 @@ void Scene::Update(float deltaTime)
     if (physicsActive)
         m_physics.Update(deltaTime);
 
-    m_camera.Update();
+    m_camera->Update();
 }
 
 void Scene::Enter()

@@ -1,8 +1,8 @@
 #include <iostream>
 #include "OpenGLWindow.h"
-#include "../Graphics/Renderer.h"
-#include "../Graphics/RendererAPI.h"
-#include "../Input/Input.h"
+#include "Graphics/Renderer.h"
+#include "Graphics/RendererAPI.h"
+#include "Input/Input.h"
 
 OpenGLWindow::OpenGLWindow(std::string title, int width, int height)
 	: Window(title, width, height)
@@ -66,7 +66,7 @@ void OpenGLWindow::PreRender()
 
     glViewport(xOffset, yOffset, width, height);
 
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
