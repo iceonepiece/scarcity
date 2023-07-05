@@ -16,8 +16,7 @@ public:
 	virtual void Draw(Sprite& sprite, const glm::mat4& modelMatrix) = 0;
 	virtual void DrawLine(const glm::vec3& v1, const glm::vec3& v2, const glm::vec4& color = glm::vec4(1)) = 0;
 	virtual void DrawRect(b2Body* body, const Camera& camera) = 0;
-
-	virtual void DrawCircle(const glm::vec2& position, float radius) = 0;
+	virtual void DrawCircle(const glm::vec2& position, float radius, bool filled = true) = 0;
 
 	void SetCamera(Camera* camera);
 

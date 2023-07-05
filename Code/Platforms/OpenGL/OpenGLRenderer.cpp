@@ -171,7 +171,32 @@ void OpenGLRenderer::DrawRect(b2Body* body, const Camera& camera)
     DrawLine(points[3], points[0], color);
 }
 
-void OpenGLRenderer::DrawCircle(const glm::vec2& position, float radius)
+void OpenGLRenderer::DrawCircle(const glm::vec2& position, float radius, bool filled)
 {
+    int segments = 28;
 
+    glm::vec3 startingPoint {
+        position.x + (radius * glm::cos(0.0f)),
+        position.y + (radius * glm::sin(0.0f)),
+        0.0f
+    };
+
+    glm::vec3 previousPoint = startingPoint;
+
+    for (int i = 1; i < segments; i++)
+    {
+        float angle = (float)i / segments * glm::two_pi<float>();
+
+        glm::vec3 point {
+            position.x + (radius * glm::cos(angle)),
+            position.y + (radius * glm::sin(angle)),
+            0.0f
+        };
+
+        DrawLine(previousPoint, point, glm::vec4(1.0f));
+
+        previousPoint = point;
+    }
+
+    DrawLine(previousPoint, startingPoint, glm::vec4(1.0f));
 }

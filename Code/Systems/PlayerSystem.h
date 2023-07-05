@@ -136,6 +136,10 @@ public:
 
     virtual void Render() override
     {
+        Renderer& renderer = m_scene->m_game->GetRenderer();
 
+        renderer.DrawCircle(glm::vec3(0.0f), 1.0f, false);
+        renderer.DrawCircle(glm::vec3(0.0f), 2.0f, false);
+        renderer.DrawCircle(glm::vec3(0.0f), 4.0f, false);
     }
 };
