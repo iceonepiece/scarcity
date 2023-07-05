@@ -141,5 +141,8 @@ public:
         renderer.DrawCircle(glm::vec3(0.0f), 1.0f, false);
         renderer.DrawCircle(glm::vec3(0.0f), 2.0f, false);
         renderer.DrawCircle(glm::vec3(0.0f), 4.0f, false);
+        renderer.DrawCircle(glm::vec3(1.0, 2.0f, 0.0f), 5.0f, false);
+        renderer.DrawCircle(glm::vec3(2.0, 2.0f, 0.0f), 0.5f, false);
+        renderer.DrawCircle(glm::vec3(-2.0, 2.0f, 0.0f), 3.0f, false);
     }
 };

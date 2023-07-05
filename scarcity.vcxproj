@@ -344,6 +344,7 @@
     <ClInclude Include="Code\Core\GameApplication.h" />
     <ClInclude Include="Code\Game\MyLevel.h" />
     <ClInclude Include="Code\Game\Player.h" />
+    <ClInclude Include="Code\Graphics\GraphicsData.h" />
     <ClInclude Include="Code\Graphics\Texture.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLWindow.h" />
     <ClInclude Include="Code\Core\Value.h" />

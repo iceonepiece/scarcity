@@ -122,6 +122,32 @@ void OpenGLRenderer::DrawLine(const glm::vec3& v1, const glm::vec3& v2, const gl
     glDrawArrays(GL_LINES, 0, 2);
 }
 
+void OpenGLRenderer::DrawLines(float lines[], int n, const glm::vec4& color)
+{
+    m_basicShader.Use();
+
+    glm::mat4 projection = glm::mat4(1.0f);
+    glm::vec2 screenSize = RendererAPI::GetScreenSize();
+    projection = glm::perspective(glm::radians(45.0f), screenSize.x / screenSize.y, 0.1f, 100.0f);
+
+    m_basicShader.SetMatrix4("model", glm::mat4(1));
+
+    glm::mat4 view = glm::mat4(1.0f);
+    if (m_camera != nullptr)
+        view = m_camera->GetViewMatrix();
+
+    m_basicShader.SetMatrix4("view", view);
+    m_basicShader.SetMatrix4("projection", projection);
+    m_basicShader.SetVector4f("color", color);
+
+    glBindVertexArray(m_lineVAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_lineVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * n * 2, lines, GL_STREAM_DRAW);
+
+    glDrawArrays(GL_LINES, 0, n);
+}
+
 void OpenGLRenderer::DrawRect(b2Body* body, const Camera& camera)
 {
     b2Vec2 position = body->GetPosition();
@@ -173,7 +199,9 @@ void OpenGLRenderer::DrawRect(b2Body* body, const Camera& camera)
 
 void OpenGLRenderer::DrawCircle(const glm::vec2& position, float radius, bool filled)
 {
-    int segments = 28;
+    int segments = 24;
+
+    std::vector<float> lines;
 
     glm::vec3 startingPoint {
         position.x + (radius * glm::cos(0.0f)),
@@ -193,10 +221,18 @@ void OpenGLRenderer::DrawCircle(const glm::vec2& position, float radius, bool fi
             0.0f
         };
 
-        DrawLine(previousPoint, point, glm::vec4(1.0f));
+        lines.push_back(previousPoint.x);
+        lines.push_back(previousPoint.y);
+        lines.push_back(point.x);
+        lines.push_back(point.y);
 
         previousPoint = point;
     }
 
-    DrawLine(previousPoint, startingPoint, glm::vec4(1.0f));
+    lines.push_back(previousPoint.x);
+    lines.push_back(previousPoint.y);
+    lines.push_back(startingPoint.x);
+    lines.push_back(startingPoint.y);
+
+    DrawLines(lines.data(), lines.size() / 2);
 }
