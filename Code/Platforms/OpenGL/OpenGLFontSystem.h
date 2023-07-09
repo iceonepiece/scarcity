@@ -1,6 +1,5 @@
 #pragma once
 
-/*
 #include <iostream>
 #include <map>
 #include <glad/glad.h>
@@ -22,15 +21,14 @@ struct Character {
     unsigned int Advance;   // Horizontal offset to advance to next glyph
 };
 
-class FontSystem
+class OpenGLFontSystem
 {
 public:
-	static int Init();
+	int Init();
 
-    static void RenderText(UIText *uiText);
+    void RenderText(UIText *uiText);
 
-    static std::map<GLchar, Character> Characters;
-    static unsigned int VAO, VBO;
-    static OpenGLShader shader;
+    std::map<GLchar, Character> Characters;
+    unsigned int VAO, VBO;
+    OpenGLShader shader;
 };
-*/

@@ -16,7 +16,7 @@ public:
 	
 	virtual void Draw() override
 	{
-		Renderer::DrawQuadUI(position, m_scale, m_color, alignment);
+		//Renderer::DrawQuadUI(position, m_scale, m_color, alignment);
 	}
 
 protected:

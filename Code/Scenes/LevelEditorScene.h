@@ -30,7 +30,7 @@ public:
 		for (auto [entity, collider] : view.each())
 		{
 			std::cout << "LevelEditorScene: DrawQuad" << std::endl;
-			Renderer::DrawQuad(collider.body, *m_camera);
+			//Renderer::DrawQuad(collider.body, *m_camera);
 		}
 	}
 };

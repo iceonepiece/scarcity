@@ -20,7 +20,7 @@ public:
 
 	virtual void Render() override
 	{
-		Renderer& renderer = m_scene->m_game->GetRenderer();
+		Renderer& renderer = m_scene->m_app->GetRenderer();
 		Camera& camera = *m_scene->m_camera;
 		renderer.SetCamera(&camera);
 

@@ -1,16 +1,22 @@
 #pragma once
 
-#include <vector>
 #include "Core/Application.h"
-#include "EditorScene.h"
-#include "ImGuiLayer.h"
-#include "SceneLayer.h"
+#include "Gizmos/Gizmo.h"
+#include "Core/Camera.h"
+#include <vector>
+#include <memory>
 
-class EditorApplication : public Application
+enum EditorMode
+{
+	ViewMode,
+	TranslateMode,
+	RotateMode,
+	ScaleMode
+};
+
+class Editor2D : public Application
 {
 public:
-	EditorApplication();
-	virtual ~EditorApplication();
 
 	virtual void Initialize(std::string title, int width, int height) override;
 	virtual void Run() override;
@@ -21,6 +27,8 @@ protected:
 	virtual void Update() override;
 	virtual void Render() override;
 
-	ImGuiLayer m_imGuiLayer;
-	SceneLayer m_sceneLayer;
+protected:
+	EditorMode m_currentMode;
+	std::vector<std::unique_ptr<Gizmo>> m_gizmos;
+	std::unique_ptr<Camera> m_camera;
 };

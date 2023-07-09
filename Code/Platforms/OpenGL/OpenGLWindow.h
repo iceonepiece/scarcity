@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Core/Window.h"
+#include "Core/Application.h"
 
 class OpenGLWindow : public Window
 {
@@ -16,8 +17,28 @@ public:
 	virtual void Render() override;
 	virtual bool WindowShouldClose() override;
 
+	virtual void SetEventCallback(EventCallbackFn callback) override
+	{
+		
+		m_data.EventCallback = callback;
+		std::cout << "Set Event Callback" << std::endl;
+		std::cout << "XXXX: " << &(m_data.EventCallback) << std::endl;
+	}
+
 	GLFWwindow* GetGLFWwindow();
 
 protected:
 	GLFWwindow* m_glfwWindow;
+
+	struct WindowData
+	{
+		std::string title;
+		unsigned int width, height;
+
+		//Application* app;
+
+		EventCallbackFn EventCallback;
+	};
+
+	WindowData m_data;
 };

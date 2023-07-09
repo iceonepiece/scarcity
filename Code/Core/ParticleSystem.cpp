@@ -7,7 +7,7 @@
 
 unsigned int ParticleSystem::m_VAO = 0;
 uint32_t ParticleSystem::m_PoolIndex = 999;
-Shader ParticleSystem::m_shader;
+OpenGLShader ParticleSystem::m_shader;
 std::vector<Particle> ParticleSystem::m_ParticlePool;
 
 

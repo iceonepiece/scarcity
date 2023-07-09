@@ -1,14 +1,8 @@
-/*
-#include "FontSystem.h"
-#include "../UIs/UIText.h"
-#include "Renderer.h"
+#include "OpenGLFontSystem.h"
+#include "UIs/UIText.h"
+#include "OpenGLRenderer.h"
 
-std::map<GLchar, Character> FontSystem::Characters;
-unsigned int FontSystem::VBO = 0;
-unsigned int FontSystem::VAO = 0;
-OpenGLShader FontSystem::shader;
-
-int FontSystem::Init()
+int OpenGLFontSystem::Init()
 {
     shader.Compile("Shaders/font.vert", "Shaders/font.frag");
 
@@ -98,9 +92,8 @@ int FontSystem::Init()
     return 0;
 }
 
-void FontSystem::RenderText(UIText *uiText)
+void OpenGLFontSystem::RenderText(UIText *uiText)
 {
-    //FontSystem::shader.Use();
     // activate corresponding render state	
     shader.Use();
     shader.SetVector3f("textColor", uiText->color);
@@ -180,4 +173,3 @@ void FontSystem::RenderText(UIText *uiText)
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
-*/

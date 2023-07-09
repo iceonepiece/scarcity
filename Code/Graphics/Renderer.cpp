@@ -1,7 +1,7 @@
 #include "Renderer.h"
-#include "Platforms/OpenGL/OpenGLTexture.h"
 #include <iostream>
 
+/*
 unsigned int Renderer::m_VBO = 0;
 unsigned int Renderer::m_VAO = 0;
 glm::vec2 Renderer::s_screenSize;
@@ -12,12 +12,14 @@ Shader Renderer::s_basicShader;
 Shader Renderer::s_uiShader;
 Shader Renderer::s_circleShader;
 Shader Renderer::s_textureShader;
+*/
 
 void Renderer::SetCamera(Camera *camera)
 {
     m_camera = camera;
 }
 
+/*
 void Renderer::SetScreenSize(int width, int height, int xOffset, int yOffset)
 {
     s_screenSize.x = width;
@@ -25,6 +27,7 @@ void Renderer::SetScreenSize(int width, int height, int xOffset, int yOffset)
     s_screenOffset.x = xOffset;
     s_screenOffset.y = yOffset;
 }
+
 
 glm::vec2 Renderer::GetScreenSize()
 {
@@ -38,6 +41,7 @@ float Renderer::GetScreenSizePercentage()
 
 void Renderer::Init()
 {
+    
     float vertices[] = {
          0.5f,  0.5f,   1.0f,   1.0f,
          0.5f, -0.5f,   1.0f,   0.0f,
@@ -68,9 +72,10 @@ void Renderer::Init()
     s_uiShader.Compile("Shaders/ui.vert", "Shaders/ui.frag");
     s_circleShader.Compile("Shaders/circle.vert", "Shaders/circle.frag");
     s_textureShader.Compile("Shaders/texture.vert", "Shaders/texture.frag");
+
 }
 
-/*
+
 void Renderer::DrawPolygon(b2Body* body, Camera& camera)
 {
     s_basicShader.Use();
@@ -112,7 +117,7 @@ void Renderer::DrawPolygon(b2Body* body, Camera& camera)
     glBindVertexArray(m_VAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
-*/
+
 
 void Renderer::DrawQuad(b2Body* body, Camera& camera)
 {
@@ -312,3 +317,4 @@ void Renderer::DrawSprite(Sprite& sprite, glm::vec2 position, glm::vec2 scale, C
     glBindVertexArray(m_VAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
+*/

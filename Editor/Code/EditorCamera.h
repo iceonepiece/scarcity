@@ -6,13 +6,22 @@ class EditorCamera : public Camera
 {
 public:
 	EditorCamera()
-		: Camera(glm::vec3(0.0f), glm::vec2(50, 50), glm::vec2(1280, 720))
+		: Camera(glm::vec3(0.0f), glm::vec2(1280, 720))
 	{
 
 	}
 
-	glm::mat4 GetProjection()
+	virtual void Update() override {
+
+	}
+
+	virtual glm::mat4 GetProjectionMatrix() const override
 	{
-		return glm::perspective(glm::radians(45.0f), (float)1280 / (float)720, 0.1f, 100.0f);
+		return glm::perspective(glm::radians(45.0f), m_screenSize.x / m_screenSize.y, 0.1f, 100.0f);
+	}
+
+	virtual glm::mat4 GetViewMatrix() const override
+	{
+		return glm::translate(glm::mat4(1.0f), m_position);
 	}
 };

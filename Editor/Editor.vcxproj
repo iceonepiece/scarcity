@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="Code\Components\EntityListWindow.cpp" />
     <ClCompile Include="Code\Components\InspectorWindow.cpp" />
+    <ClCompile Include="Code\Editor2D.cpp" />
     <ClCompile Include="Code\EditorApplication.cpp" />
     <ClCompile Include="Code\EditorScene.cpp" />
     <ClCompile Include="Code\ImGuiComponent.cpp" />
@@ -149,14 +150,19 @@
     <ClInclude Include="Code\Components\EntityListWindow.h" />
     <ClInclude Include="Code\Components\ImGuiWindow.h" />
     <ClInclude Include="Code\Components\InspectorWindow.h" />
+    <ClInclude Include="Code\Editor2D.h" />
     <ClInclude Include="Code\EditorApplication.h" />
     <ClInclude Include="Code\EditorCamera.h" />
     <ClInclude Include="Code\EditorMouse.h" />
+    <ClInclude Include="Code\Gizmos\Gizmo.h" />
+    <ClInclude Include="Code\Gizmos\RotateGizmo.h" />
+    <ClInclude Include="Code\Gizmos\ScaleGizmo.h" />
     <ClInclude Include="Code\ImGuiComponent.h" />
     <ClInclude Include="Code\ImGuiLayer.h" />
     <ClInclude Include="Code\Layer.h" />
     <ClInclude Include="Code\EditorScene.h" />
     <ClInclude Include="Code\SceneLayer.h" />
+    <ClInclude Include="Code\Gizmos\TranslateGizmo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

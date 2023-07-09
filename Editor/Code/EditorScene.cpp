@@ -24,6 +24,6 @@ void EditorScene::Render()
 	auto view = m_manager.m_registry.view<Collider2DComponent>();
 	for (auto [entity, collider] : view.each())
 	{
-		Renderer::DrawQuad(collider.body, m_camera);
+		//Renderer::DrawQuad(collider.body, *m_camera);
 	}
 }

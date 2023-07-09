@@ -1,12 +1,12 @@
-#include "Shader.h"
+#include "OpenGLShader.h"
 
-Shader::Shader()
+OpenGLShader::OpenGLShader()
     : m_id(-1)
 {
     std::cout << "Shader constructor" << std::endl;
 }
 
-void Shader::Compile(const char* vertexPath, const char* fragmentPath)
+void OpenGLShader::Compile(const std::string& vertexPath, const std::string& fragmentPath)
 {
     std::string vertexCode;
     std::string fragmentCode;
@@ -58,7 +58,7 @@ void Shader::Compile(const char* vertexPath, const char* fragmentPath)
     glDeleteShader(fragmentShader);
 }
 
-Shader::~Shader()
+OpenGLShader::~OpenGLShader()
 {
     if (m_id != -1)
     {
@@ -66,33 +66,33 @@ Shader::~Shader()
     }
 }
 
-void Shader::SetInt(const char* name, int value)
+void OpenGLShader::SetInt(const std::string& name, int value)
 {
-    glUniform1i(glGetUniformLocation(m_id, name), value);
+    glUniform1i(glGetUniformLocation(m_id, name.c_str()), value);
 }
 
-void Shader::SetFloat(const char* name, float value)
+void OpenGLShader::SetFloat(const std::string& name, float value)
 {
-    glUniform1f(glGetUniformLocation(m_id, name), value);
+    glUniform1f(glGetUniformLocation(m_id, name.c_str()), value);
 }
 
-void Shader::SetVector3f(const char* name, const glm::vec3& value)
+void OpenGLShader::SetVector3f(const std::string& name, const glm::vec3& value)
 {
-    glUniform3f(glGetUniformLocation(m_id, name), value.x, value.y, value.z);
+    glUniform3f(glGetUniformLocation(m_id, name.c_str()), value.x, value.y, value.z);
 }
 
-void Shader::SetVector4f(const char* name, const glm::vec4& value)
+void OpenGLShader::SetVector4f(const std::string& name, const glm::vec4& value)
 {
-    glUniform4f(glGetUniformLocation(m_id, name), value.x, value.y, value.z, value.w);
+    glUniform4f(glGetUniformLocation(m_id, name.c_str()), value.x, value.y, value.z, value.w);
 }
 
 
-void Shader::SetMatrix4(const char* name, const glm::mat4& value)
+void OpenGLShader::SetMatrix4(const std::string& name, const glm::mat4& value)
 {
-    glUniformMatrix4fv(glGetUniformLocation(m_id, name), 1, GL_FALSE, &value[0][0]);
+    glUniformMatrix4fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE, &value[0][0]);
 }
 
-void Shader::Use()
+void OpenGLShader::Use()
 {
     glUseProgram(m_id);
 }

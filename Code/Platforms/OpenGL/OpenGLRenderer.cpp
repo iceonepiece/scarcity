@@ -57,6 +57,7 @@ void OpenGLRenderer::Initialize()
 
     m_basicShader.Compile("Shaders/basic.vert", "Shaders/basic.frag");
     m_spriteShader.Compile("Shaders/texture.vert", "Shaders/texture.frag");
+    m_uiShader.Compile("Shaders/ui.vert", "Shaders/ui.frag");
 }
 
 void OpenGLRenderer::Draw(Sprite& sprite, const glm::mat4& modelMatrix)
@@ -139,13 +140,35 @@ void OpenGLRenderer::DrawLines(float lines[], int n, const glm::vec4& color)
     m_basicShader.SetMatrix4("view", view);
     m_basicShader.SetMatrix4("projection", projection);
     m_basicShader.SetVector4f("color", color);
-
+    
     glBindVertexArray(m_lineVAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_lineVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * n * 2, lines, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * n * 2, lines, GL_STATIC_DRAW);
 
     glDrawArrays(GL_LINES, 0, n);
+}
+
+void OpenGLRenderer::DrawQuad(const glm::vec2& position, const glm::vec2& scale, float angle, glm::vec4 color)
+{
+    m_basicShader.Use();
+
+    glm::mat4 projection = glm::mat4(1.0f);
+    glm::vec2 screenSize = RendererAPI::GetScreenSize();
+    projection = glm::perspective(glm::radians(45.0f), screenSize.x / screenSize.y, 0.1f, 100.0f);
+
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
+    model = glm::rotate(model, angle, glm::vec3(0, 0, 1));
+    model = glm::scale(model, glm::vec3(scale.x, scale.y, 0.0f));
+
+    m_basicShader.SetMatrix4("model", model);
+    m_basicShader.SetMatrix4("view", m_camera->GetViewMatrix());
+    m_basicShader.SetMatrix4("projection", projection);
+    m_basicShader.SetVector4f("color", color);
+
+    glBindVertexArray(m_quadVAO);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 void OpenGLRenderer::DrawRect(b2Body* body, const Camera& camera)
@@ -235,4 +258,33 @@ void OpenGLRenderer::DrawCircle(const glm::vec2& position, float radius, bool fi
     lines.push_back(startingPoint.y);
 
     DrawLines(lines.data(), lines.size() / 2);
+}
+
+void OpenGLRenderer::DrawQuadUI(const glm::vec2& position, const glm::vec2& scale, const glm::vec4& color, UIAlignment alignment)
+{
+    m_uiShader.Use();
+
+    float x = position.x;
+    float y = position.y;
+
+    if (alignment == UIAlignment::CENTER)
+    {
+        x = m_screenSize.x / 2;
+        y = m_screenSize.y / 2;
+    }
+
+    glm::vec2 realScale = scale * GetScreenSizePercentage();
+
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(x, y, 0.0f));
+    model = glm::scale(model, glm::vec3(realScale.x, realScale.y, 0.0f));
+
+    glm::mat4 projection = glm::ortho(0.0f, m_screenSize.x, 0.0f, m_screenSize.y);
+
+    m_uiShader.SetMatrix4("model", model);
+    m_uiShader.SetMatrix4("projection", projection);
+    m_uiShader.SetVector4f("color", color);
+
+    glBindVertexArray(m_quadVAO);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 }

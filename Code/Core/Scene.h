@@ -26,6 +26,8 @@ public:
 	virtual void Enter();
 	virtual void Exit();
 
+	Application* GetApplication() { return m_app; }
+
 	void RenderUI();
 
 	template<typename T, typename... Args>
@@ -47,7 +49,7 @@ public:
 	bool particleActive = true;
 
 	std::vector<System*> m_systems;
-	Application *m_game;
+	Application *m_app;
 	
 	std::unique_ptr<Camera> m_camera;
 	

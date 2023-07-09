@@ -76,8 +76,8 @@ public:
 
 	void Render(Camera& camera)
 	{
-		Renderer::DrawCircle(m_wheel1, glm::vec4(1, 1, 1, 1), camera);
-		Renderer::DrawCircle(m_wheel2, glm::vec4(1, 1, 1, 1), camera);
+		//Renderer::DrawCircle(m_wheel1, glm::vec4(1, 1, 1, 1), camera);
+		//Renderer::DrawCircle(m_wheel2, glm::vec4(1, 1, 1, 1), camera);
 	}
 
 private:

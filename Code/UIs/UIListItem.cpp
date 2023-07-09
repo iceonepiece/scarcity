@@ -30,7 +30,7 @@ void UIListItem::Draw(bool active)
 
 	glm::vec4 color = active ? glm::vec4(0.6, 0.6, 0.6, 1.0) : glm::vec4(0.2, 0.2, 0.2, 1.0);
 	
-	Renderer::DrawQuadUI(position, parentList->scale, color);
+	//Renderer::DrawQuadUI(position, parentList->scale, color);
 	uiText->position.x = position.x - (parentList->scale.x / 2) + padding.x;
 	uiText->position.y = position.y - (parentList->scale.y / 2) + padding.y;
 	uiText->Draw();
@@ -39,7 +39,7 @@ void UIListItem::Draw(bool active)
 void UIListItem::Draw()
 {
 	UIList* parentList = (UIList*)(parent);
-	Renderer::DrawQuadUI(position, parentList->scale, glm::vec4(0.5, 0.5, 0.5, 1.0));
+	//Renderer::DrawQuadUI(position, parentList->scale, glm::vec4(0.5, 0.5, 0.5, 1.0));
 	uiText->position.x = position.x - (parentList->scale.x / 2) + padding.x;
 	uiText->position.y = position.y - (parentList->scale.y / 2) + padding.y;
 	uiText->Draw();

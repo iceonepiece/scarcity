@@ -1,10 +1,11 @@
 #pragma once
 
 #include <string>
-#include "Common.h"
+#include <memory>
 #include "Window.h"
 #include "ScriptingEngine.h"
 #include "Graphics/Renderer.h"
+#include "Events/Event.h"
 
 class Application
 {
@@ -13,6 +14,8 @@ public:
 
 	virtual void Initialize(std::string title, int width, int height) = 0;
 	virtual void Run() = 0;
+
+	virtual void OnEvent(Event& e) {}
 
 	virtual void ChangeScene(std::string name) {}
 	inline ScriptingEngine* GetScriptingEngine() { return &m_scriptingEngine; }
@@ -24,8 +27,8 @@ protected:
 	virtual void Render() = 0;
 
 	bool m_running = true;
-	Unique<Window> m_window;
-	Unique<Renderer> m_renderer;
+	std::unique_ptr<Window> m_window;
+	std::unique_ptr<Renderer> m_renderer;
 
 	ScriptingEngine m_scriptingEngine;
 };

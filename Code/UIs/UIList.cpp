@@ -48,7 +48,7 @@ void UIList::Update(float deltaTime)
 
 void UIList::Draw()
 {
-	Renderer::DrawQuadUI(position, scale, color);
+	//Renderer::DrawQuadUI(position, scale, color);
 
 	for (int i = 0; i < m_items.size(); i++)
 	{

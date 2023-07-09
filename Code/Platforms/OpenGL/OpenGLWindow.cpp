@@ -3,6 +3,8 @@
 #include "Graphics/Renderer.h"
 #include "Graphics/RendererAPI.h"
 #include "Input/Input.h"
+#include "Events/Event.h"
+#include "Events/KeyEvent.h"
 
 OpenGLWindow::OpenGLWindow(std::string title, int width, int height)
 	: Window(title, width, height)
@@ -25,6 +27,21 @@ OpenGLWindow::OpenGLWindow(std::string title, int width, int height)
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
     }
+
+    glfwSetWindowUserPointer(m_glfwWindow, &m_data);
+
+    glfwSetKeyCallback(m_glfwWindow, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+    {
+        WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+        switch (action)
+        {
+            case GLFW_PRESS:
+            {
+                KeyPressedEvent event(key);
+                data.EventCallback(event);
+            }
+        }
+    });
 }
 
 OpenGLWindow::~OpenGLWindow()
@@ -61,7 +78,7 @@ void OpenGLWindow::PreRender()
     int xOffset = (m_width - width) / 2;
     int yOffset = (m_height - height) / 2;
 
-    Renderer::SetScreenSize(width, height, xOffset, yOffset);
+    //Renderer::SetScreenSize(width, height, xOffset, yOffset);
     RendererAPI::SetScreenSize(width, height, xOffset, yOffset);
 
     glViewport(xOffset, yOffset, width, height);

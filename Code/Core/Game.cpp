@@ -62,12 +62,10 @@ Game::Game(int width, int height)
         std::cout << "Failed to initialize GLAD" << std::endl;
     }
 
-    Renderer::Init();
     ParticleSystem::Init();
-    FontSystem::Init();
+    //FontSystem::Init();
     Input::Init();
     Audio::Init();
-    RendererAPI::Initialize(new OpenGLRenderer());
 }
 
 Game::~Game()
@@ -169,15 +167,15 @@ void Game::Render()
     int xOffset = (m_width - width) / 2;
     int yOffset = (m_height - height) / 2;
 
-    Renderer::SetScreenSize(width, height, xOffset, yOffset);
-    RendererAPI::SetScreenSize(width, height, xOffset, yOffset);
+    //Renderer::SetScreenSize(width, height, xOffset, yOffset);
+    //RendererAPI::SetScreenSize(width, height, xOffset, yOffset);
     
     glViewport(xOffset, yOffset, width, height);
 
     glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    Renderer::DrawQuadUI(glm::vec2(0, 0), glm::vec2(2000, 2000), glm::vec4(0.15, 0.15, 0.15, 1), UIAlignment::CENTER);
+    //Renderer::DrawQuadUI(glm::vec2(0, 0), glm::vec2(2000, 2000), glm::vec4(0.15, 0.15, 0.15, 1), UIAlignment::CENTER);
 
     m_scenes[m_currentSceneName]->Render();
     m_scenes[m_currentSceneName]->RenderUI();

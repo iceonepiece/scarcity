@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <box2d/box2d.h>
 
 class Camera
@@ -18,7 +19,7 @@ public:
 	inline glm::vec2 GetScreenSize() const { return m_screenSize; }
 	inline void SetScreenSize(glm::vec2 screenSize) { m_screenSize = screenSize; }
 
-	virtual void SetBody(b2Body* body) = 0;
+	virtual void SetBody(b2Body* body) {}
 
 	virtual void Update() = 0;
 	virtual glm::mat4 GetViewMatrix() const = 0;

@@ -22,14 +22,14 @@ GameApplication::~GameApplication()
 void GameApplication::Initialize(std::string title, int width, int height)
 {
     m_window = std::make_unique<OpenGLWindow>(title, width, height);
+
+ 
     m_renderer = std::make_unique<OpenGLRenderer>();
     m_renderer->Initialize();
 
-    Renderer::Init();
     ResourceAPI::Initialize(new OpenGLResourceManager());
-    //RendererAPI::Initialize(new OpenGLRenderer());
     ParticleSystem::Init();
-    FontSystem::Init();
+    //FontSystem::Init();
     Input::Init();
     Audio::Init();
 
@@ -38,7 +38,7 @@ void GameApplication::Initialize(std::string title, int width, int height)
 
 void GameApplication::AddScene(std::string name, Scene *scene)
 {
-    scene->m_game = this;
+    scene->m_app = this;
     m_scenes.insert({ name, std::unique_ptr<Scene>(scene) });
 }
 
@@ -89,7 +89,7 @@ void GameApplication::Render()
 {
     m_window->PreRender();
 
-    Renderer::DrawQuadUI(glm::vec2(0, 0), glm::vec2(2000, 2000), glm::vec4(0.25, 0.25, 0.25, 1), UIAlignment::CENTER);
+    m_renderer->DrawQuadUI(glm::vec2(0, 0), glm::vec2(2000, 2000), glm::vec4(0.25, 0.25, 0.25, 1), UIAlignment::CENTER);
 
     m_scenes[m_currentSceneName]->Render();
     m_scenes[m_currentSceneName]->RenderUI();

@@ -5,7 +5,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include "../Graphics/Shader.h"
+#include "Platforms/OpenGL/OpenGLShader.h"
 #include "Camera.h"
 
 struct ParticleProps
@@ -46,6 +46,6 @@ private:
 	static std::vector<Particle> m_ParticlePool;
 	static uint32_t m_PoolIndex;
 
-	static Shader m_shader;
+	static OpenGLShader m_shader;
 	static unsigned int m_VAO;
 };

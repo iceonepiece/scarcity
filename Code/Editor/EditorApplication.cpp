@@ -27,7 +27,6 @@ void EditorApplication::Initialize(std::string title, int width, int height)
     m_imGuiLayer.AddComponent(new InspectorWindow(entityListWindow));
 
     Input::Init();
-    Renderer::Init();
 }
 
 void EditorApplication::Run()

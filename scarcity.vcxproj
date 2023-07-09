@@ -291,6 +291,7 @@
     <ClCompile Include="Code\GUIs\GUI.cpp" />
     <ClCompile Include="Code\GUIs\GUIComponent.cpp" />
     <ClCompile Include="Code\Core\LevelManager.cpp" />
+    <ClCompile Include="Code\Platforms\OpenGL\OpenGLFontSystem.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLWindow.cpp" />
     <ClCompile Include="Code\Core\Timer.cpp" />
     <ClCompile Include="Code\Editor\ImGuiComponent.cpp" />
@@ -307,7 +308,7 @@
     <ClCompile Include="Code\Physics\Physics.cpp" />
     <ClCompile Include="Code\Graphics\FontSystem.cpp" />
     <ClCompile Include="Code\Graphics\Renderer.cpp" />
-    <ClCompile Include="Code\Graphics\Shader.cpp" />
+    <ClCompile Include="Code\Platforms\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="Code\UIs\UI.cpp" />
     <ClCompile Include="Code\UIs\UIList.cpp" />
     <ClCompile Include="Code\UIs\UIListItem.cpp" />
@@ -342,10 +343,13 @@
     <ClInclude Include="Code\Editor\Components\ImGuiWindow.h" />
     <ClInclude Include="Code\Editor\EditorApplication.h" />
     <ClInclude Include="Code\Core\GameApplication.h" />
+    <ClInclude Include="Code\Events\KeyEvent.h" />
     <ClInclude Include="Code\Game\MyLevel.h" />
     <ClInclude Include="Code\Game\Player.h" />
     <ClInclude Include="Code\Graphics\GraphicsData.h" />
+    <ClInclude Include="Code\Graphics\Shader.h" />
     <ClInclude Include="Code\Graphics\Texture.h" />
+    <ClInclude Include="Code\Platforms\OpenGL\OpenGLFontSystem.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLWindow.h" />
     <ClInclude Include="Code\Core\Value.h" />
     <ClInclude Include="Code\Core\FSMState.h" />
@@ -407,7 +411,7 @@
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLRenderer.h" />
     <ClInclude Include="Code\Graphics\Renderer.h" />
     <ClInclude Include="Code\Graphics\RendererAPI.h" />
-    <ClInclude Include="Code\Graphics\Shader.h" />
+    <ClInclude Include="Code\Platforms\OpenGL\OpenGLShader.h" />
     <ClInclude Include="Code\Scenes\IntroScene.h" />
     <ClInclude Include="Code\Scenes\Level1.h" />
     <ClInclude Include="Code\Scenes\LevelEditorScene.h" />

@@ -1,5 +1,5 @@
 #include "EditorApplication.h"
-#include "Platforms/OpenGLWindow.h"
+#include "Platforms/OpenGL/OpenGLWindow.h"
 #include "Core/Timer.h"
 #include "Components/EntityListWindow.h"
 #include "Components/InspectorWindow.h"
@@ -26,7 +26,6 @@ void EditorApplication::Initialize(std::string title, int width, int height)
     //m_imGuiLayer.AddComponent(new InspectorWindow(entityListWindow));
 
     Input::Init();
-    Renderer::Init();
 }
 
 void EditorApplication::Run()
@@ -39,6 +38,11 @@ void EditorApplication::Run()
         Update();
         Render();
     }
+}
+
+void EditorApplication::OnEvent(Event& event)
+{
+    std::cout << "Got New Event !!!" << std::endl;
 }
 
 void EditorApplication::ProcessInput()
