@@ -34,6 +34,8 @@ void Editor2D::Initialize(std::string title, int width, int height)
 
 void Editor2D::OnEvent(Event* event)
 {
+    std::cout << "Editor2d.OnEvent(): " << event->ToString() << std::endl;
+
     m_events.push_back(std::unique_ptr<Event>(event));
 }
 
@@ -69,8 +71,6 @@ void Editor2D::ProcessInput()
 
 void Editor2D::OnKeyPressed(KeyPressedEvent& event)
 {
-    std::cout << "Editor2d.OnKeyPressed()" << std::endl;
-
     switch (event.GetKeyCode())
     {
         case Key::Q: m_currentMode = EditorMode::ViewMode;      break;

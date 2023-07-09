@@ -5,6 +5,7 @@
 #include "Input/Input.h"
 #include "Events/Event.h"
 #include "Events/KeyEvent.h"
+#include "Events/MouseEvent.h"
 
 OpenGLWindow::OpenGLWindow(std::string title, int width, int height)
 	: Window(title, width, height)
@@ -41,6 +42,31 @@ OpenGLWindow::OpenGLWindow(std::string title, int width, int height)
                 data.EventCallback(new KeyPressedEvent(key));
             }
         }
+    });
+
+    glfwSetMouseButtonCallback(m_glfwWindow, [](GLFWwindow* window, int button, int action, int mods)
+    {
+        WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+        switch (action)
+        {
+        case GLFW_PRESS:
+            {
+                data.EventCallback(new MouseButtonPressedEvent(button));
+                break;
+            }
+            case GLFW_RELEASE:
+            {
+                data.EventCallback(new MouseButtonReleasedEvent(button));
+                break;
+            }
+        }
+    });
+
+    glfwSetCursorPosCallback(m_glfwWindow, [](GLFWwindow* window, double xPos, double yPos)
+    {
+        WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);;
+        data.EventCallback(new MouseMovedEvent((float)xPos, (float)yPos));
     });
 }
 

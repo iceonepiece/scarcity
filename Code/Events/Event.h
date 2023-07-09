@@ -8,7 +8,8 @@ class Application;
 enum class EventType
 {
 	None = 0,
-	MouseButtonPressed, MouseMoved, MouseScrolled,
+	MouseButtonPressed, MouseButtonReleased,
+	MouseMoved, MouseScrolled,
 	KeyPressed, KeyReleased
 };
 
