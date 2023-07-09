@@ -37,8 +37,8 @@ OpenGLWindow::OpenGLWindow(std::string title, int width, int height)
         {
             case GLFW_PRESS:
             {
-                KeyPressedEvent event(key);
-                data.EventCallback(event);
+                //KeyPressedEvent event(key);
+                data.EventCallback(new KeyPressedEvent(key));
             }
         }
     });

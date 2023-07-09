@@ -20,7 +20,8 @@ public:
 
 	virtual void Initialize(std::string title, int width, int height) override;
 	virtual void Run() override;
-	virtual void OnEvent(Event& event) override;
+	virtual void OnEvent(Event* event) override;
+	virtual void OnKeyPressed(KeyPressedEvent& event) override;
 
 protected:
 	virtual void ProcessInput() override;
@@ -29,6 +30,7 @@ protected:
 
 protected:
 	EditorMode m_currentMode;
+	std::vector<std::unique_ptr<Event>> m_events;
 	std::vector<std::unique_ptr<Gizmo>> m_gizmos;
 	std::unique_ptr<Camera> m_camera;
 };

@@ -7,7 +7,7 @@
 class Window
 {
 public:
-	using EventCallbackFn = std::function<void(Event&)>;
+	using EventCallbackFn = std::function<void(Event*)>;
 
 	Window(std::string title, int width = 1280, int height = 720)
 		: m_title(title)

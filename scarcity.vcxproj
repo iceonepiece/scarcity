@@ -288,6 +288,8 @@
     <ClCompile Include="Code\Core\EntityManager.cpp" />
     <ClCompile Include="Code\Core\Game.cpp" />
     <ClCompile Include="Code\Core\GameApplication.cpp" />
+    <ClCompile Include="Code\Events\KeyEvent.cpp" />
+    <ClCompile Include="Code\Events\MouseEvent.cpp" />
     <ClCompile Include="Code\GUIs\GUI.cpp" />
     <ClCompile Include="Code\GUIs\GUIComponent.cpp" />
     <ClCompile Include="Code\Core\LevelManager.cpp" />

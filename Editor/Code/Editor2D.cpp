@@ -11,7 +11,7 @@ void Editor2D::Initialize(std::string title, int width, int height)
 {
 	m_window = std::make_unique<OpenGLWindow>(title, width, height);
 
-    m_window->SetEventCallback([this](Event& event) {
+    m_window->SetEventCallback([this](Event* event) {
         this->OnEvent(event);
     });
 
@@ -32,26 +32,9 @@ void Editor2D::Initialize(std::string title, int width, int height)
 	Input::Init();
 }
 
-void Editor2D::OnEvent(Event& event)
+void Editor2D::OnEvent(Event* event)
 {
-    std::cout << "New Event: " << event.ToString() << std::endl;
-
-
-    if (event.GetType() == EventType::KeyPressed)
-    {
-        std::cout << "KeyPressed Event" << std::endl;
-
-        KeyPressedEvent* keyPressed = dynamic_cast<KeyPressedEvent*>(&event);
-
-        switch (keyPressed->GetKeyCode())
-        {
-            case Key::Q: m_currentMode = EditorMode::ViewMode;      break;
-            case Key::W: m_currentMode = EditorMode::TranslateMode; break;
-            case Key::E: m_currentMode = EditorMode::RotateMode;    break;
-            case Key::R: m_currentMode = EditorMode::ScaleMode;     break;
-        }
-    }
-
+    m_events.push_back(std::unique_ptr<Event>(event));
 }
 
 void Editor2D::Run()
@@ -77,6 +60,24 @@ void Editor2D::ProcessInput()
         //gizmo->Proc
     }
 
+
+    for (auto& e : m_events)
+        e->Process(*this);
+
+    m_events.clear();
+}
+
+void Editor2D::OnKeyPressed(KeyPressedEvent& event)
+{
+    std::cout << "Editor2d.OnKeyPressed()" << std::endl;
+
+    switch (event.GetKeyCode())
+    {
+        case Key::Q: m_currentMode = EditorMode::ViewMode;      break;
+        case Key::W: m_currentMode = EditorMode::TranslateMode; break;
+        case Key::E: m_currentMode = EditorMode::RotateMode;    break;
+        case Key::R: m_currentMode = EditorMode::ScaleMode;     break;
+    }
 }
 
 void Editor2D::Update()
@@ -87,12 +88,10 @@ void Editor2D::Render()
 {
     m_window->PreRender();
 
-
     if (m_currentMode != EditorMode::ViewMode)
     {
         m_gizmos.at(m_currentMode - 1)->Render(*m_renderer);
     }
-
 
     m_window->Render();
 }

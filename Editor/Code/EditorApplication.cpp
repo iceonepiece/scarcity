@@ -40,7 +40,7 @@ void EditorApplication::Run()
     }
 }
 
-void EditorApplication::OnEvent(Event& event)
+void EditorApplication::OnEvent(Event* event)
 {
     std::cout << "Got New Event !!!" << std::endl;
 }

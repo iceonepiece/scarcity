@@ -19,17 +19,8 @@ protected:
 class KeyPressedEvent : public KeyEvent
 {
 public:
-	KeyPressedEvent(KeyCode keycode)
-		: KeyEvent(keycode)
-	{}
-
-	virtual std::string ToString() const override
-	{
-		return "Key Pressed Event";
-	}
-
-	virtual EventType GetType() const override
-	{
-		return EventType::KeyPressed;
-	}
+	KeyPressedEvent(KeyCode keycode);
+	virtual std::string ToString() const override;
+	virtual void Process(Application& app) override;
+	virtual EventType GetType() const override;
 };

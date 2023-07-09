@@ -14,7 +14,7 @@ public:
 
 	virtual void Initialize(std::string title, int width, int height) override;
 	virtual void Run() override;
-	virtual void OnEvent(Event& event) override;
+	virtual void OnEvent(Event* event) override;
 
 protected:
 	virtual void ProcessInput() override;

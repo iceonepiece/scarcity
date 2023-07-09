@@ -6,6 +6,7 @@
 #include "ScriptingEngine.h"
 #include "Graphics/Renderer.h"
 #include "Events/Event.h"
+#include "Events/KeyEvent.h"
 
 class Application
 {
@@ -15,7 +16,8 @@ public:
 	virtual void Initialize(std::string title, int width, int height) = 0;
 	virtual void Run() = 0;
 
-	virtual void OnEvent(Event& e) {}
+	virtual void OnEvent(Event* e) {}
+	virtual void OnKeyPressed(KeyPressedEvent& event) {}
 
 	virtual void ChangeScene(std::string name) {}
 	inline ScriptingEngine* GetScriptingEngine() { return &m_scriptingEngine; }

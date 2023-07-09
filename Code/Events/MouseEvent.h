@@ -1,32 +1,20 @@
 #pragma once
 
+#include "Core/Application.h"
 #include "Event.h"
-
 
 class MouseMovedEvent : public Event
 {
 public:
-	MouseMovedEvent(float x, float y)
-		: m_x(x)
-		, m_y(y)
+	MouseMovedEvent(float x, float y);
 
-	{
-	}
-
-	EventType GetType() const override
-	{
-		return EventType::MouseMoved;
-	}
+	EventType GetType() const override;
 
 	float GetX() const { return m_x; }
 	float GetY() const { return m_y; }
 
-	std::string ToString() const override
-	{
-		std::stringstream ss;
-		ss << "MouseMovedEvent: " << m_x << ", " << m_y;
-		return ss.str();
-	}
+	std::string ToString() const override;
+	virtual void Process(Application& app) override;
 
 private:
 	float m_x;
@@ -36,27 +24,15 @@ private:
 class MouseScrolledEvent : public Event
 {
 public:
-	MouseScrolledEvent(float x, float y)
-		: m_x(x)
-		, m_y(y)
+	MouseScrolledEvent(float x, float y);
 
-	{
-	}
-
-	EventType GetType() const override
-	{
-		return EventType::MouseScrolled;
-	}
+	EventType GetType() const override;
 
 	float GetX() const { return m_x; }
 	float GetY() const { return m_y; }
 
-	std::string ToString() const override
-	{
-		std::stringstream ss;
-		ss << "MouseScrolledEvent: " << m_x << ", " << m_y;
-		return ss.str();
-	}
+	std::string ToString() const override;
+	virtual void Process(Application& app) override;
 
 private:
 	float m_x;
