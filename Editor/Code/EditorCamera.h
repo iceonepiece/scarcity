@@ -20,6 +20,11 @@ public:
 		return glm::perspective(glm::radians(45.0f), m_screenSize.x / m_screenSize.y, 0.1f, 100.0f);
 	}
 
+	virtual glm::mat4 GetProjectionMatrix(CameraType type) const override
+	{
+		return glm::perspective(glm::radians(45.0f), m_screenSize.x / m_screenSize.y, 0.1f, 100.0f);
+	}
+
 	virtual glm::mat4 GetViewMatrix() const override
 	{
 		return glm::translate(glm::mat4(1.0f), m_position);

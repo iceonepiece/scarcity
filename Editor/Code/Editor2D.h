@@ -37,6 +37,7 @@ protected:
 
 	glm::vec2 m_cursorPosition;
 	EntityManager m_entityManager;
+	entt::entity m_pickedEntity = entt::entity(1000);
 	//Entity m_pickedEntity;
 
 	std::vector<std::unique_ptr<Event>> m_events;

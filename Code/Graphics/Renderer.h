@@ -15,6 +15,7 @@ public:
 	virtual void Initialize() = 0;
 	virtual void Draw(Sprite& sprite, const glm::mat4& modelMatrix) = 0;
 	virtual void DrawQuad(const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{1.0f}) = 0;
+	virtual void DrawQuad2D(const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }) = 0;
 	virtual void DrawQuadUI(const glm::vec2& position, const glm::vec2& scale, const glm::vec4& color, UIAlignment alignment = UIAlignment::NONE) = 0;
 	virtual void DrawLine(const glm::vec3& v1, const glm::vec3& v2, const glm::vec4& color = glm::vec4(1)) = 0;
 	virtual void DrawLines(float lines[], int n, const glm::vec4& color = glm::vec4(1)) = 0;

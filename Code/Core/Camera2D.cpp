@@ -30,18 +30,29 @@ void Camera2D::Update()
 
 glm::mat4 Camera2D::GetViewMatrix() const
 {
+    if (m_type == CameraType::Orthographic)
+    {
+        glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
+        return glm::lookAt(m_position, m_position + front, glm::vec3(0.0f, 1.0f, 0.0f));
+    }
+
     return glm::translate(glm::mat4(1.0f), m_position);
 }
 
 glm::mat4 Camera2D::GetProjectionMatrix() const
 {
-    switch (m_type)
+    return GetProjectionMatrix(m_type);
+}
+
+glm::mat4 Camera2D::GetProjectionMatrix(CameraType type) const
+{
+    switch (type)
     {
-        case CameraType::Perspective:
-            return glm::perspective(glm::radians(45.0f), m_screenSize.x / m_screenSize.y, 0.1f, 100.0f);
-        
-        case CameraType::Orthographic:
-            return glm::ortho(-(m_screenSize.x / 64), m_screenSize.x / 64, -(m_screenSize.y/ 64), m_screenSize.y / 64, 0.1f, 100.0f);
+    case CameraType::Perspective:
+        return glm::perspective(glm::radians(45.0f), m_screenSize.x / m_screenSize.y, 0.1f, 100.0f);
+
+    case CameraType::Orthographic:
+        return glm::ortho(-(m_screenSize.x / 2), (m_screenSize.x / 2), -(m_screenSize.y / 2), (m_screenSize.y / 2));
     }
 }
 

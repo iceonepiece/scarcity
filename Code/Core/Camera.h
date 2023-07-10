@@ -4,7 +4,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <box2d/box2d.h>
 
-enum class CameraType {
+enum class CameraType
+{
 	Perspective,
 	Orthographic
 };
@@ -16,6 +17,7 @@ public:
 	Camera(const glm::vec3& position, const glm::vec2& screenSize)
 		: m_position(position)
 		, m_screenSize(screenSize)
+		, m_defaultScreenSize(screenSize)
 		, m_type(CameraType::Perspective)
 	{}
 
@@ -32,10 +34,14 @@ public:
 	virtual void Update() = 0;
 	virtual glm::mat4 GetViewMatrix() const = 0;
 	virtual glm::mat4 GetProjectionMatrix() const = 0;
+	virtual glm::mat4 GetProjectionMatrix(CameraType type) const = 0;
+	
+	inline float GetScreenSizePercentage() { return m_screenSize.x / m_defaultScreenSize.x; }
 
 protected:
 	glm::vec3 m_position = glm::vec3(0.0f);
 	glm::vec2 m_screenSize;
+	glm::vec2 m_defaultScreenSize;
 	CameraType m_type;
 };
 

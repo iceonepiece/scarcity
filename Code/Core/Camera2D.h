@@ -13,6 +13,8 @@ public:
 
 	virtual glm::mat4 GetViewMatrix() const override;
 	virtual glm::mat4 GetProjectionMatrix() const override;
+	virtual glm::mat4 GetProjectionMatrix(CameraType type) const override;
+
 	
 	virtual void Update() override;
 	virtual void SetBody(b2Body* body) override;

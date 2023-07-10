@@ -171,6 +171,35 @@ void OpenGLRenderer::DrawQuad(const glm::vec2& position, const glm::vec2& scale,
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+void OpenGLRenderer::DrawQuad2D(const glm::vec2& position, const glm::vec2& scale, float angle, glm::vec4 color)
+{
+    m_basicShader.Use();
+
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
+    model = glm::rotate(model, angle, glm::vec3(0, 0, 1));
+    model = glm::scale(model, glm::vec3(scale.x, scale.y, 0.0f));
+
+    glm::mat4 view = glm::mat4(1.0f);
+    view = m_camera->GetViewMatrix();
+    /*
+    glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
+    glm::vec3 cameraPos = m_camera->GetPosition();
+    view = glm::lookAt(cameraPos, cameraPos + front, glm::vec3(0.0f, 1.0f, 0.0f));
+    */
+
+    glm::mat4 projection = glm::mat4(1.0f);
+    projection = m_camera->GetProjectionMatrix(CameraType::Orthographic);
+
+    m_basicShader.SetMatrix4("model", model);
+    m_basicShader.SetMatrix4("view", view);
+    m_basicShader.SetMatrix4("projection", projection);
+    m_basicShader.SetVector4f("color", color);
+
+    glBindVertexArray(m_quadVAO);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+
 void OpenGLRenderer::DrawRect(b2Body* body, const Camera& camera)
 {
     b2Vec2 position = body->GetPosition();
@@ -273,16 +302,14 @@ void OpenGLRenderer::DrawQuadUI(const glm::vec2& position, const glm::vec2& scal
         y = m_screenSize.y / 2;
     }
 
-    glm::vec2 realScale = scale * GetScreenSizePercentage();
+    glm::vec2 realScale = scale * m_camera->GetScreenSizePercentage();
 
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(x, y, 0.0f));
     model = glm::scale(model, glm::vec3(realScale.x, realScale.y, 0.0f));
 
-    glm::mat4 projection = glm::ortho(0.0f, m_screenSize.x, 0.0f, m_screenSize.y);
-
     m_uiShader.SetMatrix4("model", model);
-    m_uiShader.SetMatrix4("projection", projection);
+    m_uiShader.SetMatrix4("projection", m_camera->GetProjectionMatrix(CameraType::Orthographic));
     m_uiShader.SetVector4f("color", color);
 
     glBindVertexArray(m_quadVAO);

@@ -42,8 +42,8 @@ void Editor2D::Initialize(std::string title, int width, int height)
     });
 
     m_camera = std::make_unique<Camera2D>(
-        glm::vec3 { 0.0f, 0.0f, -5.0f },
-        glm::vec2 { 0.5f, 0.25f },
+        glm::vec3 { 0.0f, 0.0f, -1.0f },
+        glm::vec2 { 1.0f, 1.0f },
         glm::vec2 { 1280, 720 }
     );
 
@@ -57,15 +57,17 @@ void Editor2D::Initialize(std::string title, int width, int height)
 
 	Input::Init();
 
-    //m_camera->SetCameraType(CameraType::Perspective);
-    //m_camera->SetCameraType(CameraType::Orthographic);
+    m_camera->SetCameraType(CameraType::Orthographic);
+
 
     Entity rect = m_entityManager.CreateEntity();
-    rect.AddComponent<TransformComponent>(glm::vec3 {0.0f}, glm::vec3 {0.0f}, glm::vec3 {1.0f, 1.0f, 1.0f});
+    rect.AddComponent<TransformComponent>(glm::vec3 {0.0f, 0.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {200.0f, 200.0f, 1.0f});
     
-
     Entity rect2 = m_entityManager.CreateEntity();
-    rect2.AddComponent<TransformComponent>(glm::vec3 {3.0f, 2.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {0.5f, 0.5f, 1.0f});
+    rect2.AddComponent<TransformComponent>(glm::vec3 {-300.0f, 0.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {50.0f, 100.0f, 1.0f});
+
+    //Entity rect2 = m_entityManager.CreateEntity();
+    //rect2.AddComponent<TransformComponent>(glm::vec3 {3.0f, 2.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {0.5f, 0.5f, 1.0f});
 }
 
 void Editor2D::OnEvent(Event* event)
@@ -127,7 +129,6 @@ void Editor2D::OnMouseButtonPressed(MouseButtonPressedEvent& event)
         std::cout << "Check2DPicking at (" << m_cursorPosition.x << ", " << m_cursorPosition.y << ")" << std::endl;
         
         glm::vec2 ndcPosition = ConvertToNDC(m_cursorPosition, m_camera->GetScreenSize());
-        std::cout << "NDC: " << ndcPosition.x << ", " << ndcPosition.y << std::endl;
 
         glm::mat4 ivProjection = glm::inverse(m_camera->GetProjectionMatrix());
         glm::mat4 ivView = glm::inverse(m_camera->GetViewMatrix());
@@ -138,14 +139,18 @@ void Editor2D::OnMouseButtonPressed(MouseButtonPressedEvent& event)
         auto transforms = m_entityManager.m_registry.view<TransformComponent>();
         for (auto [entity, transform] : transforms.each())
         {
-            /*
-            if (m_cursorPosition.x < transform.position.x ||
-                m_cursorPosition.x > transform.position.x + transform.scale.x ||
-                m_cursorPosition.y < transform.position.y ||
-                m_cursorPosition.y > transform.position.y + transform.scale.y)
-            glm::vec2 position = transform.position;
-            glm::vec2 scale = transform.scale;
-            */
+            if (worldCursor.x < transform.position.x - transform.scale.x / 2 ||
+                worldCursor.x > transform.position.x + transform.scale.x / 2 ||
+                worldCursor.y < transform.position.y - transform.scale.y / 2 ||
+                worldCursor.y > transform.position.y + transform.scale.y / 2 )
+            {
+                m_pickedEntity = entt::entity(1000);
+                continue;
+            }
+
+            std::cout << "PICKED" << std::endl;
+            m_pickedEntity = entity;
+            break;
         }
 
 
@@ -162,13 +167,14 @@ void Editor2D::Render()
 
     auto transforms = m_entityManager.m_registry.view<TransformComponent>();
 
-
-
     for (auto [entity, transform] : transforms.each())
     {
         glm::vec2 position = transform.position;
         glm::vec2 scale = transform.scale;
-        m_renderer->DrawQuad(position, scale);
+        if (entity == m_pickedEntity)
+            m_renderer->DrawQuad2D(position, scale, 0.0f, {0.8f, 0.8f, 0.2f, 1.0f});
+        else
+            m_renderer->DrawQuad2D(position, scale);
     }
     
 
