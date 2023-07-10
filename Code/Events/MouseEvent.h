@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Core/Application.h"
 #include "Event.h"
 #include "Input/MouseCodes.h"
 
@@ -65,6 +64,8 @@ public:
 	{
 		return EventType::MouseButtonPressed;
 	}
+
+	virtual void Process(Application& app) override;
 
 	std::string ToString() const override
 	{

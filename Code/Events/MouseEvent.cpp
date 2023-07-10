@@ -1,4 +1,5 @@
 #include "MouseEvent.h"
+#include "Core/Application.h"
 
 MouseMovedEvent::MouseMovedEvent(float x, float y)
 	: m_x(x)
@@ -21,7 +22,7 @@ std::string MouseMovedEvent::ToString() const
 
 void MouseMovedEvent::Process(Application& app)
 {
-
+	app.OnMouseMoved(*this);
 }
 
 
@@ -48,4 +49,10 @@ void MouseScrolledEvent::Process(Application& app)
 {
 
 }
+
+void MouseButtonPressedEvent::Process(Application& app)
+{
+	app.OnMouseButtonPressed(*this);
+}
+
 

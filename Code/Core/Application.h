@@ -7,6 +7,7 @@
 #include "Graphics/Renderer.h"
 #include "Events/Event.h"
 #include "Events/KeyEvent.h"
+#include "Events/MouseEvent.h"
 
 class Application
 {
@@ -18,6 +19,8 @@ public:
 
 	virtual void OnEvent(Event* e) {}
 	virtual void OnKeyPressed(KeyPressedEvent& event) {}
+	virtual void OnMouseButtonPressed(MouseButtonPressedEvent& event) {}
+	virtual void OnMouseMoved(MouseMovedEvent& event) {}
 
 	virtual void ChangeScene(std::string name) {}
 	inline ScriptingEngine* GetScriptingEngine() { return &m_scriptingEngine; }

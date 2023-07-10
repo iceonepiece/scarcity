@@ -6,6 +6,8 @@
 #include "Gizmos/ScaleGizmo.h"
 #include "Core/Camera2D.h"
 #include "Events/KeyEvent.h"
+#include "Core/Entity.h"
+#include "Components/Components.h"
 
 void Editor2D::Initialize(std::string title, int width, int height)
 {
@@ -30,12 +32,15 @@ void Editor2D::Initialize(std::string title, int width, int height)
     m_gizmos.push_back(std::make_unique<ScaleGizmo>());
 
 	Input::Init();
+
+
+    Entity rect = m_entityManager.CreateEntity();
+    rect.AddComponent<TransformComponent>(glm::vec3 {0.0f}, glm::vec3 {0.0f}, glm::vec3 {2.0f, 2.0f, 2.0f});
+    //rect.AddComponent
 }
 
 void Editor2D::OnEvent(Event* event)
 {
-    std::cout << "Editor2d.OnEvent(): " << event->ToString() << std::endl;
-
     m_events.push_back(std::unique_ptr<Event>(event));
 }
 
@@ -80,6 +85,35 @@ void Editor2D::OnKeyPressed(KeyPressedEvent& event)
     }
 }
 
+void Editor2D::OnMouseMoved(MouseMovedEvent& event)
+{
+    m_cursorPosition.x = event.GetX();
+    m_cursorPosition.y = event.GetY();
+}
+
+void Editor2D::OnMouseButtonPressed(MouseButtonPressedEvent& event)
+{
+    if (m_currentMode != EditorMode::ViewMode && event.GetMouseButton() == Mouse::ButtonLeft)
+    {
+        std::cout << "Check2DPicking at (" << m_cursorPosition.x << ", " << m_cursorPosition.y << ")" << std::endl;
+
+        auto transforms = m_entityManager.m_registry.view<TransformComponent>();
+        for (auto [entity, transform] : transforms.each())
+        {
+            /*
+            if (m_cursorPosition.x < transform.position.x ||
+                m_cursorPosition.x > transform.position.x + transform.scale.x ||
+                m_cursorPosition.y < transform.position.y ||
+                m_cursorPosition.y > transform.position.y + transform.scale.y)
+            glm::vec2 position = transform.position;
+            glm::vec2 scale = transform.scale;
+            */
+        }
+
+
+    }
+}
+
 void Editor2D::Update()
 {
 }
@@ -87,6 +121,16 @@ void Editor2D::Update()
 void Editor2D::Render()
 {
     m_window->PreRender();
+
+    auto transforms = m_entityManager.m_registry.view<TransformComponent>();
+
+    for (auto [entity, transform] : transforms.each())
+    {
+        glm::vec2 position = transform.position;
+        glm::vec2 scale = transform.scale;
+        m_renderer->DrawQuad(position, scale);
+    }
+    
 
     if (m_currentMode != EditorMode::ViewMode)
     {
