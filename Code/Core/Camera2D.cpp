@@ -35,7 +35,14 @@ glm::mat4 Camera2D::GetViewMatrix() const
 
 glm::mat4 Camera2D::GetProjectionMatrix() const
 {
-    return glm::perspective(glm::radians(45.0f), m_screenSize.x / m_screenSize.y, 0.1f, 100.0f);
+    switch (m_type)
+    {
+        case CameraType::Perspective:
+            return glm::perspective(glm::radians(45.0f), m_screenSize.x / m_screenSize.y, 0.1f, 100.0f);
+        
+        case CameraType::Orthographic:
+            return glm::ortho(-(m_screenSize.x / 64), m_screenSize.x / 64, -(m_screenSize.y/ 64), m_screenSize.y / 64, 0.1f, 100.0f);
+    }
 }
 
 void Camera2D::SetBody(b2Body* body)

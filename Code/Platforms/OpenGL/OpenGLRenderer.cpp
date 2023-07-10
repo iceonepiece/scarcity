@@ -153,9 +153,9 @@ void OpenGLRenderer::DrawQuad(const glm::vec2& position, const glm::vec2& scale,
 {
     m_basicShader.Use();
 
-    glm::mat4 projection = glm::mat4(1.0f);
-    glm::vec2 screenSize = RendererAPI::GetScreenSize();
-    projection = glm::perspective(glm::radians(45.0f), screenSize.x / screenSize.y, 0.1f, 100.0f);
+    //glm::mat4 projection = glm::mat4(1.0f);
+    //glm::vec2 screenSize = RendererAPI::GetScreenSize();
+    //projection = glm::perspective(glm::radians(45.0f), screenSize.x / screenSize.y, 0.1f, 100.0f);
 
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
@@ -164,7 +164,7 @@ void OpenGLRenderer::DrawQuad(const glm::vec2& position, const glm::vec2& scale,
 
     m_basicShader.SetMatrix4("model", model);
     m_basicShader.SetMatrix4("view", m_camera->GetViewMatrix());
-    m_basicShader.SetMatrix4("projection", projection);
+    m_basicShader.SetMatrix4("projection", m_camera->GetProjectionMatrix());
     m_basicShader.SetVector4f("color", color);
 
     glBindVertexArray(m_quadVAO);

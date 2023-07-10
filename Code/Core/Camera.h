@@ -4,6 +4,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <box2d/box2d.h>
 
+enum class CameraType {
+	Perspective,
+	Orthographic
+};
+
 class Camera
 {
 public:
@@ -11,7 +16,10 @@ public:
 	Camera(const glm::vec3& position, const glm::vec2& screenSize)
 		: m_position(position)
 		, m_screenSize(screenSize)
+		, m_type(CameraType::Perspective)
 	{}
+
+	inline void SetCameraType(CameraType type) { m_type = type; }
 
 	inline glm::vec3 GetPosition() const { return m_position; }
 	inline void SetPosition(const glm::vec3& position) { m_position = position; }
@@ -28,5 +36,6 @@ public:
 protected:
 	glm::vec3 m_position = glm::vec3(0.0f);
 	glm::vec2 m_screenSize;
+	CameraType m_type;
 };
 
