@@ -1,15 +1,22 @@
 #pragma once
 
+#include <memory>
 #include <glm/glm.hpp>
 #include "Graphics/Renderer.h"
+#include "Actionable.h"
+
+class Editor2D;
 
 class Gizmo
 {
 public:
-	virtual void Update(float dt) = 0;
-	virtual void Render(Renderer& renderer) = 0;
-	//virtual void OnEvent(const Event& event) = 0;
+	Gizmo(Editor2D& editor);
+	void Update(float dt);
+	void Render(Renderer& renderer, const glm::vec2& position);
+	virtual bool OnPicking2D(const glm::vec2& cursorPosition);
 
 protected:
+	Editor2D& m_editor;
 	glm::vec2 m_position;
+	std::vector<std::unique_ptr<Actionable>> m_actionables;
 };

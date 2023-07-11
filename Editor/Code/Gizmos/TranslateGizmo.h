@@ -1,19 +1,36 @@
 #pragma once
 
 #include "Gizmo.h"
+#include "ActionableRect.h"
 
 class TranslateGizmo : public Gizmo
 {
 public:
-	virtual void Update(float dt) override
+	TranslateGizmo(Editor2D& editor)
+		: Gizmo(editor)
 	{
+		m_actionables.push_back(std::make_unique<ActionableRect>(
+			glm::vec2 { 13.0f },
+			glm::vec2 { 30.0f },
+			glm::vec4 { 0.2, 0.2, 0.7, 0.5 }
+		));
 
+		m_actionables.push_back(std::make_unique<ActionableRect>(
+			glm::vec2 { m_length / 2, 0.0f },
+			glm::vec2 { m_length, m_thickness },
+			glm::vec4 { 0.8, 0.2, 0.2, 1.0 }
+		));
+
+		m_actionables.push_back(std::make_unique<ActionableRect>(
+			glm::vec2 { 0.0f, m_length / 2 },
+			glm::vec2 { m_thickness, m_length },
+			glm::vec4 { 0.2, 0.8, 0.2, 1.0 }
+		));
 	}
 
-	virtual void Render(Renderer& renderer) override
-	{
-		renderer.DrawQuad(glm::vec2 { 0.2f, 0.2f }, glm::vec2 { 0.4f, 0.4f }, 0.0f, glm::vec4 { 0.2, 0.2, 0.7, 0.5 });
- 		renderer.DrawQuad(glm::vec2 { 1.0f, 0.0f }, glm::vec2 { 2.0f, 0.05f }, 0.0f, glm::vec4 { 0.8, 0.2, 0.2, 1.0 });
-		renderer.DrawQuad(glm::vec2 { 0.0f, 1.0f }, glm::vec2 { 2.0f, 0.05f }, glm::pi<float>() / 2, glm::vec4 { 0.2, 0.8, 0.2, 1.0 });
-	}
+protected:
+	float m_length = 150.0f;
+	float m_thickness = 6.0f;
+
+
 };

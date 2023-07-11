@@ -143,6 +143,8 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Stages\MenuScene.h" />
     <ClInclude Include="Stages\MyLevel.h" />
+    <ClInclude Include="Stages\SampleScene.h" />
+    <ClInclude Include="SandboxApplication.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Player.as" />

@@ -16,24 +16,43 @@ GameApplication::GameApplication()
 
 GameApplication::~GameApplication()
 {
-    RendererAPI::Terminate();
+    //RendererAPI::Terminate();
+}
+
+void GameApplication::OnEvent(Event* event)
+{
+    //std::cout << event->ToString() << std::endl;
+    //delete event;
 }
 
 void GameApplication::Initialize(std::string title, int width, int height)
 {
-    m_window = std::make_unique<OpenGLWindow>(title, width, height);
+    m_window = std::make_unique<OpenGLWindow>(this, title, width, height);
 
- 
+    m_window->SetEventCallback([this](Event* event) {
+        this->OnEvent(event);
+    });
+
+    /*
+    m_camera = std::make_unique<Camera2D>(
+        glm::vec3 { 0.0f, 0.0f, -1.0f },
+        glm::vec2 { 1.0f, 1.0f },
+        glm::vec2 { 1280, 720 }
+    );
+    */
+
     m_renderer = std::make_unique<OpenGLRenderer>();
     m_renderer->Initialize();
+    //m_renderer->SetCamera(m_camera.get());
 
-    ResourceAPI::Initialize(new OpenGLResourceManager());
-    ParticleSystem::Init();
+
+    //ResourceAPI::Initialize(new OpenGLResourceManager());
+    //ParticleSystem::Init();
     //FontSystem::Init();
-    Input::Init();
-    Audio::Init();
+    //Input::Init();
+    //Audio::Init();
 
-    ResourceAPI::LoadParticles("Scripts/particles.lua");
+    //ResourceAPI::LoadParticles("Scripts/particles.lua");
 }
 
 void GameApplication::AddScene(std::string name, Scene *scene)
@@ -61,13 +80,13 @@ void GameApplication::Run()
 {
     while (m_running)
     {
-        Timer::Tick();
+        //Timer::Tick();
 
         ProcessInput();
-        Update();
-        Render();
+        //Update();
+        //Render();
 
-        Timer::DisplayFPS();
+        //Timer::DisplayFPS();
     }
 }
 
@@ -81,7 +100,10 @@ void GameApplication::ProcessInput()
 
 void GameApplication::Update()
 {
-    m_scenes[m_currentSceneName]->Update(Timer::GetDeltaTime());
+    if (m_scenes.find(m_currentSceneName) != m_scenes.end())
+    {
+        m_scenes[m_currentSceneName]->Update(Timer::GetDeltaTime());
+    }
 }
 
 
@@ -89,10 +111,13 @@ void GameApplication::Render()
 {
     m_window->PreRender();
 
-    m_renderer->DrawQuadUI(glm::vec2(0, 0), glm::vec2(2000, 2000), glm::vec4(0.25, 0.25, 0.25, 1), UIAlignment::CENTER);
+   // m_renderer->DrawQuadUI(glm::vec2(0, 0), glm::vec2(2000, 2000), glm::vec4(0.25, 0.25, 0.25, 1), UIAlignment::CENTER);
 
-    m_scenes[m_currentSceneName]->Render();
-    m_scenes[m_currentSceneName]->RenderUI();
+    if (m_scenes.find(m_currentSceneName) != m_scenes.end())
+    {
+        //m_scenes[m_currentSceneName]->Render();
+        //m_scenes[m_currentSceneName]->RenderUI();
+    }
 
     m_window->Render();
 }

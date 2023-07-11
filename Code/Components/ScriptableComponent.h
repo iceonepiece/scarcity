@@ -5,7 +5,7 @@
 
 struct ScriptableComponent
 {
-	ScriptableComponent(Scriptable *s)
+	ScriptableComponent(Scriptable* s)
 		: scriptable(s)
 	{}
 

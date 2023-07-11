@@ -27,7 +27,7 @@ public:
 	inline void SetPosition(const glm::vec3& position) { m_position = position; }
 
 	inline glm::vec2 GetScreenSize() const { return m_screenSize; }
-	inline void SetScreenSize(glm::vec2 screenSize) { m_screenSize = screenSize; }
+	inline void SetScreenSize(const glm::vec2& screenSize) { m_screenSize = screenSize; }
 
 	virtual void SetBody(b2Body* body) {}
 

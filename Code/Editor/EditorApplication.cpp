@@ -17,7 +17,7 @@ EditorApplication::~EditorApplication()
 
 void EditorApplication::Initialize(std::string title, int width, int height)
 {
-    m_window = std::make_unique<OpenGLWindow>(title, width, height);
+    m_window = std::make_unique<OpenGLWindow>(this, title, width, height);
 
     if (OpenGLWindow *openGLWindow = dynamic_cast<OpenGLWindow*>(m_window.get()))
         m_imGuiLayer.Initialize(openGLWindow->GetGLFWwindow(), "#version 330");

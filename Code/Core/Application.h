@@ -8,6 +8,7 @@
 #include "Events/Event.h"
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
+#include "Events/WindowEvent.h"
 
 class Application
 {
@@ -21,6 +22,7 @@ public:
 	virtual void OnKeyPressed(KeyPressedEvent& event) {}
 	virtual void OnMouseButtonPressed(MouseButtonPressedEvent& event) {}
 	virtual void OnMouseMoved(MouseMovedEvent& event) {}
+	virtual void OnWindowResize(WindowResizeEvent& event) {}
 
 	virtual void ChangeScene(std::string name) {}
 	inline ScriptingEngine* GetScriptingEngine() { return &m_scriptingEngine; }

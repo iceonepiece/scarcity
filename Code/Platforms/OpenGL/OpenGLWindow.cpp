@@ -6,9 +6,10 @@
 #include "Events/Event.h"
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
+#include "Events/WindowEvent.h"
 
-OpenGLWindow::OpenGLWindow(std::string title, int width, int height)
-	: Window(title, width, height)
+OpenGLWindow::OpenGLWindow(Application* app, std::string title, int width, int height)
+	: Window(app, title, width, height)
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -28,36 +29,47 @@ OpenGLWindow::OpenGLWindow(std::string title, int width, int height)
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
     }
+  
+    glfwSetWindowUserPointer(m_glfwWindow, m_app);
 
-    glfwSetWindowUserPointer(m_glfwWindow, &m_data);
+    glfwSetWindowSizeCallback(m_glfwWindow, [](GLFWwindow* window, int width, int height)
+    {
+        Application& app = *(Application*)glfwGetWindowUserPointer(window);
+        WindowResizeEvent event(width, height);
+        app.OnWindowResize(event);
+    });
+
 
     glfwSetKeyCallback(m_glfwWindow, [](GLFWwindow* window, int key, int scancode, int action, int mods)
     {
-        WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+        Application& app = *(Application*)glfwGetWindowUserPointer(window);
+
         switch (action)
         {
             case GLFW_PRESS:
             {
-                //KeyPressedEvent event(key);
-                data.EventCallback(new KeyPressedEvent(key));
+                KeyPressedEvent event(key);
+                app.OnKeyPressed(event);
             }
         }
     });
 
     glfwSetMouseButtonCallback(m_glfwWindow, [](GLFWwindow* window, int button, int action, int mods)
     {
-        WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+        Application& app = *(Application*)glfwGetWindowUserPointer(window);
 
         switch (action)
         {
         case GLFW_PRESS:
             {
-                data.EventCallback(new MouseButtonPressedEvent(button));
+                MouseButtonPressedEvent event(button);
+                app.OnMouseButtonPressed(event);
                 break;
             }
             case GLFW_RELEASE:
             {
-                data.EventCallback(new MouseButtonReleasedEvent(button));
+
+                //data.EventCallback(new MouseButtonReleasedEvent(button));
                 break;
             }
         }
@@ -65,8 +77,9 @@ OpenGLWindow::OpenGLWindow(std::string title, int width, int height)
 
     glfwSetCursorPosCallback(m_glfwWindow, [](GLFWwindow* window, double xPos, double yPos)
     {
-        WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);;
-        data.EventCallback(new MouseMovedEvent((float)xPos, (float)yPos));
+        Application& app = *(Application*)glfwGetWindowUserPointer(window);
+        MouseMovedEvent event((float)xPos, (float)yPos);
+        app.OnMouseMoved(event);
     });
 }
 
@@ -105,7 +118,7 @@ void OpenGLWindow::PreRender()
     int yOffset = (m_height - height) / 2;
 
     //Renderer::SetScreenSize(width, height, xOffset, yOffset);
-    RendererAPI::SetScreenSize(width, height, xOffset, yOffset);
+    //RendererAPI::SetScreenSize(width, height, xOffset, yOffset);
 
     glViewport(xOffset, yOffset, width, height);
 

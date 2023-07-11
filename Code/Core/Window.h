@@ -4,13 +4,16 @@
 #include <functional>
 #include "Events/Event.h"
 
+class Application;
+
 class Window
 {
 public:
 	using EventCallbackFn = std::function<void(Event*)>;
 
-	Window(std::string title, int width = 1280, int height = 720)
-		: m_title(title)
+	Window(Application* app, std::string title, int width = 1280, int height = 720)
+		: m_app(app)
+		, m_title(title)
 		, m_width(width)
 		, m_height(height)
 		, m_ratio(width / (float)height)
@@ -25,6 +28,7 @@ public:
 	virtual bool WindowShouldClose() = 0;
 
 protected:
+	Application* m_app;
 	std::string m_title;
 	int m_width;
 	int m_height;

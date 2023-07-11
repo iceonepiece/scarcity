@@ -518,25 +518,7 @@
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Editor\EditorApplication.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Core\GameApplication.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Editor\ImGuiLayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Editor\ImGuiComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Editor\SceneLayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Editor\Components\EntityListWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Editor\Components\InspectorWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="External\Include\glad\glad.c">
@@ -603,6 +585,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Events\MouseEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Events\WindowEvent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -760,16 +745,7 @@
     <ClInclude Include="Code\Audio\Wav.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Editor\Components\EntityListWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Editor\Components\InspectorWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Code\Input\MouseCodes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Editor\EditorMouse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Events\MouseEvent.h">
@@ -805,31 +781,13 @@
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Editor\EditorApplication.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Code\Core\GameApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Events\Event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Editor\ImGuiLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Editor\ImGuiComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Editor\Components\ImGuiWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Editor\SceneLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Editor\Layer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Scenes\LevelEditorScene.h">
@@ -2138,6 +2096,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Events\KeyEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Events\WindowEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

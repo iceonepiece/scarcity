@@ -128,8 +128,9 @@ void OpenGLRenderer::DrawLines(float lines[], int n, const glm::vec4& color)
     m_basicShader.Use();
 
     glm::mat4 projection = glm::mat4(1.0f);
-    glm::vec2 screenSize = RendererAPI::GetScreenSize();
-    projection = glm::perspective(glm::radians(45.0f), screenSize.x / screenSize.y, 0.1f, 100.0f);
+    //glm::vec2 screenSize = RendererAPI::GetScreenSize();
+    //projection = glm::perspective(glm::radians(45.0f), screenSize.x / screenSize.y, 0.1f, 100.0f);
+    projection = m_camera->GetProjectionMatrix();
 
     m_basicShader.SetMatrix4("model", glm::mat4(1));
 

@@ -1,6 +1,7 @@
 #include "Editor2D.h"
 #include "Platforms/OpenGL/OpenGLWindow.h"
 #include "Platforms/OpenGL/OpenGLRenderer.h"
+#include "Gizmos/ViewGizmo.h"
 #include "Gizmos/TranslateGizmo.h"
 #include "Gizmos/RotateGizmo.h"
 #include "Gizmos/ScaleGizmo.h"
@@ -23,10 +24,10 @@ glm::vec2 ConvertToNDC(const glm::vec2& screenPos, const glm::vec2& screenSize)
 
 glm::vec2 ConvertToWorldSpace(const glm::vec2& ndcPos, const glm::mat4& inverseProjectionMatrix, const glm::mat4& inverseViewMatrix) {
     glm::vec4 ndcPosition = glm::vec4(ndcPos.x, ndcPos.y, 0.0f, 1.0f);
-
+    
     glm::vec4 clipSpacePosition = inverseProjectionMatrix * ndcPosition;
     clipSpacePosition /= clipSpacePosition.w;
-
+    
     glm::vec4 worldSpacePosition = inverseViewMatrix * clipSpacePosition;
 
     return { worldSpacePosition.x, worldSpacePosition.y };
@@ -35,7 +36,7 @@ glm::vec2 ConvertToWorldSpace(const glm::vec2& ndcPos, const glm::mat4& inverseP
 
 void Editor2D::Initialize(std::string title, int width, int height)
 {
-	m_window = std::make_unique<OpenGLWindow>(title, width, height);
+	m_window = std::make_unique<OpenGLWindow>(this, title, width, height);
 
     m_window->SetEventCallback([this](Event* event) {
         this->OnEvent(event);
@@ -51,9 +52,10 @@ void Editor2D::Initialize(std::string title, int width, int height)
     m_renderer->Initialize();
     m_renderer->SetCamera(m_camera.get());
 
-    m_gizmos.push_back(std::make_unique<TranslateGizmo>());
-    m_gizmos.push_back(std::make_unique<RotateGizmo>());
-    m_gizmos.push_back(std::make_unique<ScaleGizmo>());
+    m_gizmos.push_back(std::make_unique<ViewGizmo>(*this));
+    m_gizmos.push_back(std::make_unique<TranslateGizmo>(*this));
+    m_gizmos.push_back(std::make_unique<RotateGizmo>(*this));
+    m_gizmos.push_back(std::make_unique<ScaleGizmo>(*this));
 
 	Input::Init();
 
@@ -72,7 +74,7 @@ void Editor2D::Initialize(std::string title, int width, int height)
 
 void Editor2D::OnEvent(Event* event)
 {
-    m_events.push_back(std::unique_ptr<Event>(event));
+    //m_events.push_back(std::unique_ptr<Event>(event));
 }
 
 void Editor2D::Run()
@@ -116,6 +118,12 @@ void Editor2D::OnKeyPressed(KeyPressedEvent& event)
     }
 }
 
+void Editor2D::OnWindowResize(WindowResizeEvent& event)
+{
+    std::cout << "OnWindowResize: " << event.GetWidth() << "," << event.GetHeight() << std::endl;
+    m_camera->SetScreenSize({ event.GetWidth(), event.GetHeight() });
+}
+
 void Editor2D::OnMouseMoved(MouseMovedEvent& event)
 {
     m_cursorPosition.x = event.GetX();
@@ -124,41 +132,53 @@ void Editor2D::OnMouseMoved(MouseMovedEvent& event)
 
 void Editor2D::OnMouseButtonPressed(MouseButtonPressedEvent& event)
 {
-    if (m_currentMode != EditorMode::ViewMode && event.GetMouseButton() == Mouse::ButtonLeft)
-    {
-        std::cout << "Check2DPicking at (" << m_cursorPosition.x << ", " << m_cursorPosition.y << ")" << std::endl;
-        
-        glm::vec2 ndcPosition = ConvertToNDC(m_cursorPosition, m_camera->GetScreenSize());
+    CalculateWorldCursorPosition();
 
-        glm::mat4 ivProjection = glm::inverse(m_camera->GetProjectionMatrix());
-        glm::mat4 ivView = glm::inverse(m_camera->GetViewMatrix());
+    if (!m_gizmos[m_currentMode]->OnPicking2D(m_worldCursorPosition))
+        m_entityPicked = CheckPicking2D();
+}
 
-        glm::vec2 worldCursor = ConvertToWorldSpace(ndcPosition, ivProjection, ivView);
-        std::cout << "worldCursor: " << worldCursor.x << ", " << worldCursor.y << std::endl;
-
-        auto transforms = m_entityManager.m_registry.view<TransformComponent>();
-        for (auto [entity, transform] : transforms.each())
-        {
-            if (worldCursor.x < transform.position.x - transform.scale.x / 2 ||
-                worldCursor.x > transform.position.x + transform.scale.x / 2 ||
-                worldCursor.y < transform.position.y - transform.scale.y / 2 ||
-                worldCursor.y > transform.position.y + transform.scale.y / 2 )
-            {
-                m_pickedEntity = entt::entity(1000);
-                continue;
-            }
-
-            std::cout << "PICKED" << std::endl;
-            m_pickedEntity = entity;
-            break;
-        }
-
-
-    }
+void Editor2D::CalculateWorldCursorPosition()
+{
+    glm::vec2 ndcPosition = ConvertToNDC(m_cursorPosition, m_camera->GetScreenSize());
+    glm::mat4 ivProjection = glm::inverse(m_camera->GetProjectionMatrix());
+    glm::mat4 ivView = glm::inverse(m_camera->GetViewMatrix());
+    m_worldCursorPosition = ConvertToWorldSpace(ndcPosition, ivProjection, ivView);
 }
 
 void Editor2D::Update()
 {
+    m_gizmos[m_currentMode]->Update(10.0f);
+}
+
+bool Editor2D::CheckPicking2D()
+{
+    auto transforms = m_entityManager.m_registry.view<TransformComponent>();
+    for (auto [entity, transform] : transforms.each())
+    {
+        if (m_worldCursorPosition.x < transform.position.x - transform.scale.x / 2 ||
+            m_worldCursorPosition.x > transform.position.x + transform.scale.x / 2 ||
+            m_worldCursorPosition.y < transform.position.y - transform.scale.y / 2 ||
+            m_worldCursorPosition.y > transform.position.y + transform.scale.y / 2)
+        {
+            continue;
+        }
+
+        std::cout << "PICKED" << std::endl;
+        m_pickedEntity = entity;
+
+        return true;
+    }
+
+    return false;
+}
+
+TransformComponent* Editor2D::GetEntityTransform()
+{
+    if (!m_entityPicked)
+        return nullptr;
+
+    return &m_entityManager.m_registry.get<TransformComponent>(m_pickedEntity);
 }
 
 void Editor2D::Render()
@@ -171,16 +191,17 @@ void Editor2D::Render()
     {
         glm::vec2 position = transform.position;
         glm::vec2 scale = transform.scale;
-        if (entity == m_pickedEntity)
+        if (m_entityPicked && entity == m_pickedEntity)
             m_renderer->DrawQuad2D(position, scale, 0.0f, {0.8f, 0.8f, 0.2f, 1.0f});
         else
             m_renderer->DrawQuad2D(position, scale);
     }
     
 
-    if (m_currentMode != EditorMode::ViewMode)
+    if (m_currentMode != EditorMode::ViewMode && m_entityPicked)
     {
-        m_gizmos.at(m_currentMode - 1)->Render(*m_renderer);
+        auto& transform = m_entityManager.m_registry.get<TransformComponent>(m_pickedEntity);
+        m_gizmos.at(m_currentMode)->Render(*m_renderer, transform.position);
     }
 
     m_window->Render();
