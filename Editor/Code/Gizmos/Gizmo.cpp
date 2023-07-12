@@ -26,12 +26,15 @@ bool Gizmo::OnPicking2D(const glm::vec2& cursorPosition)
 		{
 			if (actionable->IsCursorOn(cursorPosition.x, cursorPosition.y, transform->position))
 			{
+				std::cout << "IsCursorOn: " << cursorPosition.x << ", " << cursorPosition.y << std::endl;
 				actionable->SetStartCursorPosition(cursorPosition);
-				std::cout << "IsCursorOn" << std::endl;
+				m_actor = actionable.get();
 				return true;
 			}
 		}
 	}
+
+	m_actor = nullptr;
 
 	return false;
 }

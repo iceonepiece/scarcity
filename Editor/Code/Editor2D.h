@@ -17,18 +17,33 @@ enum EditorMode
 	ScaleMode
 };
 
+enum class ButtonState
+{
+	None,
+	Pressed,
+	Held,
+	Released
+};
 
 class Editor2D : public Application
 {
 public:
 
+	struct MouseData
+	{
+		ButtonState left = ButtonState::None;
+		ButtonState right = ButtonState::None;
+	};
+
 	virtual void Initialize(std::string title, int width, int height) override;
 	virtual void Run() override;
 	virtual void OnEvent(Event* event) override;
 	virtual void OnKeyPressed(KeyPressedEvent& event) override;
-	virtual void OnMouseButtonPressed(MouseButtonPressedEvent& event) override;
-	virtual void OnMouseMoved(MouseMovedEvent& event) override;
-	virtual void OnWindowResize(WindowResizeEvent& event) override;
+	virtual void OnMouseButtonPressed(int button) override;
+	virtual void OnMouseButtonReleased(int button) override;
+	virtual void OnMouseMoved(float x, float y) override;
+	virtual void OnWindowResize(int width, int height) override;
+	virtual void OnWindowClose() override;
 
 	TransformComponent* GetEntityTransform();
 
@@ -41,6 +56,9 @@ protected:
 	void CalculateWorldCursorPosition();
 
 protected:
+	bool m_mouseActive = false;
+	MouseData m_mouseData;
+
 	EditorMode m_currentMode;
 
 	glm::vec2 m_cursorPosition;

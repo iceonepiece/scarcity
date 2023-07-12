@@ -51,6 +51,7 @@ struct MouseCommand
 class Input
 {
 public:
+
     static void Init();
     static bool IsKeyPressed(KeyCode keyCode);
     static bool IsKeyHeld(KeyCode keyCode);

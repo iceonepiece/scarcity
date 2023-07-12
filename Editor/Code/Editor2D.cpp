@@ -91,15 +91,10 @@ void Editor2D::ProcessInput()
 {
     m_window->ProcessInput();
 
-    if (m_window->WindowShouldClose())
-        m_running = false;
-
-
     for (auto& gizmo : m_gizmos)
     {
         //gizmo->Proc
     }
-
 
     for (auto& e : m_events)
         e->Process(*this);
@@ -118,25 +113,53 @@ void Editor2D::OnKeyPressed(KeyPressedEvent& event)
     }
 }
 
-void Editor2D::OnWindowResize(WindowResizeEvent& event)
+void Editor2D::OnWindowResize(int width, int height)
 {
-    std::cout << "OnWindowResize: " << event.GetWidth() << "," << event.GetHeight() << std::endl;
-    m_camera->SetScreenSize({ event.GetWidth(), event.GetHeight() });
+    std::cout << "OnWindowResize: " << width << "," << height << std::endl;
+    m_camera->SetScreenSize({ width, height });
 }
 
-void Editor2D::OnMouseMoved(MouseMovedEvent& event)
+void Editor2D::OnWindowClose()
 {
-    m_cursorPosition.x = event.GetX();
-    m_cursorPosition.y = event.GetY();
+    m_running = false;
 }
 
-void Editor2D::OnMouseButtonPressed(MouseButtonPressedEvent& event)
+void Editor2D::OnMouseMoved(float x, float y)
 {
+    m_cursorPosition.x = x;
+    m_cursorPosition.y = y;
+
     CalculateWorldCursorPosition();
 
-    if (!m_gizmos[m_currentMode]->OnPicking2D(m_worldCursorPosition))
-        m_entityPicked = CheckPicking2D();
+    if (m_mouseActive)
+        m_gizmos[m_currentMode]->OnDragging(m_worldCursorPosition.x, m_worldCursorPosition.y);
 }
+
+void Editor2D::OnMouseButtonPressed(int button)
+{
+    std::cout << "OnMouseButtonPressed" << std::endl;
+
+    if (button == Mouse::ButtonLeft)
+    {
+        m_mouseActive = true;
+
+        CalculateWorldCursorPosition();
+
+        if (!m_gizmos[m_currentMode]->OnPicking2D(m_worldCursorPosition))
+            m_entityPicked = CheckPicking2D();
+    }
+}
+
+void Editor2D::OnMouseButtonReleased(int button)
+{
+    std::cout << "OnMouseButtonReleased" << std::endl;
+
+    if (button == Mouse::ButtonLeft)
+    {
+        m_mouseActive = false;
+    }
+}
+
 
 void Editor2D::CalculateWorldCursorPosition()
 {

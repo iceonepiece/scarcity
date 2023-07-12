@@ -291,6 +291,7 @@
     <ClCompile Include="Code\GUIs\GUI.cpp" />
     <ClCompile Include="Code\GUIs\GUIComponent.cpp" />
     <ClCompile Include="Code\Core\LevelManager.cpp" />
+    <ClCompile Include="Code\Platforms\GLFW\GLFWInput.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLFontSystem.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLWindow.cpp" />
     <ClCompile Include="Code\Core\Timer.cpp" />
@@ -326,6 +327,7 @@
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLResourceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\APIs\InputAPI.h" />
     <ClInclude Include="Code\Core\Camera.h" />
     <ClInclude Include="Code\Animations\Animation2D.h" />
     <ClInclude Include="Code\Components\Components.h" />
@@ -333,6 +335,7 @@
     <ClInclude Include="Code\Components\TransformComponent.h" />
     <ClInclude Include="Code\Core\Application.h" />
     <ClInclude Include="Code\Core\Common.h" />
+    <ClInclude Include="Code\Core\Input.h" />
     <ClInclude Include="Code\Core\ResourceAPI.h" />
     <ClInclude Include="Code\Core\Scriptable.h" />
     <ClInclude Include="Code\Core\ScriptingEngine.h" />
@@ -345,6 +348,7 @@
     <ClInclude Include="Code\Graphics\GraphicsData.h" />
     <ClInclude Include="Code\Graphics\Shader.h" />
     <ClInclude Include="Code\Graphics\Texture.h" />
+    <ClInclude Include="Code\Platforms\GLFW\GLFWInput.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLFontSystem.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLWindow.h" />
     <ClInclude Include="Code\Core\Value.h" />

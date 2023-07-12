@@ -16,12 +16,6 @@ public:
 	{
         m_window = std::make_unique<OpenGLWindow>(this, title, width, height);
 
-        /*
-        m_window->SetEventCallback([this](Event* event) {
-			this->OnEvent(event);
-        });
-        */
-
         m_renderer = std::make_unique<OpenGLRenderer>();
         m_renderer->Initialize();
 	}
@@ -30,13 +24,9 @@ public:
 	{
         while (m_running)
         {
-            //Timer::Tick();
-
             ProcessInput();
-            //Update();
-            //Render();
-
-            //Timer::DisplayFPS();
+            Update();
+            Render();
         }
 	}
 
@@ -49,6 +39,6 @@ protected:
             m_running = false;
     }
 
-	virtual void Update() override {}
-	virtual void Render() override {}
+	//virtual void Update() override {}
+	//virtual void Render() override {}
 };

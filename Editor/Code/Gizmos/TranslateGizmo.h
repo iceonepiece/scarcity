@@ -26,6 +26,35 @@ public:
 			glm::vec2 { m_thickness, m_length },
 			glm::vec4 { 0.2, 0.8, 0.2, 1.0 }
 		));
+
+		m_actionables[0]->SetDraggingCallback([](TransformComponent& transform, float x, float y)
+		{
+			transform.position.x += x;
+			transform.position.y += y;
+			return true;
+		});
+
+		m_actionables[1]->SetDraggingCallback([](TransformComponent& transform, float x, float y)
+		{
+			transform.position.x += x;
+			return true;
+		});
+
+		m_actionables[2]->SetDraggingCallback([](TransformComponent& transform, float x, float y)
+		{
+			transform.position.y += y;
+			return true;
+		});
+	}
+
+	virtual bool OnDragging(float x, float y) override
+	{
+		if (m_actor != nullptr)
+		{
+			return m_actor->OnDragging(x, y);
+		}
+
+		return false;
 	}
 
 protected:

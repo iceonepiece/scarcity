@@ -35,8 +35,13 @@ OpenGLWindow::OpenGLWindow(Application* app, std::string title, int width, int h
     glfwSetWindowSizeCallback(m_glfwWindow, [](GLFWwindow* window, int width, int height)
     {
         Application& app = *(Application*)glfwGetWindowUserPointer(window);
-        WindowResizeEvent event(width, height);
-        app.OnWindowResize(event);
+        app.OnWindowResize(width, height);
+    });
+
+    glfwSetWindowCloseCallback(m_glfwWindow, [](GLFWwindow* window)
+    {
+        Application& app = *(Application*)glfwGetWindowUserPointer(window);
+        app.OnWindowClose();
     });
 
 
@@ -57,29 +62,17 @@ OpenGLWindow::OpenGLWindow(Application* app, std::string title, int width, int h
     glfwSetMouseButtonCallback(m_glfwWindow, [](GLFWwindow* window, int button, int action, int mods)
     {
         Application& app = *(Application*)glfwGetWindowUserPointer(window);
-
         switch (action)
         {
-        case GLFW_PRESS:
-            {
-                MouseButtonPressedEvent event(button);
-                app.OnMouseButtonPressed(event);
-                break;
-            }
-            case GLFW_RELEASE:
-            {
-
-                //data.EventCallback(new MouseButtonReleasedEvent(button));
-                break;
-            }
+            case GLFW_PRESS:    app.OnMouseButtonPressed(button);   break;
+            case GLFW_RELEASE:  app.OnMouseButtonReleased(button);  break;
         }
     });
 
     glfwSetCursorPosCallback(m_glfwWindow, [](GLFWwindow* window, double xPos, double yPos)
     {
         Application& app = *(Application*)glfwGetWindowUserPointer(window);
-        MouseMovedEvent event((float)xPos, (float)yPos);
-        app.OnMouseMoved(event);
+        app.OnMouseMoved((float)xPos, (float)yPos);
     });
 }
 

@@ -80,13 +80,13 @@ void GameApplication::Run()
 {
     while (m_running)
     {
-        //Timer::Tick();
+        Timer::Tick();
 
         ProcessInput();
-        //Update();
-        //Render();
+        Update();
+        Render();
 
-        //Timer::DisplayFPS();
+        Timer::DisplayFPS();
     }
 }
 

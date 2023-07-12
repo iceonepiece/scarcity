@@ -18,9 +18,9 @@ int main()
 
 	//game.AddScene("menu", new MenuScene(game));
 	//game.AddScene("level1", new MyLevel());
-	//game.AddScene("sample", new SampleScene());
-	//game.LoadScenes();
-	//game.ChangeScene("sample");
+	game.AddScene("sample", new SampleScene());
+	game.LoadScenes();
+	game.ChangeScene("sample");
 
 	game.Run();
 

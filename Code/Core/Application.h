@@ -18,11 +18,23 @@ public:
 	virtual void Initialize(std::string title, int width, int height) = 0;
 	virtual void Run() = 0;
 
+	template <typename T>
+	void OnEvent(T& e) {}
+
 	virtual void OnEvent(Event* e) {}
+
+
+	virtual void OnWindowClose() {}
+	virtual void OnWindowResize(int width, int height) {}
+	
+	virtual void OnMouseButtonPressed(int button) {}
+	virtual void OnMouseButtonReleased(int button) {}
+
+	virtual void OnMouseButtonEvent(MouseButtonEvent& event) {}
+	virtual void OnKeyEvent(KeyEvent& event) {}
+
 	virtual void OnKeyPressed(KeyPressedEvent& event) {}
-	virtual void OnMouseButtonPressed(MouseButtonPressedEvent& event) {}
-	virtual void OnMouseMoved(MouseMovedEvent& event) {}
-	virtual void OnWindowResize(WindowResizeEvent& event) {}
+	virtual void OnMouseMoved(float x, float y) {}
 
 	virtual void ChangeScene(std::string name) {}
 	inline ScriptingEngine* GetScriptingEngine() { return &m_scriptingEngine; }

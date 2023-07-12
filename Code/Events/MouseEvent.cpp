@@ -22,7 +22,6 @@ std::string MouseMovedEvent::ToString() const
 
 void MouseMovedEvent::Process(Application& app)
 {
-	app.OnMouseMoved(*this);
 }
 
 
@@ -52,7 +51,7 @@ void MouseScrolledEvent::Process(Application& app)
 
 void MouseButtonPressedEvent::Process(Application& app)
 {
-	app.OnMouseButtonPressed(*this);
+	//app.OnMouseButtonPressed(*this);
 }
 
 
