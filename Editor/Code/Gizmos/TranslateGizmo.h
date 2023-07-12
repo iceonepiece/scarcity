@@ -27,39 +27,45 @@ public:
 			glm::vec4 { 0.2, 0.8, 0.2, 1.0 }
 		));
 
-		m_actionables[0]->SetDraggingCallback([](TransformComponent& transform, float x, float y)
+		m_actionables[0]->SetDraggingCallback([](Actionable& actor, float x, float y)
 		{
-			transform.position.x += x;
-			transform.position.y += y;
+			glm::vec2& previousCursor = actor.GetStartCursorPosition();
+			float diffX = x - previousCursor.x;
+			float diffY = y - previousCursor.y;
+			actor.SetStartCursorPosition(glm::vec2 {x, y});
+
+			TransformComponent* transform = actor.GetTransformComponent();
+			transform->position.x += diffX;
+			transform->position.y += diffY;
 			return true;
 		});
 
-		m_actionables[1]->SetDraggingCallback([](TransformComponent& transform, float x, float y)
+		m_actionables[1]->SetDraggingCallback([](Actionable& actor, float x, float y)
 		{
-			transform.position.x += x;
+			glm::vec2& previousCursor = actor.GetStartCursorPosition();
+			float diffX = x - previousCursor.x;
+			actor.SetStartCursorPosition(glm::vec2 {x, y});
+
+			TransformComponent* transform = actor.GetTransformComponent();
+			transform->position.x += diffX;
 			return true;
 		});
 
-		m_actionables[2]->SetDraggingCallback([](TransformComponent& transform, float x, float y)
+		m_actionables[2]->SetDraggingCallback([](Actionable& actor, float x, float y)
 		{
-			transform.position.y += y;
+			glm::vec2& previousCursor = actor.GetStartCursorPosition();
+			float diffY = y - previousCursor.y;
+			actor.SetStartCursorPosition(glm::vec2 {x, y});
+
+			TransformComponent* transform = actor.GetTransformComponent();
+			transform->position.y += diffY;
 			return true;
 		});
-	}
-
-	virtual bool OnDragging(float x, float y) override
-	{
-		if (m_actor != nullptr)
-		{
-			return m_actor->OnDragging(x, y);
-		}
-
-		return false;
 	}
 
 protected:
 	float m_length = 150.0f;
-	float m_thickness = 6.0f;
+	float m_thickness = 7.5f;
 
 
 };

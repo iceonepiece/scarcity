@@ -22,13 +22,13 @@ bool Gizmo::OnPicking2D(const glm::vec2& cursorPosition)
 	TransformComponent* transform = m_editor.GetEntityTransform();
 	if (transform != nullptr)
 	{
-		for (auto& actionable : m_actionables)
+		for (auto it = m_actionables.rbegin(); it != m_actionables.rend(); ++it)
 		{
-			if (actionable->IsCursorOn(cursorPosition.x, cursorPosition.y, transform->position))
+			if (it->get()->IsCursorOn(cursorPosition.x, cursorPosition.y, transform->position))
 			{
 				std::cout << "IsCursorOn: " << cursorPosition.x << ", " << cursorPosition.y << std::endl;
-				actionable->SetStartCursorPosition(cursorPosition);
-				m_actor = actionable.get();
+				it->get()->SetStartCursorPosition(cursorPosition);
+				m_actor = it->get();
 				return true;
 			}
 		}

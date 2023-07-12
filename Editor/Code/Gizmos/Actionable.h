@@ -8,12 +8,13 @@
 class Actionable
 {
 public:
-	using DraggingFunction = std::function<bool(TransformComponent& transform, float x, float y)>;
+	//using DraggingFunction = std::function<bool(TransformComponent& transform, float x, float y)>;
+	using DraggingFunction = std::function<bool(Actionable& actor, float x, float y)>;
 
 	Actionable(const glm::vec2& position, const glm::vec4 color)
 		: m_position(position)
 		, m_color(color)
-		, m_draggingCallback([](TransformComponent& transform, float x, float y) { return false; })
+		, m_draggingCallback([](Actionable& actor, float x, float y) { return false; })
 	{}
 
 	inline void SetDraggingCallback(DraggingFunction callback)
@@ -25,22 +26,22 @@ public:
 	virtual bool OnMouseButtonPressed(const glm::vec2& cursor) = 0;
 	virtual bool OnDragging(float x, float y)
 	{
-		float diffX = x - m_startCursorPosition.x;
-		float diffY = y - m_startCursorPosition.y;
-
-		m_startCursorPosition.x = x;
-		m_startCursorPosition.y = y;
-
-		return m_draggingCallback(*m_transform, diffX, diffY);
+		return m_draggingCallback(*this, x, y);
 	}
 	
 	virtual void Render(Renderer& renderer) = 0;
 	virtual bool IsCursorOn(float x, float y, const glm::vec2& entityPosition) = 0;
 
 	inline void SetTransformComponent(TransformComponent* transform) { m_transform = transform; }
+	inline TransformComponent* GetTransformComponent() { return m_transform; }
+
+	inline void SetStartCursorPosition(const glm::vec2& position) { m_startCursorPosition = position; }
+	inline glm::vec2& GetStartCursorPosition() { return m_startCursorPosition; }
+
 	inline void SetPosition(const glm::vec2& position) { m_position = position; }
 	inline void SetColor(const glm::vec4& color) { m_color = color; }
-	inline void SetStartCursorPosition(const glm::vec2& position) { m_startCursorPosition = position; }
+
+
 
 protected:
 	DraggingFunction m_draggingCallback;
