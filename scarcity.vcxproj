@@ -122,6 +122,7 @@
     <None Include="Assets\Scripts\parameters.lua" />
     <None Include="Assets\Scripts\particles.lua" />
     <None Include="Assets\Scripts\Player.as" />
+    <None Include="Assets\Scripts\sample.lua" />
     <None Include="Assets\Shaders\basic.frag" />
     <None Include="Assets\Shaders\basic.vert" />
     <None Include="Assets\Shaders\circle.frag" />
@@ -291,6 +292,7 @@
     <ClCompile Include="Code\GUIs\GUI.cpp" />
     <ClCompile Include="Code\GUIs\GUIComponent.cpp" />
     <ClCompile Include="Code\Core\LevelManager.cpp" />
+    <ClCompile Include="Code\Lua\LuaEngine.cpp" />
     <ClCompile Include="Code\Platforms\GLFW\GLFWInput.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLFontSystem.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLWindow.cpp" />
@@ -348,6 +350,7 @@
     <ClInclude Include="Code\Graphics\GraphicsData.h" />
     <ClInclude Include="Code\Graphics\Shader.h" />
     <ClInclude Include="Code\Graphics\Texture.h" />
+    <ClInclude Include="Code\Lua\LuaEngine.h" />
     <ClInclude Include="Code\Platforms\GLFW\GLFWInput.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLFontSystem.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLWindow.h" />

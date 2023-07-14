@@ -444,6 +444,7 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="Assets\Scripts\Player.as" />
+    <None Include="Assets\Scripts\sample.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="code\Main.cpp">
@@ -591,6 +592,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Platforms\GLFW\GLFWInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Lua\LuaEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -2111,6 +2115,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Platforms\GLFW\GLFWInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Lua\LuaEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

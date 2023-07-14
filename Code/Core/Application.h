@@ -9,6 +9,7 @@
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
 #include "Events/WindowEvent.h"
+#include "Lua/LuaEngine.h"
 
 class Application
 {
@@ -38,6 +39,7 @@ public:
 
 	virtual void ChangeScene(std::string name) {}
 	inline ScriptingEngine* GetScriptingEngine() { return &m_scriptingEngine; }
+	inline LuaEngine& GetLuaEngine() { return m_luaEngine; }
 	inline Renderer& GetRenderer() { return *m_renderer; }
 	inline Window& GetWindow() { return *m_window; }
 
@@ -50,5 +52,6 @@ protected:
 	std::unique_ptr<Window> m_window;
 	std::unique_ptr<Renderer> m_renderer;
 
+	LuaEngine m_luaEngine;
 	ScriptingEngine m_scriptingEngine;
 };
