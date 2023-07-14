@@ -21,10 +21,10 @@ public:
 
 	virtual void Start()
 	{		
-		m_player = m_entity.GetComponent<PlayerComponent>();
-		m_collider = m_entity.GetComponent<Collider2DComponent>();
-		m_transform = m_entity.GetComponent<TransformComponent>();
-		m_animator = m_entity.GetComponent<SpriteAnimatorComponent>();
+		m_player = GetComponent<PlayerComponent>();
+		m_collider = GetComponent<Collider2DComponent>();
+		m_transform = GetComponent<TransformComponent>();
+		m_animator = GetComponent<SpriteAnimatorComponent>();
 	}
 
 	virtual void Update(float dt)

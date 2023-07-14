@@ -2,7 +2,7 @@
 
 #include "Input/KeyCodes.h"
 
-class Input
+class InputS
 {
 	virtual void Poll() = 0;
 	virtual bool GetKey(KeyCode key) = 0;

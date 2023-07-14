@@ -6,11 +6,21 @@
 
 class Application;
 
+using EventCallbackFn = std::function<void(Event*)>;
+
+struct WindowData
+{
+	std::string title;
+	unsigned int width;
+	unsigned int height;
+	unsigned int xOffset;
+	unsigned int yOffset;
+	EventCallbackFn EventCallback;
+};
+
 class Window
 {
 public:
-	using EventCallbackFn = std::function<void(Event*)>;
-
 	Window(Application* app, std::string title, int width = 1280, int height = 720)
 		: m_app(app)
 		, m_title(title)
@@ -27,7 +37,12 @@ public:
 	virtual void Render() = 0;
 	virtual bool WindowShouldClose() = 0;
 
+	inline WindowData GetWindowData() { return m_data; }
+
 protected:
+
+	WindowData m_data;
+
 	Application* m_app;
 	std::string m_title;
 	int m_width;

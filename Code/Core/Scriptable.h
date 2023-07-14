@@ -10,6 +10,12 @@ public:
 	{
 	}
 
+	template <typename T>
+	T* GetComponent()
+	{
+		return m_entity.GetComponent<T>();
+	}
+
 	virtual void Start() = 0;
 	virtual void Update(float dt) = 0;
 

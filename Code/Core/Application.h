@@ -39,6 +39,7 @@ public:
 	virtual void ChangeScene(std::string name) {}
 	inline ScriptingEngine* GetScriptingEngine() { return &m_scriptingEngine; }
 	inline Renderer& GetRenderer() { return *m_renderer; }
+	inline Window& GetWindow() { return *m_window; }
 
 protected:
 	virtual void ProcessInput() = 0;

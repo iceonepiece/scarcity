@@ -25,20 +25,10 @@ public:
 		std::cout << "XXXX: " << &(m_data.EventCallback) << std::endl;
 	}
 
+
+
 	GLFWwindow* GetGLFWwindow();
 
 protected:
 	GLFWwindow* m_glfwWindow;
-
-	struct WindowData
-	{
-		std::string title;
-		unsigned int width, height;
-
-		//Application* app;
-
-		EventCallbackFn EventCallback;
-	};
-
-	WindowData m_data;
 };

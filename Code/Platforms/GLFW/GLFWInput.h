@@ -24,7 +24,7 @@ struct GLFWInputCommand
     }
 };
 
-class GLFWInput : public Input
+class GLFWInput : public InputS
 {
 public:
 	GLFWInput(GLFWwindow& window);

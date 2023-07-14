@@ -33,6 +33,7 @@ public:
             desiredVelocity = velocity.x > 0 ? velocity.x + (player.PLAYER_MOVE_ACCELERATION * deltaTime) : player.PLAYER_MOVE_ACCELERATION * deltaTime; break;
         }
 
+        /*
         if (player.movementState == MS_LEFT || player.movementState == MS_RIGHT && !(desiredVelocity < 2 && desiredVelocity > -2))
         {
             ParticleProps props = ResourceAPI::GetParticle("running");
@@ -43,6 +44,7 @@ public:
                 ParticleSystem::Emit(props);
             }
         }
+        */
 
         if (desiredVelocity == 0)
         {
@@ -136,6 +138,7 @@ public:
 
     virtual void Render() override
     {
+        /*
         Renderer& renderer = m_scene->m_app->GetRenderer();
 
         renderer.DrawCircle(glm::vec3(0.0f), 1.0f, false);
@@ -144,5 +147,6 @@ public:
         renderer.DrawCircle(glm::vec3(1.0, 2.0f, 0.0f), 5.0f, false);
         renderer.DrawCircle(glm::vec3(2.0, 2.0f, 0.0f), 0.5f, false);
         renderer.DrawCircle(glm::vec3(-2.0, 2.0f, 0.0f), 3.0f, false);
+        */
     }
 };

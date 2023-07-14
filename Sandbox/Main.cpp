@@ -17,10 +17,10 @@ int main()
 	game.Initialize("Sandbox", 1280, 720);
 
 	//game.AddScene("menu", new MenuScene(game));
-	//game.AddScene("level1", new MyLevel());
-	game.AddScene("sample", new SampleScene());
+	game.AddScene("level1", new MyLevel());
+	//game.AddScene("sample", new SampleScene());
 	game.LoadScenes();
-	game.ChangeScene("sample");
+	game.ChangeScene("level1");
 
 	game.Run();
 

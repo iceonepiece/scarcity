@@ -14,14 +14,20 @@ class Renderer
 public:
 	virtual void Initialize() = 0;
 	virtual void Draw(Sprite& sprite, const glm::mat4& modelMatrix) = 0;
-	virtual void DrawQuad(const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{1.0f}) = 0;
+	virtual void DrawQuad(const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }) = 0;
 	virtual void DrawQuad2D(const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }) = 0;
 	virtual void DrawQuadUI(const glm::vec2& position, const glm::vec2& scale, const glm::vec4& color, UIAlignment alignment = UIAlignment::NONE) = 0;
 	virtual void DrawLine(const glm::vec3& v1, const glm::vec3& v2, const glm::vec4& color = glm::vec4(1)) = 0;
 	virtual void DrawLines(float lines[], int n, const glm::vec4& color = glm::vec4(1)) = 0;
 	virtual void DrawRect(b2Body* body, const Camera& camera) = 0;
 	virtual void DrawCircle(const glm::vec2& position, float radius, bool filled = true) = 0;
-	
+
+	inline void SetScreenSize(int width, int height)
+	{
+		m_screenSize.x = width;
+		m_screenSize.y = height;
+	}
+
 	inline float GetScreenSizePercentage() { return m_screenSize.x / m_defaultScreenSize.x; }
 
 	void SetCamera(Camera* camera);

@@ -55,6 +55,8 @@ void Scene::Enter()
 
     for (auto [entity, scriptable] : view.each())
         scriptable.scriptable->Start();
+
+    m_app->GetRenderer().SetCamera(m_camera.get());
 }
 
 void Scene::Exit()
@@ -64,6 +66,9 @@ void Scene::Exit()
 
 void Scene::Render()
 {
+    WindowData windowData = m_app->GetWindow().GetWindowData();
+    m_camera->SetScreenSize({ windowData.width, windowData.height });
+
     for (auto system : m_systems)
         system->Render();
 }

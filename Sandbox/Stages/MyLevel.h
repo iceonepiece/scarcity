@@ -20,16 +20,16 @@ public:
 
 	virtual void Initialize() override
 	{
-		//LevelManager::LoadLevel(this, "Levels/Level1.lua");
-
-		//Renderer& renderer = m_app->GetRenderer();
-		//renderer.SetCamera(m_camera.get());
-
-		/*
+		
+		LevelManager::LoadLevel(this, "Levels/Level1.lua");
+		
+		Renderer& renderer = m_app->GetRenderer();
+		renderer.SetCamera(m_camera.get());
+	
 		ResourceAPI::LoadTexture("cat-idle", "Images/cat/Sprites-Idle-no shadow.png", true);
 		ResourceAPI::LoadTexture("cat-walk", "Images/cat/Sprites-walk-no shadow .png", true);
 		ResourceAPI::LoadTexture("cat-jump", "Images/cat/Sprites-jumping .png", true);
-
+			
 		auto player = m_manager.CreateEntity();
 		b2Body* playerBody = m_physics.CreateBodyWithFixture({ 0, 5 }, { 0.85, 0.65 }, new PlayerFixtureData(player), true, false, PhysicsLayer::Layer_Player, { 0, -0.35 });
 		player.AddComponent<TransformComponent>();
@@ -76,10 +76,10 @@ public:
 
 		fsm->AddValue("jumping", new BoolValue(false));
 		fsm->AddValue("walking", new BoolValue(false));
-		*/
 
-		//m_systems.emplace_back(new AnimationSystem(this));
-		//m_systems.emplace_back(new PlayerSystem(this));
-		//m_systems.emplace_back(new Collider2DSystem(this));
+
+		m_systems.emplace_back(new AnimationSystem(this));
+		m_systems.emplace_back(new PlayerSystem(this));
+		m_systems.emplace_back(new Collider2DSystem(this));
 	}
 };

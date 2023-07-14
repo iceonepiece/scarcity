@@ -33,7 +33,7 @@ void GameApplication::Initialize(std::string title, int width, int height)
         this->OnEvent(event);
     });
 
-    /*
+   /*
     m_camera = std::make_unique<Camera2D>(
         glm::vec3 { 0.0f, 0.0f, -1.0f },
         glm::vec2 { 1.0f, 1.0f },
@@ -46,10 +46,10 @@ void GameApplication::Initialize(std::string title, int width, int height)
     //m_renderer->SetCamera(m_camera.get());
 
 
-    //ResourceAPI::Initialize(new OpenGLResourceManager());
+    ResourceAPI::Initialize(new OpenGLResourceManager());
     //ParticleSystem::Init();
     //FontSystem::Init();
-    //Input::Init();
+    Input::Init();
     //Audio::Init();
 
     //ResourceAPI::LoadParticles("Scripts/particles.lua");
@@ -115,7 +115,7 @@ void GameApplication::Render()
 
     if (m_scenes.find(m_currentSceneName) != m_scenes.end())
     {
-        //m_scenes[m_currentSceneName]->Render();
+        m_scenes[m_currentSceneName]->Render();
         //m_scenes[m_currentSceneName]->RenderUI();
     }
 

@@ -100,18 +100,22 @@ void OpenGLWindow::ProcessInput()
 
 void OpenGLWindow::PreRender()
 {
-    glfwGetFramebufferSize(m_glfwWindow, &m_width, &m_height);
+    int rawWidth;
+    int rawHeight;
 
-    float windowRatio = m_width / (float)m_height;
+    glfwGetFramebufferSize(m_glfwWindow, &rawWidth, &rawHeight);
 
-    int width = windowRatio > m_ratio ? m_height * m_ratio : m_width;
-    int height = windowRatio < m_ratio ? m_width / m_ratio : m_height;
+    float windowRatio = rawWidth / (float)rawHeight;
 
-    int xOffset = (m_width - width) / 2;
-    int yOffset = (m_height - height) / 2;
+    int width = windowRatio > m_ratio ? rawHeight * m_ratio : rawWidth;
+    int height = windowRatio < m_ratio ? rawWidth / m_ratio : rawHeight;
+    int xOffset = (rawWidth - width) / 2;
+    int yOffset = (rawHeight - height) / 2;
 
-    //Renderer::SetScreenSize(width, height, xOffset, yOffset);
-    //RendererAPI::SetScreenSize(width, height, xOffset, yOffset);
+    m_data.width = width;
+    m_data.height = height;
+    m_data.xOffset = xOffset;
+    m_data.yOffset = yOffset;
 
     glViewport(xOffset, yOffset, width, height);
 
