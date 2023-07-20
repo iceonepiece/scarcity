@@ -6,4 +6,5 @@
 #include "PlayerComponent.h"
 #include "ScriptableComponent.h"
 #include "SpriteAnimatorComponent.h"
+#include "SpriteRendererComponent.h"
 #include "TransformComponent.h"
