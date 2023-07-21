@@ -9,6 +9,7 @@
 #include "Events/KeyEvent.h"
 #include "Core/Entity.h"
 #include "Components/Components.h"
+#include "Serializer.h"
 
 glm::vec2 ConvertToNDC(const glm::vec2& screenPos, const glm::vec2& screenSize)
 {
@@ -58,18 +59,16 @@ void Editor2D::Initialize(std::string title, int width, int height)
     m_gizmos.push_back(std::make_unique<ScaleGizmo>(*this));
 
 	Input::Init();
-
+    
     m_camera->SetCameraType(CameraType::Orthographic);
-
 
     Entity rect = m_entityManager.CreateEntity();
     rect.AddComponent<TransformComponent>(glm::vec3 {0.0f, 0.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {200.0f, 200.0f, 1.0f});
-    
+    rect.AddComponent<SpriteRendererComponent>(Shape_Square);
+
     Entity rect2 = m_entityManager.CreateEntity();
     rect2.AddComponent<TransformComponent>(glm::vec3 {-300.0f, 0.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {50.0f, 100.0f, 1.0f});
-
-    //Entity rect2 = m_entityManager.CreateEntity();
-    //rect2.AddComponent<TransformComponent>(glm::vec3 {3.0f, 2.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {0.5f, 0.5f, 1.0f});
+    rect2.AddComponent<SpriteRendererComponent>(Shape_Square, glm::vec4 {0.5f});
 }
 
 void Editor2D::OnEvent(Event* event)
@@ -110,7 +109,14 @@ void Editor2D::OnKeyPressed(KeyPressedEvent& event)
         case Key::W: m_currentMode = EditorMode::TranslateMode; break;
         case Key::E: m_currentMode = EditorMode::RotateMode;    break;
         case Key::R: m_currentMode = EditorMode::ScaleMode;     break;
+        case Key::S: SaveScene(); break;
     }
+}
+
+void Editor2D::SaveScene()
+{
+    std::cout << "Save Scene..." << std::endl;
+    Serializer::SerializeScene(m_entityManager.m_registry);
 }
 
 void Editor2D::OnWindowResize(int width, int height)
@@ -208,16 +214,21 @@ void Editor2D::Render()
 {
     m_window->PreRender();
 
-    auto transforms = m_entityManager.m_registry.view<TransformComponent>();
+    auto transforms = m_entityManager.m_registry.view<TransformComponent, SpriteRendererComponent>();
 
-    for (auto [entity, transform] : transforms.each())
+    for (auto [entity, transform, sprite] : transforms.each())
     {
         glm::vec2 position = transform.position;
         glm::vec2 scale = transform.scale;
+
+        m_renderer->DrawQuad2D(position, scale, 0.0f, sprite.color);
+        
+        /*
         if (m_entityPicked && entity == m_pickedEntity)
             m_renderer->DrawQuad2D(position, scale, 0.0f, {0.8f, 0.8f, 0.2f, 1.0f});
         else
             m_renderer->DrawQuad2D(position, scale);
+        */
     }
     
 

@@ -52,6 +52,8 @@ protected:
 	virtual void Update() override;
 	virtual void Render() override;
 
+	void SaveScene();
+
 	bool CheckPicking2D();
 	void CalculateWorldCursorPosition();
 

@@ -69,5 +69,5 @@ public:
 
 protected:
 	float m_length = 150.0f;
-	float m_thickness = 7.5f;
+	float m_thickness = 7.0f;
 };
