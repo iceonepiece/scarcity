@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include "../Core/Scene.h"
+#include "Scene/Scene.h"
 
 class UIComponent
 {

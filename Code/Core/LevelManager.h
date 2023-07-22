@@ -2,7 +2,7 @@
 
 #include <string>
 #include <sol/sol.hpp>
-#include "Scene.h"
+#include "Scene/Scene.h"
 
 class LevelManager
 {

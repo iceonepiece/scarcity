@@ -8,6 +8,8 @@
 #include "Core/Entity.h"
 #include "Gizmos/Gizmo.h"
 #include "Components/TransformComponent.h"
+#include "Scene/Scene.h"
+#include "Scene/SceneSerializer.h"
 
 enum EditorMode
 {
@@ -52,12 +54,15 @@ protected:
 	virtual void Update() override;
 	virtual void Render() override;
 
+	void OpenScene();
 	void SaveScene();
 
 	bool CheckPicking2D();
 	void CalculateWorldCursorPosition();
 
 protected:
+	std::unique_ptr<Scene> m_scene;
+
 	bool m_mouseActive = false;
 	MouseData m_mouseData;
 
@@ -65,7 +70,6 @@ protected:
 
 	glm::vec2 m_cursorPosition;
 	glm::vec2 m_worldCursorPosition;
-	EntityManager m_entityManager;
 	entt::entity m_pickedEntity;
 	bool m_entityPicked;
 	//Entity m_pickedEntity;

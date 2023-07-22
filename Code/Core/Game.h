@@ -17,7 +17,7 @@
 #include "../Graphics/FontSystem.h"
 #include "Camera.h"
 #include "ParticleSystem.h"
-#include "Scene.h"
+#include "Scene/Scene.h"
 #include "../Events/Event.h"
 
 class Game

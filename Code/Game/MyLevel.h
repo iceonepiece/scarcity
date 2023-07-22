@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Core/Scene.h"
+#include "Scene/Scene.h"
 #include "../Animations/Animation2D.h"
 #include "../Systems/Collider2DSystem.h"
 #include "../Core/ResourceAPI.h"

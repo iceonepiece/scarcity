@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Core/Scene.h>
+#include "Scene/Scene.h"
 #include <GUIs/GUI.h>
 #include "Editor/EditorMouse.h"
 

@@ -1,9 +1,8 @@
 #include "Scene.h"
-#include "Scene.h"
-#include "System.h"
-#include "GameState.h"
-#include "../Systems/ScriptableSystem.h"
-#include "Camera2D.h"
+#include "Core/System.h"
+#include "Core/GameState.h"
+#include "Systems/ScriptableSystem.h"
+#include "Core/Camera2D.h"
 
 Scene::Scene()
 	: m_camera(

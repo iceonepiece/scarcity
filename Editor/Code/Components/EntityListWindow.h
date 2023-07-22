@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ImGuiWindow.h"
-#include "Core/Scene.h"
+#include "Scene/Scene.h"
 #include "Components/Collider2DComponent.h"
 #include "InspectorWindow.h"
 

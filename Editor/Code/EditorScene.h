@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Scene.h"
+#include "Scene/Scene.h"
 #include "Graphics/Renderer.h"
 #include "Components/Collider2DComponent.h"
 

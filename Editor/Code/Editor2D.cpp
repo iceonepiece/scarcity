@@ -9,7 +9,7 @@
 #include "Events/KeyEvent.h"
 #include "Core/Entity.h"
 #include "Components/Components.h"
-#include "Serializer.h"
+#include "SampleScene.h"
 
 glm::vec2 ConvertToNDC(const glm::vec2& screenPos, const glm::vec2& screenSize)
 {
@@ -61,14 +61,9 @@ void Editor2D::Initialize(std::string title, int width, int height)
 	Input::Init();
     
     m_camera->SetCameraType(CameraType::Orthographic);
-
-    Entity rect = m_entityManager.CreateEntity();
-    rect.AddComponent<TransformComponent>(glm::vec3 {0.0f, 0.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {200.0f, 200.0f, 1.0f});
-    rect.AddComponent<SpriteRendererComponent>(Shape_Square);
-
-    Entity rect2 = m_entityManager.CreateEntity();
-    rect2.AddComponent<TransformComponent>(glm::vec3 {-300.0f, 0.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {50.0f, 100.0f, 1.0f});
-    rect2.AddComponent<SpriteRendererComponent>(Shape_Square, glm::vec4 {0.5f});
+    
+    m_scene = std::make_unique<SampleScene>();
+    m_scene->Initialize();
 }
 
 void Editor2D::OnEvent(Event* event)
@@ -110,13 +105,27 @@ void Editor2D::OnKeyPressed(KeyPressedEvent& event)
         case Key::E: m_currentMode = EditorMode::RotateMode;    break;
         case Key::R: m_currentMode = EditorMode::ScaleMode;     break;
         case Key::S: SaveScene(); break;
+        case Key::O: OpenScene(); break;
     }
+}
+
+void Editor2D::OpenScene()
+{
+    std::cout << "Opening the Scene..." << std::endl;
+    SceneSerializer serializer(*m_scene);
+    serializer.Deserialize("Untitled.scene.json");
 }
 
 void Editor2D::SaveScene()
 {
-    std::cout << "Save Scene..." << std::endl;
-    Serializer::SerializeScene(m_entityManager.m_registry);
+    std::cout << "Saving the Scene..." << std::endl;
+    SceneSerializer serializer(*m_scene);
+    serializer.Serialize("Untitled.scene.json");
+    /*
+    Scene scene;
+    SceneSerializer serializer(scene);
+    serializer.Serialize("Untitled.scene.json");
+    */
 }
 
 void Editor2D::OnWindowResize(int width, int height)
@@ -182,7 +191,7 @@ void Editor2D::Update()
 
 bool Editor2D::CheckPicking2D()
 {
-    auto transforms = m_entityManager.m_registry.view<TransformComponent>();
+    auto transforms = m_scene->GetEntityManager().m_registry.view<TransformComponent>();
     for (auto [entity, transform] : transforms.each())
     {
         if (m_worldCursorPosition.x < transform.position.x - transform.scale.x / 2 ||
@@ -207,14 +216,14 @@ TransformComponent* Editor2D::GetEntityTransform()
     if (!m_entityPicked)
         return nullptr;
 
-    return &m_entityManager.m_registry.get<TransformComponent>(m_pickedEntity);
+    return &m_scene->GetEntityManager().m_registry.get<TransformComponent>(m_pickedEntity);
 }
 
 void Editor2D::Render()
 {
     m_window->PreRender();
 
-    auto transforms = m_entityManager.m_registry.view<TransformComponent, SpriteRendererComponent>();
+    auto transforms = m_scene->GetEntityManager().m_registry.view<TransformComponent, SpriteRendererComponent>();
 
     for (auto [entity, transform, sprite] : transforms.each())
     {
@@ -234,7 +243,7 @@ void Editor2D::Render()
 
     if (m_currentMode != EditorMode::ViewMode && m_entityPicked)
     {
-        auto& transform = m_entityManager.m_registry.get<TransformComponent>(m_pickedEntity);
+        auto& transform = m_scene->GetEntityManager().m_registry.get<TransformComponent>(m_pickedEntity);
         m_gizmos.at(m_currentMode)->Render(*m_renderer, transform.position);
     }
 

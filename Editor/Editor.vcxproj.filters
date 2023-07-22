@@ -104,7 +104,7 @@
     <ClInclude Include="Code\SceneManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Serializer.h">
+    <ClInclude Include="Code\SampleScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,7 +2,7 @@
 #include "Timer.h"
 #include "Audio/Audio.h"
 #include "Graphics/Renderer.h"
-#include "Scene.h"
+#include "Scene/Scene.h"
 #include "Graphics/RendererAPI.h"
 #include "Graphics/FontSystem.h"
 #include "Platforms/OpenGL/OpenGLWindow.h"

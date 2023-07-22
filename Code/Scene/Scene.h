@@ -1,13 +1,14 @@
 #pragma once
 
 #include <memory>
-#include "EntityManager.h"
-#include "Camera.h"
-#include "../Physics/Physics.h"
-#include "../Input/Input.h"
-#include "../UIs/UI.h"
-#include "Application.h"
-#include "../Events/Event.h"
+#include "Core/Application.h"
+#include "Core/EntityManager.h"
+#include "Core/Camera.h"
+#include "Physics/Physics.h"
+#include "Input/Input.h"
+#include "UIs/UI.h"
+#include "Events/Event.h"
+
 
 class System;
 class GameState;
@@ -56,4 +57,6 @@ public:
 	Physics m_physics;
 	EntityManager m_manager;
 	UI m_ui;
+
+	friend class SceneSerializer;
 };

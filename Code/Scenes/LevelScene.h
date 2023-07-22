@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Core/Scene.h"
+#include "Scene/Scene.h"
 #include "../Components/AIComponent.h"
 #include "../Systems/PlayerSystem.h"
 #include "../Core/GameState.h"

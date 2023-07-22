@@ -3,7 +3,7 @@
 #include <box2d/box2d.h>
 
 #include "../Core/Entity.h"
-#include "../Core/Scene.h"
+#include "Scene/Scene.h"
 #include "../Components/Collider2DComponent.h"
 
 class Projectile
