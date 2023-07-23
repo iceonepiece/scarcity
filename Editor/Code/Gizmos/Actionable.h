@@ -41,13 +41,17 @@ public:
 	inline void SetPosition(const glm::vec2& position) { m_position = position; }
 	inline void SetColor(const glm::vec4& color) { m_color = color; }
 
+	inline TransformComponent GetStartTransformComponent() { return m_startTransform; }
 
 
 protected:
 	DraggingFunction m_draggingCallback;
 
 	glm::vec2 m_startCursorPosition;
+	TransformComponent m_startTransform;
 	TransformComponent* m_transform;
 	glm::vec2 m_position;
 	glm::vec4 m_color;
+
+	friend class Gizmo;
 };

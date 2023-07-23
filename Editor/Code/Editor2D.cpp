@@ -229,8 +229,9 @@ void Editor2D::Render()
     {
         glm::vec2 position = transform.position;
         glm::vec2 scale = transform.scale;
+        float angle = transform.rotation.z;
 
-        m_renderer->DrawQuad2D(position, scale, 0.0f, sprite.color);
+        m_renderer->DrawQuad2D(position, scale, angle, sprite.color);
         
         /*
         if (m_entityPicked && entity == m_pickedEntity)

@@ -27,12 +27,22 @@ public:
 		if (m_transform != nullptr)
 			offset = m_transform->position;
 
-		renderer.DrawCircle(m_position + offset, m_radius, false);
+		renderer.DrawCircle(m_position + offset, m_radius);
 	}
 
 	virtual bool IsCursorOn(float x, float y, const glm::vec2& entityPosition) override
 	{
-		return false;
+		glm::vec2 offset {0.0f};
+
+		if (m_transform != nullptr)
+			offset = m_transform->position;
+
+		glm::vec2 realPosition = m_position + offset;
+
+		float distance = glm::distance(glm::vec2 {x, y}, realPosition);
+		std::cout << "Distance: " << distance << std::endl;
+
+		return distance >= m_radius * 0.92 && distance <= m_radius;
 	}
 
 

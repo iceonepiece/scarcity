@@ -29,6 +29,7 @@ bool Gizmo::OnPicking2D(const glm::vec2& cursorPosition)
 			{
 				std::cout << "IsCursorOn: " << cursorPosition.x << ", " << cursorPosition.y << std::endl;
 				it->get()->SetStartCursorPosition(cursorPosition);
+				it->get()->m_startTransform = *transform;
 				m_actor = it->get();
 				return true;
 			}
