@@ -44,15 +44,18 @@ void OpenGLShader::Compile(const std::string& vertexPath, const std::string& fra
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexSource, NULL);
     glCompileShader(vertexShader);
+    checkCompileErrors(vertexShader, "VERTEX");
 
     unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
     glCompileShader(fragmentShader);
+    checkCompileErrors(fragmentShader, "FRAGMENT");
 
     m_id = glCreateProgram();
     glAttachShader(m_id, vertexShader);
     glAttachShader(m_id, fragmentShader);
     glLinkProgram(m_id);
+    checkCompileErrors(m_id, "PROGRAM");
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
@@ -95,4 +98,28 @@ void OpenGLShader::SetMatrix4(const std::string& name, const glm::mat4& value)
 void OpenGLShader::Use()
 {
     glUseProgram(m_id);
+}
+
+void OpenGLShader::checkCompileErrors(unsigned int shader, std::string type)
+{
+    int success;
+    char infoLog[1024];
+    if (type != "PROGRAM")
+    {
+        glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+        if (!success)
+        {
+            glGetShaderInfoLog(shader, 1024, NULL, infoLog);
+            std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+        }
+    }
+    else
+    {
+        glGetProgramiv(shader, GL_LINK_STATUS, &success);
+        if (!success)
+        {
+            glGetProgramInfoLog(shader, 1024, NULL, infoLog);
+            std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+        }
+    }
 }

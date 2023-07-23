@@ -14,15 +14,18 @@ public:
 	virtual void DrawLine(const glm::vec3& v1, const glm::vec3& v2, const glm::vec4& color) override;
 	virtual void DrawLines(float lines[], int n, const glm::vec4& color = glm::vec4(1)) override;
 	virtual void DrawRect(b2Body* body, const Camera& camera) override;
-	virtual void DrawCircle(const glm::vec2& position, float radius, bool filled = true) override;
+	virtual void DrawCircle(const glm::vec2& position, float radius) override;
 
 private:
 	OpenGLShader m_basicShader;
 	OpenGLShader m_spriteShader;
 	OpenGLShader m_uiShader;
+	OpenGLShader m_circleShader;
 
-	unsigned int m_quadVAO;
-	unsigned int m_quadVBO;
-	unsigned int m_lineVAO;
-	unsigned int m_lineVBO;
+	GLuint m_quadVAO;
+	GLuint m_quadVBO;
+	GLuint m_lineVAO;
+	GLuint m_lineVBO;
+	GLuint m_circleVAO;
+	GLuint m_circleVBO;
 };

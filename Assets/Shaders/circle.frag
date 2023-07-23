@@ -1,19 +1,18 @@
 #version 330 core
 
+in vec2 Value;
 out vec4 FragColor;
-
-uniform vec3 resolution;
-uniform vec4 color;
-uniform vec3 pixelPos;
-uniform float pixelRadius;
 
 void main()
 {
+    float R = 1.0;
+    float R2 = 0.95;
 
-	float dist = distance(pixelPos.xy, gl_FragCoord.xy);
+    float dist = sqrt(dot(Value,Value));
+    if (dist >= R || dist <= R2)
+    {
+        discard;
+    }
 
-	if (dist > pixelRadius)
-		discard;
-
-	FragColor = color;
+    FragColor = vec4(0.0, 0.0, 1.0, 1.0);
 }

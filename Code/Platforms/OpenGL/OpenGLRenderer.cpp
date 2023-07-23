@@ -51,6 +51,30 @@ void OpenGLRenderer::Initialize()
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     
+    // setup circle
+    float right = 0.5;
+    float bottom = -0.5;
+    float left = -0.5;
+    float top = 0.5;
+    float quad[20] = {
+        right, bottom, 0, 1.0, -1.0,
+        right, top, 0, 1.0, 1.0,
+        left, top, 0, -1.0, 1.0,
+        left, bottom, 0, -1.0, -1.0,
+    };
+
+    glGenBuffers(1, &m_circleVBO);
+    glGenVertexArrays(1, &m_circleVAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_circleVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 20, quad, GL_STATIC_DRAW);
+
+    glBindVertexArray(m_circleVAO);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
     // clear
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
@@ -58,6 +82,7 @@ void OpenGLRenderer::Initialize()
     m_basicShader.Compile("Shaders/basic.vert", "Shaders/basic.frag");
     m_spriteShader.Compile("Shaders/texture.vert", "Shaders/texture.frag");
     m_uiShader.Compile("Shaders/ui.vert", "Shaders/ui.frag");
+    m_circleShader.Compile("Shaders/circle.vert", "Shaders/circle.frag");
 }
 
 void OpenGLRenderer::Draw(Sprite& sprite, const glm::mat4& modelMatrix)
@@ -252,44 +277,20 @@ void OpenGLRenderer::DrawRect(b2Body* body, const Camera& camera)
     DrawLine(points[3], points[0], color);
 }
 
-void OpenGLRenderer::DrawCircle(const glm::vec2& position, float radius, bool filled)
+void OpenGLRenderer::DrawCircle(const glm::vec2& position, float radius)
 {
-    int segments = 24;
+    m_circleShader.Use();
 
-    std::vector<float> lines;
+    glm::mat4 model = glm::mat4(1.0);
+    model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
+    model = glm::scale(model, glm::vec3(radius * 2, radius * 2, 0.0f));
 
-    glm::vec3 startingPoint {
-        position.x + (radius * glm::cos(0.0f)),
-        position.y + (radius * glm::sin(0.0f)),
-        0.0f
-    };
+    m_circleShader.SetMatrix4("model", model);
+    m_circleShader.SetMatrix4("view", m_camera->GetViewMatrix());
+    m_circleShader.SetMatrix4("projection", m_camera->GetProjectionMatrix(CameraType::Orthographic));
 
-    glm::vec3 previousPoint = startingPoint;
-
-    for (int i = 1; i < segments; i++)
-    {
-        float angle = (float)i / segments * glm::two_pi<float>();
-
-        glm::vec3 point {
-            position.x + (radius * glm::cos(angle)),
-            position.y + (radius * glm::sin(angle)),
-            0.0f
-        };
-
-        lines.push_back(previousPoint.x);
-        lines.push_back(previousPoint.y);
-        lines.push_back(point.x);
-        lines.push_back(point.y);
-
-        previousPoint = point;
-    }
-
-    lines.push_back(previousPoint.x);
-    lines.push_back(previousPoint.y);
-    lines.push_back(startingPoint.x);
-    lines.push_back(startingPoint.y);
-
-    DrawLines(lines.data(), lines.size() / 2);
+    glBindVertexArray(m_circleVAO);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
 void OpenGLRenderer::DrawQuadUI(const glm::vec2& position, const glm::vec2& scale, const glm::vec4& color, UIAlignment alignment)

@@ -26,4 +26,7 @@ public:
 	virtual void SetMatrix4(const std::string& name, const glm::mat4& value) override;
 
 	unsigned int m_id;
+
+private:
+	void checkCompileErrors(unsigned int shader, std::string type);
 };
