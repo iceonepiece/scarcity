@@ -1,19 +1,19 @@
-#include "Audio.h"
+#include "OpenALAudio.h"
 #include "Wav.h"
 #include <iostream>
 #include <vector>
 
-ALCdevice* Audio::s_device;
-ALCcontext* Audio::s_context;
-std::unordered_map<std::string, AudioSource> Audio::s_audioSources;
+ALCdevice* OpenALAudio::s_device;
+ALCcontext* OpenALAudio::s_context;
+std::unordered_map<std::string, AudioSource> OpenALAudio::s_audioSources;
 
-void Audio::Init()
+void OpenALAudio::Initialize()
 {
-	s_device = alcOpenDevice(NULL);
-	if (!s_device)
-	{
-		std::cerr << "ERROR: Could not open audio device" << std::endl;
-	}
+    s_device = alcOpenDevice(NULL);
+    if (!s_device)
+    {
+        std::cerr << "ERROR: Could not open audio device" << std::endl;
+    }
 
     s_context = alcCreateContext(s_device, NULL);
     if (!s_context)
@@ -21,17 +21,17 @@ void Audio::Init()
         std::cerr << "ERROR: Could not create audio context" << std::endl;
     }
 
-	if (!alcMakeContextCurrent(s_context))
-	{
+    if (!alcMakeContextCurrent(s_context))
+    {
         std::cerr << "ERROR: Could not make audio context current" << std::endl;
-	}
+    }
 }
 
-void Audio::PlaySound(std::string name)
+void OpenALAudio::PlaySound(const std::string& name)
 {
     if (s_audioSources.find(name) == s_audioSources.end())
         return;
-   
+
     AudioSource audioSource = s_audioSources[name];
 
     alSourcePlay(audioSource.source);
@@ -47,7 +47,7 @@ void Audio::PlaySound(std::string name)
 }
 
 
-bool Audio::LoadSound(std::string name, std::string filePath)
+bool OpenALAudio::LoadSound(const std::string& name, const std::string& filePath)
 {
     std::uint8_t channels;
     std::int32_t sampleRate;
@@ -92,10 +92,10 @@ bool Audio::LoadSound(std::string name, std::string filePath)
     alSourcei(source, AL_LOOPING, AL_FALSE);
     alSourcei(source, AL_BUFFER, buffer);
 
-    s_audioSources.emplace(name, AudioSource { buffer, source });
+    s_audioSources.emplace(name, AudioSource{ buffer, source });
 }
 
-void Audio::Destroy()
+void OpenALAudio::Destroy()
 {
     for (auto& [_name, audioSource] : s_audioSources)
     {

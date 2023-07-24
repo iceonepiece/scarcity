@@ -1,25 +1,18 @@
 #include <string>
-#include <unordered_map>
-#include <AL/al.h>
-#include <AL/alc.h>
-#include <AL/alext.h>
-
-struct AudioSource
-{
-	ALuint buffer;
-	ALuint source;
-};
 
 class Audio
 {
 public:
-	static void Init();
-	static void Destroy();
-	static bool LoadSound(std::string name, std::string filePath);
-	static void PlaySound(std::string name);
+	virtual void Initialize() = 0;
+	virtual void Destroy() = 0;
 
-private:
-	static ALCdevice* s_device;
-	static ALCcontext* s_context;
-	static std::unordered_map<std::string, AudioSource> s_audioSources;
+	virtual bool LoadSound(const std::string& name, const std::string& filePath) = 0;
+	virtual void UnloadSound(const std::string& name) = 0;
+
+	virtual void PlaySound(const std::string& name) = 0;
+	virtual void PauseSound(const std::string& name) = 0;
+	virtual void ResumeSound(const std::string& name) = 0;
+	virtual void StopSound(const std::string& name) = 0;
+
+	virtual void SetVolume(float volume) = 0;
 };
