@@ -510,9 +510,6 @@
     <ClCompile Include="Code\Core\LevelManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Audio\Audio.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Core\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -598,6 +595,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Scene\SceneSerializer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Audio\OpenALAudio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -2127,6 +2127,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Scene\SceneSerializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Audio\OpenALAudio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

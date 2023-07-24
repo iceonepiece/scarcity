@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Scene.h"
+#include "Scene/Scene.h"
 #include "Core/Input.h"
 #include "Systems/AnimationSystem.h"
 

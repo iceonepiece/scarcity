@@ -68,6 +68,12 @@ OpenGLWindow::OpenGLWindow(Application* app, std::string title, int width, int h
             case GLFW_RELEASE:  app.OnMouseButtonReleased(button);  break;
         }
     });
+    
+    glfwSetScrollCallback(m_glfwWindow, [](GLFWwindow* window, double xPos, double yPos)
+    {
+        Application& app = *(Application*)glfwGetWindowUserPointer(window);
+        app.OnMouseScroll((float)xPos, (float)yPos);
+    });
 
     glfwSetCursorPosCallback(m_glfwWindow, [](GLFWwindow* window, double xPos, double yPos)
     {
@@ -117,9 +123,10 @@ void OpenGLWindow::PreRender()
     m_data.xOffset = xOffset;
     m_data.yOffset = yOffset;
 
-    glViewport(xOffset, yOffset, width, height);
+    //glViewport(xOffset, yOffset, width, height);
+    glViewport(0, 0, rawWidth, rawHeight);
 
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 }
 

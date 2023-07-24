@@ -204,20 +204,13 @@ void OpenGLRenderer::DrawQuad2D(const glm::vec2& position, const glm::vec2& scal
     m_basicShader.Use();
 
     glm::mat4 model = glm::mat4(1.0f);
+    
     model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
     model = glm::rotate(model, angle, glm::vec3(0, 0, 1));
     model = glm::scale(model, glm::vec3(scale.x, scale.y, 0.0f));
-
-    glm::mat4 view = glm::mat4(1.0f);
-    view = m_camera->GetViewMatrix();
-    /*
-    glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
-    glm::vec3 cameraPos = m_camera->GetPosition();
-    view = glm::lookAt(cameraPos, cameraPos + front, glm::vec3(0.0f, 1.0f, 0.0f));
-    */
-
-    glm::mat4 projection = glm::mat4(1.0f);
-    projection = m_camera->GetProjectionMatrix(CameraType::Orthographic);
+ 
+    glm::mat4 view = m_camera->GetViewMatrix();
+    glm::mat4 projection = m_camera->GetProjectionMatrix(CameraType::Orthographic);
 
     m_basicShader.SetMatrix4("model", model);
     m_basicShader.SetMatrix4("view", view);

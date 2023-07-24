@@ -46,14 +46,13 @@ glm::mat4 Camera2D::GetProjectionMatrix() const
 
 glm::mat4 Camera2D::GetProjectionMatrix(CameraType type) const
 {
-    switch (type)
-    {
-    case CameraType::Perspective:
+    if (type == CameraType::Perspective)
         return glm::perspective(glm::radians(45.0f), m_screenSize.x / m_screenSize.y, 0.1f, 100.0f);
 
-    case CameraType::Orthographic:
-        return glm::ortho(-(m_screenSize.x / 2), (m_screenSize.x / 2), -(m_screenSize.y / 2), (m_screenSize.y / 2));
-    }
+    if (type == CameraType::Orthographic)
+        return glm::ortho(-(m_screenSize.x / m_zoom / 2), (m_screenSize.x / m_zoom / 2), -(m_screenSize.y / m_zoom / 2), (m_screenSize.y / m_zoom / 2));
+
+    return glm::mat4(1.0f);
 }
 
 void Camera2D::SetBody(b2Body* body)

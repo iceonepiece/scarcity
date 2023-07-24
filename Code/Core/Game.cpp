@@ -65,7 +65,6 @@ Game::Game(int width, int height)
     ParticleSystem::Init();
     //FontSystem::Init();
     Input::Init();
-    Audio::Init();
 }
 
 Game::~Game()
@@ -76,7 +75,6 @@ Game::~Game()
     }
     m_scenes.clear();
 
-    Audio::Destroy();
     RendererAPI::Terminate();
 
     glfwDestroyWindow(m_window);

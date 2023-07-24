@@ -277,11 +277,11 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\Audio\OpenALAudio.cpp" />
     <ClCompile Include="Code\Components\Components.cpp" />
     <ClCompile Include="Code\Core\ResourceAPI.cpp" />
     <ClCompile Include="Code\Core\ScriptingEngine.cpp" />
     <ClCompile Include="Code\Core\FiniteStateMachine.cpp" />
-    <ClCompile Include="Code\Audio\Audio.cpp" />
     <ClCompile Include="Code\Core\Camera2D.cpp" />
     <ClCompile Include="Code\Core\EntityManager.cpp" />
     <ClCompile Include="Code\Core\Game.cpp" />
@@ -331,6 +331,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\APIs\InputAPI.h" />
+    <ClInclude Include="Code\Audio\OpenALAudio.h" />
     <ClInclude Include="Code\Components\SpriteRendererComponent.h" />
     <ClInclude Include="Code\Core\Camera.h" />
     <ClInclude Include="Code\Animations\Animation2D.h" />

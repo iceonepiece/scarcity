@@ -51,7 +51,6 @@ void Editor2D::Initialize(std::string title, int width, int height)
 
     m_renderer = std::make_unique<OpenGLRenderer>();
     m_renderer->Initialize();
-    m_renderer->SetCamera(m_camera.get());
 
     m_gizmos.push_back(std::make_unique<ViewGizmo>(*this));
     m_gizmos.push_back(std::make_unique<TranslateGizmo>(*this));
@@ -144,6 +143,8 @@ void Editor2D::OnMouseMoved(float x, float y)
     m_cursorPosition.x = x;
     m_cursorPosition.y = y;
 
+    std::cout << "mouse: " << x << ", " << y << std::endl;
+
     CalculateWorldCursorPosition();
 
     if (m_mouseActive)
@@ -211,6 +212,13 @@ bool Editor2D::CheckPicking2D()
     return false;
 }
 
+void Editor2D::OnMouseScroll(float x, float y)
+{
+    std::cout << "Scroll: " << x << ", " << y << std::endl;
+
+    m_camera->SetZoom(m_camera->GetZoom() + (y * 0.05f));
+}
+
 TransformComponent* Editor2D::GetEntityTransform()
 {
     if (!m_entityPicked)
@@ -222,6 +230,10 @@ TransformComponent* Editor2D::GetEntityTransform()
 void Editor2D::Render()
 {
     m_window->PreRender();
+    
+    //m_window->GetWindowData();
+    glm::vec2 screenSize = m_camera->GetScreenSize();
+    m_renderer->SetCamera(m_camera.get());
 
     auto transforms = m_scene->GetEntityManager().m_registry.view<TransformComponent, SpriteRendererComponent>();
 
@@ -232,13 +244,6 @@ void Editor2D::Render()
         float angle = transform.rotation.z;
 
         m_renderer->DrawQuad2D(position, scale, angle, sprite.color);
-        
-        /*
-        if (m_entityPicked && entity == m_pickedEntity)
-            m_renderer->DrawQuad2D(position, scale, 0.0f, {0.8f, 0.8f, 0.2f, 1.0f});
-        else
-            m_renderer->DrawQuad2D(position, scale);
-        */
     }
     
 

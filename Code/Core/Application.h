@@ -36,6 +36,7 @@ public:
 
 	virtual void OnKeyPressed(KeyPressedEvent& event) {}
 	virtual void OnMouseMoved(float x, float y) {}
+	virtual void OnMouseScroll(float x, float y) {}
 
 	virtual void ChangeScene(std::string name) {}
 	inline ScriptingEngine* GetScriptingEngine() { return &m_scriptingEngine; }

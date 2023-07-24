@@ -37,8 +37,12 @@ public:
 	virtual glm::mat4 GetProjectionMatrix(CameraType type) const = 0;
 	
 	inline float GetScreenSizePercentage() { return m_screenSize.x / m_defaultScreenSize.x; }
+	
+	inline float GetZoom() { return m_zoom; }
+	inline void SetZoom(float zoom) { m_zoom = zoom; }
 
 protected:
+	float m_zoom = 1.0f;
 	glm::vec3 m_position = glm::vec3(0.0f);
 	glm::vec2 m_screenSize;
 	glm::vec2 m_defaultScreenSize;

@@ -44,6 +44,7 @@ public:
 	virtual void OnMouseButtonPressed(int button) override;
 	virtual void OnMouseButtonReleased(int button) override;
 	virtual void OnMouseMoved(float x, float y) override;
+	virtual void OnMouseScroll(float x, float y) override;
 	virtual void OnWindowResize(int width, int height) override;
 	virtual void OnWindowClose() override;
 
