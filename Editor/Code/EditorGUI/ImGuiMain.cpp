@@ -5,6 +5,7 @@
 ImGuiMain::ImGuiMain(Editor2D& editor, GLFWwindow* window, const char* glslVersion)
     : m_editor(editor)
     , m_entityProperties(editor)
+    , m_hierarchy(editor)
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -33,6 +34,7 @@ void ImGuiMain::Render()
 
     // Writing your code here
     m_entityProperties.Render();
+    m_hierarchy.Render();
 
     //ImGui::ShowDemoWindow();
 

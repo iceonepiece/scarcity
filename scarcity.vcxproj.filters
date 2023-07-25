@@ -2132,6 +2132,9 @@
     <ClInclude Include="Code\Audio\OpenALAudio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Code\Components\BaseComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />

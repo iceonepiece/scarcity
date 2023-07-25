@@ -101,6 +101,12 @@ bool SceneSerializer::Deserialize(const std::string& filepath)
 		{
 			Entity entity = manager.CreateEntity();
 
+			if (entityJson["Base"].is_object())
+			{
+				json baseJson = entityJson["Base"];
+				entity.AddComponent<BaseComponent>(baseJson["name"]);
+			}
+
 			if (entityJson["Transform"].is_object())
 			{
 				json transformJson = entityJson["Transform"];

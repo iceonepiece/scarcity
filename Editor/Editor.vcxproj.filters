@@ -48,6 +48,9 @@
     <ClCompile Include="Code\EditorGUI\ImGuiEntityProperties.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Code\EditorGUI\ImGuiHierarchy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Components\EntityListWindow.h">
@@ -120,6 +123,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\EditorGUI\ImGuiEntityProperties.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\ImGuiHierarchy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,9 @@
 {
     "entities": [
         {
+            "Base": {
+                "name": "Rect 2"
+            },
             "SpriteRenderer": {
                 "color": [
                     0.75,
@@ -30,6 +33,9 @@
             "id": 1
         },
         {
+            "Base": {
+                "name": "Rect 1"
+            },
             "SpriteRenderer": {
                 "color": [
                     1.0,

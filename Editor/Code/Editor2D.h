@@ -52,6 +52,13 @@ public:
 	TransformComponent* GetEntityTransform();
 
 	inline entt::entity GetPickedEntity() { return m_pickedEntity; }
+
+	inline void SetPickedEntity(entt::entity picked)
+	{
+		m_entityPicked = true;
+		m_pickedEntity = picked;
+	}
+
 	inline bool IsEntityPicked() { return m_entityPicked; }
 	Scene* GetScene() { return m_scene.get(); }
 
