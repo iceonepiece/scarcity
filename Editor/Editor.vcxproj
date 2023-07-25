@@ -134,10 +134,12 @@
     <ClCompile Include="Code\Components\EntityListWindow.cpp" />
     <ClCompile Include="Code\Components\InspectorWindow.cpp" />
     <ClCompile Include="Code\Editor2D.cpp" />
+    <ClCompile Include="Code\EditorGUI\ImGuiEntityProperties.cpp" />
     <ClCompile Include="Code\EditorScene.cpp" />
     <ClCompile Include="Code\Gizmos\Gizmo.cpp" />
     <ClCompile Include="Code\ImGuiComponent.cpp" />
     <ClCompile Include="Code\ImGuiLayer.cpp" />
+    <ClCompile Include="Code\EditorGUI\ImGuiMain.cpp" />
     <ClCompile Include="Code\Main.cpp" />
     <ClCompile Include="Code\SceneLayer.cpp" />
   </ItemGroup>
@@ -152,6 +154,8 @@
     <ClInclude Include="Code\Components\InspectorWindow.h" />
     <ClInclude Include="Code\Editor2D.h" />
     <ClInclude Include="Code\EditorCamera.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiEntityProperties.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiWindow.h" />
     <ClInclude Include="Code\EditorMouse.h" />
     <ClInclude Include="Code\Gizmos\Actionable.h" />
     <ClInclude Include="Code\Gizmos\ActionableCircle.h" />
@@ -162,6 +166,7 @@
     <ClInclude Include="Code\Gizmos\ViewGizmo.h" />
     <ClInclude Include="Code\ImGuiComponent.h" />
     <ClInclude Include="Code\ImGuiLayer.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiMain.h" />
     <ClInclude Include="Code\Layer.h" />
     <ClInclude Include="Code\EditorScene.h" />
     <ClInclude Include="Code\SampleScene.h" />

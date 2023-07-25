@@ -57,6 +57,10 @@ void Editor2D::Initialize(std::string title, int width, int height)
     m_gizmos.push_back(std::make_unique<RotateGizmo>(*this));
     m_gizmos.push_back(std::make_unique<ScaleGizmo>(*this));
 
+    if (OpenGLWindow* openGLWindow = dynamic_cast<OpenGLWindow*>(m_window.get()))
+        m_imgui = std::make_unique<ImGuiMain>(*this, openGLWindow->GetGLFWwindow(), "#version 330");
+
+
 	Input::Init();
     
     m_camera->SetCameraType(CameraType::Orthographic);
@@ -155,6 +159,11 @@ void Editor2D::OnMouseButtonPressed(int button)
 {
     std::cout << "OnMouseButtonPressed" << std::endl;
 
+    ImGuiIO& io = ImGui::GetIO();
+
+    if (io.WantCaptureMouse)
+        return;
+
     if (button == Mouse::ButtonLeft)
     {
         m_mouseActive = true;
@@ -188,6 +197,7 @@ void Editor2D::CalculateWorldCursorPosition()
 void Editor2D::Update()
 {
     m_gizmos[m_currentMode]->Update(10.0f);
+
 }
 
 bool Editor2D::CheckPicking2D()
@@ -252,6 +262,8 @@ void Editor2D::Render()
         auto& transform = m_scene->GetEntityManager().m_registry.get<TransformComponent>(m_pickedEntity);
         m_gizmos.at(m_currentMode)->Render(*m_renderer, transform.position);
     }
+
+    m_imgui->Render();
 
     m_window->Render();
 }

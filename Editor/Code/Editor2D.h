@@ -10,6 +10,7 @@
 #include "Components/TransformComponent.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneSerializer.h"
+#include "EditorGUI/ImGuiMain.h"
 
 enum EditorMode
 {
@@ -50,6 +51,10 @@ public:
 
 	TransformComponent* GetEntityTransform();
 
+	inline entt::entity GetPickedEntity() { return m_pickedEntity; }
+	inline bool IsEntityPicked() { return m_entityPicked; }
+	Scene* GetScene() { return m_scene.get(); }
+
 protected:
 	virtual void ProcessInput() override;
 	virtual void Update() override;
@@ -78,4 +83,6 @@ protected:
 	std::vector<std::unique_ptr<Event>> m_events;
 	std::vector<std::unique_ptr<Gizmo>> m_gizmos;
 	std::unique_ptr<Camera> m_camera;
+
+	std::unique_ptr<ImGuiMain> m_imgui;
 };
