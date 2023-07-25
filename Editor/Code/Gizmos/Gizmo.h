@@ -15,7 +15,7 @@ public:
 	void Render(Renderer& renderer, const glm::vec2& position);
 	virtual bool OnPicking2D(const glm::vec2& cursorPosition);
 	
-	bool OnDragging(float x, float y)
+	virtual bool OnDragging(float x, float y)
 	{
 		if (m_actor != nullptr)
 		{

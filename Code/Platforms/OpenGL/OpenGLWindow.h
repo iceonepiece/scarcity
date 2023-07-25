@@ -25,10 +25,11 @@ public:
 		std::cout << "XXXX: " << &(m_data.EventCallback) << std::endl;
 	}
 
-
+	virtual void SetCursorShape(CursorShape shape) override;
 
 	GLFWwindow* GetGLFWwindow();
 
 protected:
 	GLFWwindow* m_glfwWindow;
+	GLFWcursor* m_cursor;
 };

@@ -29,7 +29,7 @@ OpenGLWindow::OpenGLWindow(Application* app, std::string title, int width, int h
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
     }
-  
+
     glfwSetWindowUserPointer(m_glfwWindow, m_app);
 
     glfwSetWindowSizeCallback(m_glfwWindow, [](GLFWwindow* window, int width, int height)
@@ -133,4 +133,18 @@ void OpenGLWindow::PreRender()
 void OpenGLWindow::Render()
 {
     glfwSwapBuffers(m_glfwWindow);
+}
+
+void OpenGLWindow::SetCursorShape(CursorShape shape)
+{
+    switch (shape)
+    {
+        case CursorShape::Arrow:
+            glfwSetCursor(m_glfwWindow, NULL);
+            break;
+        
+        case CursorShape::Hand:
+            glfwSetCursor(m_glfwWindow, glfwCreateStandardCursor(GLFW_HAND_CURSOR));
+            break;
+    }
 }

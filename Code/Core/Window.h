@@ -8,6 +8,12 @@ class Application;
 
 using EventCallbackFn = std::function<void(Event*)>;
 
+enum class CursorShape
+{
+	Arrow,
+	Hand
+};
+
 struct WindowData
 {
 	std::string title;
@@ -38,6 +44,9 @@ public:
 	virtual bool WindowShouldClose() = 0;
 
 	inline WindowData GetWindowData() { return m_data; }
+
+	virtual void SetCursorShape(CursorShape shape) = 0;
+
 
 protected:
 
