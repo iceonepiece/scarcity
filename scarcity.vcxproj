@@ -420,6 +420,7 @@
     <ClInclude Include="Code\Scenes\LuaScene.h" />
     <ClInclude Include="Code\Scenes\MenuScene.h" />
     <ClInclude Include="Code\Scene\SceneSerializer.h" />
+    <ClInclude Include="Code\Shapes\Shape2D.h" />
     <ClInclude Include="Code\Systems\Collider2DSystem.h" />
     <ClInclude Include="code\systems\PlayerSystem.h" />
     <ClInclude Include="Code\Systems\AnimationSystem.h" />

@@ -8,6 +8,7 @@
 #include "UIs/UI.h"
 #include "Graphics/Texture.h"
 #include "Animations/Sprite.h"
+#include "Shapes/Shape2D.h"
 
 class Renderer
 {
@@ -16,6 +17,7 @@ public:
 	virtual void Draw(Sprite& sprite, const glm::mat4& modelMatrix) = 0;
 	virtual void DrawQuad(const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }) = 0;
 	virtual void DrawQuad2D(const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }) = 0;
+	virtual void DrawQuad2D(const Quad2D& quad) = 0;
 	virtual void DrawQuadUI(const glm::vec2& position, const glm::vec2& scale, const glm::vec4& color, UIAlignment alignment = UIAlignment::NONE) = 0;
 	virtual void DrawLine(const glm::vec3& v1, const glm::vec3& v2, const glm::vec4& color = glm::vec4(1)) = 0;
 	virtual void DrawLines(float lines[], int n, const glm::vec4& color = glm::vec4(1)) = 0;

@@ -5,6 +5,13 @@
 #include "Graphics/Renderer.h"
 #include "Components/TransformComponent.h"
 
+enum TransformDepending
+{
+	DependOnNone = 0,
+	DependOnPosition = 1 << 0,
+	DependOnRotation = 1 << 1
+};
+
 class Actionable
 {
 public:
@@ -13,9 +20,11 @@ public:
 
 	Actionable(const glm::vec2& position, const glm::vec4 color)
 		: m_position(position)
+		, m_angle(0.0f)
 		, m_color(color)
 		, m_draggingCallback([](Actionable& actor, float x, float y) { return false; })
-	{}
+	{
+	}
 
 	inline void SetDraggingCallback(DraggingFunction callback)
 	{
@@ -28,11 +37,14 @@ public:
 	{
 		return m_draggingCallback(*this, x, y);
 	}
-	
+
+	virtual void UpdateTransform() {}
+
 	virtual void Render(Renderer& renderer) = 0;
 	virtual bool IsCursorOn(float x, float y, const glm::vec2& entityPosition) = 0;
 
 	inline void SetTransformComponent(TransformComponent* transform) { m_transform = transform; }
+
 	inline TransformComponent* GetTransformComponent() { return m_transform; }
 
 	inline void SetStartCursorPosition(const glm::vec2& position) { m_startCursorPosition = position; }
@@ -42,9 +54,15 @@ public:
 	inline void SetColor(const glm::vec4& color) { m_color = color; }
 
 	inline TransformComponent GetStartTransformComponent() { return m_startTransform; }
-
+	
+	inline void SetDependingFlags(int flags)
+	{
+		m_dependingFlags = flags;
+	}
 
 protected:
+	int m_dependingFlags = DependOnNone;
+	
 	DraggingFunction m_draggingCallback;
 
 	glm::vec2 m_startCursorPosition;
@@ -52,6 +70,8 @@ protected:
 	TransformComponent* m_transform;
 	glm::vec2 m_position;
 	glm::vec4 m_color;
+
+	float m_angle;
 
 	friend class Gizmo;
 };

@@ -28,43 +28,46 @@ public:
 		));
 
 		m_actionables[2]->SetDraggingCallback([](Actionable& actor, float x, float y)
-		{
-			glm::vec2& startCursor = actor.GetStartCursorPosition();
-			float diffX = x - startCursor.x;
-			float diffY = y - startCursor.y;
-			actor.SetStartCursorPosition(glm::vec2 {x, y});
+			{
+				glm::vec2& startCursor = actor.GetStartCursorPosition();
+				float diffX = x - startCursor.x;
+				float diffY = y - startCursor.y;
+				actor.SetStartCursorPosition(glm::vec2 {x, y});
 
-			TransformComponent* transform = actor.GetTransformComponent();
-			transform->scale.x += diffX;
-			transform->scale.y += diffY;
+				TransformComponent* transform = actor.GetTransformComponent();
+				transform->scale.x += diffX;
+				transform->scale.y += diffY;
 
-			return true;
-		});
+				return true;
+			});
 
 		m_actionables[0]->SetDraggingCallback([](Actionable& actor, float x, float y)
-		{
-			glm::vec2& startCursor = actor.GetStartCursorPosition();
-			float diffX = x - startCursor.x;
-			actor.SetStartCursorPosition(glm::vec2 {x, y});
+			{
+				glm::vec2& startCursor = actor.GetStartCursorPosition();
+				float diffX = x - startCursor.x;
+				actor.SetStartCursorPosition(glm::vec2 {x, y});
 
-			TransformComponent* transform = actor.GetTransformComponent();
-			transform->scale.x += diffX;
+				TransformComponent* transform = actor.GetTransformComponent();
+				transform->scale.x += diffX;
 
-			return true;
-		});
+				return true;
+			});
 
 		m_actionables[1]->SetDraggingCallback([](Actionable& actor, float x, float y)
-		{
-			glm::vec2& startCursor = actor.GetStartCursorPosition();
-			float diffY = y - startCursor.y;
-			actor.SetStartCursorPosition(glm::vec2 {x, y});
+			{
+				glm::vec2& startCursor = actor.GetStartCursorPosition();
+				float diffY = y - startCursor.y;
+				actor.SetStartCursorPosition(glm::vec2 {x, y});
 
-			TransformComponent* transform = actor.GetTransformComponent();
-			transform->scale.y += diffY;
+				TransformComponent* transform = actor.GetTransformComponent();
+				transform->scale.y += diffY;
 
-			return true;
-		});
+				return true;
+			});
 
+		m_actionables[0]->SetDependingFlags(DependOnPosition | DependOnRotation);
+		m_actionables[1]->SetDependingFlags(DependOnPosition | DependOnRotation);
+		m_actionables[2]->SetDependingFlags(DependOnPosition | DependOnRotation);
 	}
 
 protected:

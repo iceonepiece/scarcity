@@ -14,6 +14,7 @@ void Gizmo::Update(float dt)
 		for (auto& actionable : m_actionables)
 		{
 			actionable->SetTransformComponent(transform);
+			actionable->UpdateTransform();
 		}
 	}
 }

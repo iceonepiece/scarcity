@@ -11,7 +11,7 @@ class Gizmo
 {
 public:
 	Gizmo(Editor2D& editor);
-	void Update(float dt);
+	virtual void Update(float dt);
 	void Render(Renderer& renderer, const glm::vec2& position);
 	virtual bool OnPicking2D(const glm::vec2& cursorPosition);
 	

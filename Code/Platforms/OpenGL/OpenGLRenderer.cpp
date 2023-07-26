@@ -221,6 +221,28 @@ void OpenGLRenderer::DrawQuad2D(const glm::vec2& position, const glm::vec2& scal
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+void OpenGLRenderer::DrawQuad2D(const Quad2D& quad)
+{
+    m_basicShader.Use();
+
+    glm::mat4 model = glm::mat4(1.0f);
+
+    model = glm::translate(model, glm::vec3(quad.position.x, quad.position.y, 0.0f));
+    model = glm::rotate(model, quad.angle, glm::vec3(0, 0, 1));
+    model = glm::scale(model, glm::vec3(quad.scale.x, quad.scale.y, 0.0f));
+
+    glm::mat4 view = m_camera->GetViewMatrix();
+    glm::mat4 projection = m_camera->GetProjectionMatrix(CameraType::Orthographic);
+
+    m_basicShader.SetMatrix4("model", model);
+    m_basicShader.SetMatrix4("view", view);
+    m_basicShader.SetMatrix4("projection", projection);
+    m_basicShader.SetVector4f("color", quad.color);
+
+    glBindVertexArray(m_quadVAO);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+
 void OpenGLRenderer::DrawRect(b2Body* body, const Camera& camera)
 {
     b2Vec2 position = body->GetPosition();
