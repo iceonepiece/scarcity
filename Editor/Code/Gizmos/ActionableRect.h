@@ -2,6 +2,7 @@
 
 #include "Actionable.h"
 #include "Shapes/Shape2D.h"
+#include "../Editor2D.h"
 
 class ActionableRect : public Actionable
 {
@@ -65,21 +66,7 @@ public:
 
 	virtual bool IsCursorOn(float x, float y, const glm::vec2& entityPosition) override
 	{
-		glm::vec2 offset {0.0f};
-
-		if (m_transform != nullptr)
-			offset = m_transform->position;
-
-
-		glm::vec2 realPosition = m_position + offset;
-
-		if (x < realPosition.x - m_scale.x / 2 ||
-			x > realPosition.x + m_scale.x / 2 ||
-			y < realPosition.y - m_scale.y / 2 ||
-			y > realPosition.y + m_scale.y / 2)
-			return false;
-
-		return true;
+		return Shape2D::IsPointOnRectangle(glm::vec2 {x, y}, m_quad.position, m_quad.scale, m_quad.angle);
 	}
 
 protected:

@@ -175,8 +175,6 @@ void Editor2D::OnMouseMoved(float x, float y)
     m_cursorPosition.x = x;
     m_cursorPosition.y = y;
 
-    std::cout << "mouse: " << x << ", " << y << std::endl;
-
     CalculateWorldCursorPosition();
 
     if (m_mouseActive)
@@ -233,6 +231,7 @@ bool Editor2D::CheckPicking2D()
     auto transforms = m_scene->GetEntityManager().m_registry.view<TransformComponent>();
     for (auto [entity, transform] : transforms.each())
     {
+        /*
         if (m_worldCursorPosition.x < transform.position.x - transform.scale.x / 2 ||
             m_worldCursorPosition.x > transform.position.x + transform.scale.x / 2 ||
             m_worldCursorPosition.y < transform.position.y - transform.scale.y / 2 ||
@@ -240,6 +239,10 @@ bool Editor2D::CheckPicking2D()
         {
             continue;
         }
+        */
+
+        if (!Shape2D::IsPointOnRectangle(m_worldCursorPosition, transform.position, transform.scale, transform.rotation.z))
+            continue;
 
         std::cout << "PICKED" << std::endl;
         m_pickedEntity = entity;

@@ -40,8 +40,6 @@ public:
 		glm::vec2 realPosition = m_position + offset;
 
 		float distance = glm::distance(glm::vec2 {x, y}, realPosition);
-		std::cout << "Distance: " << distance << std::endl;
-
 		return distance >= m_radius * 0.92 && distance <= m_radius;
 	}
 
