@@ -1,5 +1,9 @@
+#include <entt/entt.hpp>
 #include "ImGuiEntityProperties.h"
+#include "Components/Components.h"
 #include "../Editor2D.h"
+#include "imgui/imgui_stdlib.h"
+#include <string.h>
 
 ImGuiEntityProperties::ImGuiEntityProperties(Editor2D& editor)
     : m_editor(editor)
@@ -29,25 +33,35 @@ void RenderInputVec3(const std::string& name, glm::vec3& values, int width = 100
 
 void ImGuiEntityProperties::Render()
 {
-    ImGui::Begin("Properties");
-
+    ImGui::Begin("Properties", NULL, ImGuiWindowFlags_NoCollapse);
 
     if (m_editor.GetScene() != nullptr && m_editor.IsEntityPicked())
     {
         Scene* scene = m_editor.GetScene();
-        entt::entity enttiy = m_editor.GetPickedEntity();
+        entt::entity entity = m_editor.GetPickedEntity();
 
-        TransformComponent* transform = scene->GetEntityManager().m_registry.try_get<TransformComponent>(enttiy);
+        ImGui::PushID((int)entity);
+
+        BaseComponent* base = scene->GetEntityManager().m_registry.try_get<BaseComponent>(entity);
+        if (base != nullptr)
+        {
+            ImGui::Text("Name: "); ImGui::SameLine();
+            ImGui::InputText("##name", &base->name);
+        }
+
+        TransformComponent* transform = scene->GetEntityManager().m_registry.try_get<TransformComponent>(entity);
 
         if (transform != nullptr)
         {
-            if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_None))
+            if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
             {
                 RenderInputVec3("Position", transform->position);
                 RenderInputVec3("Rotation", transform->rotation);
                 RenderInputVec3("Scale", transform->scale);
             }
         }
+
+        ImGui::PopID();
     }
 
     ImGui::End();

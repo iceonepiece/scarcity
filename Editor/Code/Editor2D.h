@@ -62,6 +62,8 @@ public:
 	inline bool IsEntityPicked() { return m_entityPicked; }
 	Scene* GetScene() { return m_scene.get(); }
 
+	Camera& GetCamera() { return *m_camera; }
+
 protected:
 	virtual void ProcessInput() override;
 	virtual void Update() override;

@@ -325,6 +325,7 @@
     <ClCompile Include="External\Include\imgui\imgui_draw.cpp" />
     <ClCompile Include="External\Include\imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="External\Include\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="External\Include\imgui\imgui_stdlib.cpp" />
     <ClCompile Include="External\Include\imgui\imgui_tables.cpp" />
     <ClCompile Include="External\Include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLResourceManager.cpp" />
@@ -827,6 +828,7 @@
     <ClInclude Include="External\Include\imgui\imgui_impl_opengl3.h" />
     <ClInclude Include="External\Include\imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="External\Include\imgui\imgui_internal.h" />
+    <ClInclude Include="External\Include\imgui\imgui_stdlib.h" />
     <ClInclude Include="External\Include\imgui\imstb_rectpack.h" />
     <ClInclude Include="External\Include\imgui\imstb_textedit.h" />
     <ClInclude Include="External\Include\imgui\imstb_truetype.h" />

@@ -101,12 +101,40 @@ void Editor2D::ProcessInput()
 
 void Editor2D::OnKeyPressed(KeyPressedEvent& event)
 {
+    ImGuiIO& io = ImGui::GetIO();
+    if (io.WantTextInput)
+        return;
+
     switch (event.GetKeyCode())
     {
-        case Key::Q: m_currentMode = EditorMode::ViewMode;      break;
-        case Key::W: m_currentMode = EditorMode::TranslateMode; break;
-        case Key::E: m_currentMode = EditorMode::RotateMode;    break;
-        case Key::R: m_currentMode = EditorMode::ScaleMode;     break;
+        case Key::Q:
+        {
+            m_window->SetCursorShape(CursorShape::Hand);
+            m_currentMode = EditorMode::ViewMode;
+        }
+        break;
+
+        case Key::W:
+        {
+            m_window->SetCursorShape(CursorShape::Arrow);
+            m_currentMode = EditorMode::TranslateMode;
+        }
+        break;
+
+        case Key::E:
+        {
+            m_window->SetCursorShape(CursorShape::Arrow);
+            m_currentMode = EditorMode::RotateMode;
+        }
+        break;
+
+        case Key::R:
+        {
+            m_window->SetCursorShape(CursorShape::Arrow);
+            m_currentMode = EditorMode::ScaleMode;
+        }
+        break;
+
         case Key::S: SaveScene(); break;
         case Key::O: OpenScene(); break;
     }

@@ -27,6 +27,12 @@ void SceneSerializer::Serialize(const std::string& filepath)
 			json entityJson = {};
 			entityJson["id"] = entity;
 
+			if (registry.all_of<BaseComponent>(entity))
+			{
+				auto& base = registry.get<BaseComponent>(entity);
+				entityJson["Base"]["name"] = base.name;
+			}
+
 			if (registry.all_of<TransformComponent>(entity))
 			{
 				auto& transform = registry.get<TransformComponent>(entity);
