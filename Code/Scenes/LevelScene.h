@@ -61,11 +61,13 @@ public:
 				system->Render();
 		}
 
+		/*
 		auto view2 = m_manager.m_registry.view<CircleCollider2DComponent>();
 		for (auto [entity, collider] : view2.each())
 		{
 			//Renderer::DrawCircle(collider.body, glm::vec4(1, 1, 1, 1), *m_camera);
 		}
+		*/
 
 		renderer.DrawLine(glm::vec3{ -5, -5, 0 }, glm::vec3{5, 5, 0 }, glm::vec4(1.0f, 0.5f, 0.5f, 1.0f));
 

@@ -334,6 +334,8 @@
     <ClInclude Include="Code\APIs\InputAPI.h" />
     <ClInclude Include="Code\Audio\OpenALAudio.h" />
     <ClInclude Include="Code\Components\BaseComponent.h" />
+    <ClInclude Include="Code\Components\BoxCollider2DComponent.h" />
+    <ClInclude Include="Code\Components\Rigidbody2DComponent.h" />
     <ClInclude Include="Code\Components\SpriteRendererComponent.h" />
     <ClInclude Include="Code\Core\Camera.h" />
     <ClInclude Include="Code\Animations\Animation2D.h" />

@@ -2144,6 +2144,12 @@
     <ClInclude Include="Code\Shapes\Shape2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Code\Components\Rigidbody2DComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Components\BoxCollider2DComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />

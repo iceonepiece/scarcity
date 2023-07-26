@@ -4,7 +4,4 @@
 
 struct CircleCollider2DComponent
 {
-	b2Body* body;
-
-	CircleCollider2DComponent(b2Body* body) : body(body) {}
 };
