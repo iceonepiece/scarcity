@@ -10,6 +10,7 @@
 #include "Core/Entity.h"
 #include "Components/Components.h"
 #include "SampleScene.h"
+#include "Core/Timer.h"
 
 glm::vec2 ConvertToNDC(const glm::vec2& screenPos, const glm::vec2& screenSize)
 {
@@ -60,12 +61,12 @@ void Editor2D::Initialize(std::string title, int width, int height)
     if (OpenGLWindow* openGLWindow = dynamic_cast<OpenGLWindow*>(m_window.get()))
         m_imgui = std::make_unique<ImGuiMain>(*this, openGLWindow->GetGLFWwindow(), "#version 330");
 
-
 	Input::Init();
     
     m_camera->SetCameraType(CameraType::Orthographic);
     
     m_scene = std::make_unique<SampleScene>();
+    m_scene->SetApplication(this);
     m_scene->Initialize();
 }
 
@@ -78,6 +79,8 @@ void Editor2D::Run()
 {
     while (m_running)
     {
+        Timer::Tick();
+
         ProcessInput();
         Update();
         Render();
@@ -222,7 +225,12 @@ void Editor2D::CalculateWorldCursorPosition()
 
 void Editor2D::Update()
 {
-    m_gizmos[m_currentMode]->Update(10.0f);
+    float dt = Timer::GetDeltaTime();
+
+    if (m_scenePlaying)
+        m_scene->Update(dt);
+    else
+        m_gizmos[m_currentMode]->Update(dt);
 
 }
 
@@ -271,30 +279,53 @@ TransformComponent* Editor2D::GetEntityTransform()
 void Editor2D::Render()
 {
     m_window->PreRender();
-    
+
     //m_window->GetWindowData();
-    glm::vec2 screenSize = m_camera->GetScreenSize();
-    m_renderer->SetCamera(m_camera.get());
-
-    auto transforms = m_scene->GetEntityManager().m_registry.view<TransformComponent, SpriteRendererComponent>();
-
-    for (auto [entity, transform, sprite] : transforms.each())
+    if (!m_scenePlaying)
     {
-        glm::vec2 position = transform.position;
-        glm::vec2 scale = transform.scale;
-        float angle = transform.rotation.z;
+        glm::vec2 screenSize = m_camera->GetScreenSize();
+        m_renderer->SetCamera(m_camera.get());
 
-        m_renderer->DrawQuad2D(position, scale, angle, sprite.color);
+        auto transforms = m_scene->GetEntityManager().m_registry.view<TransformComponent, SpriteRendererComponent>();
+
+        for (auto [entity, transform, sprite] : transforms.each())
+        {
+            glm::vec2 position = transform.position;
+            glm::vec2 scale = transform.scale;
+            float angle = transform.rotation.z;
+
+            m_renderer->DrawQuad2D(position, scale, angle, sprite.color);
+        }
+
+
+        if (m_currentMode != EditorMode::ViewMode && m_entityPicked)
+        {
+            auto& transform = m_scene->GetEntityManager().m_registry.get<TransformComponent>(m_pickedEntity);
+            m_gizmos.at(m_currentMode)->Render(*m_renderer, transform.position);
+        }
+
+        m_imgui->Render();
     }
-    
-
-    if (m_currentMode != EditorMode::ViewMode && m_entityPicked)
+    else
     {
-        auto& transform = m_scene->GetEntityManager().m_registry.get<TransformComponent>(m_pickedEntity);
-        m_gizmos.at(m_currentMode)->Render(*m_renderer, transform.position);
+        m_scene->Render();
+        m_imgui->Render();
     }
 
-    m_imgui->Render();
 
     m_window->Render();
+}
+
+void Editor2D::PlayScene()
+{
+    std::cout << "Play Scene\n";
+    m_scene->Start();
+    m_scenePlaying = true;
+}
+
+void Editor2D::StopScene()
+{
+    std::cout << "Stop Scene\n";
+    m_scene->Stop();
+    m_scenePlaying = false;
 }

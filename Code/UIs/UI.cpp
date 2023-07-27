@@ -1,5 +1,5 @@
 #include "UI.h"
-#include "../Core/Scene.h"
+#include "Scene/Scene.h"
 #include "UIComponent.h"
 
 UI::UI(Scene* scene)

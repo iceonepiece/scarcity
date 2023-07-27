@@ -3,6 +3,7 @@
 #include "Core/GameState.h"
 #include "Systems/ScriptableSystem.h"
 #include "Core/Camera2D.h"
+#include "Components/Components.h"
 
 Scene::Scene()
 	: m_camera(
@@ -37,13 +38,85 @@ void Scene::Initialize()
 {
 }
 
+void Scene::Start()
+{
+    StartPhysics();
+}
+
+void Scene::Stop()
+{
+    StopPhysics();
+}
+
+void Scene::StartPhysics()
+{
+    //m_physics = std::make_unique<Physics>();
+    m_physics = new b2World({ 0.0f, -9.8f });
+
+	auto view = m_manager.m_registry.view<TransformComponent, Rigidbody2DComponent>();
+	for (auto [entity, transform, rb2d] : view.each())
+	{
+		b2BodyDef bodyDef;
+		bodyDef.type = Rigidbody2DTypeToBox2DBody(rb2d.type);
+		bodyDef.position.Set(transform.position.x, transform.position.y);
+		bodyDef.angle = transform.rotation.z;
+
+		b2Body* body = m_physics->CreateBody(&bodyDef);
+		body->SetFixedRotation(rb2d.fixedRotation);
+		rb2d.body = body;
+
+		if (m_manager.m_registry.all_of<BoxCollider2DComponent>(entity))
+		{
+			auto& bc2d = m_manager.m_registry.get<BoxCollider2DComponent>(entity);
+
+			b2PolygonShape boxShape;
+			//boxShape.SetAsBox(bc2d.size.x * transform.scale.x, bc2d.size.y * transform.scale.y, b2Vec2(bc2d.offset.x, bc2d.offset.y), 0.0f);
+            boxShape.SetAsBox(transform.scale.x / 2.0f, transform.scale.y / 2.0f, b2Vec2(bc2d.offset.x, bc2d.offset.y), 0.0f);
+
+			b2FixtureDef fixtureDef;
+			fixtureDef.shape = &boxShape;
+            fixtureDef.density = 1.0f;
+            fixtureDef.friction = 0.0f;
+
+			body->CreateFixture(&fixtureDef);
+		}
+	}
+}
+
+void Scene::StopPhysics()
+{
+    //m_physics.reset();
+
+    delete m_physics;
+    m_physics = nullptr;
+}
+
 void Scene::Update(float deltaTime)
 {
     for (auto system : m_systems)
         system->Update(deltaTime);
 
-    if (physicsActive)
-        m_physics.Update(deltaTime);
+    if (m_physics != nullptr && physicsActive)
+    {
+        //m_physics->Update(deltaTime);
+
+        const int32_t velocityIterations = 6;
+        const int32_t positionIterations = 2;
+        m_physics->Step(deltaTime, velocityIterations, positionIterations);
+
+        auto view = m_manager.m_registry.view<TransformComponent, Rigidbody2DComponent>();
+        for (auto [entity, transform, rb2d] : view.each())
+        {
+            b2Body* body = (b2Body*)rb2d.body;
+
+            const auto& position = body->GetPosition();
+            transform.position.x = position.x;
+            transform.position.y = position.y;
+            transform.rotation.z = body->GetAngle();
+
+            std::cout << transform.position.x << " : " << transform.position.y << std::endl;
+        }
+    }
 
     m_camera->Update();
 }
@@ -70,6 +143,20 @@ void Scene::Render()
 
     for (auto system : m_systems)
         system->Render();
+
+    Renderer& renderer = m_app->GetRenderer();
+
+    auto view = m_manager.m_registry.view<TransformComponent, SpriteRendererComponent>();
+
+    for (auto [entity, transform, sprite] : view.each())
+    {
+        glm::vec2 position = transform.position;
+        glm::vec2 scale = transform.scale;
+        float angle = transform.rotation.z;
+
+        renderer.DrawQuad2D(position, scale, angle, sprite.color);
+    }
+
 }
 
 void Scene::RenderUI()

@@ -36,7 +36,17 @@ void ImGuiMain::Render()
     m_entityProperties.Render();
     m_hierarchy.Render();
 
-    //ImGui::ShowDemoWindow();
+    ImGui::BeginMainMenuBar();
+    
+    if (m_editor.IsScenePlaying() && ImGui::Button("Stop"))
+        m_editor.StopScene();
+
+    else if (!m_editor.IsScenePlaying() && ImGui::Button("Play"))
+        m_editor.PlayScene();
+
+    ImGui::EndMainMenuBar();
+
+    ImGui::ShowDemoWindow();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

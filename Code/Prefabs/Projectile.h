@@ -11,8 +11,8 @@ class Projectile
 public:
 	Projectile(Entity entity, Scene *scene, b2Vec2 position, float width, float height, float speed)
 	{
-		b2Body* projectileBody = scene->m_physics.CreateBoxBody(entity, position.x, position.y, width, height, true, true, 0);
-		projectileBody->SetLinearVelocity(b2Vec2(speed, 0));
-		entity.AddComponent<Collider2DComponent>(projectileBody);
+		//b2Body* projectileBody = scene->m_physics->CreateBoxBody(entity, position.x, position.y, width, height, true, true, 0);
+		//projectileBody->SetLinearVelocity(b2Vec2(speed, 0));
+		//entity.AddComponent<Collider2DComponent>(projectileBody);
 	}
 };

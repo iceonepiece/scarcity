@@ -20,6 +20,7 @@ public:
 
 	virtual void Initialize() override
 	{
+		m_physics = std::make_unique<Physics>();
 		
 		LevelManager::LoadLevel(this, "Levels/Level1.lua");
 		
@@ -36,7 +37,7 @@ public:
 		*/
 			
 		auto player = m_manager.CreateEntity();
-		b2Body* playerBody = m_physics.CreateBodyWithFixture({ 0, 5 }, { 0.85, 0.65 }, new PlayerFixtureData(player), true, false, PhysicsLayer::Layer_Player, { 0, -0.35 });
+		b2Body* playerBody = m_physics->CreateBodyWithFixture({ 0, 5 }, { 0.85, 0.65 }, new PlayerFixtureData(player), true, false, PhysicsLayer::Layer_Player, { 0, -0.35 });
 		player.AddComponent<TransformComponent>();
 		player.AddComponent<Collider2DComponent>(playerBody);
 		player.AddComponent<PlayerComponent>();

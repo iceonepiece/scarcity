@@ -64,6 +64,11 @@ public:
 
 	Camera& GetCamera() { return *m_camera; }
 
+	void PlayScene();
+	void StopScene();
+
+	inline bool IsScenePlaying() { return m_scenePlaying; }
+
 protected:
 	virtual void ProcessInput() override;
 	virtual void Update() override;
@@ -78,6 +83,7 @@ protected:
 protected:
 	std::unique_ptr<Scene> m_scene;
 
+	bool m_scenePlaying = false;
 	bool m_mouseActive = false;
 	MouseData m_mouseData;
 

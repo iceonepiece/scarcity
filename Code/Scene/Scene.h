@@ -9,7 +9,6 @@
 #include "UIs/UI.h"
 #include "Events/Event.h"
 
-
 class System;
 class GameState;
 
@@ -24,9 +23,16 @@ public:
 	virtual void Update(float deltaTime);
 	virtual void Render();
 
+	virtual void Start();
+	virtual void Stop();
+
+	void StartPhysics();
+	void StopPhysics();
+
 	virtual void Enter();
 	virtual void Exit();
 
+	void SetApplication(Application* app) { m_app = app; }
 	Application* GetApplication() { return m_app; }
 
 	void RenderUI();
@@ -54,7 +60,9 @@ public:
 	
 	std::unique_ptr<Camera> m_camera;
 	
-	Physics m_physics;
+	//std::unique_ptr<Physics> m_physics = nullptr;
+	b2World* m_physics = nullptr;
+
 	EntityManager m_manager;
 	UI m_ui;
 

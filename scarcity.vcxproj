@@ -426,6 +426,7 @@
     <ClInclude Include="Code\Systems\Collider2DSystem.h" />
     <ClInclude Include="code\systems\PlayerSystem.h" />
     <ClInclude Include="Code\Systems\AnimationSystem.h" />
+    <ClInclude Include="Code\Systems\Rigidbody2DSystem.h" />
     <ClInclude Include="Code\Systems\ScriptableSystem.h" />
     <ClInclude Include="Code\UIs\UIContainer.h" />
     <ClInclude Include="Code\UIs\UI.h" />

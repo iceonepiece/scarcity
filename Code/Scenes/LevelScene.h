@@ -35,8 +35,8 @@ public:
 		if (particleActive)
 			ParticleSystem::Update(deltaTime);
 
-		if (physicsActive)
-			m_physics.Update(deltaTime);
+		//if (physicsActive)
+			//m_physics->Update(deltaTime);
 
 		m_ui.Update(deltaTime);
 
