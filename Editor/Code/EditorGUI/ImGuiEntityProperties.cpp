@@ -38,6 +38,43 @@ void RenderInputVec3(const std::string& name, glm::vec3& values, int width = 100
     ImGui::PopItemWidth();
 }
 
+template<typename T, typename UIFunction>
+static void RenderComponent(const std::string& name, entt::registry& registry, entt::entity entity, UIFunction uiFunction)
+{
+    const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+
+    if (registry.all_of<T>(entity))
+    {
+        auto& component = registry.get<T>(entity);
+
+        bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str());
+
+        ImGui::SameLine();
+        if (ImGui::Button("+"))
+        {
+            ImGui::OpenPopup("ComponentSettings");
+        }
+
+        bool removeComponent = false;
+        if (ImGui::BeginPopup("ComponentSettings"))
+        {
+            if (ImGui::MenuItem("Remove component"))
+                removeComponent = true;
+
+            ImGui::EndPopup();
+        }
+
+        if (open)
+        {
+            uiFunction(component);
+            ImGui::TreePop();
+        }
+
+        if (removeComponent)
+            registry.remove<T>(entity);
+    }
+}
+
 void ImGuiEntityProperties::Render()
 {
     ImGui::Begin("Properties", NULL, ImGuiWindowFlags_NoCollapse);
@@ -69,46 +106,36 @@ void ImGuiEntityProperties::Render()
             }
         }
 
-        Rigidbody2DComponent* rb2d = scene->GetEntityManager().m_registry.try_get<Rigidbody2DComponent>(entity);
-
-        if (rb2d != nullptr)
+        RenderComponent<Rigidbody2DComponent>("Rigidbody 2D", registry, entity, [](auto& component)
         {
-            if (ImGui::CollapsingHeader("Rigidbody 2D", ImGuiTreeNodeFlags_DefaultOpen))
+            const char* bodyTypeStrings[] = { "Static", "Dynamic", "Kinematic" };
+            const char* currentBodyTypeString = bodyTypeStrings[(int)component.type];
+            if (ImGui::BeginCombo("Body Type", currentBodyTypeString))
             {
-                const char* bodyTypeStrings[] = { "Static", "Dynamic", "Kinematic" };
-                const char* currentBodyTypeString = bodyTypeStrings[(int)rb2d->type];
-                if (ImGui::BeginCombo("Body Type", currentBodyTypeString))
+                for (int i = 0; i < 2; i++)
                 {
-                    for (int i = 0; i < 2; i++)
+                    bool isSelected = currentBodyTypeString == bodyTypeStrings[i];
+                    if (ImGui::Selectable(bodyTypeStrings[i], isSelected))
                     {
-                        bool isSelected = currentBodyTypeString == bodyTypeStrings[i];
-                        if (ImGui::Selectable(bodyTypeStrings[i], isSelected))
-                        {
-                            currentBodyTypeString = bodyTypeStrings[i];
-                            rb2d->type = (BodyType)i;
-                        }
-
-                        if (isSelected)
-                            ImGui::SetItemDefaultFocus();
+                        currentBodyTypeString = bodyTypeStrings[i];
+                        component.type = (BodyType)i;
                     }
 
-                    ImGui::EndCombo();
+                    if (isSelected)
+                        ImGui::SetItemDefaultFocus();
                 }
 
-                ImGui::Checkbox("Fixed Rotation", &rb2d->fixedRotation);
+                ImGui::EndCombo();
             }
-        }
 
-        BoxCollider2DComponent* boxCollider2D = scene->GetEntityManager().m_registry.try_get<BoxCollider2DComponent>(entity);
+            ImGui::Checkbox("Fixed Rotation", &component.fixedRotation);
+        });
 
-        if (boxCollider2D != nullptr)
+        RenderComponent<BoxCollider2DComponent>("Box Collider 2D", registry, entity, [](auto& component)
         {
-            if (ImGui::CollapsingHeader("Box Collider 2D", ImGuiTreeNodeFlags_DefaultOpen))
-            {
-                ImGui::DragFloat2("Offset", glm::value_ptr(boxCollider2D->offset));
-                ImGui::DragFloat2("Size", glm::value_ptr(boxCollider2D->size));
-            }
-        }
+            ImGui::DragFloat2("Offset", glm::value_ptr(component.offset));
+            ImGui::DragFloat2("Size", glm::value_ptr(component.size));
+        });
 
         if (ImGui::Button("Add Component"))
             ImGui::OpenPopup("add_component");
