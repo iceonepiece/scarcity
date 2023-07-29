@@ -16,16 +16,16 @@ public:
 
         Renderer& renderer = m_app->GetRenderer();
         renderer.SetCamera(m_camera.get());
+ 
+        Entity camera = m_manager.CreateEntity();
+        camera.AddComponent<BaseComponent>("Main Camera");
+        camera.AddComponent<TransformComponent>();
+        camera.AddComponent<CameraComponent>();
 
-        /*
         Entity rect = m_manager.CreateEntity();
-        rect.AddComponent<TransformComponent>(glm::vec3 {0.0f, 0.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {200.0f, 200.0f, 1.0f});
+        rect.AddComponent<BaseComponent>("Rect");
+        rect.AddComponent<TransformComponent>(glm::vec3 {0.0f, 0.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {100.0f, 100.0f, 1.0f});
         rect.AddComponent<SpriteRendererComponent>(Shape_Square);
-
-        Entity rect2 = m_manager.CreateEntity();
-        rect2.AddComponent<TransformComponent>(glm::vec3 {-300.0f, 0.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {50.0f, 100.0f, 1.0f});
-        rect2.AddComponent<SpriteRendererComponent>(Shape_Square, glm::vec4 {0.5f});
-	    */
     }
 
 };

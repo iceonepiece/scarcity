@@ -11,7 +11,8 @@ ImGuiHierarchy::ImGuiHierarchy(Editor2D& editor)
 void ImGuiHierarchy::Render()
 {
     ImGui::Begin("Hierarchy");
-    auto& registry = m_editor.GetScene()->GetEntityManager().m_registry;
+    EntityManager& manager = m_editor.GetScene()->GetEntityManager();
+    auto& registry = manager.m_registry;
 
     registry.each([&](entt::entity entity) {
         BaseComponent& base = registry.get<BaseComponent>(entity);
@@ -22,6 +23,18 @@ void ImGuiHierarchy::Render()
             m_editor.SetPickedEntity(entity);
         }
     });
+
+    if (ImGui::BeginPopupContextWindow(0, 1))
+    {
+        if (ImGui::MenuItem("Create Empty Entity"))
+        {
+            auto entity = manager.CreateEntity();
+            entity.AddComponent<BaseComponent>("Untitled");
+            entity.AddComponent<TransformComponent>();
+        }
+
+        ImGui::EndPopup();
+    }
   
     ImGui::End();
 }

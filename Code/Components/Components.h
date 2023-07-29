@@ -3,6 +3,7 @@
 #include "AIComponent.h"
 #include "BaseComponent.h"
 #include "BoxCollider2DComponent.h"
+#include "CameraComponent.h"
 #include "CircleCollider2DComponent.h"
 #include "Collider2DComponent.h"
 #include "PlayerComponent.h"

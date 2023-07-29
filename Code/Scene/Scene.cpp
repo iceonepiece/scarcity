@@ -2,6 +2,7 @@
 #include "Core/System.h"
 #include "Core/GameState.h"
 #include "Systems/ScriptableSystem.h"
+#include "Systems/RenderSystem.h"
 #include "Core/Camera2D.h"
 #include "Components/Components.h"
 
@@ -12,6 +13,7 @@ Scene::Scene()
     , m_ui(this)
 {
     m_systems.emplace_back(new ScriptableSystem(this));
+    m_systems.emplace_back(new RenderSystem(this));
 }
 
 Scene::~Scene()
@@ -138,13 +140,13 @@ void Scene::Exit()
 
 void Scene::Render()
 {
-    WindowData windowData = m_app->GetWindow().GetWindowData();
-    m_camera->SetScreenSize({ windowData.width, windowData.height });
+    //WindowData windowData = m_app->GetWindow().GetWindowData();
+    //m_camera->SetScreenSize({ windowData.width, windowData.height });
+    Renderer& renderer = m_app->GetRenderer();
+    renderer.SetCamera(m_camera.get());
 
     for (auto system : m_systems)
         system->Render();
-
-    Renderer& renderer = m_app->GetRenderer();
 
     auto view = m_manager.m_registry.view<TransformComponent, SpriteRendererComponent>();
 

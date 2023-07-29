@@ -7,9 +7,10 @@
 #include <string.h>
 
 std::string EditorComponentNames[] = {
-    "Sprite Renderer",
     "Box Collider 2D",
-    "Rigidbody 2D"
+    "Camera",
+    "Rigidbody 2D",
+    "Sprite Renderer"
 };
 
 ImGuiEntityProperties::ImGuiEntityProperties(Editor2D& editor)
@@ -105,6 +106,12 @@ void ImGuiEntityProperties::Render()
                 RenderInputVec3("Scale", transform->scale);
             }
         }
+
+        RenderComponent<CameraComponent>("Camera", registry, entity, [](auto& component)
+        {
+            ImGui::InputFloat("Near", &component.near);
+            ImGui::InputFloat("Far", &component.far);
+        });
 
         RenderComponent<Rigidbody2DComponent>("Rigidbody 2D", registry, entity, [](auto& component)
         {

@@ -293,6 +293,7 @@
     <ClCompile Include="Code\GUIs\GUIComponent.cpp" />
     <ClCompile Include="Code\Core\LevelManager.cpp" />
     <ClCompile Include="Code\Lua\LuaEngine.cpp" />
+    <ClCompile Include="Code\PCH.cpp" />
     <ClCompile Include="Code\Platforms\GLFW\GLFWInput.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLFontSystem.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLWindow.cpp" />
@@ -335,6 +336,7 @@
     <ClInclude Include="Code\Audio\OpenALAudio.h" />
     <ClInclude Include="Code\Components\BaseComponent.h" />
     <ClInclude Include="Code\Components\BoxCollider2DComponent.h" />
+    <ClInclude Include="Code\Components\CameraComponent.h" />
     <ClInclude Include="Code\Components\Rigidbody2DComponent.h" />
     <ClInclude Include="Code\Components\SpriteRendererComponent.h" />
     <ClInclude Include="Code\Core\Camera.h" />
@@ -358,6 +360,7 @@
     <ClInclude Include="Code\Graphics\Shader.h" />
     <ClInclude Include="Code\Graphics\Texture.h" />
     <ClInclude Include="Code\Lua\LuaEngine.h" />
+    <ClInclude Include="Code\PCH.h" />
     <ClInclude Include="Code\Platforms\GLFW\GLFWInput.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLFontSystem.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLWindow.h" />
@@ -423,9 +426,11 @@
     <ClInclude Include="Code\Scenes\MenuScene.h" />
     <ClInclude Include="Code\Scene\SceneSerializer.h" />
     <ClInclude Include="Code\Shapes\Shape2D.h" />
+    <ClInclude Include="Code\Systems\CameraSystem.h" />
     <ClInclude Include="Code\Systems\Collider2DSystem.h" />
     <ClInclude Include="code\systems\PlayerSystem.h" />
     <ClInclude Include="Code\Systems\AnimationSystem.h" />
+    <ClInclude Include="Code\Systems\RenderSystem.h" />
     <ClInclude Include="Code\Systems\Rigidbody2DSystem.h" />
     <ClInclude Include="Code\Systems\ScriptableSystem.h" />
     <ClInclude Include="Code\UIs\UIContainer.h" />

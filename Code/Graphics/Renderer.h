@@ -9,6 +9,7 @@
 #include "Graphics/Texture.h"
 #include "Animations/Sprite.h"
 #include "Shapes/Shape2D.h"
+#include "Components/Components.h"
 
 class Renderer
 {
@@ -33,6 +34,10 @@ public:
 	inline float GetScreenSizePercentage() { return m_screenSize.x / m_defaultScreenSize.x; }
 
 	void SetCamera(Camera* camera);
+	void SetCamera(CameraComponent camera)
+	{
+		m_cameraComponent = camera;
+	}
 
   //static void Init();
   //static void DrawQuad(b2Body* body, Camera& camera);
@@ -46,8 +51,12 @@ public:
 
 protected:
 	Camera *m_camera;
+	CameraComponent m_cameraComponent;
 	glm::vec2 m_screenSize;
 	glm::vec2 m_defaultScreenSize;
+
+	glm::mat4 m_viewMatrix;
+	glm::mat4 m_projectionMatrix;
 
 	/*
   static unsigned int m_VBO, m_VAO;
@@ -59,5 +68,6 @@ protected:
   static glm::vec2 s_screenOffset;
   static glm::vec2 s_defaultScreenSize;
   */
+	friend class RenderSystem;
   
 };
