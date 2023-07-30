@@ -38,7 +38,7 @@ public:
 		return m_draggingCallback(*this, x, y);
 	}
 
-	virtual void UpdateTransform() {}
+	virtual void UpdateTransform(float zoom) {}
 
 	virtual void Render(Renderer& renderer) = 0;
 	virtual bool IsCursorOn(float x, float y, const glm::vec2& entityPosition) = 0;

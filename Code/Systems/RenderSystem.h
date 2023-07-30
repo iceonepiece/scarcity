@@ -25,18 +25,36 @@ public:
 
 	glm::mat4 GetProjectionMatrix(const CameraComponent& camera)
 	{
-		glm::vec2 screenSize = { 1280.0f, 720.0f };
+		WindowData window = m_scene->m_app->GetWindow().GetWindowData();
+		float ratio = window.width / (float)window.height;
 
 		if (camera.projection == ProjectionType::Perspective)
-			return glm::perspective(glm::radians(45.0f), screenSize.x / screenSize.y, camera.near, camera.far);
+			return glm::perspective(glm::radians(45.0f), ratio, camera.near, camera.far);
 
 		if (camera.projection == ProjectionType::Orthographic)
-			return glm::ortho(-(screenSize.x / 2), (screenSize.x / 2), -(screenSize.y / 2), (screenSize.y / 2));
+		{
+			float width = camera.size * ratio;
+			return glm::ortho(-width, width, -camera.size, camera.size);
+		}
 
 		return glm::mat4(1.0f);
 	}
 
 	virtual void Update(float deltaTime) override
+	{
+		/*
+		Renderer& renderer = m_scene->m_app->GetRenderer();
+
+		auto view = m_registry.view<TransformComponent, CameraComponent>();
+		for (auto [entity, transform, camera] : view.each())
+		{
+			renderer.m_viewMatrix = GetViewMatrix(camera, transform);
+			renderer.m_projectionMatrix = GetProjectionMatrix(camera);
+		}
+		*/
+	}
+
+	virtual void Render() override
 	{
 		Renderer& renderer = m_scene->m_app->GetRenderer();
 
@@ -46,10 +64,5 @@ public:
 			renderer.m_viewMatrix = GetViewMatrix(camera, transform);
 			renderer.m_projectionMatrix = GetProjectionMatrix(camera);
 		}
-	}
-
-	virtual void Render() override
-	{
-
 	}
 };

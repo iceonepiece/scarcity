@@ -60,6 +60,6 @@ public:
 	}
 
 private:
-	float m_length = 300.0f;
-	float m_thickness = 7.0f;
+	float m_length = 3.0f;
+	float m_thickness = 0.08f;
 };

@@ -143,7 +143,7 @@ void Scene::Render()
     //WindowData windowData = m_app->GetWindow().GetWindowData();
     //m_camera->SetScreenSize({ windowData.width, windowData.height });
     Renderer& renderer = m_app->GetRenderer();
-    renderer.SetCamera(m_camera.get());
+    //renderer.SetCamera(m_camera.get());
 
     for (auto system : m_systems)
         system->Render();

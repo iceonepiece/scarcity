@@ -17,6 +17,7 @@ public:
 	virtual void DrawLines(float lines[], int n, const glm::vec4& color = glm::vec4(1)) override;
 	virtual void DrawRect(b2Body* body, const Camera& camera) override;
 	virtual void DrawCircle(const glm::vec2& position, float radius) override;
+	virtual void DrawCircle2D(const Circle2D& circle) override;
 
 private:
 	OpenGLShader m_basicShader;

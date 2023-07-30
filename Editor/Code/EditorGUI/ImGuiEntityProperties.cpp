@@ -115,6 +115,7 @@ void ImGuiEntityProperties::Render()
 
         RenderComponent<CameraComponent>("Camera", registry, entity, [](auto& component)
         {
+            ImGui::InputFloat("Size", &component.size);
             ImGui::InputFloat("Near", &component.near);
             ImGui::InputFloat("Far", &component.far);
         });

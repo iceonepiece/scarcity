@@ -23,7 +23,7 @@ public:
 
 		m_actionables.push_back(std::make_unique<ActionableRect>(
 			glm::vec2 { 0.0f },
-			glm::vec2 { 25.0f, 25.0f },
+			glm::vec2 { 0.25f, 0.25f },
 			glm::vec4 { 1.0f }
 		));
 
@@ -71,6 +71,6 @@ public:
 	}
 
 protected:
-	float m_length = 150.0f;
-	float m_thickness = 7.0f;
+	float m_length = 1.5f;
+	float m_thickness = 0.08f;
 };

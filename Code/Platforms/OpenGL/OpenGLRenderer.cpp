@@ -204,11 +204,11 @@ void OpenGLRenderer::DrawQuad2D(const glm::vec2& position, const glm::vec2& scal
     m_basicShader.Use();
 
     glm::mat4 model = glm::mat4(1.0f);
-    
+
     model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
     model = glm::rotate(model, angle, glm::vec3(0, 0, 1));
     model = glm::scale(model, glm::vec3(scale.x, scale.y, 0.0f));
- 
+
     glm::mat4 view = m_camera->GetViewMatrix();
     glm::mat4 projection = m_camera->GetProjectionMatrix(CameraType::Orthographic);
 
@@ -303,6 +303,22 @@ void OpenGLRenderer::DrawCircle(const glm::vec2& position, float radius)
     glm::mat4 model = glm::mat4(1.0);
     model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
     model = glm::scale(model, glm::vec3(radius * 2, radius * 2, 0.0f));
+
+    m_circleShader.SetMatrix4("model", model);
+    m_circleShader.SetMatrix4("view", m_camera->GetViewMatrix());
+    m_circleShader.SetMatrix4("projection", m_camera->GetProjectionMatrix(CameraType::Orthographic));
+
+    glBindVertexArray(m_circleVAO);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+}
+
+void OpenGLRenderer::DrawCircle2D(const Circle2D& circle)
+{
+    m_circleShader.Use();
+
+    glm::mat4 model = glm::mat4(1.0);
+    model = glm::translate(model, glm::vec3(circle.position.x, circle.position.y, 0.0f));
+    model = glm::scale(model, glm::vec3(circle.radius * 2, circle.radius * 2, 0.0f));
 
     m_circleShader.SetMatrix4("model", model);
     m_circleShader.SetMatrix4("view", m_camera->GetViewMatrix());

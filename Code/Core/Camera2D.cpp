@@ -46,11 +46,15 @@ glm::mat4 Camera2D::GetProjectionMatrix() const
 
 glm::mat4 Camera2D::GetProjectionMatrix(CameraType type) const
 {
+    float ratio = m_screenSize.x / m_screenSize.y;
+
     if (type == CameraType::Perspective)
-        return glm::perspective(glm::radians(45.0f), m_screenSize.x / m_screenSize.y, 0.1f, 100.0f);
+        return glm::perspective(glm::radians(45.0f), ratio, 0.1f, 100.0f);
+
+    float width = m_orthographicSize * ratio;
 
     if (type == CameraType::Orthographic)
-        return glm::ortho(-(m_screenSize.x / m_zoom / 2), (m_screenSize.x / m_zoom / 2), -(m_screenSize.y / m_zoom / 2), (m_screenSize.y / m_zoom / 2));
+        return glm::ortho(-width / m_zoom, width / m_zoom, -m_orthographicSize / m_zoom, m_orthographicSize / m_zoom);
 
     return glm::mat4(1.0f);
 }

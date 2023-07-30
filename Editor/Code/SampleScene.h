@@ -19,12 +19,12 @@ public:
  
         Entity camera = m_manager.CreateEntity();
         camera.AddComponent<BaseComponent>("Main Camera");
-        camera.AddComponent<TransformComponent>(glm::vec3 { 0.0f, 0.0f, -14.0f }, glm::vec3 {0.0f}, glm::vec3 {1.0f});
+        camera.AddComponent<TransformComponent>(glm::vec3 { 0.0f, 0.0f, -1.0f }, glm::vec3 {0.0f}, glm::vec3 {1.0f});
         camera.AddComponent<CameraComponent>();
 
         Entity rect = m_manager.CreateEntity();
         rect.AddComponent<BaseComponent>("Rect");
-        rect.AddComponent<TransformComponent>(glm::vec3 {0.0f, 0.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {5.0f, 10.0f, 1.0f});
+        rect.AddComponent<TransformComponent>(glm::vec3 {0.0f, 0.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {1.0f, 1.0f, 1.0f});
         rect.AddComponent<SpriteRendererComponent>(Shape_Square);
     }
 

@@ -118,10 +118,17 @@ void OpenGLWindow::PreRender()
     int xOffset = (rawWidth - width) / 2;
     int yOffset = (rawHeight - height) / 2;
 
+    /*
     m_data.width = width;
     m_data.height = height;
     m_data.xOffset = xOffset;
     m_data.yOffset = yOffset;
+    */
+
+    m_data.width = rawWidth;
+    m_data.height = rawHeight;
+    m_data.xOffset = 0;
+    m_data.yOffset = 0;
 
     //glViewport(xOffset, yOffset, width, height);
     glViewport(0, 0, rawWidth, rawHeight);

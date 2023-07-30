@@ -9,12 +9,16 @@ Gizmo::Gizmo(Editor2D& editor)
 void Gizmo::Update(float dt)
 {
 	TransformComponent* transform = m_editor.GetEntityTransform();
+
+	float zoom = m_editor.GetCamera().GetZoom();
+
+
 	if (transform != nullptr)
 	{
 		for (auto& actionable : m_actionables)
 		{
 			actionable->SetTransformComponent(transform);
-			actionable->UpdateTransform();
+			actionable->UpdateTransform(zoom);
 		}
 	}
 }

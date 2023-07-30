@@ -24,6 +24,7 @@ public:
 	virtual void DrawLines(float lines[], int n, const glm::vec4& color = glm::vec4(1)) = 0;
 	virtual void DrawRect(b2Body* body, const Camera& camera) = 0;
 	virtual void DrawCircle(const glm::vec2& position, float radius) = 0;
+	virtual void DrawCircle2D(const Circle2D& circle) = 0;
 
 	inline void SetScreenSize(int width, int height)
 	{

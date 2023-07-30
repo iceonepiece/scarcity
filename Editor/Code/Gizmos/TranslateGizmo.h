@@ -10,8 +10,8 @@ public:
 		: Gizmo(editor)
 	{
 		m_actionables.push_back(std::make_unique<ActionableRect>(
-			glm::vec2 { 13.0f },
-			glm::vec2 { 30.0f },
+			glm::vec2 { 0.13f },
+			glm::vec2 { 0.3f },
 			glm::vec4 { 0.2, 0.2, 0.7, 0.5 }
 		));
 
@@ -64,8 +64,8 @@ public:
 	}
 
 protected:
-	float m_length = 150.0f;
-	float m_thickness = 7.0f;
+	float m_length = 1.5f;
+	float m_thickness = 0.08f;
 
 
 };

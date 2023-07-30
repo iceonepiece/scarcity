@@ -269,7 +269,7 @@ void Editor2D::OnMouseScroll(float x, float y)
 
     if (m_camera->GetCameraType() == CameraType::Orthographic)
     {
-        m_camera->SetZoom(m_camera->GetZoom() + (y * 0.05f));
+        m_camera->SetZoom(m_camera->GetZoom() + (y * 0.04f));
     }
     else if (m_camera->GetCameraType() == CameraType::Perspective)
     {
@@ -322,7 +322,30 @@ void Editor2D::Render()
     }
     else
     {
-        m_scene->Render();
+        Renderer& renderer = m_scene->m_app->GetRenderer();
+
+        auto view = m_scene->GetEntityManager().m_registry.view<TransformComponent, CameraComponent>();
+        for (auto [entity, transform, camera] : view.each())
+        {   
+            WindowData window = m_scene->m_app->GetWindow().GetWindowData();
+            float ratio = window.width / (float)window.height;
+            float width = camera.size * ratio;
+
+            m_renderer->SetViewMatrix(glm::inverse(glm::translate(glm::mat4(1.0f), transform.position)));
+            m_renderer->SetProjectionMatrix(glm::ortho(-width, width, -camera.size, camera.size));
+        }
+
+        auto transforms = m_scene->GetEntityManager().m_registry.view<TransformComponent, SpriteRendererComponent>();
+
+        for (auto [entity, transform, sprite] : transforms.each())
+        {
+            glm::vec2 position = transform.position;
+            glm::vec2 scale = transform.scale;
+            float angle = transform.rotation.z;
+
+            m_renderer->DrawQuad2D(position, scale, angle, sprite.color);
+        }
+        //m_scene->Render();
         m_imgui->Render();
     }
 

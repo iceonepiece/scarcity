@@ -27,23 +27,25 @@ public:
 		return false;
 	}
 	
-	virtual void UpdateTransform() override
+	virtual void UpdateTransform(float zoom) override
 	{
 		if (m_transform == nullptr)
 			return;
 
+		m_quad.scale = m_scale / zoom;
+
 		if (m_dependingFlags & DependOnPosition)
 		{
 			m_quad.position = m_transform->position;
-			m_quad.position += m_position;
+			m_quad.position += m_position / zoom;
 		}
 
 		if (m_dependingFlags & DependOnRotation)
 		{
 			float angle = m_transform->rotation.z;
 
-			m_quad.position -= m_position;
-			glm::vec2 rotated = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0, 0, 1)) * glm::vec4(m_position.x, m_position.y, 0.0f, 1.0f);
+			m_quad.position -= m_position / zoom;
+			glm::vec2 rotated = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0, 0, 1)) * glm::vec4(m_position.x / zoom, m_position.y / zoom, 0.0f, 1.0f);
 			m_quad.position += rotated;
 			m_quad.angle = angle;
 		}

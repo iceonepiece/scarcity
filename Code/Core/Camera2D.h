@@ -19,6 +19,7 @@ public:
 	virtual void SetBody(b2Body* body) override;
 
 private:
+	float m_orthographicSize = 4.0f;
 	b2Body* m_body;
 	glm::vec2 m_boxSize;
 };

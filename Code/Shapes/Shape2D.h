@@ -35,4 +35,5 @@ struct Quad2D : public Shape2D
 
 struct Circle2D : public Shape2D
 {
+    float radius = 0.5f;
 };
