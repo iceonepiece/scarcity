@@ -39,6 +39,16 @@ public:
 		m_cameraComponent = camera;
 	}
 
+	inline void SetProjectionMatrix(const glm::mat4& projection)
+	{
+		m_projectionMatrix = projection;
+	}
+
+	inline void SetViewMatrix(const glm::mat4& view)
+	{
+		m_viewMatrix = view;
+	}
+
   //static void Init();
   //static void DrawQuad(b2Body* body, Camera& camera);
   //static void DrawCircle(b2Body* body, glm::vec4 color, Camera& camera);

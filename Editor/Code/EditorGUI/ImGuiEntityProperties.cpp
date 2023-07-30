@@ -107,6 +107,12 @@ void ImGuiEntityProperties::Render()
             }
         }
 
+        RenderComponent<SpriteRendererComponent>("Sprite Renderer", registry, entity, [](auto& component)
+        {
+            std::string x = "";
+            ImGui::InputText("Near", &x);
+        });
+
         RenderComponent<CameraComponent>("Camera", registry, entity, [](auto& component)
         {
             ImGui::InputFloat("Near", &component.near);
@@ -166,6 +172,11 @@ void ImGuiEntityProperties::Render()
                     {
                         if (registry.try_get<BoxCollider2DComponent>(entity) == nullptr)
                             registry.emplace<BoxCollider2DComponent>(entity);
+                    }
+                    else if (EditorComponentNames[i] == "Sprite Renderer")
+                    {
+                        if (registry.try_get<SpriteRendererComponent>(entity) == nullptr)
+                            registry.emplace<SpriteRendererComponent>(entity);
                     }
                 }
             }

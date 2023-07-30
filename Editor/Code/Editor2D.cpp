@@ -50,6 +50,8 @@ void Editor2D::Initialize(std::string title, int width, int height)
         glm::vec2 { 1280, 720 }
     );
 
+
+
     m_renderer = std::make_unique<OpenGLRenderer>();
     m_renderer->Initialize();
 
@@ -265,7 +267,16 @@ void Editor2D::OnMouseScroll(float x, float y)
 {
     std::cout << "Scroll: " << x << ", " << y << std::endl;
 
-    m_camera->SetZoom(m_camera->GetZoom() + (y * 0.05f));
+    if (m_camera->GetCameraType() == CameraType::Orthographic)
+    {
+        m_camera->SetZoom(m_camera->GetZoom() + (y * 0.05f));
+    }
+    else if (m_camera->GetCameraType() == CameraType::Perspective)
+    {
+        glm::vec3 newPosition = m_camera->GetPosition();
+        newPosition.z += y * 0.5f;
+        m_camera->SetPosition(newPosition);
+    }
 }
 
 TransformComponent* Editor2D::GetEntityTransform()
@@ -285,6 +296,9 @@ void Editor2D::Render()
     {
         glm::vec2 screenSize = m_camera->GetScreenSize();
         m_renderer->SetCamera(m_camera.get());
+
+        m_renderer->SetViewMatrix(m_camera->GetViewMatrix());
+        m_renderer->SetProjectionMatrix(m_camera->GetProjectionMatrix());
 
         auto transforms = m_scene->GetEntityManager().m_registry.view<TransformComponent, SpriteRendererComponent>();
 

@@ -22,6 +22,7 @@ public:
 	{}
 
 	inline void SetCameraType(CameraType type) { m_type = type; }
+	inline CameraType GetCameraType() { return m_type; }
 
 	inline glm::vec3 GetPosition() const { return m_position; }
 	inline void SetPosition(const glm::vec3& position) { m_position = position; }

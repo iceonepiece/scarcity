@@ -116,6 +116,14 @@
       </SubSystem>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\works\scarcity\Code;$(ProjectDir)\External\Include;$(IncludePath)</AdditionalIncludeDirectories>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="Assets\Levels\Level1.lua" />
@@ -280,11 +288,9 @@
     <ClCompile Include="Code\Audio\OpenALAudio.cpp" />
     <ClCompile Include="Code\Components\Components.cpp" />
     <ClCompile Include="Code\Core\ResourceAPI.cpp" />
-    <ClCompile Include="Code\Core\ScriptingEngine.cpp" />
     <ClCompile Include="Code\Core\FiniteStateMachine.cpp" />
     <ClCompile Include="Code\Core\Camera2D.cpp" />
     <ClCompile Include="Code\Core\EntityManager.cpp" />
-    <ClCompile Include="Code\Core\Game.cpp" />
     <ClCompile Include="Code\Core\GameApplication.cpp" />
     <ClCompile Include="Code\Events\KeyEvent.cpp" />
     <ClCompile Include="Code\Events\MouseEvent.cpp" />
@@ -349,7 +355,6 @@
     <ClInclude Include="Code\Core\Input.h" />
     <ClInclude Include="Code\Core\ResourceAPI.h" />
     <ClInclude Include="Code\Core\Scriptable.h" />
-    <ClInclude Include="Code\Core\ScriptingEngine.h" />
     <ClInclude Include="Code\Core\ServiceLocator.h" />
     <ClInclude Include="Code\Core\GameApplication.h" />
     <ClInclude Include="Code\Events\KeyEvent.h" />
@@ -384,7 +389,6 @@
     <ClInclude Include="Code\Animations\SpriteAnimation.h" />
     <ClInclude Include="Code\Core\Timer.h" />
     <ClInclude Include="Code\Core\Window.h" />
-    <ClInclude Include="Code\Core\Game.h" />
     <ClInclude Include="Code\Core\GameState.h" />
     <ClInclude Include="Code\GUIs\GUI.h" />
     <ClInclude Include="Code\GUIs\GUIComponent.h" />
@@ -859,13 +863,6 @@
   <ItemGroup>
     <Image Include="Assets\Images\awesomeface.png" />
     <Image Include="Assets\Images\HeroKnight.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="External\Library\box2d.lib" />
-    <Library Include="External\Library\freetype.lib" />
-    <Library Include="External\Library\glfw3.lib" />
-    <Library Include="External\Library\lua54.lib" />
-    <Library Include="External\Library\OpenAL32.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

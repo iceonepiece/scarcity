@@ -2,7 +2,6 @@
 
 #include "PCH.h"
 #include "Window.h"
-#include "ScriptingEngine.h"
 #include "Graphics/Renderer.h"
 #include "Events/Event.h"
 #include "Events/KeyEvent.h"
@@ -38,7 +37,6 @@ public:
 	virtual void OnMouseScroll(float x, float y) {}
 
 	virtual void ChangeScene(std::string name) {}
-	inline ScriptingEngine* GetScriptingEngine() { return &m_scriptingEngine; }
 	inline LuaEngine& GetLuaEngine() { return m_luaEngine; }
 	inline Renderer& GetRenderer() { return *m_renderer; }
 	inline Window& GetWindow() { return *m_window; }
@@ -53,5 +51,4 @@ protected:
 	std::unique_ptr<Renderer> m_renderer;
 
 	LuaEngine m_luaEngine;
-	ScriptingEngine m_scriptingEngine;
 };

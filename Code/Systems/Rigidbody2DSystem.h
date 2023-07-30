@@ -27,8 +27,6 @@ public:
 		for (auto [entity, rb2d] : view.each())
 		{
 			b2Body* body = (b2Body*)rb2d.body;
-			std::cout << body->GetPosition().x << " , " << body->GetPosition().y << std::endl;
-
 			renderer.DrawRect((b2Body*)rb2d.body, camera);
 		}
 	}

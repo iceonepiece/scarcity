@@ -456,9 +456,6 @@
     <ClCompile Include="Code\Core\EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Core\Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Input\Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -561,9 +558,6 @@
     <ClCompile Include="Code\Components\Components.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Core\ScriptingEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="External\Include\angelscript\scriptstdstring\scriptstdstring.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -615,9 +609,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Core\EntityManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Core\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Core\GameState.h">
@@ -2075,9 +2066,6 @@
     <ClInclude Include="Code\Components\Components.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Core\ScriptingEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="External\Include\angelscript\scriptstdstring\scriptstdstring.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -2179,12 +2167,5 @@
     <Image Include="Assets\Images\HeroKnight.png">
       <Filter>Resource Files</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="External\Library\box2d.lib" />
-    <Library Include="External\Library\glfw3.lib" />
-    <Library Include="External\Library\lua54.lib" />
-    <Library Include="External\Library\freetype.lib" />
-    <Library Include="External\Library\OpenAL32.lib" />
   </ItemGroup>
 </Project>
