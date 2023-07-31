@@ -10,6 +10,7 @@ class OpenGLTexture : public Texture
 {
 public:
 	OpenGLTexture();
+	OpenGLTexture(const std::string& path);
 	~OpenGLTexture();
 
 	void Generate(const char* filename, bool alpha = false);
@@ -17,6 +18,7 @@ public:
 
 	virtual int GetWidth() const override { return m_width; }
 	virtual int GetHeight() const override { return m_height; }
+	virtual uint32_t GetRendererID() const override { return m_id; }
 
 private:
 	GLuint m_id;

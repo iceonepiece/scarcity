@@ -35,6 +35,7 @@ void ImGuiMain::Render()
     // Writing your code here
     m_entityProperties.Render();
     m_hierarchy.Render();
+    m_assetPanel.Render();
 
     ImGui::BeginMainMenuBar();
     

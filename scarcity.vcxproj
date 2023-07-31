@@ -295,8 +295,6 @@
     <ClCompile Include="Code\Events\KeyEvent.cpp" />
     <ClCompile Include="Code\Events\MouseEvent.cpp" />
     <ClCompile Include="Code\Events\WindowEvent.cpp" />
-    <ClCompile Include="Code\GUIs\GUI.cpp" />
-    <ClCompile Include="Code\GUIs\GUIComponent.cpp" />
     <ClCompile Include="Code\Core\LevelManager.cpp" />
     <ClCompile Include="Code\Lua\LuaEngine.cpp" />
     <ClCompile Include="Code\PCH.cpp" />
@@ -390,8 +388,6 @@
     <ClInclude Include="Code\Core\Timer.h" />
     <ClInclude Include="Code\Core\Window.h" />
     <ClInclude Include="Code\Core\GameState.h" />
-    <ClInclude Include="Code\GUIs\GUI.h" />
-    <ClInclude Include="Code\GUIs\GUIComponent.h" />
     <ClInclude Include="Code\Core\LevelManager.h" />
     <ClInclude Include="Code\Events\Event.h" />
     <ClInclude Include="Code\Events\MouseEvent.h" />
@@ -407,8 +403,6 @@
     <ClInclude Include="Code\Game\MenuState.h" />
     <ClInclude Include="Code\Game\PausedState.h" />
     <ClInclude Include="Code\Game\RunningState.h" />
-    <ClInclude Include="Code\GUIs\GUIList.h" />
-    <ClInclude Include="Code\GUIs\GUIWindow.h" />
     <ClInclude Include="Code\Input\KeyCodes.h" />
     <ClInclude Include="Code\Input\MouseCodes.h" />
     <ClInclude Include="Code\Physics\ContactListener.h" />

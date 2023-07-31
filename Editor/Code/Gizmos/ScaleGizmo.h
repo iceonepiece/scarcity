@@ -71,6 +71,6 @@ public:
 	}
 
 protected:
-	float m_length = 1.5f;
-	float m_thickness = 0.08f;
+	float m_length = 1.4f;
+	float m_thickness = 0.07f;
 };

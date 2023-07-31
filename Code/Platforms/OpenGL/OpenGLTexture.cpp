@@ -7,6 +7,12 @@ OpenGLTexture::OpenGLTexture()
     glGenTextures(1, &m_id);
 }
 
+OpenGLTexture::OpenGLTexture(const std::string& path)
+{
+    glGenTextures(1, &m_id);
+    Generate(path.c_str());
+}
+
 void OpenGLTexture::Generate(const char* filename, bool alpha)
 {
     glBindTexture(GL_TEXTURE_2D, m_id); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
@@ -19,19 +25,25 @@ void OpenGLTexture::Generate(const char* filename, bool alpha)
 
     int width, height, nrChannels;
     stbi_set_flip_vertically_on_load(true);
-
-    unsigned int internalFormat = GL_RGB;
-    unsigned int imageFormat = GL_RGB;
-
-    if (alpha)
-    {
-        internalFormat = GL_RGBA;
-        imageFormat = GL_RGBA;
-    }
     
     unsigned char* data = stbi_load(filename, &width, &height, &nrChannels, 0);
+
     if (data)
     {
+        unsigned int internalFormat = 0;
+        unsigned int imageFormat = 0;
+
+        if (nrChannels == 4)
+        {
+            internalFormat = GL_RGBA8;
+            imageFormat = GL_RGBA;
+        }
+        else if (nrChannels == 3)
+        {
+            internalFormat = GL_RGB8;
+            imageFormat = GL_RGB;
+        }
+
         glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, imageFormat, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
 

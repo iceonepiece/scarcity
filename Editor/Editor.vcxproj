@@ -142,6 +142,7 @@
     <ClCompile Include="Code\Components\EntityListWindow.cpp" />
     <ClCompile Include="Code\Components\InspectorWindow.cpp" />
     <ClCompile Include="Code\Editor2D.cpp" />
+    <ClCompile Include="Code\EditorGUI\ImGuiAssetPanel.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiEntityProperties.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiHierarchy.cpp" />
     <ClCompile Include="Code\EditorScene.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Code\Components\InspectorWindow.h" />
     <ClInclude Include="Code\Editor2D.h" />
     <ClInclude Include="Code\EditorCamera.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiAssetPanel.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiEntityProperties.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiHierarchy.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiWindow.h" />
