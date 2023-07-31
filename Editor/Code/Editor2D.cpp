@@ -267,6 +267,11 @@ void Editor2D::OnMouseScroll(float x, float y)
 {
     std::cout << "Scroll: " << x << ", " << y << std::endl;
 
+    ImGuiIO& io = ImGui::GetIO();
+
+    if (io.WantCaptureMouse)
+        return;
+
     if (m_camera->GetCameraType() == CameraType::Orthographic)
     {
         m_camera->SetZoom(m_camera->GetZoom() + (y * 0.04f));
