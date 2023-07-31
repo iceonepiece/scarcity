@@ -4,4 +4,6 @@
 
 struct CircleCollider2DComponent
 {
+	glm::vec2 offset = { 0.0f, 0.0f };
+	float radius = 0.5;
 };

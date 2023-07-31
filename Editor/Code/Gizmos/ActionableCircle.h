@@ -50,7 +50,7 @@ public:
 
 		renderer.DrawCircle(m_position + offset, m_radius);
 		*/
-		renderer.DrawCircle2D(m_circle);
+		renderer.DrawCircle2D(m_circle, 0.06f);
 	}
 
 	virtual bool IsCursorOn(float x, float y, const glm::vec2& entityPosition) override

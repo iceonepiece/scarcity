@@ -26,7 +26,7 @@ public:
 		m_actionables.push_back(std::make_unique<ActionableCircle>(
 			glm::vec2 { 0.0f },
 			m_length / 2,
-			glm::vec4 { 1.0f }
+			glm::vec4 { 0.0f, 0.0f, 1.0f, 1.0f }
 		));
 
 		m_actionables[2]->SetDraggingCallback([](Actionable& actor, float x, float y)

@@ -312,17 +312,21 @@ void OpenGLRenderer::DrawCircle(const glm::vec2& position, float radius)
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
-void OpenGLRenderer::DrawCircle2D(const Circle2D& circle)
+void OpenGLRenderer::DrawCircle2D(const Circle2D& circle, float thickness)
 {
     m_circleShader.Use();
 
     glm::mat4 model = glm::mat4(1.0);
     model = glm::translate(model, glm::vec3(circle.position.x, circle.position.y, 0.0f));
-    model = glm::scale(model, glm::vec3(circle.radius * 2, circle.radius * 2, 0.0f));
+    model = glm::scale(model, glm::vec3(circle.radius * 2 * circle.scale.x, circle.radius * 2 * circle.scale.y, 0.0f));
 
     m_circleShader.SetMatrix4("model", model);
-    m_circleShader.SetMatrix4("view", m_camera->GetViewMatrix());
-    m_circleShader.SetMatrix4("projection", m_camera->GetProjectionMatrix(CameraType::Orthographic));
+    //m_circleShader.SetMatrix4("view", m_camera->GetViewMatrix());
+    //m_circleShader.SetMatrix4("projection", m_camera->GetProjectionMatrix(CameraType::Orthographic));
+    m_circleShader.SetMatrix4("view", m_viewMatrix);
+    m_circleShader.SetMatrix4("projection", m_projectionMatrix);
+    m_circleShader.SetVector4f("color", circle.color);
+    m_circleShader.SetFloat("minRadius", 1.0f - thickness);
 
     glBindVertexArray(m_circleVAO);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);

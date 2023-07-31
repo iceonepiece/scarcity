@@ -308,9 +308,18 @@ void Editor2D::Render()
             glm::vec2 scale = transform.scale;
             float angle = transform.rotation.z;
 
-            m_renderer->DrawQuad2D(position, scale, angle, sprite.color);
-        }
+            if (sprite.shape == SpriteShape::Shape_Square)
+                m_renderer->DrawQuad2D(position, scale, angle, sprite.color);
+            else if (sprite.shape == SpriteShape::Shape_Circle)
+            {
+                Circle2D circle;
+                circle.color = sprite.color;
+                circle.position = transform.position;
+                circle.scale = transform.scale;
 
+                m_renderer->DrawCircle2D(circle);
+            }
+        }
 
         if (m_currentMode != EditorMode::ViewMode && m_entityPicked)
         {
@@ -339,11 +348,29 @@ void Editor2D::Render()
 
         for (auto [entity, transform, sprite] : transforms.each())
         {
+            /*
             glm::vec2 position = transform.position;
             glm::vec2 scale = transform.scale;
             float angle = transform.rotation.z;
 
             m_renderer->DrawQuad2D(position, scale, angle, sprite.color);
+            */
+
+            glm::vec2 position = transform.position;
+            glm::vec2 scale = transform.scale;
+            float angle = transform.rotation.z;
+
+            if (sprite.shape == SpriteShape::Shape_Square)
+                m_renderer->DrawQuad2D(position, scale, angle, sprite.color);
+            else if (sprite.shape == SpriteShape::Shape_Circle)
+            {
+                Circle2D circle;
+                circle.color = sprite.color;
+                circle.position = transform.position;
+                circle.scale = transform.scale;
+
+                m_renderer->DrawCircle2D(circle);
+            }
         }
         //m_scene->Render();
         m_imgui->Render();

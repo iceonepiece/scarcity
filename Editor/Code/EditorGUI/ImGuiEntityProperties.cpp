@@ -9,6 +9,7 @@
 std::string EditorComponentNames[] = {
     "Box Collider 2D",
     "Camera",
+    "Circle Collider 2D",
     "Rigidbody 2D",
     "Sprite Renderer"
 };
@@ -109,8 +110,25 @@ void ImGuiEntityProperties::Render()
 
         RenderComponent<SpriteRendererComponent>("Sprite Renderer", registry, entity, [](auto& component)
         {
-            std::string x = "";
-            ImGui::InputText("Near", &x);
+            const char* shapeTypeStrings[] = { "None", "Square", "Circle" };
+            const char* currentShapeTypeString = shapeTypeStrings[(int)component.shape];
+            if (ImGui::BeginCombo("Shape Type", currentShapeTypeString))
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    bool isSelected = currentShapeTypeString == shapeTypeStrings[i];
+                    if (ImGui::Selectable(shapeTypeStrings[i], isSelected))
+                    {
+                        currentShapeTypeString = shapeTypeStrings[i];
+                        component.shape = (SpriteShape)i;
+                    }
+
+                    if (isSelected)
+                        ImGui::SetItemDefaultFocus();
+                }
+
+                ImGui::EndCombo();
+            }
         });
 
         RenderComponent<CameraComponent>("Camera", registry, entity, [](auto& component)
@@ -151,6 +169,12 @@ void ImGuiEntityProperties::Render()
             ImGui::DragFloat2("Size", glm::value_ptr(component.size));
         });
 
+        RenderComponent<CircleCollider2DComponent>("Circle Collider 2D", registry, entity, [](auto& component)
+        {
+            ImGui::DragFloat2("Offset", glm::value_ptr(component.offset));
+            ImGui::InputFloat("Radius", &component.radius);
+        });
+
         if (ImGui::Button("Add Component"))
             ImGui::OpenPopup("add_component");
 
@@ -173,6 +197,11 @@ void ImGuiEntityProperties::Render()
                     {
                         if (registry.try_get<BoxCollider2DComponent>(entity) == nullptr)
                             registry.emplace<BoxCollider2DComponent>(entity);
+                    }
+                    else if (EditorComponentNames[i] == "Circle Collider 2D")
+                    {
+                        if (registry.try_get<CircleCollider2DComponent>(entity) == nullptr)
+                            registry.emplace<CircleCollider2DComponent>(entity);
                     }
                     else if (EditorComponentNames[i] == "Sprite Renderer")
                     {

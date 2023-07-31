@@ -82,6 +82,22 @@ void Scene::StartPhysics()
 
 			body->CreateFixture(&fixtureDef);
 		}
+
+        if (m_manager.m_registry.all_of<CircleCollider2DComponent>(entity))
+        {
+            auto& cc2d = m_manager.m_registry.get<CircleCollider2DComponent>(entity);
+
+            b2CircleShape circleShape;
+            circleShape.m_p.Set(cc2d.offset.x, cc2d.offset.y);
+            circleShape.m_radius = transform.scale.x * cc2d.radius;
+
+            b2FixtureDef fixtureDef;
+            fixtureDef.shape = &circleShape;
+            fixtureDef.density = 1.0f;
+            fixtureDef.friction = 0.0f;
+
+            body->CreateFixture(&fixtureDef);
+        }
 	}
 }
 

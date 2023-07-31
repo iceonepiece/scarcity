@@ -1,5 +1,8 @@
 #version 330 core
 
+uniform vec4 color;
+uniform float minRadius;
+
 in vec2 Value;
 out vec4 FragColor;
 
@@ -9,10 +12,10 @@ void main()
     float R2 = 0.95;
 
     float dist = sqrt(dot(Value,Value));
-    if (dist >= R || dist <= R2)
+    if (dist >= R || dist <= minRadius)
     {
         discard;
     }
 
-    FragColor = vec4(0.0, 0.0, 1.0, 1.0);
+    FragColor = color;
 }
