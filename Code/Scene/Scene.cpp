@@ -29,41 +29,19 @@ std::unique_ptr<Scene> Scene::Copy(Scene& sourceScene)
 {
     std::unique_ptr<Scene> newScene = std::make_unique<Scene>();
 
-    entt::registry& sourceRegistry = sourceScene.m_manager.m_registry;
-    entt::registry& destinationRegistry = newScene->m_manager.m_registry;
+    entt::registry& srcRegistry = sourceScene.m_manager.m_registry;
+    entt::registry& destRegistry = newScene->m_manager.m_registry;
 
-    sourceRegistry.each([&](auto entity) {
-        auto destinationEntity = destinationRegistry.create();
+    srcRegistry.each([&](auto srcEntity) {
+        auto destEntity = destRegistry.create();
 
-        if (sourceRegistry.all_of<BaseComponent>(entity)) {
-            auto& component = sourceRegistry.get<BaseComponent>(entity);
-            destinationRegistry.emplace_or_replace<BaseComponent>(destinationEntity, component);
-        }
-
-        if (sourceRegistry.all_of<TransformComponent>(entity)) {
-            auto& component = sourceRegistry.get<TransformComponent>(entity);
-            destinationRegistry.emplace_or_replace<TransformComponent>(destinationEntity, component);
-        }
-
-        if (sourceRegistry.all_of<SpriteRendererComponent>(entity)) {
-            auto& component = sourceRegistry.get<SpriteRendererComponent>(entity);
-            destinationRegistry.emplace_or_replace<SpriteRendererComponent>(destinationEntity, component);
-        }
-
-        if (sourceRegistry.all_of<Rigidbody2DComponent>(entity)) {
-            auto& component = sourceRegistry.get<Rigidbody2DComponent>(entity);
-            destinationRegistry.emplace_or_replace<Rigidbody2DComponent>(destinationEntity, component);
-        }
-
-        if (sourceRegistry.all_of<BoxCollider2DComponent>(entity)) {
-            auto& component = sourceRegistry.get<BoxCollider2DComponent>(entity);
-            destinationRegistry.emplace_or_replace<BoxCollider2DComponent>(destinationEntity, component);
-        }
-
-        if (sourceRegistry.all_of<CameraComponent>(entity)) {
-            auto& component = sourceRegistry.get<CameraComponent>(entity);
-            destinationRegistry.emplace_or_replace<CameraComponent>(destinationEntity, component);
-        }
+        CopyComponent<BaseComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
+        CopyComponent<TransformComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
+        CopyComponent<SpriteRendererComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
+        CopyComponent<Rigidbody2DComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
+        CopyComponent<BoxCollider2DComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
+        CopyComponent<CircleCollider2DComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
+        CopyComponent<CameraComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
     });
 
     return newScene;

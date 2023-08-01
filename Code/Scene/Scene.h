@@ -41,6 +41,15 @@ public:
 	void SetApplication(Application* app) { m_app = app; }
 	Application* GetApplication() { return m_app; }
 
+	template<typename Component>
+	static void CopyComponent(entt::registry& srcRegistry, entt::registry& destRegistry, entt::entity srcEntity, entt::entity destEntity)
+	{
+		if (srcRegistry.all_of<Component>(srcEntity)) {
+			auto& component = srcRegistry.get<Component>(srcEntity);
+			destRegistry.emplace_or_replace<Component>(destEntity, component);
+		}
+	}
+
 	void SetInitializeFunction(InitializeFunction fn)
 	{
 		m_initializeFunction = fn;
