@@ -287,11 +287,13 @@
   <ItemGroup>
     <ClCompile Include="Code\Audio\OpenALAudio.cpp" />
     <ClCompile Include="Code\Components\Components.cpp" />
+    <ClCompile Include="Code\Core\GameState.cpp" />
     <ClCompile Include="Code\Core\ResourceAPI.cpp" />
     <ClCompile Include="Code\Core\FiniteStateMachine.cpp" />
     <ClCompile Include="Code\Core\Camera2D.cpp" />
     <ClCompile Include="Code\Core\EntityManager.cpp" />
     <ClCompile Include="Code\Core\GameApplication.cpp" />
+    <ClCompile Include="Code\Core\System.cpp" />
     <ClCompile Include="Code\Events\KeyEvent.cpp" />
     <ClCompile Include="Code\Events\MouseEvent.cpp" />
     <ClCompile Include="Code\Events\WindowEvent.cpp" />

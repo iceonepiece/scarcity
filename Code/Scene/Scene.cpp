@@ -1,6 +1,4 @@
 #include "Scene.h"
-#include "Core/System.h"
-#include "Core/GameState.h"
 #include "Systems/ScriptableSystem.h"
 #include "Systems/RenderSystem.h"
 #include "Core/Camera2D.h"
@@ -12,23 +10,8 @@ Scene::Scene()
     )
     , m_ui(this)
 {
-    m_systems.emplace_back(new ScriptableSystem(this));
-    m_systems.emplace_back(new RenderSystem(this));
-}
-
-Scene::~Scene()
-{
-	for (auto system : m_systems)
-	{
-		delete system;
-	}
-	m_systems.clear();
-
-    for (auto gs : m_gameStates)
-    {
-        delete gs.second;
-    }
-    m_gameStates.clear();
+    m_systems.push_back(std::make_unique<ScriptableSystem>(this));
+    m_systems.push_back(std::make_unique<RenderSystem>(this));
 }
 
 void Scene::OnEvent(Event* e)
@@ -38,6 +21,52 @@ void Scene::OnEvent(Event* e)
 
 void Scene::Initialize()
 {
+    if (m_initializeFunction != nullptr)
+        m_initializeFunction(this);
+}
+
+std::unique_ptr<Scene> Scene::Copy(Scene& sourceScene)
+{
+    std::unique_ptr<Scene> newScene = std::make_unique<Scene>();
+
+    entt::registry& sourceRegistry = sourceScene.m_manager.m_registry;
+    entt::registry& destinationRegistry = newScene->m_manager.m_registry;
+
+    sourceRegistry.each([&](auto entity) {
+        auto destinationEntity = destinationRegistry.create();
+
+        if (sourceRegistry.all_of<BaseComponent>(entity)) {
+            auto& component = sourceRegistry.get<BaseComponent>(entity);
+            destinationRegistry.emplace_or_replace<BaseComponent>(destinationEntity, component);
+        }
+
+        if (sourceRegistry.all_of<TransformComponent>(entity)) {
+            auto& component = sourceRegistry.get<TransformComponent>(entity);
+            destinationRegistry.emplace_or_replace<TransformComponent>(destinationEntity, component);
+        }
+
+        if (sourceRegistry.all_of<SpriteRendererComponent>(entity)) {
+            auto& component = sourceRegistry.get<SpriteRendererComponent>(entity);
+            destinationRegistry.emplace_or_replace<SpriteRendererComponent>(destinationEntity, component);
+        }
+
+        if (sourceRegistry.all_of<Rigidbody2DComponent>(entity)) {
+            auto& component = sourceRegistry.get<Rigidbody2DComponent>(entity);
+            destinationRegistry.emplace_or_replace<Rigidbody2DComponent>(destinationEntity, component);
+        }
+
+        if (sourceRegistry.all_of<BoxCollider2DComponent>(entity)) {
+            auto& component = sourceRegistry.get<BoxCollider2DComponent>(entity);
+            destinationRegistry.emplace_or_replace<BoxCollider2DComponent>(destinationEntity, component);
+        }
+
+        if (sourceRegistry.all_of<CameraComponent>(entity)) {
+            auto& component = sourceRegistry.get<CameraComponent>(entity);
+            destinationRegistry.emplace_or_replace<CameraComponent>(destinationEntity, component);
+        }
+    });
+
+    return newScene;
 }
 
 void Scene::Start()
@@ -52,8 +81,7 @@ void Scene::Stop()
 
 void Scene::StartPhysics()
 {
-    //m_physics = std::make_unique<Physics>();
-    m_physics = new b2World({ 0.0f, -9.8f });
+    m_physics = std::make_unique<b2World>(b2Vec2 { 0.0f, -9.8f });
 
 	auto view = m_manager.m_registry.view<TransformComponent, Rigidbody2DComponent>();
 	for (auto [entity, transform, rb2d] : view.each())
@@ -103,15 +131,12 @@ void Scene::StartPhysics()
 
 void Scene::StopPhysics()
 {
-    //m_physics.reset();
-
-    delete m_physics;
-    m_physics = nullptr;
+    m_physics.reset();
 }
 
 void Scene::Update(float deltaTime)
 {
-    for (auto system : m_systems)
+    for (auto& system : m_systems)
         system->Update(deltaTime);
 
     if (m_physics != nullptr && physicsActive)
@@ -131,8 +156,6 @@ void Scene::Update(float deltaTime)
             transform.position.x = position.x;
             transform.position.y = position.y;
             transform.rotation.z = body->GetAngle();
-
-            std::cout << transform.position.x << " : " << transform.position.y << std::endl;
         }
     }
 
@@ -161,7 +184,7 @@ void Scene::Render()
     Renderer& renderer = m_app->GetRenderer();
     //renderer.SetCamera(m_camera.get());
 
-    for (auto system : m_systems)
+    for (auto& system : m_systems)
         system->Render();
 
     auto view = m_manager.m_registry.view<TransformComponent, SpriteRendererComponent>();

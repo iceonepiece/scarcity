@@ -67,7 +67,32 @@ void Editor2D::Initialize(std::string title, int width, int height)
     
     m_camera->SetCameraType(CameraType::Orthographic);
     
-    m_scene = std::make_unique<SampleScene>();
+    
+    //m_scene = std::make_unique<SampleScene>();
+    m_scene = std::make_unique<Scene>();
+    m_scene->SetInitializeFunction([](Scene* scene)
+    {
+        scene->m_camera = std::make_unique<Camera2D>(
+            glm::vec3 { 0.0f, 0.0f, -1.0f },
+            glm::vec2 { 1.0f, 1.0f },
+            glm::vec2 { 1280, 720 }
+        );
+
+        Renderer& renderer = scene->m_app->GetRenderer();
+        renderer.SetCamera(scene->m_camera.get());
+
+        Entity camera = scene->m_manager.CreateEntity();
+        camera.AddComponent<BaseComponent>("Main Camera");
+        camera.AddComponent<TransformComponent>(glm::vec3 { 0.0f, 0.0f, -1.0f }, glm::vec3 {0.0f}, glm::vec3 {1.0f});
+        camera.AddComponent<CameraComponent>();
+
+        Entity rect = scene->m_manager.CreateEntity();
+        rect.AddComponent<BaseComponent>("Rect");
+        rect.AddComponent<TransformComponent>(glm::vec3 {0.0f, 0.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {1.0f, 1.0f, 1.0f});
+        rect.AddComponent<SpriteRendererComponent>(Shape_Square);
+    });
+
+
     m_scene->SetApplication(this);
     m_scene->Initialize();
 }
@@ -230,7 +255,7 @@ void Editor2D::Update()
     float dt = Timer::GetDeltaTime();
 
     if (m_scenePlaying)
-        m_scene->Update(dt);
+        m_playingScene->Update(dt);
     else
         m_gizmos[m_currentMode]->Update(dt);
 
@@ -336,12 +361,12 @@ void Editor2D::Render()
     }
     else
     {
-        Renderer& renderer = m_scene->m_app->GetRenderer();
+        Renderer& renderer = m_playingScene->m_app->GetRenderer();
 
-        auto view = m_scene->GetEntityManager().m_registry.view<TransformComponent, CameraComponent>();
+        auto view = m_playingScene->GetEntityManager().m_registry.view<TransformComponent, CameraComponent>();
         for (auto [entity, transform, camera] : view.each())
         {   
-            WindowData window = m_scene->m_app->GetWindow().GetWindowData();
+            WindowData window = m_playingScene->m_app->GetWindow().GetWindowData();
             float ratio = window.width / (float)window.height;
             float width = camera.size * ratio;
 
@@ -349,7 +374,7 @@ void Editor2D::Render()
             m_renderer->SetProjectionMatrix(glm::ortho(-width, width, -camera.size, camera.size));
         }
 
-        auto transforms = m_scene->GetEntityManager().m_registry.view<TransformComponent, SpriteRendererComponent>();
+        auto transforms = m_playingScene->GetEntityManager().m_registry.view<TransformComponent, SpriteRendererComponent>();
 
         for (auto [entity, transform, sprite] : transforms.each())
         {
@@ -388,13 +413,17 @@ void Editor2D::Render()
 void Editor2D::PlayScene()
 {
     std::cout << "Play Scene\n";
-    m_scene->Start();
+
+    m_playingScene = Scene::Copy(*m_scene);
+    m_playingScene->SetApplication(this);
+    m_playingScene->Start();
     m_scenePlaying = true;
 }
 
 void Editor2D::StopScene()
 {
     std::cout << "Stop Scene\n";
-    m_scene->Stop();
+    m_playingScene->Stop();
+    m_playingScene.reset();
     m_scenePlaying = false;
 }

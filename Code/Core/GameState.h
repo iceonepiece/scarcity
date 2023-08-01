@@ -1,29 +1,14 @@
 #pragma once
 
-#include "Scene/Scene.h"
+class Scene;
 
 class GameState
 {
 public:
-    GameState(Scene * scene)
-        : m_scene(scene)
-    {
-    }
-
-    virtual void OnEnter()
-    {
-
-    }
-
-    virtual void Process()
-    {
-
-    }
-
-    virtual void OnExit()
-    {
-
-    }
+    GameState(Scene* scene);
+    virtual void OnEnter() {}
+    virtual void Process() {}
+    virtual void OnExit() {}
 
 protected:
     Scene* m_scene;

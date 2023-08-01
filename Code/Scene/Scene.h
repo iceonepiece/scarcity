@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <functional>
 #include "Core/Application.h"
 #include "Core/EntityManager.h"
 #include "Core/Camera.h"
@@ -8,15 +9,18 @@
 #include "Input/Input.h"
 #include "UIs/UI.h"
 #include "Events/Event.h"
+#include "Core/System.h"
+#include "Core/GameState.h"
 
-class System;
-class GameState;
+#include "Events/Event.h"
+
+using InitializeFunction = std::function<void(Scene*)>;
 
 class Scene
 {
 public:
 	Scene();
-	virtual ~Scene();
+	virtual ~Scene() = default;
 
 	virtual void Initialize();
 	virtual void OnEvent(Event* e);
@@ -32,8 +36,20 @@ public:
 	virtual void Enter();
 	virtual void Exit();
 
+	static std::unique_ptr<Scene> Copy(Scene& sourceScene);
+
 	void SetApplication(Application* app) { m_app = app; }
 	Application* GetApplication() { return m_app; }
+
+	void SetInitializeFunction(InitializeFunction fn)
+	{
+		m_initializeFunction = fn;
+	}
+
+	InitializeFunction GetInitializeFunction()
+	{
+		return m_initializeFunction;
+	}
 
 	void RenderUI();
 
@@ -49,22 +65,22 @@ public:
 
 	EntityManager& GetEntityManager();
 
-	std::unordered_map<std::string, GameState*> m_gameStates;
+	std::unordered_map<std::string, std::unique_ptr<GameState>> m_gameStates;
 	std::string m_currentGameStateName;
 
 	bool physicsActive = true;
 	bool particleActive = true;
 
-	std::vector<System*> m_systems;
+	std::vector<std::unique_ptr<System>> m_systems;
 	Application *m_app;
 	
 	std::unique_ptr<Camera> m_camera;
-	
-	//std::unique_ptr<Physics> m_physics = nullptr;
-	b2World* m_physics = nullptr;
+	std::unique_ptr<b2World> m_physics = nullptr;
 
 	EntityManager m_manager;
 	UI m_ui;
 
 	friend class SceneSerializer;
+
+	InitializeFunction m_initializeFunction;
 };

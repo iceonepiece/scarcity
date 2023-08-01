@@ -81,7 +81,8 @@ protected:
 	void CalculateWorldCursorPosition();
 
 protected:
-	std::unique_ptr<Scene> m_scene;
+	std::unique_ptr<Scene> m_scene = nullptr;
+	std::unique_ptr<Scene> m_playingScene = nullptr;
 
 	bool m_scenePlaying = false;
 	bool m_mouseActive = false;

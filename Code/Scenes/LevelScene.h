@@ -26,7 +26,7 @@ public:
 			m_gameStates[m_currentGameStateName]->Process();
 		}
 
-		for (System* system : m_systems)
+		for (auto& system : m_systems)
 		{
 			if (system->active)
 				system->Update(deltaTime);
@@ -55,7 +55,7 @@ public:
 			renderer.DrawRect(collider.body, *m_camera);
 		}
 		
-		for (auto system : m_systems)
+		for (auto& system : m_systems)
 		{
 			if (system->active)
 				system->Render();

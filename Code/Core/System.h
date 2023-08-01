@@ -1,16 +1,13 @@
 #pragma once
 
-#include "Scene/Scene.h"
+#include <entt/entt.hpp>
+
+class Scene;
 
 class System
 {
 public:
-	System(Scene *scene)
-		: m_scene(scene)
-		, m_registry(scene->GetEntityManager().m_registry)
-	{
-	}
-
+	System(Scene* scene);
 	virtual void Update(float deltaTime) = 0;
 	virtual void Render() = 0;
 
