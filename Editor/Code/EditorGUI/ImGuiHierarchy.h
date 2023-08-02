@@ -1,13 +1,13 @@
 #pragma once
 
-class Editor2D;
+class EditorLayer;
 
 class ImGuiHierarchy
 {
 public:
-	ImGuiHierarchy(Editor2D& editor);
+	ImGuiHierarchy(EditorLayer& editor);
 	void Render();
 
 private:
-	Editor2D& m_editor;
+	EditorLayer& m_editor;
 };

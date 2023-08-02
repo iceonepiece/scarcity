@@ -1,8 +1,8 @@
 #include "Gizmo.h"
-#include "../Editor2D.h"
+#include "../EditorLayer.h"
 #include <iostream>
 
-Gizmo::Gizmo(Editor2D& editor)
+Gizmo::Gizmo(EditorLayer& editor)
 	:m_editor(editor)
 {}
 

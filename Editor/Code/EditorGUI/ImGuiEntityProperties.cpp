@@ -2,7 +2,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "ImGuiEntityProperties.h"
 #include "Components/Components.h"
-#include "../Editor2D.h"
+#include "../EditorLayer.h"
 #include "imgui/imgui_stdlib.h"
 #include <string.h>
 
@@ -14,7 +14,7 @@ std::string EditorComponentNames[] = {
     "Sprite Renderer"
 };
 
-ImGuiEntityProperties::ImGuiEntityProperties(Editor2D& editor)
+ImGuiEntityProperties::ImGuiEntityProperties(EditorLayer& editor)
     : m_editor(editor)
 {}
 

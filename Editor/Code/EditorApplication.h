@@ -2,9 +2,9 @@
 
 #include <vector>
 #include "Core/Application.h"
-#include "EditorScene.h"
 #include "ImGuiLayer.h"
 #include "SceneLayer.h"
+#include "Project/Project.h"
 
 class EditorApplication : public Application
 {
@@ -13,14 +13,11 @@ public:
 	virtual ~EditorApplication();
 
 	virtual void Initialize(std::string title, int width, int height) override;
-	virtual void Run() override;
-	virtual void OnEvent(Event* event) override;
 
-protected:
-	virtual void ProcessInput() override;
-	virtual void Update() override;
-	virtual void Render() override;
+	inline Project* GetActiveProject() { return m_activeProject.get(); }
+	inline Scene* GetActiveScene() { return m_activeScene.get(); }
 
-	ImGuiLayer m_imGuiLayer;
-	SceneLayer m_sceneLayer;
+private:
+	std::unique_ptr<Project> m_activeProject;
+	std::unique_ptr<Scene> m_activeScene;
 };

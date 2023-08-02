@@ -35,13 +35,15 @@ OpenGLWindow::OpenGLWindow(Application* app, std::string title, int width, int h
     glfwSetWindowSizeCallback(m_glfwWindow, [](GLFWwindow* window, int width, int height)
     {
         Application& app = *(Application*)glfwGetWindowUserPointer(window);
-        app.OnWindowResize(width, height);
+        WindowResizeEvent event(width, height);
+        app.OnEvent(event);
     });
 
     glfwSetWindowCloseCallback(m_glfwWindow, [](GLFWwindow* window)
     {
         Application& app = *(Application*)glfwGetWindowUserPointer(window);
-        app.OnWindowClose();
+        WindowCloseEvent event;
+        app.OnEvent(event);
     });
 
 
@@ -54,8 +56,16 @@ OpenGLWindow::OpenGLWindow(Application* app, std::string title, int width, int h
             case GLFW_PRESS:
             {
                 KeyPressedEvent event(key);
-                app.OnKeyPressed(event);
+                app.OnEvent(event);
             }
+            break;
+
+            case GLFW_RELEASE:
+            {
+                KeyReleasedEvent event(key);
+                app.OnEvent(event);
+            }
+            break;
         }
     });
 
@@ -64,21 +74,34 @@ OpenGLWindow::OpenGLWindow(Application* app, std::string title, int width, int h
         Application& app = *(Application*)glfwGetWindowUserPointer(window);
         switch (action)
         {
-            case GLFW_PRESS:    app.OnMouseButtonPressed(button);   break;
-            case GLFW_RELEASE:  app.OnMouseButtonReleased(button);  break;
+            case GLFW_PRESS:
+            {
+                MouseButtonPressedEvent event(button);
+                app.OnEvent(event);
+            }
+            break;
+
+            case GLFW_RELEASE:
+            {
+                MouseButtonReleasedEvent event(button);
+                app.OnEvent(event);
+            }
+            break;
         }
     });
     
     glfwSetScrollCallback(m_glfwWindow, [](GLFWwindow* window, double xPos, double yPos)
     {
         Application& app = *(Application*)glfwGetWindowUserPointer(window);
-        app.OnMouseScroll((float)xPos, (float)yPos);
+        MouseScrolledEvent event((float)xPos, (float)yPos);
+        app.OnEvent(event);
     });
 
     glfwSetCursorPosCallback(m_glfwWindow, [](GLFWwindow* window, double xPos, double yPos)
     {
         Application& app = *(Application*)glfwGetWindowUserPointer(window);
-        app.OnMouseMoved((float)xPos, (float)yPos);
+        MouseMovedEvent event((float)xPos, (float)yPos);
+        app.OnEvent(event);
     });
 }
 

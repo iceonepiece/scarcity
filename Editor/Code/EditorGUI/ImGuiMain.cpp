@@ -1,11 +1,13 @@
 #include "ImGuiMain.h"
 #include "Components/Components.h"
 #include "../Editor2D.h"
+#include "../EditorLayer.h"
 
-ImGuiMain::ImGuiMain(Editor2D& editor, GLFWwindow* window, const char* glslVersion)
+ImGuiMain::ImGuiMain(EditorLayer& editor, GLFWwindow* window, const char* glslVersion)
     : m_editor(editor)
     , m_entityProperties(editor)
     , m_hierarchy(editor)
+    , m_mainMenuBar(editor)
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -36,16 +38,7 @@ void ImGuiMain::Render()
     m_entityProperties.Render();
     m_hierarchy.Render();
     m_assetPanel.Render();
-
-    ImGui::BeginMainMenuBar();
-    
-    if (m_editor.IsScenePlaying() && ImGui::Button("Stop"))
-        m_editor.StopScene();
-
-    else if (!m_editor.IsScenePlaying() && ImGui::Button("Play"))
-        m_editor.PlayScene();
-
-    ImGui::EndMainMenuBar();
+    m_mainMenuBar.Render();
 
     ImGui::ShowDemoWindow();
 

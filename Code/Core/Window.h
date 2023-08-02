@@ -44,6 +44,7 @@ public:
 	virtual bool WindowShouldClose() = 0;
 
 	inline WindowData GetWindowData() { return m_data; }
+	virtual void* GetNativeWindow() const = 0;
 
 	virtual void SetCursorShape(CursorShape shape) = 0;
 

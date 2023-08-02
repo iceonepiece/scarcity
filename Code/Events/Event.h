@@ -11,7 +11,7 @@ enum class EventType
 	MouseButtonPressed, MouseButtonReleased,
 	MouseMoved, MouseScrolled,
 	KeyPressed, KeyReleased,
-	WindowResize
+	WindowResize, WindowClose
 };
 
 class Event
@@ -19,7 +19,7 @@ class Event
 public:
 	virtual std::string ToString() const = 0;
 	virtual EventType GetType() const = 0;
-	virtual void Process(Application& app) = 0;
+	virtual void Process(Application& app) {}
 
-	bool m_resolved = false;
+	bool handled = false;
 };

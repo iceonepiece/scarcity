@@ -6,7 +6,7 @@
 class ScaleGizmo : public Gizmo
 {
 public:
-	ScaleGizmo(Editor2D& editor)
+	ScaleGizmo(EditorLayer& editor)
 		: Gizmo(editor)
 	{
 		m_actionables.push_back(std::make_unique<ActionableRect>(

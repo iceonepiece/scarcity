@@ -12,14 +12,6 @@
 #include "Scene/SceneSerializer.h"
 #include "EditorGUI/ImGuiMain.h"
 
-enum EditorMode
-{
-	ViewMode,
-	TranslateMode,
-	RotateMode,
-	ScaleMode
-};
-
 enum class ButtonState
 {
 	None,
@@ -40,7 +32,7 @@ public:
 
 	virtual void Initialize(std::string title, int width, int height) override;
 	virtual void Run() override;
-	virtual void OnEvent(Event* event) override;
+	virtual void OnEvent(Event& event) override;
 	virtual void OnKeyPressed(KeyPressedEvent& event) override;
 	virtual void OnMouseButtonPressed(int button) override;
 	virtual void OnMouseButtonReleased(int button) override;
@@ -77,6 +69,10 @@ protected:
 	void OpenScene();
 	void SaveScene();
 
+	void NewProject();
+	bool OpenProject();
+	void SaveProject();
+
 	bool CheckPicking2D();
 	void CalculateWorldCursorPosition();
 
@@ -88,7 +84,7 @@ protected:
 	bool m_mouseActive = false;
 	MouseData m_mouseData;
 
-	EditorMode m_currentMode;
+	//EditorMode m_currentMode;
 
 	glm::vec2 m_cursorPosition;
 	glm::vec2 m_worldCursorPosition;

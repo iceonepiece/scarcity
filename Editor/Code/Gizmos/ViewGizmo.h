@@ -5,7 +5,7 @@
 class ViewGizmo : public Gizmo
 {
 public:
-	ViewGizmo(Editor2D& editor)
+	ViewGizmo(EditorLayer& editor)
 		: Gizmo(editor)
 	{}
 

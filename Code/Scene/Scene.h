@@ -26,6 +26,8 @@ public:
 	virtual void OnEvent(Event* e);
 	virtual void Update(float deltaTime);
 	virtual void Render();
+	void SetCamera(Camera* camera);
+
 
 	virtual void Start();
 	virtual void Stop();

@@ -9,19 +9,19 @@
 #include "Events/WindowEvent.h"
 #include "Lua/LuaEngine.h"
 
+class Layer;
+
 class Application
 {
 public:
-	virtual ~Application() = default;
+	virtual ~Application();
 
 	virtual void Initialize(std::string title, int width, int height) = 0;
-	virtual void Run() = 0;
+	virtual void Run();
 
-	template <typename T>
-	void OnEvent(T& e) {}
+	virtual void OnEvent(Event& e);
 
-	virtual void OnEvent(Event* e) {}
-
+	void AddLayer(std::unique_ptr<Layer> layer);
 
 	virtual void OnWindowClose() {}
 	virtual void OnWindowResize(int width, int height) {}
@@ -42,13 +42,15 @@ public:
 	inline Window& GetWindow() { return *m_window; }
 
 protected:
-	virtual void ProcessInput() = 0;
-	virtual void Update() = 0;
-	virtual void Render() = 0;
+	virtual void ProcessInput() {}
+	virtual void Update() {}
+	virtual void Render() {}
 
 	bool m_running = true;
 	std::unique_ptr<Window> m_window;
 	std::unique_ptr<Renderer> m_renderer;
+
+	std::vector<std::unique_ptr<Layer>> m_layers;
 
 	LuaEngine m_luaEngine;
 };

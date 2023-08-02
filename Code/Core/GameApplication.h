@@ -21,7 +21,7 @@ public:
 	void AddScene(std::string name, Scene *scene);
 	void ChangeScene(std::string sceneName);
 
-	virtual void OnEvent(Event* event) override;
+	virtual void OnEvent(Event& event) override;
 
 protected:
 	virtual void ProcessInput() override;

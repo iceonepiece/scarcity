@@ -1,8 +1,8 @@
-#include "../Editor2D.h"
+#include "../EditorLayer.h"
 #include "ImGuiHierarchy.h"
 #include "Components/Components.h"
 
-ImGuiHierarchy::ImGuiHierarchy(Editor2D& editor)
+ImGuiHierarchy::ImGuiHierarchy(EditorLayer& editor)
     : m_editor(editor)
 {
 

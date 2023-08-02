@@ -6,7 +6,7 @@
 class TranslateGizmo : public Gizmo
 {
 public:
-	TranslateGizmo(Editor2D& editor)
+	TranslateGizmo(EditorLayer& editor)
 		: Gizmo(editor)
 	{
 		m_actionables.push_back(std::make_unique<ActionableRect>(

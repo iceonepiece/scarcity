@@ -31,3 +31,19 @@ private:
 	unsigned int m_width;
 	unsigned int m_height;
 };
+
+class WindowCloseEvent : public Event
+{
+public:
+	WindowCloseEvent() = default;
+
+	virtual EventType GetType() const override
+	{
+		return EventType::WindowClose;
+	}
+
+	std::string ToString() const
+	{
+		return "Window Close Event";
+	}
+};

@@ -287,14 +287,14 @@
   <ItemGroup>
     <ClCompile Include="Code\Audio\OpenALAudio.cpp" />
     <ClCompile Include="Code\Components\Components.cpp" />
+    <ClCompile Include="Code\Core\Application.cpp" />
     <ClCompile Include="Code\Core\GameState.cpp" />
+    <ClCompile Include="Code\Core\Layer.cpp" />
     <ClCompile Include="Code\Core\ResourceAPI.cpp" />
     <ClCompile Include="Code\Core\FiniteStateMachine.cpp" />
     <ClCompile Include="Code\Core\Camera2D.cpp" />
     <ClCompile Include="Code\Core\EntityManager.cpp" />
-    <ClCompile Include="Code\Core\GameApplication.cpp" />
     <ClCompile Include="Code\Core\System.cpp" />
-    <ClCompile Include="Code\Events\KeyEvent.cpp" />
     <ClCompile Include="Code\Events\MouseEvent.cpp" />
     <ClCompile Include="Code\Events\WindowEvent.cpp" />
     <ClCompile Include="Code\Core\LevelManager.cpp" />
@@ -309,6 +309,7 @@
     <ClCompile Include="Code\Input\Input.cpp" />
     <ClCompile Include="Code\Core\ParticleSystem.cpp" />
     <ClCompile Include="Code\Core\Random.cpp" />
+    <ClCompile Include="Code\Project\Project.cpp" />
     <ClCompile Include="Code\Scene\Scene.cpp" />
     <ClCompile Include="Code\Core\ScriptManager.cpp" />
     <ClCompile Include="code\Main.cpp" />
@@ -336,6 +337,7 @@
     <ClCompile Include="External\Include\imgui\imgui_tables.cpp" />
     <ClCompile Include="External\Include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLResourceManager.cpp" />
+    <ClCompile Include="Code\Project\ProjectSerializer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\APIs\InputAPI.h" />
@@ -353,10 +355,10 @@
     <ClInclude Include="Code\Core\Application.h" />
     <ClInclude Include="Code\Core\Common.h" />
     <ClInclude Include="Code\Core\Input.h" />
+    <ClInclude Include="Code\Core\Layer.h" />
     <ClInclude Include="Code\Core\ResourceAPI.h" />
     <ClInclude Include="Code\Core\Scriptable.h" />
     <ClInclude Include="Code\Core\ServiceLocator.h" />
-    <ClInclude Include="Code\Core\GameApplication.h" />
     <ClInclude Include="Code\Events\KeyEvent.h" />
     <ClInclude Include="Code\Events\WindowEvent.h" />
     <ClInclude Include="Code\Game\MyLevel.h" />
@@ -365,6 +367,7 @@
     <ClInclude Include="Code\Graphics\Shader.h" />
     <ClInclude Include="Code\Graphics\Texture.h" />
     <ClInclude Include="Code\Lua\LuaEngine.h" />
+    <ClInclude Include="Code\Math\Math.h" />
     <ClInclude Include="Code\PCH.h" />
     <ClInclude Include="Code\Platforms\GLFW\GLFWInput.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLFontSystem.h" />
@@ -399,6 +402,7 @@
     <ClInclude Include="Code\Core\ParticleSystem.h" />
     <ClInclude Include="Code\Core\Random.h" />
     <ClInclude Include="Code\Core\ResourceManager.h" />
+    <ClInclude Include="Code\Project\Project.h" />
     <ClInclude Include="Code\Scene\Scene.h" />
     <ClInclude Include="Code\Core\ScriptManager.h" />
     <ClInclude Include="Code\Core\System.h" />
@@ -852,6 +856,7 @@
     <ClInclude Include="External\Include\sol\sol.hpp" />
     <ClInclude Include="External\Include\stb_image.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLResourceManager.h" />
+    <ClInclude Include="Code\Project\ProjectSerializer.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />

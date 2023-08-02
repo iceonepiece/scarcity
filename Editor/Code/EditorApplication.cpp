@@ -1,70 +1,56 @@
 #include "EditorApplication.h"
 #include "Platforms/OpenGL/OpenGLWindow.h"
+#include "Platforms/OpenGL/OpenGLRenderer.h"
 #include "Core/Timer.h"
 #include "Components/EntityListWindow.h"
 #include "Components/InspectorWindow.h"
+#include "GameLayer.h"
+#include "EditorLayer.h"
+#include "Core/Camera2D.h"
 
 EditorApplication::EditorApplication()
-    : m_sceneLayer{ new EditorScene(*this) }
 {
 }
 
 EditorApplication::~EditorApplication()
 {
-    m_imGuiLayer.Destroy();
 }
 
 void EditorApplication::Initialize(std::string title, int width, int height)
 {
     m_window = std::make_unique<OpenGLWindow>(this, title, width, height);
 
-    //if (OpenGLWindow *openGLWindow = dynamic_cast<OpenGLWindow*>(m_window.get()))
-      //  m_imGuiLayer.Initialize(openGLWindow->GetGLFWwindow(), "#version 330");
-
-    //EntityListWindow* entityListWindow = new EntityListWindow();
-    //m_imGuiLayer.AddComponent(entityListWindow);
-    //m_imGuiLayer.AddComponent(new InspectorWindow(entityListWindow));
+    m_renderer = std::make_unique<OpenGLRenderer>();
+    m_renderer->Initialize();
 
     Input::Init();
-}
 
-void EditorApplication::Run()
-{
-    while (m_running)
+    m_activeScene = std::make_unique<Scene>();
+    m_activeScene->SetInitializeFunction([](Scene* scene)
     {
-        Timer::Tick();
+        scene->m_camera = std::make_unique<Camera2D>(
+            glm::vec3 { 0.0f, 0.0f, -1.0f },
+            glm::vec2 { 1.0f, 1.0f },
+            glm::vec2 { 1280, 720 }
+        );
 
-        ProcessInput();
-        Update();
-        Render();
-    }
+        Renderer& renderer = scene->m_app->GetRenderer();
+        renderer.SetCamera(scene->m_camera.get());
+
+        Entity camera = scene->m_manager.CreateEntity();
+        camera.AddComponent<BaseComponent>("Main Camera");
+        camera.AddComponent<TransformComponent>(glm::vec3 { 0.0f, 0.0f, -1.0f }, glm::vec3 {0.0f}, glm::vec3 {1.0f});
+        camera.AddComponent<CameraComponent>();
+
+        Entity rect = scene->m_manager.CreateEntity();
+        rect.AddComponent<BaseComponent>("Rect");
+        rect.AddComponent<TransformComponent>(glm::vec3 {0.0f, 0.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {1.0f, 1.0f, 1.0f});
+        rect.AddComponent<SpriteRendererComponent>(Shape_Square);
+    });
+
+    m_activeScene->SetApplication(this);
+    m_activeScene->Initialize();
+
+    AddLayer(std::make_unique<EditorLayer>(*this));
 }
 
-void EditorApplication::OnEvent(Event* event)
-{
-    std::cout << "Got New Event !!!" << std::endl;
-}
-
-void EditorApplication::ProcessInput()
-{
-    m_window->ProcessInput();
-
-    if (m_window->WindowShouldClose())
-        m_running = false;
-}
-
-void EditorApplication::Update()
-{
-}
-
-void EditorApplication::Render()
-{
-    m_window->PreRender();
-
-    m_sceneLayer.Render();
-
-    m_imGuiLayer.NewFrame();
-    m_imGuiLayer.Draw();
-
-    m_window->Render();
-}

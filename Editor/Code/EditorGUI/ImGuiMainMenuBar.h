@@ -2,10 +2,10 @@
 
 class EditorLayer;
 
-class ImGuiEntityProperties
+class ImGuiMainMenuBar
 {
 public:
-	ImGuiEntityProperties(EditorLayer& editor);
+	ImGuiMainMenuBar(EditorLayer& editor);
 	void Render();
 
 private:

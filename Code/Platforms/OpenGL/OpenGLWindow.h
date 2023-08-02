@@ -27,6 +27,8 @@ public:
 
 	virtual void SetCursorShape(CursorShape shape) override;
 
+	virtual void* GetNativeWindow() const override { return m_glfwWindow; }
+
 	GLFWwindow* GetGLFWwindow();
 
 protected:

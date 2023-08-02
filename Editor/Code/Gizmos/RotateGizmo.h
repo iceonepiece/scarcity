@@ -8,7 +8,7 @@
 class RotateGizmo : public Gizmo
 {
 public:
-	RotateGizmo(Editor2D& editor)
+	RotateGizmo(EditorLayer& editor)
 		: Gizmo(editor)
 	{
 		m_actionables.push_back(std::make_unique<ActionableRect>(

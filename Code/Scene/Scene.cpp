@@ -155,27 +155,54 @@ void Scene::Exit()
 
 }
 
+void Scene::SetCamera(Camera* camera)
+{
+    Renderer& renderer = m_app->GetRenderer();
+
+    if (camera != nullptr)
+    {
+        renderer.SetViewMatrix(camera->GetViewMatrix());
+        renderer.SetProjectionMatrix(camera->GetProjectionMatrix());
+    }
+    else
+    {
+        auto view = m_manager.m_registry.view<TransformComponent, CameraComponent>();
+        for (auto [entity, transform, camera] : view.each())
+        {
+            WindowData window = m_app->GetWindow().GetWindowData();
+            float ratio = window.width / (float)window.height;
+            float width = camera.size * ratio;
+
+            renderer.SetViewMatrix(glm::inverse(glm::translate(glm::mat4(1.0f), transform.position)));
+            renderer.SetProjectionMatrix(glm::ortho(-width, width, -camera.size, camera.size));
+        }
+    }
+}
+
 void Scene::Render()
 {
-    //WindowData windowData = m_app->GetWindow().GetWindowData();
-    //m_camera->SetScreenSize({ windowData.width, windowData.height });
     Renderer& renderer = m_app->GetRenderer();
-    //renderer.SetCamera(m_camera.get());
 
-    for (auto& system : m_systems)
-        system->Render();
+    auto transforms = m_manager.m_registry.view<TransformComponent, SpriteRendererComponent>();
 
-    auto view = m_manager.m_registry.view<TransformComponent, SpriteRendererComponent>();
-
-    for (auto [entity, transform, sprite] : view.each())
+    for (auto [entity, transform, sprite] : transforms.each())
     {
         glm::vec2 position = transform.position;
         glm::vec2 scale = transform.scale;
         float angle = transform.rotation.z;
 
-        renderer.DrawQuad2D(position, scale, angle, sprite.color);
-    }
+        if (sprite.shape == SpriteShape::Shape_Square)
+            renderer.DrawQuad2D(position, scale, angle, sprite.color);
+        else if (sprite.shape == SpriteShape::Shape_Circle)
+        {
+            Circle2D circle;
+            circle.color = sprite.color;
+            circle.position = transform.position;
+            circle.scale = transform.scale;
 
+            renderer.DrawCircle2D(circle);
+        }
+    }
 }
 
 void Scene::RenderUI()

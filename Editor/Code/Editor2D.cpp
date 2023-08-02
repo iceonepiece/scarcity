@@ -11,6 +11,7 @@
 #include "Components/Components.h"
 #include "SampleScene.h"
 #include "Core/Timer.h"
+#include "Project/Project.h"
 
 glm::vec2 ConvertToNDC(const glm::vec2& screenPos, const glm::vec2& screenSize)
 {
@@ -41,7 +42,7 @@ void Editor2D::Initialize(std::string title, int width, int height)
 	m_window = std::make_unique<OpenGLWindow>(this, title, width, height);
 
     m_window->SetEventCallback([this](Event* event) {
-        this->OnEvent(event);
+        //this->OnEvent(event);
     });
 
     m_camera = std::make_unique<Camera2D>(
@@ -97,7 +98,7 @@ void Editor2D::Initialize(std::string title, int width, int height)
     m_scene->Initialize();
 }
 
-void Editor2D::OnEvent(Event* event)
+void Editor2D::OnEvent(Event& event)
 {
     //m_events.push_back(std::unique_ptr<Event>(event));
 }
@@ -361,8 +362,6 @@ void Editor2D::Render()
     }
     else
     {
-        Renderer& renderer = m_playingScene->m_app->GetRenderer();
-
         auto view = m_playingScene->GetEntityManager().m_registry.view<TransformComponent, CameraComponent>();
         for (auto [entity, transform, camera] : view.each())
         {   
@@ -426,4 +425,27 @@ void Editor2D::StopScene()
     m_playingScene->Stop();
     m_playingScene.reset();
     m_scenePlaying = false;
+}
+
+void Editor2D::NewProject()
+{
+    Project::New();
+}
+
+bool Editor2D::OpenProject()
+{
+    /*
+    std::string filepath = FileDialogs::OpenFile("Hazel Project (*.hproj)\0*.hproj\0");
+    if (filepath.empty())
+        return false;
+
+    OpenProject(filepath);
+    */
+
+    return true;
+}
+
+void Editor2D::SaveProject()
+{
+    Project::SaveActive();
 }
