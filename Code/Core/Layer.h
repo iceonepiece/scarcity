@@ -11,6 +11,7 @@ public:
 
 	virtual void Update(float deltaTime) {}
 	virtual void OnEvent(Event& event) {}
+	virtual void RenderImGui() {}
 
 	virtual void Initialize() {}
 	virtual void Shutdown() {}

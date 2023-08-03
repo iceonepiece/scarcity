@@ -14,10 +14,8 @@ public:
 
 	virtual void Initialize(std::string title, int width, int height) override;
 
-	inline Project* GetActiveProject() { return m_activeProject.get(); }
-	inline Scene* GetActiveScene() { return m_activeScene.get(); }
+	void NewProject(std::unique_ptr<Project> project);
 
 private:
 	std::unique_ptr<Project> m_activeProject;
-	std::unique_ptr<Scene> m_activeScene;
 };

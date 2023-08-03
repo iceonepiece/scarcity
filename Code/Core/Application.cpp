@@ -1,6 +1,11 @@
 #include "Application.h"
 #include "Timer.h"
 #include "Layer.h"
+#include "ImGui/ImGuiManager.h"
+
+Application::Application()
+{
+}
 
 Application::~Application()
 {
@@ -12,6 +17,14 @@ void Application::AddLayer(std::unique_ptr<Layer> layer)
 {
 	layer->Initialize();
 	m_layers.emplace_back(std::move(layer));
+}
+
+void Application::PopLayer()
+{
+	const auto& it = m_layers.erase(m_layers.begin());
+
+	if (it != m_layers.end())
+		it->get()->Shutdown();
 }
 
 void Application::OnEvent(Event& event)
@@ -42,6 +55,13 @@ void Application::Run()
 
 		for (auto& layer : m_layers)
 			layer->Update(Timer::GetDeltaTime());
+
+		m_imguiManager->Begin();
+		{
+			for (auto& layer : m_layers)
+				layer->RenderImGui();
+		}
+		m_imguiManager->End();
 
 		m_window->Render();
 	}

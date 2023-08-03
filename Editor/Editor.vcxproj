@@ -149,6 +149,7 @@
     <ClCompile Include="Code\EditorScene.cpp" />
     <ClCompile Include="Code\GameLayer.cpp" />
     <ClCompile Include="Code\Gizmos\Gizmo.cpp" />
+    <ClCompile Include="Code\HubLayer.cpp" />
     <ClCompile Include="Code\ImGuiComponent.cpp" />
     <ClCompile Include="Code\ImGuiLayer.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiMain.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="Code\Gizmos\RotateGizmo.h" />
     <ClInclude Include="Code\Gizmos\ScaleGizmo.h" />
     <ClInclude Include="Code\Gizmos\ViewGizmo.h" />
+    <ClInclude Include="Code\HubLayer.h" />
     <ClInclude Include="Code\ImGuiComponent.h" />
     <ClInclude Include="Code\ImGuiLayer.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiMain.h" />

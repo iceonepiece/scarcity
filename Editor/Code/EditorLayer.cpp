@@ -18,9 +18,6 @@ void EditorLayer::Initialize()
 {
 	std::cout << "EditorLayer Initialize()\n\n";
 
-	GLFWwindow* window = static_cast<GLFWwindow*>(m_app.GetWindow().GetNativeWindow());
-	m_imgui = std::make_unique<ImGuiMain>(*this, window, "#version 330");
-
     m_gizmos.push_back(std::make_unique<ViewGizmo>(*this));
     m_gizmos.push_back(std::make_unique<TranslateGizmo>(*this));
     m_gizmos.push_back(std::make_unique<RotateGizmo>(*this));
@@ -33,6 +30,35 @@ void EditorLayer::Initialize()
     );
 
     m_camera->SetCameraType(CameraType::Orthographic);
+
+    m_activeScene = std::make_unique<Scene>();
+    m_activeScene->SetInitializeFunction([](Scene* scene)
+    {
+        scene->m_camera = std::make_unique<Camera2D>(
+            glm::vec3 { 0.0f, 0.0f, -1.0f },
+            glm::vec2 { 1.0f, 1.0f },
+            glm::vec2 { 1280, 720 }
+        );
+
+        Renderer& renderer = scene->m_app->GetRenderer();
+        renderer.SetCamera(scene->m_camera.get());
+
+        Entity camera = scene->m_manager.CreateEntity();
+        camera.AddComponent<BaseComponent>("Main Camera");
+        camera.AddComponent<TransformComponent>(glm::vec3 { 0.0f, 0.0f, -1.0f }, glm::vec3 {0.0f}, glm::vec3 {1.0f});
+        camera.AddComponent<CameraComponent>();
+
+        Entity rect = scene->m_manager.CreateEntity();
+        rect.AddComponent<BaseComponent>("Rect");
+        rect.AddComponent<TransformComponent>(glm::vec3 {0.0f, 0.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {1.0f, 1.0f, 1.0f});
+        rect.AddComponent<SpriteRendererComponent>(Shape_Square);
+    });
+
+    m_activeScene->SetApplication(&m_app);
+    m_activeScene->Initialize();
+
+    m_imgui = std::make_unique<ImGuiMain>(*this);
+
 }
 
 
@@ -96,11 +122,6 @@ void EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& event)
 {
     std::cout << "OnMouseButtonPressed" << std::endl;
 
-    ImGuiIO& io = ImGui::GetIO();
-
-    if (io.WantCaptureMouse)
-        event.handled = true;
-
     if (event.GetMouseButton() == Mouse::ButtonLeft)
     {
         m_mouseActive = true;
@@ -124,7 +145,7 @@ void EditorLayer::OnMouseButtonReleased(MouseButtonReleasedEvent& event)
 
 bool EditorLayer::CheckPicking2D()
 {
-    auto transforms = m_app.GetActiveScene()->GetEntityManager().m_registry.view<TransformComponent>();
+    auto transforms = m_activeScene->GetEntityManager().m_registry.view<TransformComponent>();
     for (auto [entity, transform] : transforms.each())
     {
         if (!Shape2D::IsPointOnRectangle(m_worldCursorPosition, transform.position, transform.scale, transform.rotation.z))
@@ -149,7 +170,7 @@ TransformComponent* EditorLayer::GetEntityTransform()
     if (!m_entityPicked)
         return nullptr;
 
-    return &m_app.GetActiveScene()->GetEntityManager().m_registry.get<TransformComponent>(m_pickedEntity);
+    return &m_activeScene->GetEntityManager().m_registry.get<TransformComponent>(m_pickedEntity);
 }
 
 
@@ -167,21 +188,22 @@ void EditorLayer::Update(float deltaTime)
     {
         m_gizmos[m_currentMode]->Update(deltaTime);
 
-        Scene* activeScene = m_app.GetActiveScene();
-
-        if (activeScene != nullptr)
+        if (m_activeScene != nullptr)
         {
-            activeScene->SetCamera(m_camera.get());
-            activeScene->Render();
+            m_activeScene->SetCamera(m_camera.get());
+            m_activeScene->Render();
 
             if (m_currentMode != EditorMode::ViewMode && m_entityPicked)
             {
-                auto& transform = activeScene->GetEntityManager().m_registry.get<TransformComponent>(m_pickedEntity);
+                auto& transform = m_activeScene->GetEntityManager().m_registry.get<TransformComponent>(m_pickedEntity);
                 m_gizmos.at(m_currentMode)->Render(renderer, transform.position);
             }
         }
     }
+}
 
+void EditorLayer::RenderImGui()
+{
     m_imgui->Render();
 }
 
@@ -191,12 +213,10 @@ void EditorLayer::OnWindowResize(WindowResizeEvent& event)
 }
 
 void EditorLayer::PlayScene()
-{
-    Scene* activeScene = m_app.GetActiveScene();
-    
-    if (activeScene != nullptr)
+{    
+    if (m_activeScene != nullptr)
     {
-        m_playingScene = Scene::Copy(*activeScene);
+        m_playingScene = Scene::Copy(*m_activeScene);
         m_playingScene->SetApplication(&m_app);
         m_playingScene->Start();
         m_scenePlaying = true;

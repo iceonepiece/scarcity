@@ -18,12 +18,13 @@ class EditorLayer : public Layer
 {
 public:
 	EditorLayer(EditorApplication& app);
-	~EditorLayer() = default;
+	virtual ~EditorLayer() = default;
 
 	virtual void Update(float deltaTime) override;
 	virtual void OnEvent(Event& event) override;
 	virtual void Initialize() override;
 	virtual void Shutdown() override;
+	virtual void RenderImGui() override;
 
 	inline bool IsEntityPicked() { return m_entityPicked; }
 
@@ -41,7 +42,7 @@ public:
 
 	inline bool IsScenePlaying() { return m_scenePlaying; }
 
-	Scene* GetScene() { return m_app.GetActiveScene(); }
+	Scene* GetScene() { return m_activeScene.get(); }
 	Camera& GetCamera() { return *m_camera; }
 
 	bool CheckPicking2D();
@@ -56,6 +57,8 @@ private:
 	void OnMouseScrolled(MouseScrolledEvent& event);
 
 private:
+	std::unique_ptr<Scene> m_activeScene;
+
 	bool m_mouseActive = false;
 	std::vector<std::unique_ptr<Gizmo>> m_gizmos;
 	

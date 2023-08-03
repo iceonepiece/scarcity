@@ -13,8 +13,7 @@ class EditorLayer;
 class ImGuiMain
 {
 public:
-	ImGuiMain(EditorLayer& editor, GLFWwindow* window, const char* glslVersion);
-	~ImGuiMain();
+	ImGuiMain(EditorLayer& editor);
 	void Render();
 
 private:

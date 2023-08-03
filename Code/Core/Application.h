@@ -9,11 +9,13 @@
 #include "Events/WindowEvent.h"
 #include "Lua/LuaEngine.h"
 
+class ImGuiManager;
 class Layer;
 
 class Application
 {
 public:
+	Application();
 	virtual ~Application();
 
 	virtual void Initialize(std::string title, int width, int height) = 0;
@@ -22,6 +24,7 @@ public:
 	virtual void OnEvent(Event& e);
 
 	void AddLayer(std::unique_ptr<Layer> layer);
+	void PopLayer();
 
 	virtual void OnWindowClose() {}
 	virtual void OnWindowResize(int width, int height) {}
@@ -49,6 +52,8 @@ protected:
 	bool m_running = true;
 	std::unique_ptr<Window> m_window;
 	std::unique_ptr<Renderer> m_renderer;
+	std::unique_ptr<ImGuiManager> m_imguiManager;
+
 
 	std::vector<std::unique_ptr<Layer>> m_layers;
 
