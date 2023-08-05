@@ -1,16 +1,37 @@
 #pragma once
 
-#include <Windows.h>
+#include <filesystem>
 #include <string>
+#include <Windows.h>
 #include <commdlg.h>
 #include <shlobj_core.h>
 #include <GLFW/glfw3.h>
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
 
-class FileDialog
+class FileUtils
 {
 public:
+	static bool CreateFolder(std::filesystem::path directoryPath)
+	{
+		if (!std::filesystem::exists(directoryPath))
+		{
+			if (std::filesystem::create_directory(directoryPath))
+			{
+				std::cout << "Directory created: " << directoryPath << std::endl;
+				return true;
+			}
+			else
+			{
+				std::cout << "Failed to create directory: " << directoryPath << std::endl;
+				return false;
+			}
+		}
+		
+		std::cout << "Directory already exists: " << directoryPath << std::endl;
+		return false;
+	}
+
 	static std::string OpenFolder(void* nativeWindow)
 	{
 		std::string folderPath;

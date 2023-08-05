@@ -9,7 +9,7 @@
 
 using json = nlohmann::json;
 
-void SceneSerializer::Serialize(const std::string& filepath)
+void SceneSerializer::Serialize(std::filesystem::path filepath)
 {
 	std::ofstream sceneFile;
 	sceneFile.open(filepath);
@@ -17,7 +17,7 @@ void SceneSerializer::Serialize(const std::string& filepath)
 	if (sceneFile.is_open())
 	{
 		json sceneJson;
-		sceneJson["name"] = "Untitled";
+		sceneJson["name"] = m_scene.m_name;
 		sceneJson["entities"] = json::array();
 
 		auto& registry = m_scene.m_manager.m_registry;
@@ -146,7 +146,7 @@ bool SceneSerializer::Deserialize(const std::string& filepath)
 	}
 	else
 	{
-		std::cerr << "Error opening the file!" << std::endl;
+		std::cerr << "Error opening the file! - " << filepath << std::endl;
 		return false;
 	}
 

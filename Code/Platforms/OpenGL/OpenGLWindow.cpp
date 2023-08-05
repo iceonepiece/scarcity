@@ -165,6 +165,12 @@ void OpenGLWindow::Render()
     glfwSwapBuffers(m_glfwWindow);
 }
 
+void OpenGLWindow::SetTitle(const std::string& title)
+{
+    m_title = title;
+    glfwSetWindowTitle(m_glfwWindow, title.c_str());
+}
+
 void OpenGLWindow::SetCursorShape(CursorShape shape)
 {
     switch (shape)

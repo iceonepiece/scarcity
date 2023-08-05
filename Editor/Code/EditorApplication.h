@@ -14,8 +14,13 @@ public:
 
 	virtual void Initialize(std::string title, int width, int height) override;
 
-	void NewProject(std::unique_ptr<Project> project);
+	bool NewProject(const std::string& name, std::filesystem::path location);
+	void OpenProject(std::filesystem::path path);
+	void SaveProject();
+
+	void NewScene(const std::string& name, std::filesystem::path directory);
+	void OpenScene(std::filesystem::path path);
+	void SaveScene();
 
 private:
-	std::unique_ptr<Project> m_activeProject;
 };

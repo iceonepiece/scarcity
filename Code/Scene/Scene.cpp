@@ -4,8 +4,9 @@
 #include "Core/Camera2D.h"
 #include "Components/Components.h"
 
-Scene::Scene()
-	: m_camera(
+Scene::Scene(const std::string& name)
+    : m_name(name)
+	, m_camera(
         new Camera2D({ 0.0f, 0.0f, -14.0f }, { 0.5f, 0.25f }, { 1280, 720 })
     )
     , m_ui(this)
@@ -13,6 +14,7 @@ Scene::Scene()
     m_systems.push_back(std::make_unique<ScriptableSystem>(this));
     m_systems.push_back(std::make_unique<RenderSystem>(this));
 }
+
 
 void Scene::OnEvent(Event* e)
 {
@@ -22,7 +24,37 @@ void Scene::OnEvent(Event* e)
 void Scene::Initialize()
 {
     if (m_initializeFunction != nullptr)
-        m_initializeFunction(this);
+        m_initializeFunction(*this);
+}
+
+std::unique_ptr<Scene> Scene::CreateDefaultScene(std::filesystem::path directory)
+{
+    std::unique_ptr<Scene> defaultScene = std::make_unique<Scene>();
+    defaultScene->m_path = directory / (defaultScene->m_name + ".scene.json");
+
+    defaultScene->SetInitializeFunction([](Scene& scene)
+    {
+        scene.m_camera = std::make_unique<Camera2D>(
+            glm::vec3 { 0.0f, 0.0f, -1.0f },
+            glm::vec2 { 1.0f, 1.0f },
+            glm::vec2 { 1280, 720 }
+        );
+
+        Renderer& renderer = scene.m_app->GetRenderer();
+        renderer.SetCamera(scene.m_camera.get());
+
+        Entity camera = scene.m_manager.CreateEntity();
+        camera.AddComponent<BaseComponent>("Main Camera");
+        camera.AddComponent<TransformComponent>(glm::vec3 { 0.0f, 0.0f, -1.0f }, glm::vec3 {0.0f}, glm::vec3 {1.0f});
+        camera.AddComponent<CameraComponent>();
+
+        Entity rect = scene.m_manager.CreateEntity();
+        rect.AddComponent<BaseComponent>("Rect");
+        rect.AddComponent<TransformComponent>(glm::vec3 {0.0f, 0.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {1.0f, 1.0f, 1.0f});
+        rect.AddComponent<SpriteRendererComponent>(Shape_Square);
+    });
+
+    return defaultScene;
 }
 
 std::unique_ptr<Scene> Scene::Copy(Scene& sourceScene)
@@ -159,10 +191,12 @@ void Scene::SetCamera(Camera* camera)
 {
     Renderer& renderer = m_app->GetRenderer();
 
+
     if (camera != nullptr)
     {
         renderer.SetViewMatrix(camera->GetViewMatrix());
         renderer.SetProjectionMatrix(camera->GetProjectionMatrix());
+        renderer.SetCamera(camera);
     }
     else
     {

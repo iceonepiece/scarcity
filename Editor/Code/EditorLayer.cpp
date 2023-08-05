@@ -8,10 +8,37 @@
 #include "Gizmos/ScaleGizmo.h"
 #include <iostream>
 
-EditorLayer::EditorLayer(EditorApplication& app)
+EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> project)
+    : m_app(app)
+    , m_activeProject(std::move(project))
+    , m_entityProperties(*this)
+    , m_hierarchy(*this)
+    , m_mainMenuBar(*this)
+    , m_assetPanel(*this)
+{
+    std::cout << "EditorLayer Constructor()\n\n";
+
+    /*
+    m_activeScene = std::make_unique<Scene>();
+    m_activeScene->SetApplication((Application*)&m_app);
+    m_activeScene->Initialize();
+    */
+    std::cout << "Start Scene: " << m_activeProject->GetStartScene() << std::endl;
+    OpenScene(m_activeProject->GetStartScene());
+    m_activeScene->SetApplication(&m_app);
+    m_activeScene->Initialize();
+}
+
+EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Scene> scene)
 	: m_app(app)
+    , m_activeScene(std::move(scene))
+    , m_entityProperties(*this)
+    , m_hierarchy(*this)
+    , m_mainMenuBar(*this)
+    , m_assetPanel(*this)
 {
 	std::cout << "EditorLayer Constructor()\n\n";
+
 }
 
 void EditorLayer::Initialize()
@@ -30,37 +57,54 @@ void EditorLayer::Initialize()
     );
 
     m_camera->SetCameraType(CameraType::Orthographic);
-
-    m_activeScene = std::make_unique<Scene>();
-    m_activeScene->SetInitializeFunction([](Scene* scene)
+    
+    if (m_activeProject != nullptr)
     {
-        scene->m_camera = std::make_unique<Camera2D>(
+        m_assetPanel.SetCurrentDirectory(m_activeProject->GetDirectory());
+    }
+
+    /*
+    m_activeScene = std::make_unique<Scene>();
+    m_activeScene->SetInitializeFunction([](Scene& scene)
+    {
+        scene.m_camera = std::make_unique<Camera2D>(
             glm::vec3 { 0.0f, 0.0f, -1.0f },
             glm::vec2 { 1.0f, 1.0f },
             glm::vec2 { 1280, 720 }
         );
 
-        Renderer& renderer = scene->m_app->GetRenderer();
-        renderer.SetCamera(scene->m_camera.get());
+        Renderer& renderer = scene.m_app->GetRenderer();
+        renderer.SetCamera(scene.m_camera.get());
 
-        Entity camera = scene->m_manager.CreateEntity();
+        Entity camera = scene.m_manager.CreateEntity();
         camera.AddComponent<BaseComponent>("Main Camera");
         camera.AddComponent<TransformComponent>(glm::vec3 { 0.0f, 0.0f, -1.0f }, glm::vec3 {0.0f}, glm::vec3 {1.0f});
         camera.AddComponent<CameraComponent>();
 
-        Entity rect = scene->m_manager.CreateEntity();
+        Entity rect = scene.m_manager.CreateEntity();
         rect.AddComponent<BaseComponent>("Rect");
         rect.AddComponent<TransformComponent>(glm::vec3 {0.0f, 0.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {1.0f, 1.0f, 1.0f});
         rect.AddComponent<SpriteRendererComponent>(Shape_Square);
     });
+    */
 
-    m_activeScene->SetApplication(&m_app);
-    m_activeScene->Initialize();
-
-    m_imgui = std::make_unique<ImGuiMain>(*this);
-
+    //m_imgui = std::make_unique<ImGuiMain>(*this);
 }
 
+bool EditorLayer::OpenScene(std::filesystem::path path)
+{
+    m_activeScene = std::make_unique<Scene>();
+    SceneSerializer serializer(*m_activeScene);
+    
+    if (!serializer.Deserialize(path.string()))
+    {
+        
+        m_activeScene = Scene::CreateDefaultScene(m_activeProject->GetDirectory() / "Scenes");
+        return false;
+    }
+
+    return true;
+}
 
 void EditorLayer::CalculateWorldCursorPosition()
 {
@@ -204,7 +248,10 @@ void EditorLayer::Update(float deltaTime)
 
 void EditorLayer::RenderImGui()
 {
-    m_imgui->Render();
+    m_entityProperties.Render();
+    m_hierarchy.Render();
+    m_assetPanel.Render();
+    m_mainMenuBar.Render();
 }
 
 void EditorLayer::OnWindowResize(WindowResizeEvent& event)

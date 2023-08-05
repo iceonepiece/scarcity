@@ -46,8 +46,8 @@ public:
 	inline WindowData GetWindowData() { return m_data; }
 	virtual void* GetNativeWindow() const = 0;
 
+	virtual void SetTitle(const std::string& title) = 0;
 	virtual void SetCursorShape(CursorShape shape) = 0;
-
 
 protected:
 

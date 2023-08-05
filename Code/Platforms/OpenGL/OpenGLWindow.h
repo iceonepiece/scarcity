@@ -25,6 +25,7 @@ public:
 		std::cout << "XXXX: " << &(m_data.EventCallback) << std::endl;
 	}
 
+	virtual void SetTitle(const std::string& title) override;
 	virtual void SetCursorShape(CursorShape shape) override;
 
 	virtual void* GetNativeWindow() const override { return m_glfwWindow; }

@@ -1,4 +1,5 @@
 #include <string>
+#include <filesystem>
 #include "Scene.h"
 
 class SceneSerializer
@@ -6,7 +7,7 @@ class SceneSerializer
 public:
 	SceneSerializer(Scene& scene);
 
-	void Serialize(const std::string& filepath);
+	void Serialize(std::filesystem::path filepath);
 	bool Deserialize(const std::string& filepath);
 
 private:

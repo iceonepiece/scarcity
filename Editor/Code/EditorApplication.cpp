@@ -8,6 +8,9 @@
 #include "EditorLayer.h"
 #include "Core/Camera2D.h"
 #include "ImGui/ImGuiManager.h"
+#include "Utils/FileDialog.h"
+#include "Project/ProjectSerializer.h"
+#include "Scene/SceneSerializer.h"
 
 EditorApplication::EditorApplication()
 {
@@ -32,10 +35,66 @@ void EditorApplication::Initialize(std::string title, int width, int height)
     //AddLayer(std::make_unique<EditorLayer>(*this));
 }
 
-void EditorApplication::NewProject(std::unique_ptr<Project> project)
+bool EditorApplication::NewProject(const std::string& name, std::filesystem::path location)
 {
-    m_activeProject = std::move(project);
+    std::filesystem::path directory = location / name;
 
-    PopLayer();
-    AddLayer(std::make_unique<EditorLayer>(*this));
+    if (FileUtils::CreateFolder(directory))
+    {
+        Project project(name, directory);
+        FileUtils::CreateFolder(directory / "Scenes");
+
+        std::unique_ptr<Scene> defaultScene = Scene::CreateDefaultScene(directory);
+        defaultScene->SetApplication(this);
+        defaultScene->Initialize();
+
+        std::filesystem::path scenePath = directory / "Scenes" / (defaultScene->m_name + ".scene.json");
+        project.SetStartScene(scenePath);
+
+        ProjectSerializer serializer(project);
+        serializer.Serialize(directory / (name + ".bfproj.json"));
+
+        SceneSerializer sceneSerializer(*defaultScene);
+        sceneSerializer.Serialize(scenePath);
+
+        return true;
+    }
+
+    return false;
+}
+
+void EditorApplication::OpenProject(std::filesystem::path path)
+{
+    std::cout << "Open Project: " << path << std::endl;
+   
+    std::unique_ptr<Project> project = std::make_unique<Project>();
+    ProjectSerializer serializer(*project.get());
+
+    if (serializer.Deserialize(path))
+    {
+        m_window->SetTitle(project->GetName() + " - BossFight Engine");
+
+        PopLayer();
+        AddLayer(std::make_unique<EditorLayer>(*this, std::move(project)));
+    }
+}
+
+void EditorApplication::SaveProject()
+{
+    
+}
+
+void EditorApplication::NewScene(const std::string& name, std::filesystem::path directory)
+{
+
+}
+
+void EditorApplication::OpenScene(std::filesystem::path path)
+{
+
+}
+
+void EditorApplication::SaveScene()
+{
+
 }

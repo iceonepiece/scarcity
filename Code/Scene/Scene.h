@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <functional>
+#include <filesystem>
 #include "Core/Application.h"
 #include "Core/EntityManager.h"
 #include "Core/Camera.h"
@@ -14,12 +15,12 @@
 
 #include "Events/Event.h"
 
-using InitializeFunction = std::function<void(Scene*)>;
+using InitializeFunction = std::function<void(Scene&)>;
 
 class Scene
 {
 public:
-	Scene();
+	Scene(const std::string& name = "Untitled");
 	virtual ~Scene() = default;
 
 	virtual void Initialize();
@@ -38,6 +39,7 @@ public:
 	virtual void Enter();
 	virtual void Exit();
 
+	static std::unique_ptr<Scene> CreateDefaultScene(std::filesystem::path directory);
 	static std::unique_ptr<Scene> Copy(Scene& sourceScene);
 
 	void SetApplication(Application* app) { m_app = app; }
@@ -76,6 +78,8 @@ public:
 
 	EntityManager& GetEntityManager();
 
+	std::string m_name;
+	std::filesystem::path m_path;
 	std::unordered_map<std::string, std::unique_ptr<GameState>> m_gameStates;
 	std::string m_currentGameStateName;
 

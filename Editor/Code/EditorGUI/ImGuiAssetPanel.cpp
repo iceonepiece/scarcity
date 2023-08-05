@@ -2,9 +2,12 @@
 #include "ImGuiAssetPanel.h"
 #include <string>
 #include "Platforms/OpenGL/OpenGLTexture.h"
+#include "../EditorLayer.h"
 
-ImGuiAssetPanel::ImGuiAssetPanel()
-	: m_BaseDirectory(std::filesystem::current_path()), m_CurrentDirectory(m_BaseDirectory)
+ImGuiAssetPanel::ImGuiAssetPanel(EditorLayer& editor)
+	: m_editor(editor)
+	, m_BaseDirectory(std::filesystem::current_path())
+	, m_CurrentDirectory(m_BaseDirectory)
 {
 	m_folderIcon = std::make_unique<OpenGLTexture>("Editor/icons8-folder-200.png");
 	m_fileIcon = std::make_unique<OpenGLTexture>("Editor/icons8-file-200.png");
@@ -57,6 +60,10 @@ void ImGuiAssetPanel::Render()
 		{
 			if (directoryEntry.is_directory())
 				m_CurrentDirectory /= path.filename();
+			else
+			{
+				m_editor.OpenScene(path);
+			}
 
 		}
 		ImGui::TextWrapped(filenameString.c_str());

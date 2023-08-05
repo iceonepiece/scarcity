@@ -17,7 +17,8 @@ enum EditorMode
 class EditorLayer : public Layer
 {
 public:
-	EditorLayer(EditorApplication& app);
+	EditorLayer(EditorApplication& app, std::unique_ptr<Project> project);
+	EditorLayer(EditorApplication& app, std::unique_ptr<Scene> scene);
 	virtual ~EditorLayer() = default;
 
 	virtual void Update(float deltaTime) override;
@@ -35,6 +36,7 @@ public:
 		m_pickedEntity = picked;
 	}
 
+	bool OpenScene(std::filesystem::path path);
 	void PlayScene();
 	void StopScene();
 
@@ -57,6 +59,7 @@ private:
 	void OnMouseScrolled(MouseScrolledEvent& event);
 
 private:
+	std::unique_ptr<Project> m_activeProject;
 	std::unique_ptr<Scene> m_activeScene;
 
 	bool m_mouseActive = false;
@@ -76,4 +79,9 @@ private:
 
 	glm::vec2 m_cursorPosition;
 	glm::vec2 m_worldCursorPosition;
+
+	ImGuiMainMenuBar m_mainMenuBar;
+	ImGuiEntityProperties m_entityProperties;
+	ImGuiHierarchy m_hierarchy;
+	ImGuiAssetPanel m_assetPanel;
 };

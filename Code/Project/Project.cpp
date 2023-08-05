@@ -11,10 +11,10 @@ std::shared_ptr<Project> Project::Load(const std::filesystem::path& path)
 {
 	std::shared_ptr<Project> project = std::make_shared<Project>();
 
-	ProjectSerializer serializer(project);
+	ProjectSerializer serializer(*project.get());
 	if (serializer.Deserialize(path))
 	{
-		project->m_projectDirectory = path.parent_path();
+		project->m_directory = path.parent_path();
 		s_activeProject = project;
 		return s_activeProject;
 	}

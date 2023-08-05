@@ -30,7 +30,11 @@ void HubLayer::OnEvent(Event& event)
 void HubLayer::RenderImGui()
 {
     bool showModal = false;
+    bool projectCreated = false;
+    bool projectOpened = false;
 
+    static std::string projectName;
+    static std::string location;
     static std::string directory;
 
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 10)); // Increase vertical padding
@@ -43,9 +47,10 @@ void HubLayer::RenderImGui()
             showModal = true;
         }
         
-        
         if (ImGui::MenuItem("Open Project"))
         {
+            directory = FileUtils::OpenFile("JSON Files\0*.json\0All Files\0*.*\0\0", m_editor.GetWindow().GetNativeWindow());
+            projectOpened = true;
         }
         
         ImGui::Separator();
@@ -63,14 +68,11 @@ void HubLayer::RenderImGui()
 
     ImGui::PopStyleVar();
 
-
     if (showModal)
         ImGui::OpenPopup("New Project");
 
     if (ImGui::BeginPopupModal("New Project", NULL, NULL))
     {
-        static std::string projectName;
-        static std::string location;
         ImGui::Text("Project Setting");
 
         ImGui::Text("Project name: "); ImGui::SameLine();
@@ -81,7 +83,7 @@ void HubLayer::RenderImGui()
         
         if (ImGui::Button("Browse"))
         {
-            directory = FileDialog::OpenFolder(m_editor.GetWindow().GetNativeWindow());
+            directory = FileUtils::OpenFolder(m_editor.GetWindow().GetNativeWindow());
         }
 
         if (ImGui::Button("Cancel"))
@@ -89,7 +91,7 @@ void HubLayer::RenderImGui()
 
         if (ImGui::Button("Create Project"))
         {
-            m_editor.NewProject(std::make_unique<Project>(projectName, directory));
+            projectCreated = true;
             ImGui::CloseCurrentPopup();
         }
 
@@ -98,4 +100,18 @@ void HubLayer::RenderImGui()
 
 
     ImGui::ShowDemoWindow();
+
+    if (projectCreated)
+    {
+        std::filesystem::path createdDirectory = directory;
+        
+        if (m_editor.NewProject(projectName, createdDirectory))
+        {
+            m_editor.OpenProject(createdDirectory / projectName / (projectName + ".bfproj.json"));
+        }
+    }
+    else if (projectOpened)
+    {
+        m_editor.OpenProject(directory);
+    }
 }

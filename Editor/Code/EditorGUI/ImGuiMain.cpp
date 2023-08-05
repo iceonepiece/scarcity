@@ -8,6 +8,7 @@ ImGuiMain::ImGuiMain(EditorLayer& editor)
     , m_entityProperties(editor)
     , m_hierarchy(editor)
     , m_mainMenuBar(editor)
+    , m_assetPanel(editor)
 {
 }
 

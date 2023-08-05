@@ -8,10 +8,16 @@ class Project
 public:
 	Project() = default;
 
-	Project(const std::string& name, const std::string& path)
+	Project(const std::string& name, const std::filesystem::path& path)
 		: m_name(name)
-		, m_projectDirectory(path)
+		, m_directory(path)
 	{}
+
+	inline void SetStartScene(std::filesystem::path path) { m_startScene = path; }
+	inline std::filesystem::path GetStartScene() { return m_startScene; }
+
+	inline std::string GetName() { return m_name; }
+	inline std::filesystem::path GetDirectory() { return m_directory; }
 
 	static std::shared_ptr<Project> New();
 	static std::shared_ptr<Project> Load(const std::filesystem::path& path);
@@ -21,8 +27,10 @@ public:
 
 private:
 	std::string m_name = "Untitled";
-	std::filesystem::path m_projectDirectory;
+	std::filesystem::path m_directory;
 	std::filesystem::path m_startScene;
 
 	inline static std::shared_ptr<Project> s_activeProject;
+
+	friend class ProjectSerializer;
 };

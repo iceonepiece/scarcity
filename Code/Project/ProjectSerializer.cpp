@@ -1,62 +1,59 @@
 #include "ProjectSerializer.h"
+#include <fstream>
+#include <iostream>
+#include <nlohmann/json.hpp>
 
-ProjectSerializer::ProjectSerializer(std::shared_ptr<Project> project)
+using json = nlohmann::json;
+
+ProjectSerializer::ProjectSerializer(Project& project)
 	: m_project(project)
 {
 }
 
 bool ProjectSerializer::Serialize(const std::filesystem::path& filepath)
 {
-	/*
-	const auto& config = m_project->GetConfig();
+	std::ofstream serialized;
+	serialized.open(filepath);
 
-	YAML::Emitter out;
+	if (serialized.is_open())
 	{
-		out << YAML::BeginMap; // Root
-		out << YAML::Key << "Project" << YAML::Value;
-		{
-			out << YAML::BeginMap;// Project
-			out << YAML::Key << "Name" << YAML::Value << config.Name;
-			out << YAML::Key << "StartScene" << YAML::Value << config.StartScene.string();
-			out << YAML::Key << "AssetDirectory" << YAML::Value << config.AssetDirectory.string();
-			out << YAML::Key << "ScriptModulePath" << YAML::Value << config.ScriptModulePath.string();
-			out << YAML::EndMap; // Project
-		}
-		out << YAML::EndMap; // Root
+		json projectJson;
+		projectJson["name"] = m_project.m_name;
+		projectJson["directory"] = m_project.m_directory.string();
+		projectJson["startScene"] = m_project.m_startScene.string();
+
+		serialized << projectJson.dump(4);
+	}
+	else
+	{
+		std::cout << "Error opening the file!" << std::endl;
+		return false;
 	}
 
-	std::ofstream fout(filepath);
-	fout << out.c_str();
-	*/
+	serialized.close();
 
 	return true;
 }
 
 bool ProjectSerializer::Deserialize(const std::filesystem::path& filepath)
 {
-	/*
-	auto& config = m_project->GetConfig();
+	std::ifstream deserialzed(filepath);
 
-	YAML::Node data;
-	try
+	if (deserialzed.is_open())
 	{
-		data = YAML::LoadFile(filepath.string());
+		json projectJson = json::parse(deserialzed);
+
+		m_project.m_name = projectJson["name"];
+		m_project.m_directory = std::string(projectJson["directory"]);
+		m_project.m_startScene = std::string(projectJson["startScene"]);
 	}
-	catch (YAML::ParserException e)
+	else
 	{
-		HZ_CORE_ERROR("Failed to load project file '{0}'\n     {1}", filepath, e.what());
+		std::cerr << "Error opening the file!" << std::endl;
 		return false;
 	}
 
-	auto projectNode = data["Project"];
-	if (!projectNode)
-		return false;
-
-	config.Name = projectNode["Name"].as<std::string>();
-	config.StartScene = projectNode["StartScene"].as<std::string>();
-	config.AssetDirectory = projectNode["AssetDirectory"].as<std::string>();
-	config.ScriptModulePath = projectNode["ScriptModulePath"].as<std::string>();
-	*/
+	deserialzed.close();
 
 	return true;
 }
