@@ -25,8 +25,6 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     */
     std::cout << "Start Scene: " << m_activeProject->GetStartScene() << std::endl;
     OpenScene(m_activeProject->GetStartScene());
-    m_activeScene->SetApplication(&m_app);
-    m_activeScene->Initialize();
 }
 
 EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Scene> scene)
@@ -93,17 +91,25 @@ void EditorLayer::Initialize()
 
 bool EditorLayer::OpenScene(std::filesystem::path path)
 {
+    std::cout << "OpenScene: " << path << std::endl;
+    bool success = true;
+
     m_activeScene = std::make_unique<Scene>();
     SceneSerializer serializer(*m_activeScene);
     
     if (!serializer.Deserialize(path.string()))
     {
-        
         m_activeScene = Scene::CreateDefaultScene(m_activeProject->GetDirectory() / "Scenes");
-        return false;
+        success = false;
     }
 
-    return true;
+    m_activeScene->SetApplication(&m_app);
+    m_activeScene->Initialize();
+
+    std::string windowTitle = m_activeProject->GetName() + " - " + m_activeScene->m_name + " - BossFight Engine";
+    m_app.GetWindow().SetTitle(windowTitle);
+
+    return success;
 }
 
 void EditorLayer::CalculateWorldCursorPosition()

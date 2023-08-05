@@ -14,26 +14,33 @@ void ImGuiHierarchy::Render()
     EntityManager& manager = m_editor.GetScene()->GetEntityManager();
     auto& registry = manager.m_registry;
 
-    registry.each([&](entt::entity entity) {
-        BaseComponent& base = registry.get<BaseComponent>(entity);
+    std::string sceneHeader = "Scene: " + m_editor.GetScene()->m_name;
 
-        std::string name = base.name + "###ID" + std::to_string((int)entity);
-        if (ImGui::Selectable(name.c_str(), m_editor.GetPickedEntity() == entity))
-        {
-            m_editor.SetPickedEntity(entity);
-        }
-    });
-
-    if (ImGui::BeginPopupContextWindow(0, 1))
+    if (ImGui::TreeNode(sceneHeader.c_str()))
     {
-        if (ImGui::MenuItem("Create Empty Entity"))
+        registry.each([&](entt::entity entity) {
+            BaseComponent& base = registry.get<BaseComponent>(entity);
+
+            std::string name = base.name + "###ID" + std::to_string((int)entity);
+            if (ImGui::Selectable(name.c_str(), m_editor.GetPickedEntity() == entity))
+            {
+                m_editor.SetPickedEntity(entity);
+            }
+            });
+
+        if (ImGui::BeginPopupContextWindow(0, 1))
         {
-            auto entity = manager.CreateEntity();
-            entity.AddComponent<BaseComponent>("Untitled");
-            entity.AddComponent<TransformComponent>();
+            if (ImGui::MenuItem("Create Empty Entity"))
+            {
+                auto entity = manager.CreateEntity();
+                entity.AddComponent<BaseComponent>("Untitled");
+                entity.AddComponent<TransformComponent>();
+            }
+
+            ImGui::EndPopup();
         }
 
-        ImGui::EndPopup();
+        ImGui::TreePop();
     }
   
     ImGui::End();
