@@ -17,9 +17,12 @@
 
 using InitializeFunction = std::function<void(Scene&)>;
 
+const std::string SCENE_FILE_POSTFIX = ".scene.json";
+
 class Scene
 {
 public:
+
 	Scene(const std::string& name = "Untitled");
 	virtual ~Scene() = default;
 
@@ -28,6 +31,8 @@ public:
 	virtual void Update(float deltaTime);
 	virtual void Render();
 	void SetCamera(Camera* camera);
+	
+	bool HasSaved();
 
 
 	virtual void Start();
@@ -79,7 +84,7 @@ public:
 	EntityManager& GetEntityManager();
 
 	std::string m_name;
-	std::filesystem::path m_path;
+	std::filesystem::path m_location;
 	std::unordered_map<std::string, std::unique_ptr<GameState>> m_gameStates;
 	std::string m_currentGameStateName;
 

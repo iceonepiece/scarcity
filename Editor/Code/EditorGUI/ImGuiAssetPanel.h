@@ -11,7 +11,7 @@ public:
 	ImGuiAssetPanel(EditorLayer& editor);
 	void Render();
 
-	void SetCurrentDirectory(std::filesystem::path path)
+	void SetProjectDirectory(std::filesystem::path path)
 	{
 		m_CurrentDirectory = path;
 	}

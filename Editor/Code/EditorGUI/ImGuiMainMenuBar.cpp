@@ -15,7 +15,33 @@ void ImGuiMainMenuBar::Render()
     
     ImGui::BeginMainMenuBar();
 
-    if (ImGui::MenuItem("New")) {}
+    if (ImGui::BeginMenu("File"))
+    {
+        if (ImGui::MenuItem("New Scene"))
+        {
+            m_editor.NewScene();
+        }
+
+        if (ImGui::MenuItem("Open Scene"))
+        {
+        }
+
+        if (ImGui::MenuItem("Save Scene"))
+        {
+            m_editor.SaveScene();
+        }
+
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Exit"))
+        {
+            WindowCloseEvent event;
+            m_editor.OnEvent(event);
+        }
+
+        ImGui::EndMenu();
+    }
 
     if (m_editor.IsScenePlaying() && ImGui::MenuItem("Stop"))
         m_editor.StopScene();

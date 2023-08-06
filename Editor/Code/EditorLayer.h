@@ -27,6 +27,8 @@ public:
 	virtual void Shutdown() override;
 	virtual void RenderImGui() override;
 
+	void OnSceneUpdate();
+
 	inline bool IsEntityPicked() { return m_entityPicked; }
 
 	inline entt::entity GetPickedEntity() { return m_pickedEntity; }
@@ -36,7 +38,11 @@ public:
 		m_pickedEntity = picked;
 	}
 
+	bool NewScene();
 	bool OpenScene(std::filesystem::path path);
+	bool SaveScene();
+	bool SaveSceneAs();
+
 	void PlayScene();
 	void StopScene();
 

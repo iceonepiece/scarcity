@@ -3,6 +3,7 @@
 #include "Systems/RenderSystem.h"
 #include "Core/Camera2D.h"
 #include "Components/Components.h"
+#include "Utils/FileDialog.h"
 
 Scene::Scene(const std::string& name)
     : m_name(name)
@@ -30,7 +31,8 @@ void Scene::Initialize()
 std::unique_ptr<Scene> Scene::CreateDefaultScene(std::filesystem::path directory)
 {
     std::unique_ptr<Scene> defaultScene = std::make_unique<Scene>();
-    defaultScene->m_path = directory / (defaultScene->m_name + ".scene.json");
+    //defaultScene->m_path = directory / (defaultScene->m_name + ".scene.json");
+    defaultScene->m_location = directory;
 
     defaultScene->SetInitializeFunction([](Scene& scene)
     {
@@ -142,6 +144,11 @@ void Scene::StartPhysics()
 void Scene::StopPhysics()
 {
     m_physics.reset();
+}
+
+bool Scene::HasSaved()
+{
+    return FileUtils::FileExists(m_location / m_name);
 }
 
 void Scene::Update(float deltaTime)

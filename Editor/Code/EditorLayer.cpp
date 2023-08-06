@@ -6,6 +6,7 @@
 #include "Gizmos/TranslateGizmo.h"
 #include "Gizmos/RotateGizmo.h"
 #include "Gizmos/ScaleGizmo.h"
+#include "Utils/FileDialog.h"
 #include <iostream>
 
 EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> project)
@@ -58,7 +59,7 @@ void EditorLayer::Initialize()
     
     if (m_activeProject != nullptr)
     {
-        m_assetPanel.SetCurrentDirectory(m_activeProject->GetDirectory());
+        m_assetPanel.SetProjectDirectory(m_activeProject->GetDirectory());
     }
 
     /*
@@ -106,8 +107,7 @@ bool EditorLayer::OpenScene(std::filesystem::path path)
     m_activeScene->SetApplication(&m_app);
     m_activeScene->Initialize();
 
-    std::string windowTitle = m_activeProject->GetName() + " - " + m_activeScene->m_name + " - BossFight Engine";
-    m_app.GetWindow().SetTitle(windowTitle);
+    OnSceneUpdate();
 
     return success;
 }
@@ -302,6 +302,9 @@ void EditorLayer::OnMouseScrolled(MouseScrolledEvent& event)
 
 void EditorLayer::OnEvent(Event& event)
 {
+    if (event.GetType() == EventType::WindowClose)
+        m_app.OnEvent(event);
+
     EventType evenType = event.GetType();
 
     ImGuiIO& io = ImGui::GetIO();
@@ -356,6 +359,59 @@ void EditorLayer::OnEvent(Event& event)
             OnKeyPressed(static_cast<KeyPressedEvent&>(event));
             break;
     }
+}
 
+bool EditorLayer::NewScene()
+{
+    std::cout << "New Scene\n";
 
+    m_activeScene = Scene::CreateDefaultScene("");
+    m_activeScene->SetApplication(&m_app);
+    m_activeScene->Initialize();
+
+    return true;
+}
+
+void EditorLayer::OnSceneUpdate()
+{
+    std::cout << "OnSceneUpdate: " << m_activeScene->m_name << std::endl;
+    std::string windowTitle = m_activeProject->GetName() + " - " + m_activeScene->m_name + " - BossFight Engine";
+    m_app.GetWindow().SetTitle(windowTitle);
+}
+
+bool EditorLayer::SaveScene()
+{
+    if (m_activeScene->HasSaved())
+    {
+        std::cout << "Already Saved !!!\n";
+    }
+    else
+    {
+        std::cout << "Has not Saved Yet!!!\n";
+        return SaveSceneAs();
+    }
+
+    return true;
+}
+
+bool EditorLayer::SaveSceneAs()
+{
+    std::string saveDirectory = FileUtils::SaveFileDialog(m_app.GetWindow().GetNativeWindow());
+
+    std::filesystem::path savePath = saveDirectory;
+    std::string sceneName = savePath.filename().string();
+    savePath += SCENE_FILE_POSTFIX;
+
+    std::cout << "Save Scene as: " << savePath << std::endl;
+    
+    SceneSerializer serializer(*m_activeScene);
+
+    if (!serializer.Serialize(savePath))
+        return false;
+
+    m_activeScene->m_name = sceneName;
+
+    OnSceneUpdate();
+
+    return true;
 }

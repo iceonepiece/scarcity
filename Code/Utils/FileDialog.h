@@ -1,5 +1,6 @@
 #pragma once
 
+#include <fstream>
 #include <filesystem>
 #include <string>
 #include <Windows.h>
@@ -12,6 +13,12 @@
 class FileUtils
 {
 public:
+	static bool FileExists(std::filesystem::path filePath)
+	{
+		std::ifstream file(filePath);
+		return file.good();
+	}
+
 	static bool CreateFolder(std::filesystem::path directoryPath)
 	{
 		if (!std::filesystem::exists(directoryPath))
@@ -107,6 +114,27 @@ public:
 			return ofn.lpstrFile;
 
 		return std::string();
+	}
 
+	static std::string SaveFileDialog(void* nativeWindow)
+	{
+		OPENFILENAMEA ofn;
+		CHAR szFile[260] = { 0 };
+		CHAR currentDir[256] = { 0 };
+		ZeroMemory(&ofn, sizeof(OPENFILENAME));
+		ofn.lStructSize = sizeof(OPENFILENAME);
+		ofn.hwndOwner = glfwGetWin32Window((GLFWwindow*)nativeWindow);
+		ofn.lpstrFile = szFile;
+		ofn.nMaxFile = sizeof(szFile);
+		if (GetCurrentDirectoryA(256, currentDir))
+			ofn.lpstrInitialDir = currentDir;
+
+		ofn.nFilterIndex = 1;
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+		if (GetSaveFileNameA(&ofn) == TRUE)
+			return ofn.lpstrFile;
+
+		return std::string();
 	}
 };
