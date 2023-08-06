@@ -148,7 +148,7 @@ void Scene::StopPhysics()
 
 bool Scene::HasSaved()
 {
-    return FileUtils::FileExists(m_location / m_name);
+    return FileUtils::FileExists(m_path);
 }
 
 void Scene::Update(float deltaTime)

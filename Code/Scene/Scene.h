@@ -83,6 +83,7 @@ public:
 
 	std::string m_name;
 	std::filesystem::path m_location;
+	std::filesystem::path m_path;
 	std::unordered_map<std::string, std::unique_ptr<GameState>> m_gameStates;
 	std::string m_currentGameStateName;
 

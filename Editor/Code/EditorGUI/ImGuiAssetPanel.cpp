@@ -60,8 +60,9 @@ void ImGuiAssetPanel::Render()
 		{
 			if (directoryEntry.is_directory())
 				m_CurrentDirectory /= path.filename();
-			else
+			else if (path.extension() == SCENE_FILE_EXTENSION)
 			{
+				std::cout << "Clicked scene file: " << SCENE_FILE_EXTENSION << std::endl;
 				m_editor.OpenScene(path);
 			}
 

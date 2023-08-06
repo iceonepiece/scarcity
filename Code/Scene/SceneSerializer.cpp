@@ -179,6 +179,8 @@ bool SceneSerializer::Deserialize(std::filesystem::path filepath)
 	if (sceneFile.is_open())
 	{
 		m_scene.m_name = filepath.stem().string();
+		m_scene.m_location = filepath.parent_path();
+		m_scene.m_path = filepath;
 
 		EntityManager& manager = m_scene.GetEntityManager();
 
@@ -232,6 +234,8 @@ bool SceneSerializer::Deserialize(std::filesystem::path filepath)
 		std::cerr << "Error opening the file! - " << filepath << std::endl;
 		return false;
 	}
+
+	std::cout << "Deserialize scene at path: " << m_scene.m_location / m_scene.m_name << std::endl;
 
 	sceneFile.close();
 
