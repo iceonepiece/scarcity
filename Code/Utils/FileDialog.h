@@ -116,7 +116,7 @@ public:
 		return std::string();
 	}
 
-	static std::string SaveFileDialog(void* nativeWindow)
+	static std::string SaveFileDialog(const char* filter, void* nativeWindow)
 	{
 		OPENFILENAMEA ofn;
 		CHAR szFile[260] = { 0 };
@@ -129,6 +129,7 @@ public:
 		if (GetCurrentDirectoryA(256, currentDir))
 			ofn.lpstrInitialDir = currentDir;
 
+		ofn.lpstrFilter = filter;
 		ofn.nFilterIndex = 1;
 		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 

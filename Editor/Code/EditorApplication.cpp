@@ -48,14 +48,11 @@ bool EditorApplication::NewProject(const std::string& name, std::filesystem::pat
         defaultScene->SetApplication(this);
         defaultScene->Initialize();
 
-        std::filesystem::path scenePath = directory / "Scenes" / (defaultScene->m_name + ".scene.json");
+        std::filesystem::path scenePath = directory / "Scenes" / (defaultScene->m_name + SCENE_FILE_EXTENSION);
         project.SetStartScene(scenePath);
 
-        ProjectSerializer serializer(project);
-        serializer.Serialize(directory / (name + ".bfproj.json"));
-
-        SceneSerializer sceneSerializer(*defaultScene);
-        sceneSerializer.Serialize(scenePath);
+        ProjectSerializer::Serialize(project, directory / (name + PROJECT_FILE_EXTENSION));
+        SceneSerializer::Serialize(*defaultScene, scenePath);
 
         return true;
     }
@@ -68,11 +65,10 @@ void EditorApplication::OpenProject(std::filesystem::path path)
     std::cout << "Open Project: " << path << std::endl;
    
     std::unique_ptr<Project> project = std::make_unique<Project>();
-    ProjectSerializer serializer(*project.get());
 
-    if (serializer.Deserialize(path))
+    if (ProjectSerializer::Deserialize(*project, path))
     {
-        m_window->SetTitle(project->GetName() + " - BossFight Engine");
+        m_window->SetTitle(project->GetName() + " - " + ENGINE_NAME);
 
         PopLayer();
         AddLayer(std::make_unique<EditorLayer>(*this, std::move(project)));

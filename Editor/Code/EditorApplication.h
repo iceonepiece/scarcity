@@ -5,6 +5,7 @@
 #include "ImGuiLayer.h"
 #include "SceneLayer.h"
 #include "Project/Project.h"
+#include "Constants/GameEngine.h"
 
 class EditorApplication : public Application
 {

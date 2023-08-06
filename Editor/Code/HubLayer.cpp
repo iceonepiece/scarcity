@@ -49,7 +49,7 @@ void HubLayer::RenderImGui()
         
         if (ImGui::MenuItem("Open Project"))
         {
-            directory = FileUtils::OpenFile("JSON Files\0*.json\0All Files\0*.*\0\0", m_editor.GetWindow().GetNativeWindow());
+            directory = FileUtils::OpenFile(PROJECT_FILE_FILTER, m_editor.GetWindow().GetNativeWindow());
             projectOpened = true;
         }
         
@@ -107,7 +107,7 @@ void HubLayer::RenderImGui()
         
         if (m_editor.NewProject(projectName, createdDirectory))
         {
-            m_editor.OpenProject(createdDirectory / projectName / (projectName + ".bfproj.json"));
+            m_editor.OpenProject(createdDirectory / projectName / (projectName + PROJECT_FILE_EXTENSION));
         }
     }
     else if (projectOpened)

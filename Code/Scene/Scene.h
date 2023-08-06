@@ -17,8 +17,6 @@
 
 using InitializeFunction = std::function<void(Scene&)>;
 
-const std::string SCENE_FILE_POSTFIX = ".scene.json";
-
 class Scene
 {
 public:

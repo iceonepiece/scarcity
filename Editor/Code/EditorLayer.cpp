@@ -396,17 +396,15 @@ bool EditorLayer::SaveScene()
 
 bool EditorLayer::SaveSceneAs()
 {
-    std::string saveDirectory = FileUtils::SaveFileDialog(m_app.GetWindow().GetNativeWindow());
+    std::string saveDirectory = FileUtils::SaveFileDialog("BossFight Scene Files (.bfs)\0.bfs\0", m_app.GetWindow().GetNativeWindow());
 
     std::filesystem::path savePath = saveDirectory;
     std::string sceneName = savePath.filename().string();
-    savePath += SCENE_FILE_POSTFIX;
+    savePath += SCENE_FILE_EXTENSION;
 
     std::cout << "Save Scene as: " << savePath << std::endl;
     
-    SceneSerializer serializer(*m_activeScene);
-
-    if (!serializer.Serialize(savePath))
+    if (!SceneSerializer::Serialize(*m_activeScene, savePath))
         return false;
 
     m_activeScene->m_name = sceneName;

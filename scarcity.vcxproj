@@ -349,6 +349,7 @@
     <ClInclude Include="Code\Components\CameraComponent.h" />
     <ClInclude Include="Code\Components\Rigidbody2DComponent.h" />
     <ClInclude Include="Code\Components\SpriteRendererComponent.h" />
+    <ClInclude Include="Code\Constants\GameEngine.h" />
     <ClInclude Include="Code\Core\Camera.h" />
     <ClInclude Include="Code\Animations\Animation2D.h" />
     <ClInclude Include="Code\Components\Components.h" />
