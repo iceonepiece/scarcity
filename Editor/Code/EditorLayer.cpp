@@ -400,6 +400,9 @@ bool EditorLayer::SaveSceneAs()
 {
     std::string saveDirectory = FileUtils::SaveFileDialog("BossFight Scene Files (.bfs)\0.bfs\0", m_app.GetWindow().GetNativeWindow());
 
+    if (saveDirectory.size() == 0)
+        return false;
+
     std::filesystem::path savePath = saveDirectory;
     std::string sceneName = savePath.filename().string();
     savePath += SCENE_FILE_EXTENSION;
