@@ -1,5 +1,4 @@
 #include "Input.h"
-#include "../Core/Game.h"
 
 std::vector<InputCommand> Input::s_inputCommands;
 std::vector<MouseCommand> Input::s_mouseCommands;

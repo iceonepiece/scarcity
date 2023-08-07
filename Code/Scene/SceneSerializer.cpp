@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SceneSerializer.h"
+#include "Components/ComponentSerializer.h"
 #include <string>
 #include <fstream>
 #include <entt/entt.hpp>
@@ -22,57 +23,18 @@ bool SceneSerializer::Serialize(Scene& scene, std::filesystem::path filePath)
 		sceneJson["entities"] = json::array();
 
 		auto& registry = scene.m_manager.m_registry;
+		ComponentSerializer serializer(registry);
 
 		registry.each([&](entt::entity entity) {
-
 			json entityJson = {};
 			entityJson["id"] = entity;
 
-			if (registry.all_of<BaseComponent>(entity))
-			{
-				auto& base = registry.get<BaseComponent>(entity);
-				entityJson["Base"]["name"] = base.name;
-			}
-
-			if (registry.all_of<TransformComponent>(entity))
-			{
-				auto& transform = registry.get<TransformComponent>(entity);
-
-				json positionJson = json::array();
-				positionJson.push_back(transform.position.x);
-				positionJson.push_back(transform.position.y);
-				positionJson.push_back(transform.position.z);
-				entityJson["Transform"]["position"] = positionJson;
-
-				json rotationJson = json::array();
-				rotationJson.push_back(transform.rotation.x);
-				rotationJson.push_back(transform.rotation.y);
-				rotationJson.push_back(transform.rotation.z);
-				entityJson["Transform"]["rotation"] = rotationJson;
-
-				json scaleJson = json::array();
-				scaleJson.push_back(transform.scale.x);
-				scaleJson.push_back(transform.scale.y);
-				scaleJson.push_back(transform.scale.z);
-				entityJson["Transform"]["scale"] = scaleJson;
-			}
-
-			if (registry.all_of<SpriteRendererComponent>(entity))
-			{
-				auto& sprite = registry.get<SpriteRendererComponent>(entity);
-
-				entityJson["SpriteRenderer"]["shape"] = sprite.shape;
-
-				json colorJson = json::array();
-				colorJson.push_back(sprite.color.x);
-				colorJson.push_back(sprite.color.y);
-				colorJson.push_back(sprite.color.z);
-				colorJson.push_back(sprite.color.w);
-				entityJson["SpriteRenderer"]["color"] = colorJson;
-			}
-
+			std::apply([&](auto... componentTypes) {
+				(serializer.Serialize<decltype(componentTypes)>(entityJson, entity), ...);
+			}, ComponentList{});	
+			
 			sceneJson["entities"].push_back(entityJson);
-			});
+		});
 
 		std::cout << sceneJson << std::endl;
 		sceneFile << sceneJson.dump(4);
@@ -88,101 +50,18 @@ bool SceneSerializer::Serialize(Scene& scene, std::filesystem::path filePath)
 	return true;
 }
 
-bool SceneSerializer::Serialize(std::filesystem::path filepath)
-{
-	std::ofstream sceneFile;
-	sceneFile.open(filepath);
-
-	if (sceneFile.is_open())
-	{
-		json sceneJson;
-		sceneJson["name"] = m_scene.m_name;
-		sceneJson["entities"] = json::array();
-
-		auto& registry = m_scene.m_manager.m_registry;
-
-		registry.each([&](entt::entity entity) {
-
-			json entityJson = {};
-			entityJson["id"] = entity;
-
-			if (registry.all_of<BaseComponent>(entity))
-			{
-				auto& base = registry.get<BaseComponent>(entity);
-				entityJson["Base"]["name"] = base.name;
-			}
-
-			if (registry.all_of<TransformComponent>(entity))
-			{
-				auto& transform = registry.get<TransformComponent>(entity);
-
-				json positionJson = json::array();
-				positionJson.push_back(transform.position.x);
-				positionJson.push_back(transform.position.y);
-				positionJson.push_back(transform.position.z);
-				entityJson["Transform"]["position"] = positionJson;
-
-				json rotationJson = json::array();
-				rotationJson.push_back(transform.rotation.x);
-				rotationJson.push_back(transform.rotation.y);
-				rotationJson.push_back(transform.rotation.z);
-				entityJson["Transform"]["rotation"] = rotationJson;
-
-				json scaleJson = json::array();
-				scaleJson.push_back(transform.scale.x);
-				scaleJson.push_back(transform.scale.y);
-				scaleJson.push_back(transform.scale.z);
-				entityJson["Transform"]["scale"] = scaleJson;
-			}
-
-			if (registry.all_of<SpriteRendererComponent>(entity))
-			{
-				auto& sprite = registry.get<SpriteRendererComponent>(entity);
-
-				entityJson["SpriteRenderer"]["shape"] = sprite.shape;
-
-				json colorJson = json::array();
-				colorJson.push_back(sprite.color.x);
-				colorJson.push_back(sprite.color.y);
-				colorJson.push_back(sprite.color.z);
-				colorJson.push_back(sprite.color.w);
-				entityJson["SpriteRenderer"]["color"] = colorJson;
-			}
-
-			sceneJson["entities"].push_back(entityJson);
-			});
-
-		std::cout << sceneJson << std::endl;
-		sceneFile << sceneJson.dump(4);
-	}
-	else
-	{
-		std::cerr << "Error opening the file!" << std::endl;
-		return false;
-	}
-
-	sceneFile.close();
-
-	return true;
-}
-
-SceneSerializer::SceneSerializer(Scene& scene)
-	: m_scene(scene)
-{
-
-}
-
-bool SceneSerializer::Deserialize(std::filesystem::path filepath)
+bool SceneSerializer::Deserialize(Scene& scene, std::filesystem::path filepath)
 {
 	std::ifstream sceneFile(filepath);
 	
 	if (sceneFile.is_open())
 	{
-		m_scene.m_name = filepath.stem().string();
-		m_scene.m_location = filepath.parent_path();
-		m_scene.m_path = filepath;
+		scene.m_name = filepath.stem().string();
+		scene.m_location = filepath.parent_path();
+		scene.m_path = filepath;
 
-		EntityManager& manager = m_scene.GetEntityManager();
+		EntityManager& manager = scene.GetEntityManager();
+		ComponentSerializer serializer(manager.m_registry);
 
 		json sceneJson = json::parse(sceneFile);
 		
@@ -192,10 +71,16 @@ bool SceneSerializer::Deserialize(std::filesystem::path filepath)
 		{
 			Entity entity = manager.CreateEntity();
 
+			std::apply([&](auto... componentTypes) {
+				(serializer.Deserialize<decltype(componentTypes)>(entityJson, entity), ...);
+			}, ComponentList{});
+
+			/*
 			if (entityJson["Base"].is_object())
 			{
+				BaseComponent base;
 				json baseJson = entityJson["Base"];
-				entity.AddComponent<BaseComponent>(baseJson["name"]);
+				entity.AddComponent<BaseComponent>(transform);
 			}
 
 			if (entityJson["Transform"].is_object())
@@ -227,6 +112,7 @@ bool SceneSerializer::Deserialize(std::filesystem::path filepath)
 
 				entity.AddComponent<SpriteRendererComponent>(Shape_Square, color);
 			}
+			*/
 		}
 	}
 	else
@@ -235,7 +121,7 @@ bool SceneSerializer::Deserialize(std::filesystem::path filepath)
 		return false;
 	}
 
-	std::cout << "Deserialize scene at path: " << m_scene.m_location / m_scene.m_name << std::endl;
+	std::cout << "Deserialize scene at path: " << scene.m_location / scene.m_name << std::endl;
 
 	sceneFile.close();
 

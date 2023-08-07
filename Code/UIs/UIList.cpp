@@ -2,7 +2,6 @@
 #include "UIListItem.h"
 #include "Scene/Scene.h"
 #include "../Input/Input.h"
-#include "../Core/Game.h"
 
 UIList::UIList(glm::vec2 position, glm::vec2 scale, glm::vec4 color)
 	: UIComponent(position)

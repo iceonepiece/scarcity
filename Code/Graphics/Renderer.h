@@ -9,7 +9,7 @@
 #include "Graphics/Texture.h"
 #include "Animations/Sprite.h"
 #include "Shapes/Shape2D.h"
-#include "Components/Components.h"
+#include "Components/CameraComponent.h"
 
 class Renderer
 {

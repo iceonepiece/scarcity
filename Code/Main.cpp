@@ -2,9 +2,7 @@
 #include <cstdlib>
 #include <crtdbg.h>
 
-#include "Core/Game.h"
 #include "Editor/EditorApplication.h"
-#include "Core/GameApplication.h"
 
 #include "Scenes/MenuScene.h"
 #include "Scenes/Level1.h"

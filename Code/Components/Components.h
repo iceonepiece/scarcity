@@ -1,5 +1,7 @@
 #pragma once
 
+#include <tuple>
+
 #include "AIComponent.h"
 #include "BaseComponent.h"
 #include "BoxCollider2DComponent.h"
@@ -12,3 +14,12 @@
 #include "SpriteAnimatorComponent.h"
 #include "SpriteRendererComponent.h"
 #include "TransformComponent.h"
+
+using ComponentList = std::tuple<
+	BaseComponent,
+	BoxCollider2DComponent,
+	CameraComponent,
+	Rigidbody2DComponent,
+	SpriteRendererComponent,
+	TransformComponent
+>;
