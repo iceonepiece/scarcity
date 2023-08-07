@@ -121,7 +121,7 @@ bool SceneSerializer::Deserialize(Scene& scene, std::filesystem::path filepath)
 		return false;
 	}
 
-	std::cout << "Deserialize scene at path: " << scene.m_location / scene.m_name << std::endl;
+	std::cout << "Deserialize scene at path: " << filepath << std::endl;
 
 	sceneFile.close();
 

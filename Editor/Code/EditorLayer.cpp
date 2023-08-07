@@ -97,7 +97,7 @@ bool EditorLayer::OpenScene(std::filesystem::path path)
 
     m_activeScene = std::make_unique<Scene>();
 
-    if (!SceneSerializer::Deserialize(*m_activeScene, path.string()))
+    if (!SceneSerializer::Deserialize(*m_activeScene, path))
     {
         m_activeScene = Scene::CreateDefaultScene(m_activeProject->GetDirectory() / "Scenes");
         success = false;
@@ -411,6 +411,7 @@ bool EditorLayer::SaveSceneAs()
         return false;
 
     m_activeScene->m_name = sceneName;
+    m_activeScene->m_path = savePath;
 
     OnSceneUpdate();
 
