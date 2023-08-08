@@ -289,7 +289,7 @@ void EditorLayer::OnMouseScrolled(MouseScrolledEvent& event)
 {
     if (m_camera->GetCameraType() == CameraType::Orthographic)
     {
-        m_camera->SetZoom(m_camera->GetZoom() + (event.GetY() * 0.04f));
+        m_camera->SetZoom(m_camera->GetZoom() * (1.0f + event.GetY() * 0.1f));
     }
     else if (m_camera->GetCameraType() == CameraType::Perspective)
     {
