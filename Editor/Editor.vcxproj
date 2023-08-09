@@ -192,6 +192,7 @@
     <ClInclude Include="Code\Gizmos\TranslateGizmo.h" />
     <ClInclude Include="Code\SceneManager.h" />
     <ClInclude Include="Code\EditorLayer.h" />
+    <ClInclude Include="Code\ScriptManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

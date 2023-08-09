@@ -65,6 +65,14 @@ void ImGuiAssetPanel::Render()
 				std::cout << "Clicked file with extension: " << path.extension() << std::endl;
 				m_editor.OpenScene(path);
 			}
+			else
+			{
+				for (const std::string& ext : { ".cpp", ".h", ".hpp" }) {
+					std::string command = "code \"" + path.string() + "\"";
+					std::system(command.c_str());
+				}
+			}
+
 
 		}
 		ImGui::TextWrapped(filenameString.c_str());

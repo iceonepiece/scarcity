@@ -155,5 +155,8 @@
     <ClInclude Include="Code\HubLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Code\ScriptManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

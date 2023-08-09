@@ -445,6 +445,7 @@
     </None>
     <None Include="Assets\Scripts\Player.as" />
     <None Include="Assets\Scripts\sample.lua" />
+    <None Include="Assets\Scripts\premake5.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="code\Main.cpp">

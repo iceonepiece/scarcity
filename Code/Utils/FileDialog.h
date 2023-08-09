@@ -3,6 +3,7 @@
 #include <fstream>
 #include <filesystem>
 #include <string>
+#include <cstdio>
 #include <Windows.h>
 #include <commdlg.h>
 #include <shlobj_core.h>
@@ -13,6 +14,11 @@
 class FileUtils
 {
 public:
+	static bool RemoveFile(std::filesystem::path path)
+	{
+		return std::remove(path.string().c_str());
+	}
+
 	static bool FileExists(std::filesystem::path filePath)
 	{
 		std::ifstream file(filePath);
