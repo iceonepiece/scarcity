@@ -47,12 +47,6 @@ bool EditorApplication::NewProject(const std::string& name, std::filesystem::pat
 
         ScriptManager::CreateVisualStudioFiles(directory, name);
 
-        std::string cdCommand = "cd /d " + directory.string();
-        std::string premakeCommand = "premake5 vs2022";
-
-        std::system((cdCommand + " && " + premakeCommand).c_str());
-        FileUtils::RemoveFile(directory / "premake5.lua");
-
         std::unique_ptr<Scene> defaultScene = Scene::CreateDefaultScene(directory);
         defaultScene->SetApplication(this);
         defaultScene->Initialize();
