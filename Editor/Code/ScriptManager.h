@@ -40,17 +40,16 @@ public:
         {
             premakeFile << "workspace \"" + name + "\"\n";
             premakeFile << PREMAKE_FILE_CONTENT;
+            premakeFile.close();
 
-            std::string cdCommand = "cd /d " + location.string();
-
+            std::string cdCommand = "cd \"" + location.string() + "\"";
             std::system((cdCommand + " && " + PREMAKE_COMMAND).c_str());
+
             FileUtils::RemoveFile(location / PREMAKE_FILE_NAME);
         }
         else
         {
             std::cout << "Error opening file: " << location / PREMAKE_FILE_NAME << std::endl;
         }
-
-        premakeFile.close();
 	}
 };
