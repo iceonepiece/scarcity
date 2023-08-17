@@ -6,6 +6,8 @@
 class Entity
 {
 public:
+	Entity() = default;
+
 	Entity(EntityManager* manager, entt::entity id)
 		:m_manager(manager)
 		,m_id(id)

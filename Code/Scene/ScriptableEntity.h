@@ -3,6 +3,7 @@
 #include <string>
 #include <memory>
 #include "Core/Application.h"
+#include "Core/Entity.h"
 
 class ScriptableEntity
 {
@@ -20,13 +21,11 @@ public:
 		return std::make_unique<T>(static_cast<const T&>(*this));
 	}
 
-	/*
 	template<typename T>
-	T& GetComponent()
+	T* GetComponent()
 	{
-		return m_Entity.GetComponent<T>();
+		return m_entity.GetComponent<T>();
 	}
-	*/
 
 	virtual void Start() {}
 	virtual void Destroy() {}
@@ -34,7 +33,7 @@ public:
 
 protected:
 	Application* m_app;
-	//Entity m_Entity;
+	Entity m_entity;
 
 	friend class Scene;
 };

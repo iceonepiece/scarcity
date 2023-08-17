@@ -114,6 +114,7 @@ void Scene::StartNativeScripts(NativeScriptEngine& scriptEngine)
         {
             std::cout << "Start Native Class: " << script.className << std::endl;
             script.instance->m_app = m_app;
+            script.instance->m_entity = Entity { &m_manager, entity };
             script.instance->Start();
         }
     }
