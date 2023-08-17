@@ -10,6 +10,7 @@ std::string EditorComponentNames[] = {
     "Box Collider 2D",
     "Camera",
     "Circle Collider 2D",
+    "Native Script",
     "Rigidbody 2D",
     "Sprite Renderer"
 };
@@ -175,6 +176,11 @@ void ImGuiEntityProperties::Render()
             ImGui::InputFloat("Radius", &component.radius);
         });
 
+        RenderComponent<NativeScriptComponent>("Native Script", registry, entity, [](auto& component)
+        {
+            ImGui::InputText("Class Name", &component.className);
+        });
+
         if (ImGui::Button("Add Component"))
             ImGui::OpenPopup("add_component");
 
@@ -207,6 +213,11 @@ void ImGuiEntityProperties::Render()
                     {
                         if (registry.try_get<SpriteRendererComponent>(entity) == nullptr)
                             registry.emplace<SpriteRendererComponent>(entity);
+                    }
+                    else if (EditorComponentNames[i] == "Native Script")
+                    {
+                        if (registry.try_get<NativeScriptComponent>(entity) == nullptr)
+                            registry.emplace<NativeScriptComponent>(entity);
                     }
                 }
             }

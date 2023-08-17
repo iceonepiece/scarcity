@@ -300,7 +300,9 @@
     <ClCompile Include="Code\Events\MouseEvent.cpp" />
     <ClCompile Include="Code\Events\WindowEvent.cpp" />
     <ClCompile Include="Code\Core\LevelManager.cpp" />
+    <ClCompile Include="Code\Input\NewInput.cpp" />
     <ClCompile Include="Code\Lua\LuaEngine.cpp" />
+    <ClCompile Include="Code\NativeScript\NativeScriptEngine.cpp" />
     <ClCompile Include="Code\PCH.cpp" />
     <ClCompile Include="Code\Platforms\GLFW\GLFWInput.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLFontSystem.cpp" />
@@ -320,6 +322,7 @@
     <ClCompile Include="Code\Graphics\Renderer.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="Code\Scene\SceneSerializer.cpp" />
+    <ClCompile Include="Code\Scene\ScriptableEntity.cpp" />
     <ClCompile Include="Code\UIs\UI.cpp" />
     <ClCompile Include="Code\UIs\UIList.cpp" />
     <ClCompile Include="Code\UIs\UIListItem.cpp" />
@@ -349,6 +352,7 @@
     <ClInclude Include="Code\Components\BoxCollider2DComponent.h" />
     <ClInclude Include="Code\Components\CameraComponent.h" />
     <ClInclude Include="Code\Components\ComponentSerializer.h" />
+    <ClInclude Include="Code\Components\NativeScriptComponent.h" />
     <ClInclude Include="Code\Components\Rigidbody2DComponent.h" />
     <ClInclude Include="Code\Components\SpriteRendererComponent.h" />
     <ClInclude Include="Code\Constants\GameEngine.h" />
@@ -372,8 +376,11 @@
     <ClInclude Include="Code\Graphics\GraphicsData.h" />
     <ClInclude Include="Code\Graphics\Shader.h" />
     <ClInclude Include="Code\Graphics\Texture.h" />
+    <ClInclude Include="Code\Input\NewInput.h" />
     <ClInclude Include="Code\Lua\LuaEngine.h" />
     <ClInclude Include="Code\Math\Math.h" />
+    <ClInclude Include="Code\NativeScript\NativeScriptEngine.h" />
+    <ClInclude Include="Code\NativeScript\NativeScript.h" />
     <ClInclude Include="Code\PCH.h" />
     <ClInclude Include="Code\Platforms\GLFW\GLFWInput.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLFontSystem.h" />
@@ -435,6 +442,7 @@
     <ClInclude Include="Code\Scenes\LuaScene.h" />
     <ClInclude Include="Code\Scenes\MenuScene.h" />
     <ClInclude Include="Code\Scene\SceneSerializer.h" />
+    <ClInclude Include="Code\Scene\ScriptableEntity.h" />
     <ClInclude Include="Code\Shapes\Shape2D.h" />
     <ClInclude Include="Code\Systems\CameraSystem.h" />
     <ClInclude Include="Code\Systems\Collider2DSystem.h" />

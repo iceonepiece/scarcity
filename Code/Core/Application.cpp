@@ -2,9 +2,13 @@
 #include "Timer.h"
 #include "Layer.h"
 #include "ImGui/ImGuiManager.h"
+#include "Input/NewInput.h"
+#include "Graphics/Renderer.h"
+#include "Lua/LuaEngine.h"
 
 Application::Application()
 {
+	m_luaEngine = std::make_unique<LuaEngine>();
 }
 
 Application::~Application()
@@ -51,6 +55,7 @@ void Application::Run()
 		Timer::Tick();
 
 		m_window->ProcessInput();
+		m_input->Poll();
 		m_window->PreRender();
 
 		for (auto& layer : m_layers)

@@ -16,6 +16,7 @@
 #include "Events/Event.h"
 
 using InitializeFunction = std::function<void(Scene&)>;
+class NativeScriptEngine;
 
 class Scene
 {
@@ -38,6 +39,7 @@ public:
 
 	void StartPhysics();
 	void StopPhysics();
+	void StartNativeScripts(NativeScriptEngine& scriptEngine);
 
 	virtual void Enter();
 	virtual void Exit();

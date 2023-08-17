@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -17,12 +18,10 @@ struct InputCommand
     KeyCode keyCode;
     int previousState;
     int currentState;
-    bool isActive;
 
     InputCommand(int glfwKeyCode, KeyCode keyCode)
         : glfwKeyCode(glfwKeyCode)
         , keyCode(keyCode)
-        , isActive(false)
         , previousState(GLFW_RELEASE)
         , currentState(GLFW_RELEASE)
     {
@@ -60,7 +59,7 @@ public:
     static void PollInputs(GLFWwindow* glfwWindow);
     static void AddInputCommand(int glfwKeyCode, KeyCode keyCode);
     static void AddMouseCommand(int glfwMouseCode, MouseCode mouseCode);
-    
+
     static glm::vec2 GetCursorPosition();
     static void SetCursorPosition(float xPos, float yPos);
 

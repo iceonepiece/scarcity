@@ -49,6 +49,11 @@ void ImGuiMainMenuBar::Render()
     else if (!m_editor.IsScenePlaying() && ImGui::MenuItem("Play"))
         m_editor.PlayScene();
 
+    if (ImGui::MenuItem("Reload Native Scripts"))
+    {
+        m_editor.ReloadNativeScripts();
+    }
+
     ImGui::EndMainMenuBar();
     
     ImGui::PopStyleVar();

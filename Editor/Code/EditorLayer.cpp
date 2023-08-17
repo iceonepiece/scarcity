@@ -8,6 +8,7 @@
 #include "Gizmos/ScaleGizmo.h"
 #include "Utils/FileDialog.h"
 #include <iostream>
+#include "Input/NewInput.h"
 
 EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> project)
     : m_app(app)
@@ -212,6 +213,7 @@ bool EditorLayer::CheckPicking2D()
 void EditorLayer::Shutdown()
 {
 	std::cout << "EditorLayer Shutdown()\n\n";
+    m_nativeScriptEngine.ShutdownScriptableEntities();
 }
 
 TransformComponent* EditorLayer::GetEntityTransform()
@@ -270,6 +272,7 @@ void EditorLayer::PlayScene()
     {
         m_playingScene = Scene::Copy(*m_activeScene);
         m_playingScene->SetApplication(&m_app);
+        m_playingScene->StartNativeScripts(m_nativeScriptEngine);
         m_playingScene->Start();
         m_scenePlaying = true;
     }
@@ -357,6 +360,12 @@ void EditorLayer::OnEvent(Event& event)
         case EventType::KeyPressed:
             OnKeyPressed(static_cast<KeyPressedEvent&>(event));
             break;
+
+        case EventType::KeyReleased:
+        {
+            std::cout << "Key Released\n";
+            break;
+        }
     }
 }
 
@@ -416,4 +425,40 @@ bool EditorLayer::SaveSceneAs()
     OnSceneUpdate();
 
     return true;
+}
+
+void EditorLayer::ReloadNativeScripts()
+{
+    std::filesystem::path projectPath = m_activeProject->GetDirectory();
+
+    if (!std::filesystem::exists(projectPath / "Scripts"))
+        return;
+
+    std::vector<std::string> scriptClassNames;
+
+    for (auto& directoryEntry : std::filesystem::directory_iterator(m_activeProject->GetDirectory() / "Scripts"))
+    {
+        const auto& path = directoryEntry.path();
+        std::string filenameString = path.filename().string();
+
+        if (!directoryEntry.is_directory() && path.extension() == ".h")
+        {
+            std::cout << "Reloaded class: " << path.stem().string() << std::endl;
+            scriptClassNames.push_back(path.stem().string());
+        }
+    }
+
+    m_nativeScriptEngine.SetClassNames(scriptClassNames);
+
+    if (m_nativeScriptEngine.LoadNativeScripts(projectPath / "bin" / "Debug" / "Native-Script.dll", m_nativeClassNames))
+    {
+        std::cout << "Success: Load native scripts\n";
+        m_nativeScriptEngine.InitializeScriptableEntities();
+    }
+    else
+    {
+        std::cout << "Error: Load native scripts\n";
+    }
+
+
 }

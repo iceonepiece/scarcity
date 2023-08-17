@@ -12,6 +12,7 @@
 #include "Project/ProjectSerializer.h"
 #include "Scene/SceneSerializer.h"
 #include "ScriptManager.h"
+#include "Platforms/GLFW/GLFWInput.h"
 
 EditorApplication::EditorApplication()
 {
@@ -28,6 +29,7 @@ void EditorApplication::Initialize(std::string title, int width, int height)
     m_renderer = std::make_unique<OpenGLRenderer>();
     m_renderer->Initialize();
 
+    m_input = std::make_unique<GLFWInput>(*((GLFWwindow*)m_window->GetNativeWindow()));
     Input::Init();
 
     m_imguiManager = std::make_unique<ImGuiManager>(*this);
@@ -44,6 +46,7 @@ bool EditorApplication::NewProject(const std::string& name, std::filesystem::pat
     {
         Project project(name, directory);
         FileUtils::CreateFolder(directory / "Scenes");
+        FileUtils::CreateFolder(directory / "Scripts");
 
         ScriptManager::CreateVisualStudioFiles(directory, name);
 

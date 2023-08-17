@@ -1,9 +1,11 @@
 #include "Scene.h"
 #include "Systems/ScriptableSystem.h"
 #include "Systems/RenderSystem.h"
+#include "Graphics/Renderer.h"
 #include "Core/Camera2D.h"
 #include "Components/Components.h"
 #include "Utils/FileDialog.h"
+#include "NativeScript/NativeScriptEngine.h"
 
 Scene::Scene(const std::string& name)
     : m_name(name)
@@ -76,6 +78,7 @@ std::unique_ptr<Scene> Scene::Copy(Scene& sourceScene)
         CopyComponent<BoxCollider2DComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
         CopyComponent<CircleCollider2DComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
         CopyComponent<CameraComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
+        CopyComponent<NativeScriptComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
     });
 
     return newScene;
@@ -89,7 +92,33 @@ void Scene::Start()
 void Scene::Stop()
 {
     StopPhysics();
+
+    auto view = m_manager.m_registry.view<NativeScriptComponent>();
+    for (auto [entity, script] : view.each())
+    {
+        delete script.instance;
+    }
 }
+
+void Scene::StartNativeScripts(NativeScriptEngine& scriptEngine)
+{
+
+    auto view = m_manager.m_registry.view<NativeScriptComponent>();
+    for (auto [entity, script] : view.each())
+    {
+        std::cout << "Get Native Class: " << script.className << std::endl;
+        std::unique_ptr<ScriptableEntity> uniqueInstance = scriptEngine.CopyInstance(script.className);
+        script.instance = uniqueInstance.release();
+        
+        if (script.instance != nullptr)
+        {
+            std::cout << "Start Native Class: " << script.className << std::endl;
+            script.instance->m_app = m_app;
+            script.instance->Start();
+        }
+    }
+}
+
 
 void Scene::StartPhysics()
 {
@@ -153,6 +182,14 @@ bool Scene::HasSaved()
 
 void Scene::Update(float deltaTime)
 {
+    auto scriptable = m_manager.m_registry.view<NativeScriptComponent>();
+
+    for (auto [entity, nativeScript] : scriptable.each())
+    {
+        if (nativeScript.instance != nullptr)
+            nativeScript.instance->Update(deltaTime);
+    }
+
     for (auto& system : m_systems)
         system->Update(deltaTime);
 

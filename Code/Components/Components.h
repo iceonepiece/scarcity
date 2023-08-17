@@ -8,6 +8,7 @@
 #include "CameraComponent.h"
 #include "CircleCollider2DComponent.h"
 #include "Collider2DComponent.h"
+#include "NativeScriptComponent.h"
 #include "PlayerComponent.h"
 #include "Rigidbody2DComponent.h"
 #include "ScriptableComponent.h"
@@ -19,6 +20,7 @@ using ComponentList = std::tuple<
 	BaseComponent,
 	BoxCollider2DComponent,
 	CameraComponent,
+	NativeScriptComponent,
 	Rigidbody2DComponent,
 	SpriteRendererComponent,
 	TransformComponent

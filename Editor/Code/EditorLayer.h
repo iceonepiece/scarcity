@@ -1,10 +1,12 @@
 #pragma once
 
+#include <unordered_map>
 #include "Core/Layer.h"
 #include "EditorGUI/ImGuiMain.h"
 #include "Scene/Scene.h"
 #include "EditorApplication.h"
 #include "Gizmos/Gizmo.h"
+#include "NativeScript/NativeScriptEngine.h"
 
 enum EditorMode
 {
@@ -45,6 +47,7 @@ public:
 
 	void PlayScene();
 	void StopScene();
+	void ReloadNativeScripts();
 
 	TransformComponent* GetEntityTransform();
 
@@ -56,6 +59,7 @@ public:
 	bool CheckPicking2D();
 	void CalculateWorldCursorPosition();
 
+
 private:
 	void OnWindowResize(WindowResizeEvent& event);
 	void OnMouseMoved(MouseMovedEvent& event);
@@ -65,6 +69,9 @@ private:
 	void OnMouseScrolled(MouseScrolledEvent& event);
 
 private:
+	NativeScriptEngine m_nativeScriptEngine;
+	std::vector<std::string> m_nativeClassNames;
+
 	std::unique_ptr<Project> m_activeProject;
 	std::unique_ptr<Scene> m_activeScene;
 

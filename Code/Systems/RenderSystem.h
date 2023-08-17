@@ -3,6 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Components/Components.h"
 #include "Core/System.h"
+#include "Graphics/Renderer.h"
 
 class RenderSystem : public System
 {

@@ -2,15 +2,17 @@
 
 #include "PCH.h"
 #include "Window.h"
-#include "Graphics/Renderer.h"
+//#include "Graphics/Renderer.h"
 #include "Events/Event.h"
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
 #include "Events/WindowEvent.h"
-#include "Lua/LuaEngine.h"
+#include "Input/NewInput.h"
 
+class LuaEngine;
 class ImGuiManager;
 class Layer;
+class Renderer;
 
 class Application
 {
@@ -40,9 +42,10 @@ public:
 	virtual void OnMouseScroll(float x, float y) {}
 
 	virtual void ChangeScene(std::string name) {}
-	inline LuaEngine& GetLuaEngine() { return m_luaEngine; }
+	inline LuaEngine& GetLuaEngine() { return *m_luaEngine; }
 	inline Renderer& GetRenderer() { return *m_renderer; }
 	inline Window& GetWindow() { return *m_window; }
+	inline NewInput& GetInput() { return *m_input; }
 
 protected:
 	virtual void ProcessInput() {}
@@ -53,9 +56,8 @@ protected:
 	std::unique_ptr<Window> m_window;
 	std::unique_ptr<Renderer> m_renderer;
 	std::unique_ptr<ImGuiManager> m_imguiManager;
-
+	std::unique_ptr<LuaEngine> m_luaEngine;
+	std::unique_ptr<NewInput> m_input;
 
 	std::vector<std::unique_ptr<Layer>> m_layers;
-
-	LuaEngine m_luaEngine;
 };
