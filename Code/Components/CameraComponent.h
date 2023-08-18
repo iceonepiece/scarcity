@@ -1,5 +1,6 @@
 #pragma once
 #include <nlohmann/json.hpp>
+#include <imgui/imgui.h>
 
 using json = nlohmann::json;
 
@@ -33,4 +34,11 @@ static void DoDeserialize(CameraComponent& camera, json& cameraJson)
 	camera.size = cameraJson["size"].get<float>();
 	camera.near = cameraJson["near"].get<float>();
 	camera.far = cameraJson["far"].get<float>();
+}
+
+static void RenderImGui(CameraComponent& camera)
+{
+	ImGui::InputFloat("Size", &camera.size);
+	ImGui::InputFloat("Near", &camera.near);
+	ImGui::InputFloat("Far", &camera.far);
 }

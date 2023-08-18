@@ -41,8 +41,8 @@ void RenderInputVec3(const std::string& name, glm::vec3& values, int width = 100
     ImGui::PopItemWidth();
 }
 
-template<typename T, typename UIFunction>
-static void RenderComponent(const std::string& name, entt::registry& registry, entt::entity entity, UIFunction uiFunction)
+template<typename T>
+static void RenderComponent(const std::string& name, entt::registry& registry, entt::entity entity)
 {
     const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 
@@ -69,7 +69,7 @@ static void RenderComponent(const std::string& name, entt::registry& registry, e
 
         if (open)
         {
-            uiFunction(component);
+            RenderImGui(component);
             ImGui::TreePop();
         }
 
@@ -109,77 +109,12 @@ void ImGuiEntityProperties::Render()
             }
         }
 
-        RenderComponent<SpriteRendererComponent>("Sprite Renderer", registry, entity, [](auto& component)
-        {
-            const char* shapeTypeStrings[] = { "None", "Square", "Circle" };
-            const char* currentShapeTypeString = shapeTypeStrings[(int)component.shape];
-            if (ImGui::BeginCombo("Shape Type", currentShapeTypeString))
-            {
-                for (int i = 0; i < 3; i++)
-                {
-                    bool isSelected = currentShapeTypeString == shapeTypeStrings[i];
-                    if (ImGui::Selectable(shapeTypeStrings[i], isSelected))
-                    {
-                        currentShapeTypeString = shapeTypeStrings[i];
-                        component.shape = (SpriteShape)i;
-                    }
-
-                    if (isSelected)
-                        ImGui::SetItemDefaultFocus();
-                }
-
-                ImGui::EndCombo();
-            }
-        });
-
-        RenderComponent<CameraComponent>("Camera", registry, entity, [](auto& component)
-        {
-            ImGui::InputFloat("Size", &component.size);
-            ImGui::InputFloat("Near", &component.near);
-            ImGui::InputFloat("Far", &component.far);
-        });
-
-        RenderComponent<Rigidbody2DComponent>("Rigidbody 2D", registry, entity, [](auto& component)
-        {
-            const char* bodyTypeStrings[] = { "Static", "Dynamic", "Kinematic" };
-            const char* currentBodyTypeString = bodyTypeStrings[(int)component.type];
-            if (ImGui::BeginCombo("Body Type", currentBodyTypeString))
-            {
-                for (int i = 0; i < 2; i++)
-                {
-                    bool isSelected = currentBodyTypeString == bodyTypeStrings[i];
-                    if (ImGui::Selectable(bodyTypeStrings[i], isSelected))
-                    {
-                        currentBodyTypeString = bodyTypeStrings[i];
-                        component.type = (BodyType)i;
-                    }
-
-                    if (isSelected)
-                        ImGui::SetItemDefaultFocus();
-                }
-
-                ImGui::EndCombo();
-            }
-
-            ImGui::Checkbox("Fixed Rotation", &component.fixedRotation);
-        });
-
-        RenderComponent<BoxCollider2DComponent>("Box Collider 2D", registry, entity, [](auto& component)
-        {
-            ImGui::DragFloat2("Offset", glm::value_ptr(component.offset));
-            ImGui::DragFloat2("Size", glm::value_ptr(component.size));
-        });
-
-        RenderComponent<CircleCollider2DComponent>("Circle Collider 2D", registry, entity, [](auto& component)
-        {
-            ImGui::DragFloat2("Offset", glm::value_ptr(component.offset));
-            ImGui::InputFloat("Radius", &component.radius);
-        });
-
-        RenderComponent<NativeScriptComponent>("Native Script", registry, entity, [](auto& component)
-        {
-            ImGui::InputText("Class Name", &component.className);
-        });
+        RenderComponent<SpriteRendererComponent>("Sprite Renderer", registry, entity);
+        RenderComponent<CameraComponent>("Camera", registry, entity);
+        RenderComponent<Rigidbody2DComponent>("Rigidbody 2D", registry, entity);
+        RenderComponent<BoxCollider2DComponent>("Box Collider 2D", registry, entity);
+        RenderComponent<CircleCollider2DComponent>("Circle Collider 2D", registry, entity);
+        RenderComponent<NativeScriptComponent>("Native Script", registry, entity);
 
         if (ImGui::Button("Add Component"))
             ImGui::OpenPopup("add_component");

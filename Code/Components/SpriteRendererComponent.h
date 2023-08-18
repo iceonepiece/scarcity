@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include <nlohmann/json.hpp>
+#include <imgui/imgui.h>
 
 using json = nlohmann::json;
 
@@ -39,4 +40,27 @@ static void DoDeserialize(SpriteRendererComponent& sprite, json& spriteRendererJ
 
 	sprite.shape = spriteRendererJson["shape"].get<SpriteShape>();
 	sprite.color = color;
+}
+
+static void RenderImGui(SpriteRendererComponent& spriteRenderer)
+{
+	const char* shapeTypeStrings[] = { "None", "Square", "Circle" };
+	const char* currentShapeTypeString = shapeTypeStrings[(int)spriteRenderer.shape];
+	if (ImGui::BeginCombo("Shape Type", currentShapeTypeString))
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			bool isSelected = currentShapeTypeString == shapeTypeStrings[i];
+			if (ImGui::Selectable(shapeTypeStrings[i], isSelected))
+			{
+				currentShapeTypeString = shapeTypeStrings[i];
+				spriteRenderer.shape = (SpriteShape)i;
+			}
+
+			if (isSelected)
+				ImGui::SetItemDefaultFocus();
+		}
+
+		ImGui::EndCombo();
+	}
 }

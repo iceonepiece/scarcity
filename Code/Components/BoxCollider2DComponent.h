@@ -1,7 +1,9 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <nlohmann/json.hpp>
+#include <imgui/imgui.h>
 
 using json = nlohmann::json;
 
@@ -38,4 +40,10 @@ static void DoDeserialize(BoxCollider2DComponent& box, json& boxJson)
 
 	box.offset = offset;
 	box.size = size;
+}
+
+static void RenderImGui(BoxCollider2DComponent& box)
+{
+	ImGui::DragFloat2("Offset", glm::value_ptr(box.offset));
+	ImGui::DragFloat2("Size", glm::value_ptr(box.size));
 }

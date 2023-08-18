@@ -5,6 +5,8 @@
 #include "Core/Application.h"
 #include "Core/Entity.h"
 
+#define SERIALIZE_FIELD(type, name) type name;
+
 class ScriptableEntity
 {
 public:

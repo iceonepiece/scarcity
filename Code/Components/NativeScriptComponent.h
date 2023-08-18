@@ -4,6 +4,8 @@
 #include <string>
 #include "Scene/ScriptableEntity.h"
 #include <nlohmann/json.hpp>
+#include <imgui/imgui.h>
+#include "imgui/imgui_stdlib.h"
 
 using json = nlohmann::json;
 
@@ -35,4 +37,9 @@ static void DoSerialize(const NativeScriptComponent& nativeScript, json& entityJ
 static void DoDeserialize(NativeScriptComponent& nativeScript, json& nativeScriptJson)
 {
 	nativeScript.className = nativeScriptJson["className"].get<std::string>();
+}
+
+static void RenderImGui(NativeScriptComponent& script)
+{
+	ImGui::InputText("Class Name", &script.className);
 }
