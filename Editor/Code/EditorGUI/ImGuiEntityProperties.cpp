@@ -82,6 +82,11 @@ void ImGuiEntityProperties::Render()
 {
     ImGui::Begin("Properties", NULL, ImGuiWindowFlags_NoCollapse);
 
+    if (ImGui::IsWindowAppearing())
+    {
+        ImGui::SetWindowPos(ImVec2(800, 100));
+    }
+
     if (m_editor.GetScene() != nullptr && m_editor.IsEntityPicked())
     {
         Scene* scene = m_editor.GetScene();
