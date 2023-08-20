@@ -40,6 +40,8 @@ public:
 		m_pickedEntity = picked;
 	}
 
+	void DeleteEntity();
+
 	bool NewScene();
 	bool OpenScene(std::filesystem::path path);
 	bool SaveScene();
