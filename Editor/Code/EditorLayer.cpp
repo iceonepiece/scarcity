@@ -167,7 +167,8 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
 
         case Key::Delete:
         {
-            DeleteEntity();
+            if (m_entityPicked)
+                DeleteEntity(m_pickedEntity);
         }
         break;
     }
@@ -375,15 +376,19 @@ void EditorLayer::OnEvent(Event& event)
     }
 }
 
-void EditorLayer::DeleteEntity()
+void EditorLayer::DeleteEntity(entt::entity entity)
 {
-    if (m_entityPicked)
+    if (m_activeScene->m_manager.m_registry.valid(entity))
     {
-        std::cout << "Delete entity: " << (int)GetPickedEntity() << std::endl;
-        entt::entity targetEntity = GetPickedEntity();
-        m_activeScene->m_manager.m_registry.destroy(targetEntity);
-        m_pickedEntity = entt::null;
-        m_entityPicked = false;
+        std::cout << "Delete entity: " << (int)entity << std::endl;
+
+        if (m_pickedEntity == entity)
+        {
+            m_pickedEntity = entt::null;
+            m_entityPicked = false;
+        }
+
+        m_activeScene->m_manager.m_registry.destroy(entity);
     }
 }
 
