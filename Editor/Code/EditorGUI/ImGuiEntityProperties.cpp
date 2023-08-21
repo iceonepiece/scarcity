@@ -10,6 +10,7 @@ std::string EditorComponentNames[] = {
     "Box Collider 2D",
     "Camera",
     "Circle Collider 2D",
+    "Mock",
     "Native Script",
     "Rigidbody 2D",
     "Sprite Renderer"
@@ -120,6 +121,7 @@ void ImGuiEntityProperties::Render()
         RenderComponent<BoxCollider2DComponent>("Box Collider 2D", registry, entity);
         RenderComponent<CircleCollider2DComponent>("Circle Collider 2D", registry, entity);
         RenderComponent<NativeScriptComponent>("Native Script", registry, entity);
+        RenderComponent<MockComponent>("Mock", registry, entity);
 
         if (ImGui::Button("Add Component"))
             ImGui::OpenPopup("add_component");
@@ -159,6 +161,12 @@ void ImGuiEntityProperties::Render()
                         if (registry.try_get<NativeScriptComponent>(entity) == nullptr)
                             registry.emplace<NativeScriptComponent>(entity);
                     }
+                    else if (EditorComponentNames[i] == "Mock")
+                    {
+                        if (registry.try_get<MockComponent>(entity) == nullptr)
+                            registry.emplace<MockComponent>(entity);
+                    }
+
                 }
             }
             ImGui::EndPopup();

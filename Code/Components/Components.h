@@ -8,6 +8,7 @@
 #include "CameraComponent.h"
 #include "CircleCollider2DComponent.h"
 #include "Collider2DComponent.h"
+#include "MockComponent.h"
 #include "NativeScriptComponent.h"
 #include "PlayerComponent.h"
 #include "Rigidbody2DComponent.h"

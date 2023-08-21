@@ -2211,6 +2211,9 @@
     <ClInclude Include="Code\Input\NewInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Code\Components\MockComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />

@@ -353,6 +353,7 @@
     <ClInclude Include="Code\Components\BoxCollider2DComponent.h" />
     <ClInclude Include="Code\Components\CameraComponent.h" />
     <ClInclude Include="Code\Components\ComponentSerializer.h" />
+    <ClInclude Include="Code\Components\MockComponent.h" />
     <ClInclude Include="Code\Components\NativeScriptComponent.h" />
     <ClInclude Include="Code\Components\Rigidbody2DComponent.h" />
     <ClInclude Include="Code\Components\SpriteRendererComponent.h" />
