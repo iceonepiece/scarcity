@@ -146,6 +146,7 @@
     <ClCompile Include="Code\EditorGUI\ImGuiEntityProperties.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiHierarchy.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiMainMenuBar.cpp" />
+    <ClCompile Include="Code\EditorGUI\ImGuiNodeEditor.cpp" />
     <ClCompile Include="Code\EditorScene.cpp" />
     <ClCompile Include="Code\GameLayer.cpp" />
     <ClCompile Include="Code\Gizmos\Gizmo.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="Code\EditorGUI\ImGuiEntityProperties.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiHierarchy.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiMainMenuBar.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiNodeEditor.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiWindow.h" />
     <ClInclude Include="Code\EditorMouse.h" />
     <ClInclude Include="Code\GameLayer.h" />

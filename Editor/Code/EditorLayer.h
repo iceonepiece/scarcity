@@ -7,6 +7,7 @@
 #include "EditorApplication.h"
 #include "Gizmos/Gizmo.h"
 #include "NativeScript/NativeScriptEngine.h"
+#include "EditorGUI/ImGuiNodeEditor.h"
 
 enum EditorMode
 {
@@ -99,4 +100,5 @@ private:
 	ImGuiEntityProperties m_entityProperties;
 	ImGuiHierarchy m_hierarchy;
 	ImGuiAssetPanel m_assetPanel;
+	ImGuiNodeEditor m_nodeEditor;
 };

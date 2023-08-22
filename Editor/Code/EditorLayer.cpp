@@ -266,6 +266,7 @@ void EditorLayer::RenderImGui()
     m_hierarchy.Render();
     m_assetPanel.Render();
     m_mainMenuBar.Render();
+    m_nodeEditor.Render();
 }
 
 void EditorLayer::OnWindowResize(WindowResizeEvent& event)

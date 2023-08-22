@@ -333,6 +333,10 @@
     <ClCompile Include="External\Include\angelscript\scriptstdstring\scriptstdstring_utils.cpp" />
     <ClCompile Include="External\Include\glad\glad.c" />
     <ClCompile Include="External\Include\glm\detail\glm.cpp" />
+    <ClCompile Include="External\Include\imgui-node-editor\crude_json.cpp" />
+    <ClCompile Include="External\Include\imgui-node-editor\imgui_canvas.cpp" />
+    <ClCompile Include="External\Include\imgui-node-editor\imgui_node_editor.cpp" />
+    <ClCompile Include="External\Include\imgui-node-editor\imgui_node_editor_api.cpp" />
     <ClCompile Include="External\Include\ImGuiFileDialog\ImGuiFileDialog.cpp" />
     <ClCompile Include="External\Include\imgui\imgui.cpp" />
     <ClCompile Include="External\Include\imgui\ImGuizmo.cpp" />

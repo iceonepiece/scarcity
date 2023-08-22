@@ -25,10 +25,13 @@ void Application::AddLayer(std::unique_ptr<Layer> layer)
 
 void Application::PopLayer()
 {
-	const auto& it = m_layers.erase(m_layers.begin());
+	if (m_layers.size() == 0)
+		return;
 
-	if (it != m_layers.end())
-		it->get()->Shutdown();
+	const auto& it = m_layers.begin();
+	it->get()->Shutdown();
+
+	m_layers.erase(it);
 }
 
 void Application::OnEvent(Event& event)
