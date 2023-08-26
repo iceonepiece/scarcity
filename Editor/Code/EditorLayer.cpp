@@ -256,7 +256,7 @@ void EditorLayer::Update(float deltaTime)
         if (m_activeScene != nullptr)
         {
             m_activeScene->SetCamera(m_camera.get());
-            m_activeScene->Render();
+            m_activeScene->RenderEditor();
 
             if (m_currentMode != EditorMode::ViewMode && m_entityPicked)
             {

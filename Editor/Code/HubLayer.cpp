@@ -1,5 +1,6 @@
 #include "HubLayer.h"
 #include "Core/Camera2D.h"
+#include "Utils/FileUtils.h"
 #include "Utils/FileDialog.h"
 #include <imgui/imgui_stdlib.h>
 
@@ -49,7 +50,7 @@ void HubLayer::RenderImGui()
         
         if (ImGui::MenuItem("Open Project"))
         {
-            directory = FileUtils::OpenFile(PROJECT_FILE_FILTER, m_editor.GetWindow().GetNativeWindow());
+            directory = FileDialog::OpenFile(PROJECT_FILE_FILTER);
             projectOpened = true;
         }
         
@@ -83,7 +84,7 @@ void HubLayer::RenderImGui()
         
         if (ImGui::Button("Browse"))
         {
-            directory = FileUtils::OpenFolder(m_editor.GetWindow().GetNativeWindow());
+            directory = FileDialog::OpenFolder();
         }
 
         if (ImGui::Button("Cancel"))

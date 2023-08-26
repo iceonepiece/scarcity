@@ -305,6 +305,39 @@ void Scene::Render()
         system->Render();
 }
 
+void Scene::RenderEditor()
+{
+    Renderer& renderer = m_app->GetRenderer();
+
+    auto transforms = m_manager.m_registry.view<TransformComponent, SpriteRendererComponent>();
+
+    for (auto [entity, transform, sprite] : transforms.each())
+    {
+        glm::vec2 position = transform.position;
+        glm::vec2 scale = transform.scale;
+        float angle = transform.rotation.z;
+
+        if (sprite.shape == SpriteShape::Shape_Square)
+            renderer.DrawQuad2D(position, scale, angle, sprite.color);
+        else if (sprite.shape == SpriteShape::Shape_Circle)
+        {
+            Circle2D circle;
+            circle.color = sprite.color;
+            circle.position = transform.position;
+            circle.scale = transform.scale;
+
+            renderer.DrawCircle2D(circle);
+        }
+    }
+
+    auto box2dColliders = m_manager.m_registry.view<TransformComponent, BoxCollider2DComponent>();
+
+    for (auto [entity, transform, box] : box2dColliders.each())
+    {
+        renderer.DrawRect(transform.position, transform.scale, transform.rotation.z, {0.0f, 1.0f, 0.0f, 1.0f}, 0.04f);
+    }
+}
+
 void Scene::RenderUI()
 {
     m_ui.Render();

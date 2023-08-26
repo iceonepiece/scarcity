@@ -29,6 +29,8 @@ public:
 	virtual void OnEvent(Event* e);
 	virtual void Update(float deltaTime);
 	virtual void Render();
+	virtual void RenderEditor();
+
 	void SetCamera(Camera* camera);
 	
 	bool HasSaved();

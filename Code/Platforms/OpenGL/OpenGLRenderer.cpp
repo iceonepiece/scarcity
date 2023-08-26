@@ -299,6 +299,28 @@ void OpenGLRenderer::DrawRect(b2Body* body, const Camera& camera)
     DrawLine(points[3], points[0], color);
 }
 
+glm::vec2 RotatedPosition(const glm::vec2& offset, const glm::vec2& local, float angle)
+{
+    glm::vec2 renderPosition { offset.x, offset.y };
+    glm::vec2 rotated = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0, 0, 1)) * glm::vec4(local.x, local.y, 0.0f, 1.0f);
+
+    return renderPosition + rotated;
+}
+
+void OpenGLRenderer::DrawRect(const glm::vec2& position, const glm::vec2& scale, float angle, glm::vec4 color, float thickness)
+{
+    glm::vec2 vScale { thickness, scale.y };
+    glm::vec2 hScale { scale.x, thickness };
+
+    float offsetX = scale.x / 2 - thickness / 2;
+    float offsetY = scale.y / 2 - thickness / 2;
+
+    DrawQuad2D(RotatedPosition(position, { 0, offsetY }, angle), hScale, angle, color);
+    DrawQuad2D(RotatedPosition(position, { 0, -offsetY }, angle), hScale, angle, color);
+    DrawQuad2D(RotatedPosition(position, { offsetX, 0 }, angle), vScale, angle, color);
+    DrawQuad2D(RotatedPosition(position, { -offsetX, 0 }, angle), vScale, angle, color);
+}
+
 void OpenGLRenderer::DrawCircle(const glm::vec2& position, float radius)
 {
     m_circleShader.Use();
