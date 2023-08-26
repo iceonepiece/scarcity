@@ -24,8 +24,7 @@ public:
 	}
 
 	virtual void Render() override
-	{		
-		//Renderer& renderer = RendererAPI::GetRenderer();
+	{
 		Renderer& renderer = m_scene->m_app->GetRenderer();
 
 
@@ -33,9 +32,11 @@ public:
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		
-		auto view1 = m_registry.view<TransformComponent, Collider2DComponent, SpriteAnimatorComponent>();
-		for (auto [entity, transform, collider, animator] : view1.each())
+		auto view1 = m_registry.view<TransformComponent,SpriteAnimatorComponent>();
+		for (auto [entity, transform, animator] : view1.each())
 		{
+			if (animator.fsm == nullptr)
+				continue;
 
 			AnimationState* animState = (AnimationState*)animator.fsm->GetCurrentState();
 
@@ -56,7 +57,7 @@ public:
 				glm::vec2 grid{ x, y };
 				//Sprite sprite(&(spriteAnim.texture), spriteAnim.size, grid);
 				Sprite sprite(&(spriteAnim.texture), {u, v}, grid);
-				b2Vec2 position = collider.body->GetPosition();
+				glm::vec2 position = transform.position;
 				//Renderer::DrawSprite(sprite, glm::vec2{ position.x, position.y }, glm::vec2{ spriteAnim.scale, spriteAnim.scale }, m_camera);
 
 				glm::mat4 model{ 1 };
@@ -64,7 +65,7 @@ public:
 
 				glm::vec2 ratio = sprite.GetRatio();
 				//model = glm::scale(model, glm::vec3{ spriteAnim.scale * ratio.x * transform.scale.x, spriteAnim.scale * ratio.y, 1 });
-				model = glm::scale(model, glm::vec3{ ratio.x * transform.scale.x * spriteAnim.scale.x, ratio.y * spriteAnim.scale.y, 1 });
+				model = glm::scale(model, glm::vec3{ ratio.x * transform.scale.x * spriteAnim.scale.x, ratio.y * transform.scale.y * spriteAnim.scale.y, 1 });
 				
 				renderer.Draw(sprite, model);
 			}

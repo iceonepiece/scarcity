@@ -90,8 +90,11 @@ void OpenGLRenderer::Draw(Sprite& sprite, const glm::mat4& modelMatrix)
     m_spriteShader.Use();
 
     m_spriteShader.SetMatrix4("model", modelMatrix);
-    m_spriteShader.SetMatrix4("view", m_camera->GetViewMatrix());
-    m_spriteShader.SetMatrix4("projection", m_camera->GetProjectionMatrix());
+    //m_spriteShader.SetMatrix4("view", m_camera->GetViewMatrix());
+    //m_spriteShader.SetMatrix4("projection", m_camera->GetProjectionMatrix());
+
+    m_spriteShader.SetMatrix4("view", m_viewMatrix);
+    m_spriteShader.SetMatrix4("projection", m_projectionMatrix);
 
     glActiveTexture(GL_TEXTURE0);
     OpenGLTexture *texture = static_cast<OpenGLTexture*>(sprite.GetTexture());

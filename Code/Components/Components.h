@@ -23,6 +23,7 @@ using ComponentList = std::tuple<
 	CameraComponent,
 	NativeScriptComponent,
 	Rigidbody2DComponent,
+	SpriteAnimatorComponent,
 	SpriteRendererComponent,
 	TransformComponent
 >;

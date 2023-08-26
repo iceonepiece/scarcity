@@ -15,6 +15,10 @@ public:
 	virtual Texture* LoadTexture(std::string name, const char* filename, bool alpha = false) = 0;
 	virtual void LoadParticles(std::string fileName) = 0;
 
+	bool HasTexture(const std::string& name)
+	{
+		return m_textures.find(name) != m_textures.end();
+	}
 	
 	Texture& GetTexture(const std::string& name)
 	{

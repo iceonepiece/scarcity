@@ -4,8 +4,10 @@
 #include "Graphics/Renderer.h"
 #include "Core/Camera2D.h"
 #include "Components/Components.h"
-#include "Utils/FileDialog.h"
+#include "Utils/FileUtils.h"
 #include "NativeScript/NativeScriptEngine.h"
+#include "Animations/AnimationSerializer.h"
+#include "Systems/AnimationSystem.h"
 
 Scene::Scene(const std::string& name)
     : m_name(name)
@@ -16,6 +18,7 @@ Scene::Scene(const std::string& name)
 {
     m_systems.push_back(std::make_unique<ScriptableSystem>(this));
     m_systems.push_back(std::make_unique<RenderSystem>(this));
+    m_systems.push_back(std::make_unique<AnimationSystem>(this));
 }
 
 
@@ -73,6 +76,7 @@ std::unique_ptr<Scene> Scene::Copy(Scene& sourceScene)
 
         CopyComponent<BaseComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
         CopyComponent<TransformComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
+        CopyComponent<SpriteAnimatorComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
         CopyComponent<SpriteRendererComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
         CopyComponent<Rigidbody2DComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
         CopyComponent<BoxCollider2DComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
@@ -87,6 +91,14 @@ std::unique_ptr<Scene> Scene::Copy(Scene& sourceScene)
 void Scene::Start()
 {
     StartPhysics();
+
+    std::cout << "Scene::Start()\n";
+    auto view = m_manager.m_registry.view<SpriteAnimatorComponent>();
+    for (auto [entity, animator] : view.each())
+    {
+        Entity myEntity { &m_manager, entity };
+        animator.fsm = AnimationSerializer::DeserializeFSM(animator.fileName, myEntity);
+    }
 }
 
 void Scene::Stop()
@@ -97,6 +109,12 @@ void Scene::Stop()
     for (auto [entity, script] : view.each())
     {
         delete script.instance;
+    }
+
+    auto animators = m_manager.m_registry.view<SpriteAnimatorComponent>();
+    for (auto [entity, animator] : animators.each())
+    {
+        delete animator.fsm;
     }
 }
 
@@ -282,6 +300,9 @@ void Scene::Render()
             renderer.DrawCircle2D(circle);
         }
     }
+
+    for (auto& system : m_systems)
+        system->Render();
 }
 
 void Scene::RenderUI()

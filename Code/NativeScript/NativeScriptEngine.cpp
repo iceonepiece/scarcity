@@ -1,7 +1,7 @@
 #include "NativeScriptEngine.h"
 #include <Windows.h>
 #include <iostream>
-#include "Utils/FileDialog.h"
+#include "Utils/FileUtils.h"
 
 NativeScriptEngine::~NativeScriptEngine()
 {
@@ -58,7 +58,7 @@ bool NativeScriptEngine::LoadNativeScripts(std::filesystem::path dllPath, std::v
     if (m_dllHandle)
         FreeLibrary((HMODULE)m_dllHandle);
 
-    if (FileUtils::CopyFile(dllPath, tempDllPath))
+    if (FileUtils::CopyFile_(dllPath, tempDllPath))
     {
         HMODULE dllHandle = LoadLibrary(tempDllPath.string().c_str());
 

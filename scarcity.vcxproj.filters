@@ -446,6 +446,7 @@
     <None Include="Assets\Scripts\Player.as" />
     <None Include="Assets\Scripts\sample.lua" />
     <None Include="Assets\Scripts\premake5.lua" />
+    <None Include="Assets\Animations\CatAnimation.json" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="code\Main.cpp">
@@ -632,6 +633,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="External\Include\imgui-node-editor\crude_json.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Utils\FileUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Utils\FileDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -2190,7 +2197,7 @@
     <ClInclude Include="Code\ImGui\ImGuiManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Utils\FileDialog.h">
+    <ClInclude Include="Code\Utils\FileUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="External\Include\ImGuiFileDialog\ImGuiFileDialogConfig.h">
@@ -2227,6 +2234,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Components\Relationship.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Animations\AnimationSerializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Utils\FileDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

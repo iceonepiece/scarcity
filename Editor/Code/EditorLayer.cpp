@@ -6,9 +6,12 @@
 #include "Gizmos/TranslateGizmo.h"
 #include "Gizmos/RotateGizmo.h"
 #include "Gizmos/ScaleGizmo.h"
+#include "Utils/FileUtils.h"
 #include "Utils/FileDialog.h"
 #include <iostream>
 #include "Input/NewInput.h"
+#include "Core/ResourceAPI.h"
+#include "Lua/LuaEngine.h"
 
 EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> project)
     : m_app(app)
@@ -20,6 +23,10 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
 {
     std::cout << "EditorLayer Constructor()\n\n";
 
+    LuaEngine& luaEngine = m_app.GetLuaEngine();
+
+    std::filesystem::path path = m_activeProject->GetDirectory() / (m_activeProject->GetName() + ".lua");
+    luaEngine.ReadScript(path.string());
     /*
     m_activeScene = std::make_unique<Scene>();
     m_activeScene->SetApplication((Application*)&m_app);
@@ -266,7 +273,7 @@ void EditorLayer::RenderImGui()
     m_hierarchy.Render();
     m_assetPanel.Render();
     m_mainMenuBar.Render();
-    m_nodeEditor.Render();
+    //m_nodeEditor.Render();
 }
 
 void EditorLayer::OnWindowResize(WindowResizeEvent& event)
@@ -429,7 +436,7 @@ bool EditorLayer::SaveScene()
 
 bool EditorLayer::SaveSceneAs()
 {
-    std::string saveDirectory = FileUtils::SaveFileDialog("BossFight Scene Files (.bfs)\0.bfs\0", m_app.GetWindow().GetNativeWindow());
+    std::string saveDirectory = FileDialog::SaveFileDialog("BossFight Scene Files (.bfs)\0.bfs\0");
 
     if (saveDirectory.size() == 0)
         return false;

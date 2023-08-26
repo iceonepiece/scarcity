@@ -13,6 +13,7 @@ std::string EditorComponentNames[] = {
     "Mock",
     "Native Script",
     "Rigidbody 2D",
+    "Sprite Animator",
     "Sprite Renderer"
 };
 
@@ -122,6 +123,7 @@ void ImGuiEntityProperties::Render()
         RenderComponent<CircleCollider2DComponent>("Circle Collider 2D", registry, entity);
         RenderComponent<NativeScriptComponent>("Native Script", registry, entity);
         RenderComponent<MockComponent>("Mock", registry, entity);
+        RenderComponent<SpriteAnimatorComponent>("Sprite Animator", registry, entity);
 
         if (ImGui::Button("Add Component"))
             ImGui::OpenPopup("add_component");
@@ -150,6 +152,11 @@ void ImGuiEntityProperties::Render()
                     {
                         if (registry.try_get<CircleCollider2DComponent>(entity) == nullptr)
                             registry.emplace<CircleCollider2DComponent>(entity);
+                    }
+                    else if (EditorComponentNames[i] == "Sprite Animator")
+                    {
+                        if (registry.try_get<SpriteAnimatorComponent>(entity) == nullptr)
+                            registry.emplace<SpriteAnimatorComponent>(entity);
                     }
                     else if (EditorComponentNames[i] == "Sprite Renderer")
                     {

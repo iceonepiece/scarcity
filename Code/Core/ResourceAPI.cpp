@@ -17,6 +17,11 @@ void ResourceAPI::LoadParticles(std::string fileName)
 	s_resourceManager->LoadParticles(fileName);
 }
 
+bool ResourceAPI::HasTexture(const std::string& name)
+{
+	return s_resourceManager->HasTexture(name);
+}
+
 Texture& ResourceAPI::GetTexture(const std::string& name)
 {
 	return s_resourceManager->GetTexture(name);

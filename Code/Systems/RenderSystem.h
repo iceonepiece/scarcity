@@ -57,6 +57,7 @@ public:
 
 	virtual void Render() override
 	{
+		/*
 		Renderer& renderer = m_scene->m_app->GetRenderer();
 
 		auto view = m_registry.view<TransformComponent, CameraComponent>();
@@ -65,5 +66,6 @@ public:
 			renderer.m_viewMatrix = GetViewMatrix(camera, transform);
 			renderer.m_projectionMatrix = GetProjectionMatrix(camera);
 		}
+		*/
 	}
 };

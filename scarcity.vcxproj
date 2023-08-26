@@ -127,6 +127,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="Assets\Animations\CatAnimation.json" />
     <None Include="Assets\Levels\Level1.lua" />
     <None Include="Assets\Scripts\parameters.lua" />
     <None Include="Assets\Scripts\particles.lua" />
@@ -328,6 +329,8 @@
     <ClCompile Include="Code\UIs\UIList.cpp" />
     <ClCompile Include="Code\UIs\UIListItem.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLTexture.cpp" />
+    <ClCompile Include="Code\Utils\FileDialog.cpp" />
+    <ClCompile Include="Code\Utils\FileUtils.cpp" />
     <ClCompile Include="External\Include\angelscript\scriptarray\scriptarray.cpp" />
     <ClCompile Include="External\Include\angelscript\scriptstdstring\scriptstdstring.cpp" />
     <ClCompile Include="External\Include\angelscript\scriptstdstring\scriptstdstring_utils.cpp" />
@@ -351,6 +354,7 @@
     <ClCompile Include="Code\Project\ProjectSerializer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\Animations\AnimationSerializer.h" />
     <ClInclude Include="Code\APIs\InputAPI.h" />
     <ClInclude Include="Code\Audio\OpenALAudio.h" />
     <ClInclude Include="Code\Components\BaseComponent.h" />
@@ -466,6 +470,7 @@
     <ClInclude Include="Code\UIs\UIText.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="Code\Utils\FileDialog.h" />
+    <ClInclude Include="Code\Utils\FileUtils.h" />
     <ClInclude Include="External\Include\AL\al.h" />
     <ClInclude Include="External\Include\AL\alc.h" />
     <ClInclude Include="External\Include\AL\alext.h" />
