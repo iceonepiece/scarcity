@@ -334,7 +334,7 @@ void Scene::RenderEditor()
 
     for (auto [entity, transform, box] : box2dColliders.each())
     {
-        renderer.DrawRect(transform.position, transform.scale, transform.rotation.z, {0.0f, 1.0f, 0.0f, 1.0f}, 0.04f);
+        renderer.DrawRect(transform.position, transform.scale, transform.rotation.z, {0.0f, 1.0f, 0.0f, 1.0f}, 0.02f);
     }
 }
 

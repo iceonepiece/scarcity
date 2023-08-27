@@ -8,6 +8,7 @@
 #include "Gizmos/Gizmo.h"
 #include "NativeScript/NativeScriptEngine.h"
 #include "EditorGUI/ImGuiNodeEditor.h"
+#include "FileWatcher.h"
 
 enum EditorMode
 {
@@ -72,6 +73,7 @@ private:
 	void OnMouseScrolled(MouseScrolledEvent& event);
 
 private:
+	std::unique_ptr<FileWatcher> m_fileWatcher;
 	NativeScriptEngine m_nativeScriptEngine;
 	std::vector<std::string> m_nativeClassNames;
 

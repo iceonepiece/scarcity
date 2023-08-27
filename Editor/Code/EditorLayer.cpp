@@ -25,6 +25,8 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
 
     LuaEngine& luaEngine = m_app.GetLuaEngine();
 
+    m_fileWatcher = std::make_unique<FileWatcher>(m_activeProject->GetDirectory() / "Assets");
+
     std::filesystem::path path = m_activeProject->GetDirectory() / (m_activeProject->GetName() + ".lua");
     luaEngine.ReadScript(path.string());
     /*

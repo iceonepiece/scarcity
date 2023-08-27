@@ -521,6 +521,7 @@
     <ClInclude Include="External\Include\box2d\b2_world_callbacks.h" />
     <ClInclude Include="External\Include\box2d\box2d.h" />
     <ClInclude Include="External\Include\entt\entt.hpp" />
+    <ClInclude Include="External\Include\filewatch\FileWatch.h" />
     <ClInclude Include="External\Include\freetype\config\ftconfig.h" />
     <ClInclude Include="External\Include\freetype\config\ftheader.h" />
     <ClInclude Include="External\Include\freetype\config\ftmodule.h" />
