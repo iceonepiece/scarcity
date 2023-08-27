@@ -18,6 +18,20 @@ enum EditorMode
 	ScaleMode
 };
 
+enum class EditorObjectType
+{
+	None,
+	Entity,
+	Path
+};
+
+struct EditorObject
+{
+	EditorObjectType type = EditorObjectType::None;
+	entt::entity entity = entt::null;
+	std::filesystem::path path = "";
+};
+
 class EditorLayer : public Layer
 {
 public:
@@ -35,12 +49,25 @@ public:
 
 	inline bool IsEntityPicked() { return m_entityPicked; }
 
-	inline entt::entity GetPickedEntity() { return m_pickedEntity; }
-	inline void SetPickedEntity(entt::entity picked)
+	inline entt::entity GetPickedEntity()
 	{
-		m_entityPicked = true;
-		m_pickedEntity = picked;
+		return m_selectedObject.entity;
 	}
+
+	inline std::filesystem::path GetSelectedPath()
+	{
+		return m_selectedObject.path;
+	}
+
+	inline void SetSelectedPath(const std::filesystem::path& path)
+	{
+		m_selectedObject.type = EditorObjectType::Path;
+		m_selectedObject.path = path;
+		m_selectedObject.entity = entt::null;
+	}
+
+	void SetPickedEntity(entt::entity picked);
+	void UnselectObject();
 
 	void DeleteEntity(entt::entity entity);
 
@@ -63,6 +90,8 @@ public:
 	bool CheckPicking2D();
 	void CalculateWorldCursorPosition();
 
+	inline EditorObject& GetSelectedObject() { return m_selectedObject; }
+
 
 private:
 	void OnWindowResize(WindowResizeEvent& event);
@@ -73,6 +102,8 @@ private:
 	void OnMouseScrolled(MouseScrolledEvent& event);
 
 private:
+	EditorObject m_selectedObject;
+
 	std::unique_ptr<FileWatcher> m_fileWatcher;
 	NativeScriptEngine m_nativeScriptEngine;
 	std::vector<std::string> m_nativeClassNames;

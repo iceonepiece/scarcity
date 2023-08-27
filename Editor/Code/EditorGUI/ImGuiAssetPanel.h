@@ -17,6 +17,7 @@ public:
 	}
 
 private:
+	std::filesystem::path m_selectedPath;
 	std::filesystem::path m_BaseDirectory;
 	std::filesystem::path m_CurrentDirectory;
 

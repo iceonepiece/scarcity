@@ -44,7 +44,13 @@ void ImGuiAssetPanel::Render()
 		ImGui::PushID(filenameString.c_str());
 		Texture* icon = directoryEntry.is_directory() ? m_folderIcon.get() : m_fileIcon.get();
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-		ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+		//ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+
+		if (ImGui::Selectable(filenameString.c_str(), m_editor.GetSelectedPath() == path))
+		{
+			m_editor.SetSelectedPath(path);
+		}
+
 		//ImGui::Button("SSS", { thumbnailSize, thumbnailSize });
 
 		if (ImGui::BeginDragDropSource())
@@ -56,6 +62,7 @@ void ImGuiAssetPanel::Render()
 		}
 
 		ImGui::PopStyleColor();
+
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 		{
 			if (directoryEntry.is_directory())
@@ -73,7 +80,7 @@ void ImGuiAssetPanel::Render()
 
 
 		}
-		ImGui::TextWrapped(filenameString.c_str());
+		//ImGui::TextWrapped(filenameString.c_str());
 
 		ImGui::NextColumn();
 

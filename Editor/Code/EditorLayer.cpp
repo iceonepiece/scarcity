@@ -129,6 +129,20 @@ void EditorLayer::CalculateWorldCursorPosition()
     m_worldCursorPosition = Math::ConvertToWorldSpace(ndcPosition, ivProjection, ivView);
 }
 
+void EditorLayer::SetPickedEntity(entt::entity picked)
+{
+    m_selectedObject.type = EditorObjectType::Entity;
+    m_selectedObject.entity = picked;
+    m_selectedObject.path = "";
+}
+
+void EditorLayer::UnselectObject()
+{
+    m_selectedObject.type = EditorObjectType::None;
+    m_selectedObject.entity = entt::null;
+    m_selectedObject.path = "";
+}
+
 void EditorLayer::OnMouseMoved(MouseMovedEvent& event)
 {
     m_cursorPosition.x = event.GetX();
@@ -176,8 +190,8 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
 
         case Key::Delete:
         {
-            if (m_entityPicked)
-                DeleteEntity(m_pickedEntity);
+            if (m_selectedObject.type == EditorObjectType::Entity)
+                DeleteEntity(m_selectedObject.entity);
         }
         break;
     }
@@ -195,7 +209,10 @@ void EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& event)
         CalculateWorldCursorPosition();
 
         if (!m_gizmos[m_currentMode]->OnPicking2D(m_worldCursorPosition))
-            m_entityPicked = CheckPicking2D();
+        {
+            if (!CheckPicking2D())
+                UnselectObject();
+        }
     }
 }
 
@@ -218,7 +235,8 @@ bool EditorLayer::CheckPicking2D()
             continue;
 
         std::cout << "PICKED" << std::endl;
-        m_pickedEntity = entity;
+
+        SetPickedEntity(entity);
 
         return true;
     }
@@ -234,10 +252,10 @@ void EditorLayer::Shutdown()
 
 TransformComponent* EditorLayer::GetEntityTransform()
 {
-    if (!m_entityPicked)
+    if (m_selectedObject.type != EditorObjectType::Entity)
         return nullptr;
 
-    return &m_activeScene->GetEntityManager().m_registry.get<TransformComponent>(m_pickedEntity);
+    return &m_activeScene->GetEntityManager().m_registry.get<TransformComponent>(m_selectedObject.entity);
 }
 
 
@@ -260,9 +278,9 @@ void EditorLayer::Update(float deltaTime)
             m_activeScene->SetCamera(m_camera.get());
             m_activeScene->RenderEditor();
 
-            if (m_currentMode != EditorMode::ViewMode && m_entityPicked)
+            if (m_currentMode != EditorMode::ViewMode && m_selectedObject.type == EditorObjectType::Entity)
             {
-                auto& transform = m_activeScene->GetEntityManager().m_registry.get<TransformComponent>(m_pickedEntity);
+                auto& transform = m_activeScene->GetEntityManager().m_registry.get<TransformComponent>(m_selectedObject.entity);
                 m_gizmos.at(m_currentMode)->Render(renderer, transform.position);
             }
         }
@@ -392,11 +410,8 @@ void EditorLayer::DeleteEntity(entt::entity entity)
     {
         std::cout << "Delete entity: " << (int)entity << std::endl;
 
-        if (m_pickedEntity == entity)
-        {
-            m_pickedEntity = entt::null;
-            m_entityPicked = false;
-        }
+        if (m_selectedObject.entity == entity)
+            UnselectObject();
 
         m_activeScene->m_manager.m_registry.destroy(entity);
     }

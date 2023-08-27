@@ -89,10 +89,10 @@ void ImGuiEntityProperties::Render()
         ImGui::SetWindowPos(ImVec2(800, 100));
     }
 
-    if (m_editor.GetScene() != nullptr && m_editor.IsEntityPicked())
+    if (m_editor.GetScene() != nullptr && m_editor.GetSelectedObject().type == EditorObjectType::Entity)
     {
         Scene* scene = m_editor.GetScene();
-        entt::entity entity = m_editor.GetPickedEntity();
+        entt::entity entity = m_editor.GetSelectedObject().entity;
         auto& registry = scene->GetEntityManager().m_registry;
        
         ImGui::PushID((int)entity);
