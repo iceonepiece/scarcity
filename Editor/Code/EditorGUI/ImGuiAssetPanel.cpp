@@ -39,6 +39,10 @@ void ImGuiAssetPanel::Render()
 	for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory))
 	{
 		const auto& path = directoryEntry.path();
+
+		if (path.extension() == ".meta")
+			continue;
+
 		std::string filenameString = path.filename().string();
 
 		ImGui::PushID(filenameString.c_str());

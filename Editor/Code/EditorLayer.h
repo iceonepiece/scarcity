@@ -9,6 +9,7 @@
 #include "NativeScript/NativeScriptEngine.h"
 #include "EditorGUI/ImGuiNodeEditor.h"
 #include "FileWatcher.h"
+#include "File/FileSystem.h"
 
 enum EditorMode
 {

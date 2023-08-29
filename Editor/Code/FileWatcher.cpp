@@ -1,9 +1,11 @@
 #include "FileWatcher.h"
+#include "File/FileSystem.h"
 
 FileWatcher::FileWatcher(const std::filesystem::path& targetPath)
+    : m_targetPath(targetPath)
 {
     m_fileWatcher = std::make_unique<filewatch::FileWatch<std::string>>(
-        targetPath.string(),
+        m_targetPath.string(),
         [&](const std::string& path, const filewatch::Event change_type) {
             switch (change_type)
             {
@@ -19,7 +21,11 @@ FileWatcher::FileWatcher(const std::filesystem::path& targetPath)
 
 void FileWatcher::OnAdded(const std::string& path)
 {
-    std::cout << path << " was added to the directory.\n";
+    std::filesystem::path filePath = m_targetPath / path;
+    std::cout << filePath << " was added to the directory.\n";
+
+    if (FileSystem::IsImageFile(filePath))
+        FileSystem::GenerateImageMetaFile(filePath);
 }
 
 void FileWatcher::OnRemoved(const std::string& path)

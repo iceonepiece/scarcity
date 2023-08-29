@@ -15,6 +15,8 @@ public:
 	void OnModified(const std::string& path);
 	void OnRenamedOld(const std::string& path);
 	void OnRenamedNew(const std::string& path);
+
 private:
 	std::unique_ptr<filewatch::FileWatch<std::string>> m_fileWatcher;
+	std::filesystem::path m_targetPath;
 };

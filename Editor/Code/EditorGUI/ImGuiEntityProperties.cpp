@@ -4,7 +4,7 @@
 #include "Components/Components.h"
 #include "../EditorLayer.h"
 #include "imgui/imgui_stdlib.h"
-#include <string.h>
+#include <string>
 
 std::string EditorComponentNames[] = {
     "Box Collider 2D",
@@ -80,6 +80,58 @@ static void RenderComponent(const std::string& name, entt::registry& registry, e
     }
 }
 
+void ImGuiEntityProperties::RenderResource(const Resource& resource)
+{
+
+    if (resource.type == ResourceType::Image)
+    {
+        std::string name = resource.name + " (Texture 2D)";
+        ImGui::Text(name.c_str());
+
+        const char* spriteModeStrings[] = { "Single", "Multiple" };
+        const char* currentSpriteModeString = spriteModeStrings[(int)m_currentSpriteResource.mode];
+        if (ImGui::BeginCombo("Sprite Mode", currentSpriteModeString))
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                bool isSelected = currentSpriteModeString == spriteModeStrings[i];
+                if (ImGui::Selectable(spriteModeStrings[i], isSelected))
+                {
+                    currentSpriteModeString = spriteModeStrings[i];
+                    m_currentSpriteResource.mode = (SpriteMode)i;
+                }
+
+                if (isSelected)
+                    ImGui::SetItemDefaultFocus();
+            }
+
+            ImGui::EndCombo();
+        }
+
+        if (ImGui::Button("Revert"))
+        {
+            RevertSpriteData();
+        }
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("Apply"))
+        {
+            ApplySpriteData();
+        }
+    }
+}
+
+void ImGuiEntityProperties::ApplySpriteData()
+{
+
+}
+
+void ImGuiEntityProperties::RevertSpriteData()
+{
+
+}
+
 void ImGuiEntityProperties::Render()
 {
     ImGui::Begin("Properties", NULL, ImGuiWindowFlags_NoCollapse);
@@ -89,7 +141,11 @@ void ImGuiEntityProperties::Render()
         ImGui::SetWindowPos(ImVec2(800, 100));
     }
 
-    if (m_editor.GetScene() != nullptr && m_editor.GetSelectedObject().type == EditorObjectType::Entity)
+    if (m_editor.GetScene() != nullptr && m_editor.GetSelectedObject().type == EditorObjectType::Path)
+    {
+        RenderResource(FileSystem::GetResource(m_editor.GetSelectedObject().path));
+    }
+    else if (m_editor.GetScene() != nullptr && m_editor.GetSelectedObject().type == EditorObjectType::Entity)
     {
         Scene* scene = m_editor.GetScene();
         entt::entity entity = m_editor.GetSelectedObject().entity;

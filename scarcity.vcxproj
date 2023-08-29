@@ -292,6 +292,7 @@
     <ClCompile Include="Code\Components\Components.cpp" />
     <ClCompile Include="Code\Core\Application.cpp" />
     <ClCompile Include="Code\Core\GameState.cpp" />
+    <ClCompile Include="Code\File\FileSystem.cpp" />
     <ClCompile Include="Code\ImGui\ImGuiManager.cpp" />
     <ClCompile Include="Code\Core\Layer.cpp" />
     <ClCompile Include="Code\Core\ResourceAPI.cpp" />
@@ -374,6 +375,8 @@
     <ClInclude Include="Code\Components\TransformComponent.h" />
     <ClInclude Include="Code\Core\Application.h" />
     <ClInclude Include="Code\Core\Common.h" />
+    <ClInclude Include="Code\File\FileSystem.h" />
+    <ClInclude Include="Code\File\MetaSerializer.h" />
     <ClInclude Include="Code\ImGui\ImGuiManager.h" />
     <ClInclude Include="Code\Core\Input.h" />
     <ClInclude Include="Code\Core\Layer.h" />

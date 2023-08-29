@@ -641,6 +641,9 @@
     <ClCompile Include="Code\Utils\FileDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Code\File\FileSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Core\Camera2D.h">
@@ -2243,6 +2246,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="External\Include\filewatch\FileWatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\File\FileSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\File\MetaSerializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
