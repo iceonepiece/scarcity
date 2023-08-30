@@ -12,6 +12,8 @@
 #include "Input/NewInput.h"
 #include "Core/ResourceAPI.h"
 #include "Lua/LuaEngine.h"
+#include "Platforms/OpenGL/OpenGLResourceManager.h"
+#include "Platforms/OpenGL/OpenGLTexture.h"
 
 EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> project)
     : m_app(app)
@@ -25,17 +27,33 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
 
     LuaEngine& luaEngine = m_app.GetLuaEngine();
 
-    m_fileWatcher = std::make_unique<FileWatcher>(m_activeProject->GetDirectory() / "Assets");
+    m_fileWatcher = std::make_unique<filewatch::FileWatch<std::string>>(
+        (m_activeProject->GetDirectory() / "Assets").string(),
+        [&](const std::string& path, const filewatch::Event change_type)
+        {
+            std::filesystem::path absolutePath = m_activeProject->GetDirectory() / "Assets" / path;
+            std::lock_guard<std::mutex> lock(m_fileEventMutex);
+            m_fileEvents.push_back({ absolutePath, change_type });
+        }
+        //OnFileUpdate
+    );
 
     std::filesystem::path path = m_activeProject->GetDirectory() / (m_activeProject->GetName() + ".lua");
-    luaEngine.ReadScript(path.string());
+
+    if (FileUtils::FileExists(path))
+        luaEngine.ReadScript(path.string());
     /*
     m_activeScene = std::make_unique<Scene>();
     m_activeScene->SetApplication((Application*)&m_app);
     m_activeScene->Initialize();
     */
+
     std::cout << "Start Scene: " << m_activeProject->GetStartScene() << std::endl;
     OpenScene(m_activeProject->GetStartScene());
+}
+
+void EditorLayer::OnFileEvent(const std::string& path, const filewatch::Event change_type)
+{
 }
 
 EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Scene> scene)
@@ -263,6 +281,29 @@ void EditorLayer::Update(float deltaTime)
 {
     Renderer& renderer = m_app.GetRenderer();
 
+    {
+        std::lock_guard<std::mutex> lock(m_fileEventMutex);
+
+        for (auto& e : m_fileEvents) {
+            switch(e.type)
+            {
+                case filewatch::Event::added:
+                {
+                    std::cout << "File Added at: " << e.path << std::endl;
+                    ResourceAPI::LoadTexture(e.path.string(), e.path.string().c_str(), true);
+                }
+                break;
+
+                case filewatch::Event::removed:
+                {
+                    std::cout << "File Removed at: " << e.path << std::endl;
+                }
+                break;
+            }
+        }
+        m_fileEvents.clear();
+    }
+
     if (m_scenePlaying)
     {
         m_playingScene->Update(deltaTime);
@@ -286,6 +327,7 @@ void EditorLayer::Update(float deltaTime)
         }
     }
 }
+
 
 void EditorLayer::RenderImGui()
 {

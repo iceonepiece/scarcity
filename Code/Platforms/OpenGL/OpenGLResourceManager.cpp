@@ -7,11 +7,15 @@
 Texture* OpenGLResourceManager::LoadTexture(std::string name, const char* filename, bool alpha)
 {
     OpenGLTexture* texture = new OpenGLTexture();
-    texture->Generate(filename, alpha);
 
-    m_textures.emplace(name, std::unique_ptr<Texture>(texture));
+    if (texture->Generate(filename, alpha))
+    {
+        m_textures.emplace(name, std::unique_ptr<OpenGLTexture>(texture));
+        return m_textures[name].get();
+    }
 
-    return m_textures[name].get();
+    delete texture;
+    return nullptr;
 }
 
 void OpenGLResourceManager::LoadParticles(std::string fileName)

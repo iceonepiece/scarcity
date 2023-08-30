@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <functional>
 #include "Core/Layer.h"
 #include "EditorGUI/ImGuiMain.h"
 #include "Scene/Scene.h"
@@ -8,8 +9,8 @@
 #include "Gizmos/Gizmo.h"
 #include "NativeScript/NativeScriptEngine.h"
 #include "EditorGUI/ImGuiNodeEditor.h"
-#include "FileWatcher.h"
 #include "File/FileSystem.h"
+#include <filewatch/FileWatch.h>
 
 enum EditorMode
 {
@@ -31,6 +32,12 @@ struct EditorObject
 	EditorObjectType type = EditorObjectType::None;
 	entt::entity entity = entt::null;
 	std::filesystem::path path = "";
+};
+
+struct FileEvent
+{
+	std::filesystem::path path;
+	filewatch::Event type;
 };
 
 class EditorLayer : public Layer
@@ -81,6 +88,8 @@ public:
 	void StopScene();
 	void ReloadNativeScripts();
 
+	void OnFileAdded(const std::string& path);
+
 	TransformComponent* GetEntityTransform();
 
 	inline bool IsScenePlaying() { return m_scenePlaying; }
@@ -93,7 +102,6 @@ public:
 
 	inline EditorObject& GetSelectedObject() { return m_selectedObject; }
 
-
 private:
 	void OnWindowResize(WindowResizeEvent& event);
 	void OnMouseMoved(MouseMovedEvent& event);
@@ -102,10 +110,16 @@ private:
 	void OnKeyPressed(KeyPressedEvent& event);
 	void OnMouseScrolled(MouseScrolledEvent& event);
 
+	void OnFileEvent(const std::string& path, const filewatch::Event change_type);
+
 private:
+
+	std::mutex m_fileEventMutex;
+	std::vector<FileEvent> m_fileEvents;
+	std::unique_ptr<filewatch::FileWatch<std::string>> m_fileWatcher;
+
 	EditorObject m_selectedObject;
 
-	std::unique_ptr<FileWatcher> m_fileWatcher;
 	NativeScriptEngine m_nativeScriptEngine;
 	std::vector<std::string> m_nativeClassNames;
 

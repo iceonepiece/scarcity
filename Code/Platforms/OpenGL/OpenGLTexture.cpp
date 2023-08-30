@@ -13,8 +13,10 @@ OpenGLTexture::OpenGLTexture(const std::string& path)
     Generate(path.c_str());
 }
 
-void OpenGLTexture::Generate(const char* filename, bool alpha)
+bool OpenGLTexture::Generate(const char* filename, bool alpha)
 {
+    bool success = false;
+
     glBindTexture(GL_TEXTURE_2D, m_id); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
     // set the texture wrapping parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
@@ -49,6 +51,7 @@ void OpenGLTexture::Generate(const char* filename, bool alpha)
 
         m_width = width;
         m_height = height;
+        success = true;
     }
     else
     {
@@ -56,6 +59,8 @@ void OpenGLTexture::Generate(const char* filename, bool alpha)
     }
 
     stbi_image_free(data);
+
+    return success;
 }
 
 OpenGLTexture::~OpenGLTexture()

@@ -1,4 +1,5 @@
 #include "ResourceAPI.h"
+#include <iostream>
 
 std::unique_ptr<ResourceManager> ResourceAPI::s_resourceManager = nullptr;
 

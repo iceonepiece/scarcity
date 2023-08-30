@@ -5,6 +5,7 @@
 #include "../EditorLayer.h"
 #include "imgui/imgui_stdlib.h"
 #include <string>
+#include "Core/ResourceAPI.h"
 
 std::string EditorComponentNames[] = {
     "Box Collider 2D",
@@ -118,6 +119,18 @@ void ImGuiEntityProperties::RenderResource(const Resource& resource)
         if (ImGui::Button("Apply"))
         {
             ApplySpriteData();
+        }
+
+        std::string pathString = resource.path.string();
+
+        Texture* texture = nullptr;
+
+        if (ResourceAPI::HasTexture(pathString))
+        {
+            texture = &ResourceAPI::GetTexture(pathString);
+            ImGui::Text("pointer = %p", texture->GetRendererID());
+            ImGui::Text("size = %d x %d", texture->GetWidth(), texture->GetHeight());
+            ImGui::Image((ImTextureID)texture->GetRendererID(), ImVec2(texture->GetWidth(), texture->GetHeight()));
         }
     }
 }

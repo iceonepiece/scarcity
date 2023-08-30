@@ -13,7 +13,7 @@ public:
 	OpenGLTexture(const std::string& path);
 	~OpenGLTexture();
 
-	void Generate(const char* filename, bool alpha = false);
+	bool Generate(const char* filename, bool alpha = false);
 	void Bind();
 
 	virtual int GetWidth() const override { return m_width; }
