@@ -139,7 +139,7 @@ void ImGuiEntityProperties::RenderResource(const Resource& resource)
         {
             ImGui::Text("pointer = %p", texture->GetRendererID());
             ImGui::Text("size = %d x %d", texture->GetWidth(), texture->GetHeight());
-            ImGui::Image((ImTextureID)texture->GetRendererID(), ImVec2(texture->GetWidth(), texture->GetHeight()));
+            ImGui::Image((ImTextureID)texture->GetRendererID(), ImVec2(texture->GetWidth(), texture->GetHeight()), { 0, 1 }, { 1, 0 });
         }
     }
 }
