@@ -28,14 +28,13 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     LuaEngine& luaEngine = m_app.GetLuaEngine();
 
     m_fileWatcher = std::make_unique<filewatch::FileWatch<std::string>>(
-        (m_activeProject->GetDirectory() / "Assets").string(),
+        (m_activeProject->GetDirectory()).string(),
         [&](const std::string& path, const filewatch::Event change_type)
         {
-            std::filesystem::path absolutePath = m_activeProject->GetDirectory() / "Assets" / path;
+            std::filesystem::path absolutePath = m_activeProject->GetDirectory() / path;
             std::lock_guard<std::mutex> lock(m_fileEventMutex);
             m_fileEvents.push_back({ absolutePath, change_type });
         }
-        //OnFileUpdate
     );
 
     std::filesystem::path path = m_activeProject->GetDirectory() / (m_activeProject->GetName() + ".lua");
@@ -297,6 +296,7 @@ void EditorLayer::Update(float deltaTime)
                 case filewatch::Event::removed:
                 {
                     std::cout << "File Removed at: " << e.path << std::endl;
+                    ResourceAPI::RemoveTexture(e.path.string());
                 }
                 break;
             }

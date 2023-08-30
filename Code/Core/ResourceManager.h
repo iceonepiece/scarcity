@@ -19,6 +19,11 @@ public:
 	{
 		return m_textures.find(name) != m_textures.end();
 	}
+
+	void RemoveTexture(const std::string& name)
+	{
+		m_textures.erase(name);
+	}
 	
 	Texture& GetTexture(const std::string& name)
 	{

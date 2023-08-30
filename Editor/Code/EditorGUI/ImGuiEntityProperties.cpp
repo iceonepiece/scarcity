@@ -128,6 +128,15 @@ void ImGuiEntityProperties::RenderResource(const Resource& resource)
         if (ResourceAPI::HasTexture(pathString))
         {
             texture = &ResourceAPI::GetTexture(pathString);
+        }
+        else
+        {
+            std::cout << "Load when clicked: " << pathString << std::endl;
+            texture = ResourceAPI::LoadTexture(pathString, pathString.c_str());
+        }
+
+        if (texture != nullptr)
+        {
             ImGui::Text("pointer = %p", texture->GetRendererID());
             ImGui::Text("size = %d x %d", texture->GetWidth(), texture->GetHeight());
             ImGui::Image((ImTextureID)texture->GetRendererID(), ImVec2(texture->GetWidth(), texture->GetHeight()));

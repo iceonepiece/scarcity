@@ -9,7 +9,8 @@ class ResourceAPI
 {
 public:
 	static void Initialize(ResourceManager* resourceManager);
-	static Texture* LoadTexture(std::string name, const char* filename, bool alpha = false);
+	static Texture* LoadTexture(const std::string& name, const char* filename, bool alpha = false);
+	static void RemoveTexture(const std::string& name);
 	static void LoadParticles(std::string fileName);
 	static bool HasTexture(const std::string& name);
 	static Texture& GetTexture(const std::string& name);
