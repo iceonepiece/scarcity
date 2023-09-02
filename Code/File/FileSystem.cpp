@@ -10,15 +10,6 @@ ResourceType FileSystem::GetResourceType(const std::filesystem::path& path)
 	return ResourceType::None;
 }
 
-Resource FileSystem::GetResource(const std::filesystem::path& path)
-{
-	return Resource {
-		GetResourceType(path),
-		path.filename().generic_string(),
-		path
-	};
-}
-
 bool FileSystem::IsImageFile(const std::filesystem::path& path)
 {
 	const std::string extension = path.extension().generic_string();

@@ -14,15 +14,17 @@ enum class ResourceType
 
 struct Resource
 {
+	virtual std::string GetTypeString() { return "None"; }
+
 	ResourceType type = ResourceType::None;
 	std::string name;
 	std::filesystem::path path;
+
 };
 
 class FileSystem
 {
 public:
-	static Resource GetResource(const std::filesystem::path& path);
 	static ResourceType GetResourceType(const std::filesystem::path& path);
 	static bool IsImageFile(const std::filesystem::path& path);
 

@@ -147,9 +147,11 @@
     <ClCompile Include="Code\EditorGUI\ImGuiHierarchy.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiMainMenuBar.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiNodeEditor.cpp" />
+    <ClCompile Include="Code\EditorGUI\ImGuiResourceProperties.cpp" />
     <ClCompile Include="Code\EditorScene.cpp" />
     <ClCompile Include="Code\GameLayer.cpp" />
     <ClCompile Include="Code\Gizmos\Gizmo.cpp" />
+    <ClCompile Include="Code\Helpers\FileHandler.cpp" />
     <ClCompile Include="Code\HubLayer.cpp" />
     <ClCompile Include="Code\ImGuiComponent.cpp" />
     <ClCompile Include="Code\ImGuiLayer.cpp" />
@@ -172,6 +174,7 @@
     <ClInclude Include="Code\EditorGUI\ImGuiAssetPanel.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiEntityProperties.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiHierarchy.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiResourceProperties.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiMainMenuBar.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiNodeEditor.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiWindow.h" />
@@ -184,6 +187,7 @@
     <ClInclude Include="Code\Gizmos\RotateGizmo.h" />
     <ClInclude Include="Code\Gizmos\ScaleGizmo.h" />
     <ClInclude Include="Code\Gizmos\ViewGizmo.h" />
+    <ClInclude Include="Code\Helpers\FileHandler.h" />
     <ClInclude Include="Code\HubLayer.h" />
     <ClInclude Include="Code\ImGuiComponent.h" />
     <ClInclude Include="Code\ImGuiLayer.h" />

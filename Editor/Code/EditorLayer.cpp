@@ -14,6 +14,7 @@
 #include "Lua/LuaEngine.h"
 #include "Platforms/OpenGL/OpenGLResourceManager.h"
 #include "Platforms/OpenGL/OpenGLTexture.h"
+#include "File/FileSystem.h"
 
 EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> project)
     : m_app(app)
@@ -26,6 +27,7 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     std::cout << "EditorLayer Constructor()\n\n";
 
     LuaEngine& luaEngine = m_app.GetLuaEngine();
+
 
     m_fileWatcher = std::make_unique<filewatch::FileWatch<std::string>>(
         (m_activeProject->GetDirectory()).string(),
@@ -51,8 +53,30 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     OpenScene(m_activeProject->GetStartScene());
 }
 
-void EditorLayer::OnFileEvent(const std::string& path, const filewatch::Event change_type)
+void EditorLayer::OnFileEvent(const FileEvent& event)
 {
+    switch (event.type)
+    {
+        case filewatch::Event::added:
+        {
+            std::cout << "File Added at: " << event.path << std::endl;
+
+            if (FileSystem::IsImageFile(event.path))
+            {
+                std::cout << "Handle Image File!!!\n";
+                FileSystem::GenerateImageMetaFile(event.path);
+                ResourceAPI::LoadTexture(event.path.string(), event.path.string().c_str(), true);
+            }
+        }
+        break;
+
+        case filewatch::Event::removed:
+        {
+            std::cout << "File Removed at: " << event.path << std::endl;
+            ResourceAPI::RemoveTexture(event.path.string());
+        }
+        break;
+    }
 }
 
 EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Scene> scene)
@@ -151,6 +175,41 @@ void EditorLayer::SetPickedEntity(entt::entity picked)
     m_selectedObject.type = EditorObjectType::Entity;
     m_selectedObject.entity = picked;
     m_selectedObject.path = "";
+}
+
+void EditorLayer::SetSelectedPath(const std::filesystem::path& path)
+{
+    m_selectedObject.type = EditorObjectType::Path;
+    m_selectedObject.path = path;
+    m_selectedObject.entity = entt::null;
+
+    // Load a resource if it hasn't exist yet.
+    if (m_resourceMap.find(path.string()) == m_resourceMap.end())
+    {
+
+        if (FileSystem::IsImageFile(path))
+        {
+            std::unique_ptr<SpriteResource> sprite = std::make_unique<SpriteResource>();
+            sprite->type = ResourceType::Image;
+            sprite->name = path.filename().string();
+            sprite->path = path;
+
+            m_resourceMap.insert({ path.string(), std::move(sprite) });
+        }
+    }
+
+    if (m_resourceMap.find(path.string()) != m_resourceMap.end())
+        m_selectedResource = m_resourceMap[path.string()].get();
+    else
+        m_selectedResource = nullptr;
+}
+
+Resource* EditorLayer::GetSelectedResource(const std::filesystem::path& path)
+{
+    if (m_resourceMap.find(path.string()) != m_resourceMap.end())
+        return m_resourceMap[path.string()].get();
+
+    return nullptr;
 }
 
 void EditorLayer::UnselectObject()
@@ -280,29 +339,11 @@ void EditorLayer::Update(float deltaTime)
 {
     Renderer& renderer = m_app.GetRenderer();
 
-    {
-        std::lock_guard<std::mutex> lock(m_fileEventMutex);
+    std::lock_guard<std::mutex> lock(m_fileEventMutex);
 
-        for (auto& e : m_fileEvents) {
-            switch(e.type)
-            {
-                case filewatch::Event::added:
-                {
-                    std::cout << "File Added at: " << e.path << std::endl;
-                    ResourceAPI::LoadTexture(e.path.string(), e.path.string().c_str(), true);
-                }
-                break;
-
-                case filewatch::Event::removed:
-                {
-                    std::cout << "File Removed at: " << e.path << std::endl;
-                    ResourceAPI::RemoveTexture(e.path.string());
-                }
-                break;
-            }
-        }
-        m_fileEvents.clear();
-    }
+    for (auto& e : m_fileEvents)
+        m_fileHandler.OnFileEvent(e);
+    m_fileEvents.clear();
 
     if (m_scenePlaying)
     {

@@ -11,6 +11,7 @@
 #include "EditorGUI/ImGuiNodeEditor.h"
 #include "File/FileSystem.h"
 #include <filewatch/FileWatch.h>
+#include "Helpers/FileHandler.h"
 
 enum EditorMode
 {
@@ -32,12 +33,6 @@ struct EditorObject
 	EditorObjectType type = EditorObjectType::None;
 	entt::entity entity = entt::null;
 	std::filesystem::path path = "";
-};
-
-struct FileEvent
-{
-	std::filesystem::path path;
-	filewatch::Event type;
 };
 
 class EditorLayer : public Layer
@@ -67,12 +62,8 @@ public:
 		return m_selectedObject.path;
 	}
 
-	inline void SetSelectedPath(const std::filesystem::path& path)
-	{
-		m_selectedObject.type = EditorObjectType::Path;
-		m_selectedObject.path = path;
-		m_selectedObject.entity = entt::null;
-	}
+	void SetSelectedPath(const std::filesystem::path& path);
+	Resource* GetSelectedResource(const std::filesystem::path& path);
 
 	void SetPickedEntity(entt::entity picked);
 	void UnselectObject();
@@ -87,8 +78,6 @@ public:
 	void PlayScene();
 	void StopScene();
 	void ReloadNativeScripts();
-
-	void OnFileAdded(const std::string& path);
 
 	TransformComponent* GetEntityTransform();
 
@@ -110,13 +99,17 @@ private:
 	void OnKeyPressed(KeyPressedEvent& event);
 	void OnMouseScrolled(MouseScrolledEvent& event);
 
-	void OnFileEvent(const std::string& path, const filewatch::Event change_type);
+	void OnFileEvent(const FileEvent& event);
 
 private:
+	Resource* m_selectedResource;
+
+	std::unordered_map<std::string, std::unique_ptr<Resource>> m_resourceMap;
 
 	std::mutex m_fileEventMutex;
 	std::vector<FileEvent> m_fileEvents;
 	std::unique_ptr<filewatch::FileWatch<std::string>> m_fileWatcher;
+	FileHandler m_fileHandler;
 
 	EditorObject m_selectedObject;
 

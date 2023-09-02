@@ -81,79 +81,6 @@ static void RenderComponent(const std::string& name, entt::registry& registry, e
     }
 }
 
-void ImGuiEntityProperties::RenderResource(const Resource& resource)
-{
-
-    if (resource.type == ResourceType::Image)
-    {
-        std::string name = resource.name + " (Texture 2D)";
-        ImGui::Text(name.c_str());
-
-        const char* spriteModeStrings[] = { "Single", "Multiple" };
-        const char* currentSpriteModeString = spriteModeStrings[(int)m_currentSpriteResource.mode];
-        if (ImGui::BeginCombo("Sprite Mode", currentSpriteModeString))
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                bool isSelected = currentSpriteModeString == spriteModeStrings[i];
-                if (ImGui::Selectable(spriteModeStrings[i], isSelected))
-                {
-                    currentSpriteModeString = spriteModeStrings[i];
-                    m_currentSpriteResource.mode = (SpriteMode)i;
-                }
-
-                if (isSelected)
-                    ImGui::SetItemDefaultFocus();
-            }
-
-            ImGui::EndCombo();
-        }
-
-        if (ImGui::Button("Revert"))
-        {
-            RevertSpriteData();
-        }
-
-        ImGui::SameLine();
-
-        if (ImGui::Button("Apply"))
-        {
-            ApplySpriteData();
-        }
-
-        std::string pathString = resource.path.string();
-
-        Texture* texture = nullptr;
-
-        if (ResourceAPI::HasTexture(pathString))
-        {
-            texture = &ResourceAPI::GetTexture(pathString);
-        }
-        else
-        {
-            std::cout << "Load when clicked: " << pathString << std::endl;
-            texture = ResourceAPI::LoadTexture(pathString, pathString.c_str());
-        }
-
-        if (texture != nullptr)
-        {
-            ImGui::Text("pointer = %p", texture->GetRendererID());
-            ImGui::Text("size = %d x %d", texture->GetWidth(), texture->GetHeight());
-            ImGui::Image((ImTextureID)texture->GetRendererID(), ImVec2(texture->GetWidth(), texture->GetHeight()), { 0, 1 }, { 1, 0 });
-        }
-    }
-}
-
-void ImGuiEntityProperties::ApplySpriteData()
-{
-
-}
-
-void ImGuiEntityProperties::RevertSpriteData()
-{
-
-}
-
 void ImGuiEntityProperties::Render()
 {
     ImGui::Begin("Properties", NULL, ImGuiWindowFlags_NoCollapse);
@@ -165,7 +92,13 @@ void ImGuiEntityProperties::Render()
 
     if (m_editor.GetScene() != nullptr && m_editor.GetSelectedObject().type == EditorObjectType::Path)
     {
-        RenderResource(FileSystem::GetResource(m_editor.GetSelectedObject().path));
+        Resource* resource = m_editor.GetSelectedResource(m_editor.GetSelectedObject().path);
+
+        if (resource != nullptr)
+        {
+            m_imguiResourceProperties.Render(resource);
+        }
+        //Resource resource = FileSystem::GetResource(m_editor.GetSelectedObject().path);
     }
     else if (m_editor.GetScene() != nullptr && m_editor.GetSelectedObject().type == EditorObjectType::Entity)
     {
