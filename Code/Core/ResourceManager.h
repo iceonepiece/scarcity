@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <map>
 #include <string>
 #include <sol/sol.hpp>
 #include <memory>
@@ -8,12 +9,30 @@
 #include "../Graphics/Texture.h"
 #include "ParticleSystem.h"
 #include "../Graphics/Shader.h"
+#include "Animations/Sprite.h"
 
 class ResourceManager
 {
 public:
 	virtual Texture* LoadTexture(std::string name, const char* filename, bool alpha = false) = 0;
 	virtual void LoadParticles(std::string fileName) = 0;
+
+	void AddSprites(std::vector<Sprite>& sprites)
+	{
+		for (auto& sprite : sprites)
+			m_spriteMap.insert({ sprite.GetName(), &sprite });
+	}
+
+	void RemoveSprites(std::vector<Sprite>& sprites)
+	{
+		for (auto& sprite : sprites)
+			m_spriteMap.erase(sprite.GetName());
+	}
+
+	Sprite* GetSprite(const std::string& name)
+	{
+		return m_spriteMap.find(name) != m_spriteMap.end() ? m_spriteMap[name] : nullptr;
+	}
 
 	bool HasTexture(const std::string& name)
 	{
@@ -35,7 +54,10 @@ public:
 		return m_particles[name];
 	}
 
+	inline std::map<std::string, Sprite*>& GetSpriteMap() { return m_spriteMap; }
+
 protected:
+	std::map<std::string, Sprite*> m_spriteMap;
 	std::unordered_map<std::string, std::unique_ptr<Texture>> m_textures;
 	std::unordered_map<std::string, ParticleProps> m_particles;
 };

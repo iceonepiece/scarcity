@@ -1,8 +1,11 @@
 #pragma once
 
+#include <vector>
 #include <filesystem>
 #include <nlohmann/json.hpp>
+#include "Animations/Sprite.h"
 #include "Asset/TextureAsset.h"
+#include "Core/ResourceAPI.h"
 
 using json = nlohmann::json;
 
@@ -59,8 +62,9 @@ public:
 		return true;
 	}
 
-	static bool DeserializeImage(TextureAsset& sprite, const std::filesystem::path& path)
+	static bool DeserializeImage(TextureAsset& textureAsset, const std::filesystem::path& path)
 	{
+		std::cout << "DeserializeImage\n" << std::endl;
 		std::ifstream metaFile;
 
 		metaFile.open(path.string() + ".meta");
@@ -68,7 +72,32 @@ public:
 		if (metaFile.is_open())
 		{
 			json imageJson = json::parse(metaFile);
-			sprite.m_spriteMode = (SpriteMode)imageJson["spriteMode"];
+			textureAsset.m_spriteMode = (SpriteMode)imageJson["spriteMode"];
+
+			if (textureAsset.m_spriteMode == SpriteMode::Multiple)
+			{
+				json json_sprites = imageJson["sprites"];
+
+				ResourceManager* resourceManager = ResourceAPI::GetResourceManager();
+				resourceManager->RemoveSprites(textureAsset.m_sprites);
+				textureAsset.m_sprites.clear();
+
+				for (auto& json_sprite : json_sprites)
+				{
+					Sprite sprite{
+						json_sprite["name"],
+						textureAsset.m_texture,
+						json_sprite["x"],
+						json_sprite["y"],
+						json_sprite["width"],
+						json_sprite["height"]
+					};
+
+					textureAsset.m_sprites.push_back(sprite);
+				}
+
+				resourceManager->AddSprites(textureAsset.m_sprites);
+			}
 		}
 		else
 		{

@@ -13,6 +13,7 @@
 #include <filewatch/FileWatch.h>
 #include "Helpers/FileHandler.h"
 #include "Asset/Asset.h"
+#include "Animations/Sprite.h"
 
 enum EditorMode
 {
@@ -105,8 +106,9 @@ private:
 	void OnFileEvent(const FileEvent& event);
 
 private:
-	Asset* m_selectedAsset;
+	std::unordered_map<std::string, Sprite> m_spriteMap;
 
+	Asset* m_selectedAsset;
 	std::unordered_map<std::string, std::unique_ptr<Asset>> m_assetMap;
 
 	std::mutex m_fileEventMutex;

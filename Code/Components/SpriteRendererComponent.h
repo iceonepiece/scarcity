@@ -3,6 +3,8 @@
 #include <glm/glm.hpp>
 #include <nlohmann/json.hpp>
 #include <imgui/imgui.h>
+#include "Core/ResourceAPI.h"
+#include "Core/ResourceManager.h"
 
 using json = nlohmann::json;
 
@@ -19,6 +21,8 @@ struct SpriteRendererComponent
 
 	SpriteShape shape = Shape_None;
 	glm::vec4 color = glm::vec4 { 1.0f };
+	std::string spriteName = "";
+	Sprite* sprite = nullptr;
 };
 
 static void DoSerialize(const SpriteRendererComponent& sprite, json& entityJson)
@@ -62,5 +66,11 @@ static void RenderImGui(SpriteRendererComponent& spriteRenderer)
 		}
 
 		ImGui::EndCombo();
+	}
+
+	ImGui::InputText("Sprite Name", &spriteRenderer.spriteName); ImGui::SameLine();
+	if (ImGui::Button("Load Sprite"))
+	{
+		spriteRenderer.sprite = ResourceAPI::GetResourceManager()->GetSprite(spriteRenderer.spriteName);
 	}
 }

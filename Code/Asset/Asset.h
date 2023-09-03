@@ -18,6 +18,8 @@ public:
 		, m_path(path)
 	{}
 
+	virtual ~Asset() = default;
+
 	virtual std::string GetTypeString() { return "None"; }
 	inline AssetType GetType() { return m_type; }
 	inline std::filesystem::path GetPath() { return m_path; }

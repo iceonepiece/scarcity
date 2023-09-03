@@ -280,6 +280,9 @@ void Scene::Render()
 {
     Renderer& renderer = m_app->GetRenderer();
 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     auto transforms = m_manager.m_registry.view<TransformComponent, SpriteRendererComponent>();
 
     for (auto [entity, transform, sprite] : transforms.each())
@@ -299,7 +302,20 @@ void Scene::Render()
 
             renderer.DrawCircle2D(circle);
         }
+
+        if (sprite.sprite != nullptr)
+        {
+            glm::mat4 model{ 1 };
+            model = glm::translate(model, glm::vec3{ transform.position.x, transform.position.y, 0 });
+
+            glm::vec2 ratio = sprite.sprite->GetRatio();
+            model = glm::scale(model, glm::vec3{ ratio.x* transform.scale.x, ratio.y* transform.scale.y, 1 });
+
+            renderer.Draw(*sprite.sprite, model);
+        }
     }
+
+    glDisable(GL_BLEND);
 
     for (auto& system : m_systems)
         system->Render();
@@ -309,6 +325,9 @@ void Scene::RenderEditor()
 {
     Renderer& renderer = m_app->GetRenderer();
 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     auto transforms = m_manager.m_registry.view<TransformComponent, SpriteRendererComponent>();
 
     for (auto [entity, transform, sprite] : transforms.each())
@@ -328,7 +347,20 @@ void Scene::RenderEditor()
 
             renderer.DrawCircle2D(circle);
         }
+
+        if (sprite.sprite != nullptr)
+        {
+            glm::mat4 model{ 1 };
+            model = glm::translate(model, glm::vec3{ transform.position.x, transform.position.y, 0 });
+
+            glm::vec2 ratio = sprite.sprite->GetRatio();
+            model = glm::scale(model, glm::vec3{ ratio.x* transform.scale.x, ratio.y* transform.scale.y, 1 });
+
+            renderer.Draw(*sprite.sprite, model);
+        }
     }
+
+    glDisable(GL_BLEND);
 
     auto box2dColliders = m_manager.m_registry.view<TransformComponent, BoxCollider2DComponent>();
 

@@ -16,6 +16,9 @@ public:
 	static Texture& GetTexture(const std::string& name);
 	static ParticleProps GetParticle(const std::string& name);
 
+	static ResourceManager* GetResourceManager() { return s_resourceManager.get(); }
+
+
 private:
 	static std::unique_ptr<ResourceManager> s_resourceManager;
 };

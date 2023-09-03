@@ -208,6 +208,7 @@ void EditorLayer::LoadAsset(const std::filesystem::path& path)
         Texture* texture = ResourceAPI::LoadTexture(path.string(), path.string().c_str());
 
         std::unique_ptr<TextureAsset> sprite = std::make_unique<TextureAsset>(path, texture);
+
         MetaSerializer::DeserializeImage(*sprite, path);
 
         m_assetMap.insert({ path.string(), std::move(sprite) });

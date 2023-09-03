@@ -6,6 +6,7 @@
 
 #include "File/FileSystem.h"
 #include "Graphics/Texture.h"
+#include "Animations/Sprite.h"
 
 enum class SpriteMode
 {
@@ -21,6 +22,7 @@ public:
 		, m_texture(texture)
 	{}
 
+	virtual ~TextureAsset() = default;
 	virtual std::string GetTypeString() override { return "Texture"; }
 
 	inline Texture* GetTexture() { return m_texture; }
@@ -38,4 +40,6 @@ private:
 	Texture* m_texture = nullptr;
 	int m_cols = 0;
 	int m_rows = 0;
+
+	std::vector<Sprite> m_sprites;
 };
