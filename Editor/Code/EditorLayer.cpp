@@ -15,6 +15,7 @@
 #include "Platforms/OpenGL/OpenGLResourceManager.h"
 #include "Platforms/OpenGL/OpenGLTexture.h"
 #include "File/FileSystem.h"
+#include "File/MetaSerializer.h"
 
 EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> project)
     : m_app(app)
@@ -183,20 +184,7 @@ void EditorLayer::SetSelectedPath(const std::filesystem::path& path)
     m_selectedObject.path = path;
     m_selectedObject.entity = entt::null;
 
-    // Load a resource if it hasn't exist yet.
-    if (m_resourceMap.find(path.string()) == m_resourceMap.end())
-    {
-
-        if (FileSystem::IsImageFile(path))
-        {
-            std::unique_ptr<SpriteResource> sprite = std::make_unique<SpriteResource>();
-            sprite->type = ResourceType::Image;
-            sprite->name = path.filename().string();
-            sprite->path = path;
-
-            m_resourceMap.insert({ path.string(), std::move(sprite) });
-        }
-    }
+    GetResource(path);
 
     if (m_resourceMap.find(path.string()) != m_resourceMap.end())
         m_selectedResource = m_resourceMap[path.string()].get();
@@ -204,13 +192,38 @@ void EditorLayer::SetSelectedPath(const std::filesystem::path& path)
         m_selectedResource = nullptr;
 }
 
-Resource* EditorLayer::GetSelectedResource(const std::filesystem::path& path)
+Resource* EditorLayer::GetResource(const std::filesystem::path& path)
 {
+    FileSystem::HandleMetaFile(path);
+
+    // Load a resource if it hasn't exist yet.
+    if (m_resourceMap.find(path.string()) == m_resourceMap.end())
+        LoadResource(path);
+
     if (m_resourceMap.find(path.string()) != m_resourceMap.end())
         return m_resourceMap[path.string()].get();
 
     return nullptr;
 }
+
+void EditorLayer::LoadResource(const std::filesystem::path& path)
+{
+    if (FileSystem::IsImageFile(path))
+    {
+        Texture* texture = ResourceAPI::LoadTexture(path.string(), path.string().c_str());
+
+        std::unique_ptr<SpriteResource> sprite = std::make_unique<SpriteResource>();
+        sprite->type = ResourceType::Image;
+        sprite->name = path.filename().string();
+        sprite->path = path;
+        sprite->texture = texture;
+
+        MetaSerializer::DeserializeImage(*sprite, path);
+
+        m_resourceMap.insert({ path.string(), std::move(sprite) });
+    }
+}
+
 
 void EditorLayer::UnselectObject()
 {

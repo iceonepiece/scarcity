@@ -2,6 +2,17 @@
 #include "Utils/FileUtils.h"
 #include "MetaSerializer.h"
 
+void FileSystem::HandleMetaFile(const std::filesystem::path& path)
+{
+	if (!FileUtils::FileExists(path.string() + ".meta"))
+	{
+		std::cout << "No meta file exists for " << path << std::endl;
+
+		if (IsImageFile(path))
+			GenerateImageMetaFile(path);
+	}
+}
+
 ResourceType FileSystem::GetResourceType(const std::filesystem::path& path)
 {
 	if (IsImageFile(path))
@@ -27,7 +38,8 @@ void FileSystem::GenerateImageMetaFile(const std::filesystem::path& path)
 	if (!FileUtils::FileExists(path.string() + ".meta"))
 	{
 		std::cout << "Create meta file for " << path << std::endl;
-		MetaSerializer::SerializeImage(path);
+		SpriteResource sprite;
+		MetaSerializer::SerializeImage(sprite, path);
 	}
 	else
 	{

@@ -25,6 +25,7 @@ struct Resource
 class FileSystem
 {
 public:
+	static void HandleMetaFile(const std::filesystem::path& path);
 	static ResourceType GetResourceType(const std::filesystem::path& path);
 	static bool IsImageFile(const std::filesystem::path& path);
 

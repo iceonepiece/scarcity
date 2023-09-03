@@ -1,6 +1,7 @@
 #pragma once
 
 #include "File/FileSystem.h"
+#include "Graphics/Texture.h"
 
 enum class SpriteMode
 {
@@ -12,7 +13,8 @@ struct SpriteResource : public Resource
 {
 	virtual std::string GetTypeString() { return "Image"; }
 
+	Texture* texture;
 	SpriteMode mode = SpriteMode::Single;
-	unsigned int cols = 0;
-	unsigned int rows = 0;
+	int cols = 0;
+	int rows = 0;
 };

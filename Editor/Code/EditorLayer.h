@@ -63,7 +63,8 @@ public:
 	}
 
 	void SetSelectedPath(const std::filesystem::path& path);
-	Resource* GetSelectedResource(const std::filesystem::path& path);
+	Resource* GetResource(const std::filesystem::path& path);
+	void LoadResource(const std::filesystem::path& path);
 
 	void SetPickedEntity(entt::entity picked);
 	void UnselectObject();
@@ -90,6 +91,7 @@ public:
 	void CalculateWorldCursorPosition();
 
 	inline EditorObject& GetSelectedObject() { return m_selectedObject; }
+	inline Resource* GetSelectedResource() { return m_selectedResource; }
 
 private:
 	void OnWindowResize(WindowResizeEvent& event);

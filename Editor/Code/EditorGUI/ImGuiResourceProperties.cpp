@@ -3,6 +3,7 @@
 #include "Graphics/Texture.h"
 #include "Core/ResourceAPI.h"
 #include <iostream>
+#include "File/MetaSerializer.h"
 
 void ImGuiResourceProperties::Render(Resource* resource)
 {
@@ -33,6 +34,12 @@ void ImGuiResourceProperties::Render(Resource* resource)
             ImGui::EndCombo();
         }
 
+        if (sprite->mode == SpriteMode::Multiple)
+        {
+            ImGui::InputInt("Rows", &sprite->rows);
+            ImGui::InputInt("Cols", &sprite->cols);
+        }
+
         if (ImGui::Button("Revert"))
         {
             //RevertSpriteData();
@@ -42,7 +49,7 @@ void ImGuiResourceProperties::Render(Resource* resource)
 
         if (ImGui::Button("Apply"))
         {
-            //ApplySpriteData();
+            MetaSerializer::SerializeImage(*sprite, sprite->path);
         }
 
         std::string pathString = resource->path.string();
