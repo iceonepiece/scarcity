@@ -1,8 +1,7 @@
 #pragma once
 
 #include "File/FileSystem.h"
-#include "Graphics/Sprite.h"
-#include "ImGuiResourceProperties.h"
+#include "ImGuiAssetProperties.h"
 
 class EditorLayer;
 
@@ -14,5 +13,5 @@ public:
 
 private:
 	EditorLayer& m_editor;
-	ImGuiResourceProperties m_imguiResourceProperties;
+	ImGuiAssetProperties m_imguiAssetProperties;
 };

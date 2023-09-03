@@ -92,11 +92,11 @@ void ImGuiEntityProperties::Render()
 
     if (m_editor.GetScene() != nullptr && m_editor.GetSelectedObject().type == EditorObjectType::Path)
     {
-        Resource* resource = m_editor.GetSelectedResource();
+        Asset* asset = m_editor.GetSelectedAsset();
 
-        if (resource != nullptr)
+        if (asset != nullptr)
         {
-            m_imguiResourceProperties.Render(resource);
+            m_imguiAssetProperties.Render(asset);
         }
         //Resource resource = FileSystem::GetResource(m_editor.GetSelectedObject().path);
     }

@@ -2,14 +2,14 @@
 
 #include <filesystem>
 #include <nlohmann/json.hpp>
-#include "Graphics/Sprite.h"
+#include "Asset/TextureAsset.h"
 
 using json = nlohmann::json;
 
 class MetaSerializer
 {
 public:
-	static bool SerializeImage(SpriteResource& sprite, const std::filesystem::path& path)
+	static bool SerializeImage(TextureAsset& sprite, const std::filesystem::path& path)
 	{
 		std::cout << "SerializeImage: " << path << std::endl;
 		std::ofstream metaFile;
@@ -19,22 +19,22 @@ public:
 		if (metaFile.is_open())
 		{
 			json imageJson;
-			imageJson["spriteMode"] = (int)sprite.mode;
+			imageJson["spriteMode"] = (int)sprite.m_spriteMode;
 
 			json json_sprites = json::array();
 
-			if (sprite.mode == SpriteMode::Multiple)
+			if (sprite.m_spriteMode == SpriteMode::Multiple)
 			{
-				float spriteWidth = sprite.texture->GetWidth() / sprite.cols;
-				float spriteHeight = sprite.texture->GetHeight() / sprite.rows;
+				float spriteWidth = sprite.m_texture->GetWidth() / sprite.m_cols;
+				float spriteHeight = sprite.m_texture->GetHeight() / sprite.m_rows;
 
 				int count = 0;
-				for (int i = 0; i < sprite.rows; i++)
+				for (int i = 0; i < sprite.m_rows; i++)
 				{
-					for (int j = 0; j < sprite.cols; j++)
+					for (int j = 0; j < sprite.m_cols; j++)
 					{
 						json json_sprite;
-						json_sprite["name"] = sprite.path.stem().string() + "_" + std::to_string(count++);
+						json_sprite["name"] = sprite.m_path.stem().string() + "_" + std::to_string(count++);
 						json_sprite["x"] = spriteWidth * j;
 						json_sprite["y"] = spriteHeight * i;
 						json_sprite["width"] = spriteWidth;
@@ -59,7 +59,7 @@ public:
 		return true;
 	}
 
-	static bool DeserializeImage(SpriteResource& sprite, const std::filesystem::path& path)
+	static bool DeserializeImage(TextureAsset& sprite, const std::filesystem::path& path)
 	{
 		std::ifstream metaFile;
 
@@ -68,7 +68,7 @@ public:
 		if (metaFile.is_open())
 		{
 			json imageJson = json::parse(metaFile);
-			sprite.mode = (SpriteMode)imageJson["spriteMode"];
+			sprite.m_spriteMode = (SpriteMode)imageJson["spriteMode"];
 		}
 		else
 		{

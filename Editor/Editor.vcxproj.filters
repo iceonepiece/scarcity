@@ -72,7 +72,7 @@
     <ClCompile Include="Code\Helpers\FileHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\EditorGUI\ImGuiResourceProperties.cpp">
+    <ClCompile Include="Code\EditorGUI\ImGuiAssetProperties.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -173,7 +173,7 @@
     <ClInclude Include="Code\Helpers\FileHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\EditorGUI\ImGuiResourceProperties.h">
+    <ClInclude Include="Code\EditorGUI\ImGuiAssetProperties.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

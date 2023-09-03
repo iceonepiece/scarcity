@@ -1,6 +1,7 @@
 #include "FileSystem.h"
 #include "Utils/FileUtils.h"
 #include "MetaSerializer.h"
+#include "Asset/TextureAsset.h"
 
 void FileSystem::HandleMetaFile(const std::filesystem::path& path)
 {
@@ -13,12 +14,12 @@ void FileSystem::HandleMetaFile(const std::filesystem::path& path)
 	}
 }
 
-ResourceType FileSystem::GetResourceType(const std::filesystem::path& path)
+AssetType FileSystem::GetAssetType(const std::filesystem::path& path)
 {
 	if (IsImageFile(path))
-		return ResourceType::Image;
+		return AssetType::Texture;
 
-	return ResourceType::None;
+	return AssetType::None;
 }
 
 bool FileSystem::IsImageFile(const std::filesystem::path& path)
@@ -38,8 +39,8 @@ void FileSystem::GenerateImageMetaFile(const std::filesystem::path& path)
 	if (!FileUtils::FileExists(path.string() + ".meta"))
 	{
 		std::cout << "Create meta file for " << path << std::endl;
-		SpriteResource sprite;
-		MetaSerializer::SerializeImage(sprite, path);
+		TextureAsset textureAsset(path, nullptr);
+		MetaSerializer::SerializeImage(textureAsset, path);
 	}
 	else
 	{

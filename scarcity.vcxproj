@@ -293,7 +293,6 @@
     <ClCompile Include="Code\Core\Application.cpp" />
     <ClCompile Include="Code\Core\GameState.cpp" />
     <ClCompile Include="Code\File\FileSystem.cpp" />
-    <ClCompile Include="Code\Graphics\Sprite.cpp" />
     <ClCompile Include="Code\ImGui\ImGuiManager.cpp" />
     <ClCompile Include="Code\Core\Layer.cpp" />
     <ClCompile Include="Code\Core\ResourceAPI.cpp" />
@@ -378,7 +377,6 @@
     <ClInclude Include="Code\Core\Common.h" />
     <ClInclude Include="Code\File\FileSystem.h" />
     <ClInclude Include="Code\File\MetaSerializer.h" />
-    <ClInclude Include="Code\Graphics\Sprite.h" />
     <ClInclude Include="Code\ImGui\ImGuiManager.h" />
     <ClInclude Include="Code\Core\Input.h" />
     <ClInclude Include="Code\Core\Layer.h" />
@@ -432,6 +430,8 @@
     <ClInclude Include="Code\Core\Random.h" />
     <ClInclude Include="Code\Core\ResourceManager.h" />
     <ClInclude Include="Code\Project\Project.h" />
+    <ClInclude Include="Code\Asset\TextureAsset.h" />
+    <ClInclude Include="Code\Asset\Asset.h" />
     <ClInclude Include="Code\Scene\Scene.h" />
     <ClInclude Include="Code\Core\ScriptManager.h" />
     <ClInclude Include="Code\Core\System.h" />

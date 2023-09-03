@@ -12,6 +12,7 @@
 #include "File/FileSystem.h"
 #include <filewatch/FileWatch.h>
 #include "Helpers/FileHandler.h"
+#include "Asset/Asset.h"
 
 enum EditorMode
 {
@@ -63,8 +64,8 @@ public:
 	}
 
 	void SetSelectedPath(const std::filesystem::path& path);
-	Resource* GetResource(const std::filesystem::path& path);
-	void LoadResource(const std::filesystem::path& path);
+	Asset* GetAsset(const std::filesystem::path& path);
+	void LoadAsset(const std::filesystem::path& path);
 
 	void SetPickedEntity(entt::entity picked);
 	void UnselectObject();
@@ -91,7 +92,7 @@ public:
 	void CalculateWorldCursorPosition();
 
 	inline EditorObject& GetSelectedObject() { return m_selectedObject; }
-	inline Resource* GetSelectedResource() { return m_selectedResource; }
+	inline Asset* GetSelectedAsset() { return m_selectedAsset; }
 
 private:
 	void OnWindowResize(WindowResizeEvent& event);
@@ -104,9 +105,9 @@ private:
 	void OnFileEvent(const FileEvent& event);
 
 private:
-	Resource* m_selectedResource;
+	Asset* m_selectedAsset;
 
-	std::unordered_map<std::string, std::unique_ptr<Resource>> m_resourceMap;
+	std::unordered_map<std::string, std::unique_ptr<Asset>> m_assetMap;
 
 	std::mutex m_fileEventMutex;
 	std::vector<FileEvent> m_fileEvents;

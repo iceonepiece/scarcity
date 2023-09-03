@@ -184,43 +184,33 @@ void EditorLayer::SetSelectedPath(const std::filesystem::path& path)
     m_selectedObject.path = path;
     m_selectedObject.entity = entt::null;
 
-    GetResource(path);
-
-    if (m_resourceMap.find(path.string()) != m_resourceMap.end())
-        m_selectedResource = m_resourceMap[path.string()].get();
-    else
-        m_selectedResource = nullptr;
+    m_selectedAsset = GetAsset(path);
 }
 
-Resource* EditorLayer::GetResource(const std::filesystem::path& path)
+Asset* EditorLayer::GetAsset(const std::filesystem::path& path)
 {
     FileSystem::HandleMetaFile(path);
 
-    // Load a resource if it hasn't exist yet.
-    if (m_resourceMap.find(path.string()) == m_resourceMap.end())
-        LoadResource(path);
+    if (m_assetMap.find(path.string()) == m_assetMap.end())
+        LoadAsset(path);
 
-    if (m_resourceMap.find(path.string()) != m_resourceMap.end())
-        return m_resourceMap[path.string()].get();
+    if (m_assetMap.find(path.string()) != m_assetMap.end())
+        return m_assetMap[path.string()].get();
 
     return nullptr;
 }
 
-void EditorLayer::LoadResource(const std::filesystem::path& path)
+void EditorLayer::LoadAsset(const std::filesystem::path& path)
 {
     if (FileSystem::IsImageFile(path))
     {
+        std::cout << "LoadAsset (Texture): " << path << "\n";
         Texture* texture = ResourceAPI::LoadTexture(path.string(), path.string().c_str());
 
-        std::unique_ptr<SpriteResource> sprite = std::make_unique<SpriteResource>();
-        sprite->type = ResourceType::Image;
-        sprite->name = path.filename().string();
-        sprite->path = path;
-        sprite->texture = texture;
-
+        std::unique_ptr<TextureAsset> sprite = std::make_unique<TextureAsset>(path, texture);
         MetaSerializer::DeserializeImage(*sprite, path);
 
-        m_resourceMap.insert({ path.string(), std::move(sprite) });
+        m_assetMap.insert({ path.string(), std::move(sprite) });
     }
 }
 
