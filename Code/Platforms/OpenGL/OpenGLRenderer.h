@@ -9,6 +9,7 @@ class OpenGLRenderer : public Renderer
 public:
 	virtual void Initialize() override;
 	virtual void Draw(Sprite& sprite, const glm::mat4& modelMatrix) override;
+	virtual void DrawSprite(Sprite& sprite, const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }) override;
 	virtual void DrawQuad(const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }) override;
 	virtual void DrawQuad2D(const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }) override;
 	virtual void DrawQuad2D(const Quad2D& quad) override;

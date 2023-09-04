@@ -121,6 +121,46 @@ void OpenGLRenderer::Draw(Sprite& sprite, const glm::mat4& modelMatrix)
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+void OpenGLRenderer::DrawSprite(Sprite& sprite, const glm::vec2& position, const glm::vec2& scale, float angle, glm::vec4 color)
+{
+    m_spriteShader.Use();
+
+    glm::vec2 ratio = sprite.GetRatio();
+
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
+    model = glm::rotate(model, angle, glm::vec3(0, 0, 1));
+    model = glm::scale(model, glm::vec3(scale.x * ratio.x, scale.y * ratio.y, 0.0f));
+
+    m_spriteShader.SetMatrix4("model", model);
+    m_spriteShader.SetMatrix4("view", m_viewMatrix);
+    m_spriteShader.SetMatrix4("projection", m_projectionMatrix);
+
+    glActiveTexture(GL_TEXTURE0);
+    OpenGLTexture* texture = static_cast<OpenGLTexture*>(sprite.GetTexture());
+    texture->Bind();
+
+    float left = sprite.GetLeft();
+    float right = sprite.GetRight();
+    float bottom = sprite.GetBottom();
+    float top = sprite.GetTop();
+
+    float vertices[] = {
+        0.5f,  0.5f,   right,   top,
+        0.5f, -0.5f,   right,  bottom,
+       -0.5f,  0.5f,   left,   top,
+        0.5f, -0.5f,   right,   bottom,
+       -0.5f, -0.5f,   left,   bottom,
+       -0.5f,  0.5f,   left,   top
+    };
+
+    glBindVertexArray(m_quadVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_quadVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+
 void OpenGLRenderer::DrawLine(const glm::vec3& v1, const glm::vec3& v2, const glm::vec4& color)
 {
     m_basicShader.Use();

@@ -304,15 +304,7 @@ void Scene::Render()
         }
 
         if (sprite.sprite != nullptr)
-        {
-            glm::mat4 model{ 1 };
-            model = glm::translate(model, glm::vec3{ transform.position.x, transform.position.y, 0 });
-
-            glm::vec2 ratio = sprite.sprite->GetRatio();
-            model = glm::scale(model, glm::vec3{ ratio.x* transform.scale.x, ratio.y* transform.scale.y, 1 });
-
-            renderer.Draw(*sprite.sprite, model);
-        }
+            renderer.DrawSprite(*sprite.sprite, transform.position, transform.scale, transform.rotation.z);
     }
 
     glDisable(GL_BLEND);
@@ -349,15 +341,7 @@ void Scene::RenderEditor()
         }
 
         if (sprite.sprite != nullptr)
-        {
-            glm::mat4 model{ 1 };
-            model = glm::translate(model, glm::vec3{ transform.position.x, transform.position.y, 0 });
-
-            glm::vec2 ratio = sprite.sprite->GetRatio();
-            model = glm::scale(model, glm::vec3{ ratio.x* transform.scale.x, ratio.y* transform.scale.y, 1 });
-
-            renderer.Draw(*sprite.sprite, model);
-        }
+            renderer.DrawSprite(*sprite.sprite, transform.position, transform.scale, transform.rotation.z);
     }
 
     glDisable(GL_BLEND);
