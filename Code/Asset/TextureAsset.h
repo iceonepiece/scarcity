@@ -33,6 +33,8 @@ public:
 	inline int& GetRows() { return m_rows; }
 	inline int& GetCols() { return m_cols; }
 
+	inline std::vector<Sprite>& GetSprites() { return m_sprites; }
+
 	friend class MetaSerializer;
 
 private:

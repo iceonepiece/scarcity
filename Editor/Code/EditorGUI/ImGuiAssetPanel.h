@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include "Graphics/Texture.h"
+#include "Asset/TextureAsset.h"
 
 class EditorLayer;
 
@@ -15,6 +16,10 @@ public:
 	{
 		m_CurrentDirectory = path;
 	}
+
+	void RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFlags flags);
+	void RenderFolder(const std::filesystem::path& path, ImGuiTreeNodeFlags flags);
+	void RenderUnsupportedFile(const std::filesystem::path& path);
 
 private:
 	std::filesystem::path m_selectedPath;

@@ -4,6 +4,7 @@
 #include <string>
 #include "Platforms/OpenGL/OpenGLTexture.h"
 #include "../EditorLayer.h"
+#include "Core/ResourceAPI.h"
 
 ImGuiAssetPanel::ImGuiAssetPanel(EditorLayer& editor)
 	: m_editor(editor)
@@ -14,20 +15,93 @@ ImGuiAssetPanel::ImGuiAssetPanel(EditorLayer& editor)
 	m_fileIcon = std::make_unique<OpenGLTexture>("Editor/icons8-file-200.png");
 }
 
+void ImGuiAssetPanel::RenderUnsupportedFile(const std::filesystem::path& path)
+{
+	std::string useIcon = (ICON_FA_FILE " ");
+
+	ImGuiTreeNodeFlags flags = (m_editor.GetSelectedPath() == path ? ImGuiTreeNodeFlags_Selected : 0);
+	//flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
+	flags |= ImGuiTreeNodeFlags_Leaf;
+
+	bool opened = ImGui::TreeNodeEx(path.c_str(), flags, std::string(useIcon + path.filename().string()).c_str());
+
+	if (ImGui::IsItemClicked())
+		m_editor.SetSelectedPath(path);
+
+	if (opened)
+	{
+		ImGui::TreePop();
+	}
+}
+
+void ImGuiAssetPanel::RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFlags flags)
+{
+	std::string useIcon = (ICON_FA_IMAGE " ");
+
+	flags |= ImGuiTreeNodeFlags_OpenOnArrow;
+
+	bool opened = ImGui::TreeNodeEx(textureAsset.GetPath().string().c_str(), flags, (useIcon + textureAsset.GetName()).c_str());
+
+	if (ImGui::IsItemClicked())
+		m_editor.SetSelectedPath(textureAsset.GetPath());
+
+	if (opened)
+	{
+		std::vector<Sprite>& sprites = textureAsset.GetSprites();
+
+		for (auto& sprite : sprites)
+			ImGui::Selectable(sprite.GetName().c_str(), false);
+
+		ImGui::TreePop();
+	}
+
+	/*
+	if (ImGui::BeginDragDropSource())
+	{
+		std::filesystem::path relativePath(path);
+		const wchar_t* itemPath = relativePath.c_str();
+		ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+		ImGui::EndDragDropSource();
+	}
+	*/
+
+
+	//if (ImGui::IsItemClicked())
+		//m_editor.SetSelectedPath(path);
+}
+
+void ImGuiAssetPanel::RenderFolder(const std::filesystem::path& path, ImGuiTreeNodeFlags flags)
+{
+	std::string useIcon = (ICON_FA_FOLDER " ");
+
+	flags |= ImGuiTreeNodeFlags_Leaf;
+
+	bool opened = ImGui::TreeNodeEx(path.c_str(), flags, (useIcon + path.filename().string()).c_str());
+
+	if (ImGui::IsItemClicked())
+		m_editor.SetSelectedPath(path);
+
+	if (opened)
+		ImGui::TreePop();
+
+	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+		m_CurrentDirectory /= path.filename();
+}
+
 void ImGuiAssetPanel::Render()
 {
 	ImGui::Begin("Project");
 
 	if (m_CurrentDirectory != std::filesystem::path(m_BaseDirectory))
 	{
-		if (ImGui::Button("<-"))
+		if (ImGui::Button("< Back"))
 		{
 			m_CurrentDirectory = m_CurrentDirectory.parent_path();
 		}
 	}
 
-	static float padding = 16.0f;
-	static float thumbnailSize = 128.0f;
+	static float padding = 18.0f;
+	static float thumbnailSize = 512.0f;
 	float cellSize = thumbnailSize + padding;
 
 	float panelWidth = ImGui::GetContentRegionAvail().x;
@@ -44,60 +118,45 @@ void ImGuiAssetPanel::Render()
 		if (path.extension() == ".meta")
 			continue;
 
+		ImGuiTreeNodeFlags flags = (m_editor.GetSelectedPath() == path ? ImGuiTreeNodeFlags_Selected : 0);
+		flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
+
 		std::string filenameString = path.filename().string();
+		//ImGui::PushID(path.c_str());
 
-		ImGui::PushID(filenameString.c_str());
-		Texture* icon = directoryEntry.is_directory() ? m_folderIcon.get() : m_fileIcon.get();
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-		//ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
-
-		std::string useIcon = directoryEntry.is_directory() ? (ICON_FA_FOLDER " ") : (ICON_FA_FILE " ");
-
-		if (ImGui::Selectable(std::string(useIcon + filenameString).c_str(), m_editor.GetSelectedPath() == path))
+		if (directoryEntry.is_directory())
+			RenderFolder(path, flags);
+		else if (FileSystem::GetAssetType(path) != AssetType::None)
 		{
-			m_editor.SetSelectedPath(path);
-		}
-
-		//ImGui::Button("SSS", { thumbnailSize, thumbnailSize });
-
-		if (ImGui::BeginDragDropSource())
-		{
-			std::filesystem::path relativePath(path);
-			const wchar_t* itemPath = relativePath.c_str();
-			ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
-			ImGui::EndDragDropSource();
-		}
-
-		ImGui::PopStyleColor();
-
-		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-		{
-			if (directoryEntry.is_directory())
-				m_CurrentDirectory /= path.filename();
-			else if (path.extension() == SCENE_FILE_EXTENSION)
+			if (Asset* asset = m_editor.GetAsset(path))
 			{
-				std::cout << "Clicked file with extension: " << path.extension() << std::endl;
-				m_editor.OpenScene(path);
+				if (asset->GetType() == AssetType::Texture)
+					RenderTexture(static_cast<TextureAsset&>(*asset), flags);
 			}
-			else
-			{
-				std::string command = "\"" + path.string() + "\"";
-				std::system(command.c_str());
-			}
-
-
 		}
+		else
+		{
+			flags |= ImGuiTreeNodeFlags_Leaf;
+
+			bool opened = ImGui::TreeNodeEx(path.string().c_str(), flags, path.filename().string().c_str());
+
+			if (ImGui::IsItemClicked())
+				m_editor.SetSelectedPath(path);
+
+			if (opened)
+				ImGui::TreePop();
+		}
+
 		//ImGui::TextWrapped(filenameString.c_str());
 
+		//ImGui::PopID();
 		ImGui::NextColumn();
-
-		ImGui::PopID();
 	}
 
 	ImGui::Columns(1);
 
-	ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
-	ImGui::SliderFloat("Padding", &padding, 0, 32);
+	//ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
+	//ImGui::SliderFloat("Padding", &padding, 0, 32);
 
 	// TODO: status bar
 	ImGui::End();
