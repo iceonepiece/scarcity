@@ -1,4 +1,5 @@
 #include "imgui/imgui.h"
+#include <IconsFontAwesome6.h>
 #include "ImGuiAssetPanel.h"
 #include <string>
 #include "Platforms/OpenGL/OpenGLTexture.h"
@@ -50,7 +51,9 @@ void ImGuiAssetPanel::Render()
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
 		//ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
 
-		if (ImGui::Selectable(filenameString.c_str(), m_editor.GetSelectedPath() == path))
+		std::string useIcon = directoryEntry.is_directory() ? (ICON_FA_FOLDER " ") : (ICON_FA_FILE " ");
+
+		if (ImGui::Selectable(std::string(useIcon + filenameString).c_str(), m_editor.GetSelectedPath() == path))
 		{
 			m_editor.SetSelectedPath(path);
 		}
