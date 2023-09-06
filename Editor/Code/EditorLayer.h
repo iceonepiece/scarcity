@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include <functional>
+#include <memory>
 #include "Core/Layer.h"
 #include "EditorGUI/ImGuiMain.h"
 #include "Scene/Scene.h"
@@ -14,6 +15,7 @@
 #include "Helpers/FileHandler.h"
 #include "Asset/Asset.h"
 #include "Animations/Sprite.h"
+#include "EditorGUI/Windows/ImGuiWindow.h"
 
 enum EditorMode
 {
@@ -65,7 +67,6 @@ public:
 	}
 
 	void SetSelectedPath(const std::filesystem::path& path);
-	Asset* GetAsset(const std::filesystem::path& path);
 	void LoadAsset(const std::filesystem::path& path);
 
 	void SetPickedEntity(entt::entity picked);
@@ -95,6 +96,16 @@ public:
 	inline EditorObject& GetSelectedObject() { return m_selectedObject; }
 	inline Asset* GetSelectedAsset() { return m_selectedAsset; }
 
+	static Asset* GetAsset(const std::filesystem::path& path);
+
+	static ImGuiWindow* GetImGuiWindow(ImGuiWindowType windowType)
+	{
+		if (s_instance->m_imGuiWindowMap.find(windowType) != s_instance->m_imGuiWindowMap.end())
+			return s_instance->m_imGuiWindowMap.at(windowType).get();
+
+		return nullptr;
+	}
+
 private:
 	void OnWindowResize(WindowResizeEvent& event);
 	void OnMouseMoved(MouseMovedEvent& event);
@@ -106,6 +117,8 @@ private:
 	void OnFileEvent(const FileEvent& event);
 
 private:
+	static EditorLayer* s_instance;
+
 	std::unordered_map<std::string, Sprite> m_spriteMap;
 
 	Asset* m_selectedAsset;
@@ -147,4 +160,6 @@ private:
 	ImGuiHierarchy m_hierarchy;
 	ImGuiAssetPanel m_assetPanel;
 	ImGuiNodeEditor m_nodeEditor;
+
+	std::unordered_map<ImGuiWindowType, std::unique_ptr<ImGuiWindow>> m_imGuiWindowMap;
 };

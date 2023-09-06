@@ -1,7 +1,7 @@
-#include <entt/entt.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "ImGuiEntityProperties.h"
 #include "Components/Components.h"
+#include "ImGuiComponents/ImGuiComponents.h"
 #include "../EditorLayer.h"
 #include "imgui/imgui_stdlib.h"
 #include <string>
@@ -42,43 +42,6 @@ void RenderInputVec3(const std::string& name, glm::vec3& values, int width = 100
     ImGui::InputFloat(zValue.c_str(), &values.z);
 
     ImGui::PopItemWidth();
-}
-
-template<typename T>
-static void RenderComponent(const std::string& name, entt::registry& registry, entt::entity entity)
-{
-    const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
-
-    if (registry.all_of<T>(entity))
-    {
-        auto& component = registry.get<T>(entity);
-
-        bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str());
-
-        ImGui::SameLine();
-        if (ImGui::Button("+"))
-        {
-            ImGui::OpenPopup("ComponentSettings");
-        }
-
-        bool removeComponent = false;
-        if (ImGui::BeginPopup("ComponentSettings"))
-        {
-            if (ImGui::MenuItem("Remove component"))
-                removeComponent = true;
-
-            ImGui::EndPopup();
-        }
-
-        if (open)
-        {
-            RenderImGui(component);
-            ImGui::TreePop();
-        }
-
-        if (removeComponent)
-            registry.remove<T>(entity);
-    }
 }
 
 void ImGuiEntityProperties::Render()

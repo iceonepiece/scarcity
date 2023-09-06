@@ -16,6 +16,9 @@
 #include "Platforms/OpenGL/OpenGLTexture.h"
 #include "File/FileSystem.h"
 #include "File/MetaSerializer.h"
+#include "EditorGUI/Windows/ImGuiSelectSpriteWindow.h"
+
+EditorLayer* EditorLayer::s_instance = nullptr;
 
 EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> project)
     : m_app(app)
@@ -26,6 +29,8 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     , m_assetPanel(*this)
 {
     std::cout << "EditorLayer Constructor()\n\n";
+
+    s_instance = this;
 
     LuaEngine& luaEngine = m_app.GetLuaEngine();
 
@@ -49,6 +54,8 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     m_activeScene->SetApplication((Application*)&m_app);
     m_activeScene->Initialize();
     */
+
+    m_imGuiWindowMap[ImGuiWindowType::SelectSprite] = std::make_unique<ImGuiSelectSpriteWindow>(*this, m_activeProject->GetDirectory());
 
     std::cout << "Start Scene: " << m_activeProject->GetStartScene() << std::endl;
     OpenScene(m_activeProject->GetStartScene());
@@ -191,11 +198,11 @@ Asset* EditorLayer::GetAsset(const std::filesystem::path& path)
 {
     FileSystem::HandleMetaFile(path);
 
-    if (m_assetMap.find(path.string()) == m_assetMap.end())
-        LoadAsset(path);
+    if (s_instance->m_assetMap.find(path.string()) == s_instance->m_assetMap.end())
+        s_instance->LoadAsset(path);
 
-    if (m_assetMap.find(path.string()) != m_assetMap.end())
-        return m_assetMap[path.string()].get();
+    if (s_instance->m_assetMap.find(path.string()) != s_instance->m_assetMap.end())
+        return s_instance->m_assetMap[path.string()].get();
 
     return nullptr;
 }

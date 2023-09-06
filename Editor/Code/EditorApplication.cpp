@@ -2,8 +2,6 @@
 #include "Platforms/OpenGL/OpenGLWindow.h"
 #include "Platforms/OpenGL/OpenGLRenderer.h"
 #include "Core/Timer.h"
-#include "Components/EntityListWindow.h"
-#include "Components/InspectorWindow.h"
 #include "HubLayer.h"
 #include "EditorLayer.h"
 #include "Core/Camera2D.h"
