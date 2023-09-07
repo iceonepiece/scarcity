@@ -27,7 +27,7 @@ static void DoSerialize(const BoxCollider2DComponent& box, json& entityJson)
 	size["x"] = box.size.x;
 	size["y"] = box.size.y;
 
-	entityJson["BoxCollider2D"]["size"] = offset;
+	entityJson["BoxCollider2D"]["size"] = size;
 }
 
 static void DoDeserialize(BoxCollider2DComponent& box, json& boxJson)

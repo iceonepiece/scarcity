@@ -160,8 +160,12 @@ void Scene::StartPhysics()
 			auto& bc2d = m_manager.m_registry.get<BoxCollider2DComponent>(entity);
 
 			b2PolygonShape boxShape;
-			//boxShape.SetAsBox(bc2d.size.x * transform.scale.x, bc2d.size.y * transform.scale.y, b2Vec2(bc2d.offset.x, bc2d.offset.y), 0.0f);
-            boxShape.SetAsBox(transform.scale.x / 2.0f, transform.scale.y / 2.0f, b2Vec2(bc2d.offset.x, bc2d.offset.y), 0.0f);
+			boxShape.SetAsBox(
+                bc2d.size.x * transform.scale.x / 2,
+                bc2d.size.y * transform.scale.y / 2,
+                b2Vec2(bc2d.offset.x * transform.scale.x, bc2d.offset.y * transform.scale.y),
+                0.0f
+            );
 
 			b2FixtureDef fixtureDef;
 			fixtureDef.shape = &boxShape;
@@ -350,7 +354,12 @@ void Scene::RenderEditor()
 
     for (auto [entity, transform, box] : box2dColliders.each())
     {
-        renderer.DrawRect(transform.position, transform.scale, transform.rotation.z, {0.0f, 1.0f, 0.0f, 1.0f}, 0.02f);
+        glm::vec2 drawPosition {
+            transform.position.x + transform.scale.x * box.offset.x,
+            transform.position.y + transform.scale.y * box.offset.y
+        };
+        glm::vec2 drawSize { box.size.x * transform.scale.x, box.size.y * transform.scale.y };
+        renderer.DrawRect(drawPosition, drawSize, transform.rotation.z, {0.0f, 1.0f, 0.0f, 1.0f}, 0.02f);
     }
 }
 
