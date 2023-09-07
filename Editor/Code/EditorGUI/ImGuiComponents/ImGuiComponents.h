@@ -26,13 +26,13 @@ static void RenderImGui(SpriteRendererComponent& spriteRenderer)
 		ImGui::EndCombo();
 	}
 
-	ImGui::PushItemWidth(180);
-	ImGui::Text(spriteRenderer.sprite ? spriteRenderer.sprite->GetName().c_str() : "");
-	ImGui::PopItemWidth();
-	ImGui::SameLine();
-
 	if (ImGui::Button("Browse"))
 		ImGui::OpenPopup("Select Sprite");
+
+	ImGui::SameLine();
+	ImGui::PushItemWidth(180);
+	ImGui::Text(("Sprite: " + spriteRenderer.spriteName).c_str());
+	ImGui::PopItemWidth();
 
 	if (ImGui::BeginPopupModal("Select Sprite"))
 	{
@@ -47,8 +47,8 @@ static void RenderImGui(SpriteRendererComponent& spriteRenderer)
 
 			if (sprite)
 			{
-				std::cout << "SELECTED Sprite: " << sprite->GetName() << std::endl;
 				spriteRenderer.sprite = sprite;
+				spriteRenderer.spriteName = sprite->GetName();
 			}
 
 			//EditorLayer::GetAsset(selectedPath);

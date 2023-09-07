@@ -98,6 +98,23 @@ public:
 
 				resourceManager->AddSprites(textureAsset.m_sprites);
 			}
+			else if (textureAsset.m_spriteMode == SpriteMode::Single)
+			{
+				ResourceManager* resourceManager = ResourceAPI::GetResourceManager();
+				resourceManager->RemoveSprites(textureAsset.m_sprites);
+				textureAsset.m_sprites.clear();
+
+				Sprite sprite{
+					textureAsset.m_path.stem().string(),
+					textureAsset.m_texture,
+					0,
+					0,
+					(float)textureAsset.GetTexture()->GetWidth(),
+					(float)textureAsset.GetTexture()->GetHeight()
+				};
+
+				textureAsset.m_sprites.push_back(sprite);
+			}
 		}
 		else
 		{

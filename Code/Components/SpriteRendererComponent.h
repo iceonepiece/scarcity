@@ -35,6 +35,7 @@ static void DoSerialize(const SpriteRendererComponent& sprite, json& entityJson)
 	colorJson.push_back(sprite.color.z);
 	colorJson.push_back(sprite.color.w);
 	entityJson["SpriteRenderer"]["color"] = colorJson;
+	entityJson["SpriteRenderer"]["spriteName"] = sprite.spriteName;
 }
 
 static void DoDeserialize(SpriteRendererComponent& sprite, json& spriteRendererJson)
@@ -44,4 +45,6 @@ static void DoDeserialize(SpriteRendererComponent& sprite, json& spriteRendererJ
 
 	sprite.shape = spriteRendererJson["shape"].get<SpriteShape>();
 	sprite.color = color;
+
+	sprite.spriteName = spriteRendererJson["spriteName"].get<std::string>();
 }
