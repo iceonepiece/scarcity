@@ -28,8 +28,8 @@ public:
 
 			if (sprite.m_spriteMode == SpriteMode::Multiple)
 			{
-				float spriteWidth = sprite.m_texture->GetWidth() / sprite.m_cols;
-				float spriteHeight = sprite.m_texture->GetHeight() / sprite.m_rows;
+				int spriteWidth = sprite.m_texture->GetWidth() / sprite.m_cols;
+				int spriteHeight = sprite.m_texture->GetHeight() / sprite.m_rows;
 
 				int count = 0;
 				for (int i = 0; i < sprite.m_rows; i++)
@@ -71,16 +71,16 @@ public:
 
 		if (metaFile.is_open())
 		{
+			ResourceManager* resourceManager = ResourceAPI::GetResourceManager();
+			resourceManager->RemoveSprites(textureAsset.m_sprites);
+			textureAsset.m_sprites.clear();
+
 			json imageJson = json::parse(metaFile);
 			textureAsset.m_spriteMode = (SpriteMode)imageJson["spriteMode"];
 
 			if (textureAsset.m_spriteMode == SpriteMode::Multiple)
 			{
 				json json_sprites = imageJson["sprites"];
-
-				ResourceManager* resourceManager = ResourceAPI::GetResourceManager();
-				resourceManager->RemoveSprites(textureAsset.m_sprites);
-				textureAsset.m_sprites.clear();
 
 				for (auto& json_sprite : json_sprites)
 				{
@@ -95,15 +95,9 @@ public:
 
 					textureAsset.m_sprites.push_back(sprite);
 				}
-
-				resourceManager->AddSprites(textureAsset.m_sprites);
 			}
 			else if (textureAsset.m_spriteMode == SpriteMode::Single)
 			{
-				ResourceManager* resourceManager = ResourceAPI::GetResourceManager();
-				resourceManager->RemoveSprites(textureAsset.m_sprites);
-				textureAsset.m_sprites.clear();
-
 				Sprite sprite{
 					textureAsset.m_path.stem().string(),
 					textureAsset.m_texture,
@@ -115,6 +109,8 @@ public:
 
 				textureAsset.m_sprites.push_back(sprite);
 			}
+
+			resourceManager->AddSprites(textureAsset.m_sprites);
 		}
 		else
 		{

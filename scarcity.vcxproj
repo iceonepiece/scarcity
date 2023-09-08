@@ -288,10 +288,12 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\Asset\TextureAsset.cpp" />
     <ClCompile Include="Code\Audio\OpenALAudio.cpp" />
     <ClCompile Include="Code\Components\Components.cpp" />
     <ClCompile Include="Code\Core\Application.cpp" />
     <ClCompile Include="Code\Core\GameState.cpp" />
+    <ClCompile Include="Code\Core\ResourceManager.cpp" />
     <ClCompile Include="Code\File\FileSystem.cpp" />
     <ClCompile Include="Code\ImGui\ImGuiManager.cpp" />
     <ClCompile Include="Code\Core\Layer.cpp" />

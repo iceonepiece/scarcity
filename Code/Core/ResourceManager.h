@@ -2,20 +2,26 @@
 
 #include <unordered_map>
 #include <map>
+#include <queue>
 #include <string>
-#include <sol/sol.hpp>
 #include <memory>
+#include <filesystem>
+#include <sol/sol.hpp>
 
+#include "File/FileSystem.h"
 #include "../Graphics/Texture.h"
 #include "ParticleSystem.h"
 #include "../Graphics/Shader.h"
 #include "Animations/Sprite.h"
+#include "Asset/Asset.h"
 
 class ResourceManager
 {
 public:
 	virtual Texture* LoadTexture(std::string name, const char* filename, bool alpha = false) = 0;
 	virtual void LoadParticles(std::string fileName) = 0;
+
+	void InitializeAssets(const std::filesystem::path& path);
 
 	void AddSprites(std::vector<Sprite>& sprites)
 	{
@@ -57,6 +63,7 @@ public:
 	inline std::map<std::string, Sprite*>& GetSpriteMap() { return m_spriteMap; }
 
 protected:
+	std::map<std::string, std::unique_ptr<Asset>> m_assetMap;
 	std::map<std::string, Sprite*> m_spriteMap;
 	std::unordered_map<std::string, std::unique_ptr<Texture>> m_textures;
 	std::unordered_map<std::string, ParticleProps> m_particles;

@@ -45,6 +45,9 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
         }
     );
 
+    ResourceManager* resourceManager = ResourceAPI::GetResourceManager();
+    resourceManager->InitializeAssets(m_activeProject->GetDirectory());
+
     std::filesystem::path path = m_activeProject->GetDirectory() / (m_activeProject->GetName() + ".lua");
 
     if (FileUtils::FileExists(path))
@@ -212,12 +215,7 @@ void EditorLayer::LoadAsset(const std::filesystem::path& path)
     if (FileSystem::IsImageFile(path))
     {
         std::cout << "LoadAsset (Texture): " << path << "\n";
-        Texture* texture = ResourceAPI::LoadTexture(path.string(), path.string().c_str());
-
-        std::unique_ptr<TextureAsset> sprite = std::make_unique<TextureAsset>(path, texture);
-
-        MetaSerializer::DeserializeImage(*sprite, path);
-
+        std::unique_ptr<TextureAsset> sprite = std::make_unique<TextureAsset>(path);
         m_assetMap.insert({ path.string(), std::move(sprite) });
     }
 }

@@ -47,4 +47,5 @@ static void DoDeserialize(SpriteRendererComponent& sprite, json& spriteRendererJ
 	sprite.color = color;
 
 	sprite.spriteName = spriteRendererJson["spriteName"].get<std::string>();
+	sprite.sprite = ResourceAPI::GetResourceManager()->GetSprite(sprite.spriteName);
 }

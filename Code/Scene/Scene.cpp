@@ -345,7 +345,9 @@ void Scene::RenderEditor()
         }
 
         if (sprite.sprite != nullptr)
+        {
             renderer.DrawSprite(*sprite.sprite, transform.position, transform.scale, transform.rotation.z);
+        }
     }
 
     glDisable(GL_BLEND);

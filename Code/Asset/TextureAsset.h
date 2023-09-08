@@ -17,10 +17,8 @@ enum class SpriteMode
 class TextureAsset : public Asset
 {
 public:
-	TextureAsset(const std::filesystem::path& path, Texture* texture)
-		: Asset(path, AssetType::Texture)
-		, m_texture(texture)
-	{}
+	TextureAsset(const std::filesystem::path& path);
+	TextureAsset(const std::filesystem::path& path, Texture* texture);
 
 	virtual ~TextureAsset() = default;
 	virtual std::string GetTypeString() override { return "Texture"; }

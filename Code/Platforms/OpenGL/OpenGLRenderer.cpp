@@ -137,7 +137,12 @@ void OpenGLRenderer::DrawSprite(Sprite& sprite, const glm::vec2& position, const
     m_spriteShader.SetMatrix4("projection", m_projectionMatrix);
 
     glActiveTexture(GL_TEXTURE0);
-    OpenGLTexture* texture = static_cast<OpenGLTexture*>(sprite.GetTexture());
+
+    Texture* texture = sprite.GetTexture();
+
+    if (texture == nullptr)
+        return;
+
     texture->Bind();
 
     float left = sprite.GetLeft();
