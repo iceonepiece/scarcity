@@ -47,7 +47,8 @@ void ImGuiAssetProperties::Render(Asset* asset)
 
         if (ImGui::Button("Apply"))
         {
-            MetaSerializer::SerializeImage(*sprite, sprite->GetPath());
+            if (MetaSerializer::SerializeImage(*sprite, sprite->GetPath()))
+                MetaSerializer::DeserializeImage(*sprite, sprite->GetPath());
         }
 
         std::string pathString = asset->GetPath().string();
