@@ -19,7 +19,8 @@ public:
 
 	void SetProjectDirectory(std::filesystem::path path)
 	{
-		m_CurrentDirectory = path;
+		m_baseDirectory = path;
+		m_currentDirectory = path;
 	}
 
 	static void RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn = [](Sprite&){});
@@ -28,8 +29,8 @@ public:
 
 private:
 	std::filesystem::path m_selectedPath;
-	std::filesystem::path m_BaseDirectory;
-	std::filesystem::path m_CurrentDirectory;
+	std::filesystem::path m_baseDirectory;
+	std::filesystem::path m_currentDirectory;
 
 	std::unique_ptr<Texture> m_folderIcon;
 	std::unique_ptr<Texture> m_fileIcon;

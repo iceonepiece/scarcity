@@ -8,8 +8,8 @@
 
 ImGuiAssetPanel::ImGuiAssetPanel(EditorLayer& editor)
 	: m_editor(editor)
-	, m_BaseDirectory(std::filesystem::current_path())
-	, m_CurrentDirectory(m_BaseDirectory)
+	, m_baseDirectory(std::filesystem::current_path())
+	, m_currentDirectory(m_baseDirectory)
 {
 	m_folderIcon = std::make_unique<OpenGLTexture>("Editor/icons8-folder-200.png");
 	m_fileIcon = std::make_unique<OpenGLTexture>("Editor/icons8-file-200.png");
@@ -86,13 +86,15 @@ void ImGuiAssetPanel::Render()
 {
 	ImGui::Begin("Project");
 
-	if (m_CurrentDirectory != std::filesystem::path(m_BaseDirectory))
+	if (m_currentDirectory != std::filesystem::path(m_baseDirectory))
 	{
-		if (ImGui::Button("< Back"))
-		{
-			m_CurrentDirectory = m_CurrentDirectory.parent_path();
-		}
+		if (ImGui::Button("Back"))
+			m_currentDirectory = m_currentDirectory.parent_path();
 	}
+
+	ImGui::SameLine();
+	ImGui::Text(m_currentDirectory.string().c_str());
+	ImGui::Separator();
 
 	static float padding = 18.0f;
 	static float thumbnailSize = 512.0f;
@@ -105,7 +107,7 @@ void ImGuiAssetPanel::Render()
 
 	ImGui::Columns(columnCount, 0, false);
 
-	for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory))
+	for (auto& directoryEntry : std::filesystem::directory_iterator(m_currentDirectory))
 	{
 		const auto& path = directoryEntry.path();
 
@@ -126,7 +128,7 @@ void ImGuiAssetPanel::Render()
 					m_editor.SetSelectedPath(path);
 
 				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-					m_CurrentDirectory /= path.filename();
+					m_currentDirectory /= path.filename();
 			});
 		}
 		else if (FileSystem::GetAssetType(path) != AssetType::None)
