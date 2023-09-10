@@ -128,6 +128,7 @@
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="Assets\Animations\CatAnimation.json" />
+    <None Include="Assets\Examples\AnimatorControllerExample.controller" />
     <None Include="Assets\Levels\Level1.lua" />
     <None Include="Assets\Scripts\parameters.lua" />
     <None Include="Assets\Scripts\particles.lua" />
@@ -288,6 +289,10 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\Animations\AnimationSerializer.cpp" />
+    <ClCompile Include="Code\Animations\AnimatorController.cpp" />
+    <ClCompile Include="Code\Animations\AnimatorState.cpp" />
+    <ClCompile Include="Code\Animations\AnimatorTransition.cpp" />
     <ClCompile Include="Code\Asset\TextureAsset.cpp" />
     <ClCompile Include="Code\Audio\OpenALAudio.cpp" />
     <ClCompile Include="Code\Components\Components.cpp" />
@@ -295,10 +300,11 @@
     <ClCompile Include="Code\Core\GameState.cpp" />
     <ClCompile Include="Code\Core\ResourceManager.cpp" />
     <ClCompile Include="Code\File\FileSystem.cpp" />
+    <ClCompile Include="Code\FSM\FSMState.cpp" />
     <ClCompile Include="Code\ImGui\ImGuiManager.cpp" />
     <ClCompile Include="Code\Core\Layer.cpp" />
     <ClCompile Include="Code\Core\ResourceAPI.cpp" />
-    <ClCompile Include="Code\Core\FiniteStateMachine.cpp" />
+    <ClCompile Include="Code\FSM\FiniteStateMachine.cpp" />
     <ClCompile Include="Code\Core\Camera2D.cpp" />
     <ClCompile Include="Code\Core\EntityManager.cpp" />
     <ClCompile Include="Code\Core\System.cpp" />
@@ -358,7 +364,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Animations\AnimationSerializer.h" />
+    <ClInclude Include="Code\Animations\AnimatorController.h" />
+    <ClInclude Include="Code\Animations\AnimatorState.h" />
+    <ClInclude Include="Code\Animations\AnimatorTransition.h" />
     <ClInclude Include="Code\APIs\InputAPI.h" />
+    <ClInclude Include="Code\Asset\AnimatorControllerAsset.h" />
     <ClInclude Include="Code\Audio\OpenALAudio.h" />
     <ClInclude Include="Code\Components\BaseComponent.h" />
     <ClInclude Include="Code\Components\BoxCollider2DComponent.h" />
@@ -401,10 +411,10 @@
     <ClInclude Include="Code\Platforms\GLFW\GLFWInput.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLFontSystem.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLWindow.h" />
-    <ClInclude Include="Code\Core\Value.h" />
-    <ClInclude Include="Code\Core\FSMState.h" />
-    <ClInclude Include="Code\Core\FSMTransition.h" />
-    <ClInclude Include="Code\Core\FiniteStateMachine.h" />
+    <ClInclude Include="Code\FSM\Value.h" />
+    <ClInclude Include="Code\FSM\FSMState.h" />
+    <ClInclude Include="Code\FSM\FSMTransition.h" />
+    <ClInclude Include="Code\FSM\FiniteStateMachine.h" />
     <ClInclude Include="Code\Animations\AnimationState.h" />
     <ClInclude Include="Code\Audio\Audio.h" />
     <ClInclude Include="Code\Audio\Wav.h" />

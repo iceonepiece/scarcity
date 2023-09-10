@@ -17,7 +17,7 @@
 #include "../Animations/AnimationState.h"
 #include "../FSM/EqualTransition.h"
 #include "../FSM/AnimationDoneTransition.h"
-#include "../Core/Value.h"
+#include "../FSM/Value.h"
 #include "../Systems/AnimationSystem.h"
 #include "../Game/Player.h"
 #include "../Systems/ScriptableSystem.h"

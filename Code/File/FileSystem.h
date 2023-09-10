@@ -11,6 +11,7 @@ public:
 	static void HandleMetaFile(const std::filesystem::path& path);
 	static AssetType GetAssetType(const std::filesystem::path& path);
 	static bool IsImageFile(const std::filesystem::path& path);
+	static bool IsAnimatorFile(const std::filesystem::path& path);
 
 	static void GenerateImageMetaFile(const std::filesystem::path& path);
 };

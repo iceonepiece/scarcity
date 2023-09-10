@@ -48,8 +48,8 @@ public:
 			m_transform->scale.x = m_player->direction;
 		}
 
-		m_animator->fsm->SetBool("walking", m_player->movementState != MS_IDLE);
-		m_animator->fsm->SetBool("jumping", m_player->numGrounds == 0);
+		//m_animator->fsm->SetBool("walking", m_player->movementState != MS_IDLE);
+		//m_animator->fsm->SetBool("jumping", m_player->numGrounds == 0);
 
 	}
 };

@@ -1,9 +1,6 @@
 #pragma once
 
 #include "Asset.h"
-
-#pragma once
-
 #include "File/FileSystem.h"
 #include "Graphics/Texture.h"
 #include "Animations/Sprite.h"

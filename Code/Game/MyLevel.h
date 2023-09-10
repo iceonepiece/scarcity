@@ -30,6 +30,7 @@ public:
 
 		m_camera->SetBody(player.GetComponent<Collider2DComponent>()->body);
 
+		/*
 		FiniteStateMachine* fsm = new FiniteStateMachine(player);
 		player.AddComponent<SpriteAnimatorComponent>(fsm);
 
@@ -67,6 +68,7 @@ public:
 
 		fsm->AddValue("jumping", new BoolValue(false));
 		fsm->AddValue("walking", new BoolValue(false));
+		*/
 
 		m_systems.emplace_back(new AnimationSystem(this));
 		m_systems.emplace_back(new PlayerSystem(this));

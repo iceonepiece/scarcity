@@ -447,6 +447,7 @@
     <None Include="Assets\Scripts\sample.lua" />
     <None Include="Assets\Scripts\premake5.lua" />
     <None Include="Assets\Animations\CatAnimation.json" />
+    <None Include="Assets\Examples\AnimatorControllerExample.controller" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="code\Main.cpp">
@@ -476,7 +477,7 @@
     <ClCompile Include="Code\UIs\UIListItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Core\FiniteStateMachine.cpp">
+    <ClCompile Include="Code\FSM\FiniteStateMachine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Graphics\FontSystem.cpp">
@@ -650,6 +651,21 @@
     <ClCompile Include="Code\Core\ResourceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Animations\AnimationSerializer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\FSM\FSMState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Animations\AnimatorController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Animations\AnimatorState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Animations\AnimatorTransition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Core\Camera2D.h">
@@ -694,13 +710,13 @@
     <ClInclude Include="Code\UIs\UIText.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Core\FSMState.h">
+    <ClInclude Include="Code\FSM\FSMState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Core\FSMTransition.h">
+    <ClInclude Include="Code\FSM\FSMTransition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Core\FiniteStateMachine.h">
+    <ClInclude Include="Code\FSM\FiniteStateMachine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="code\systems\PlayerSystem.h">
@@ -814,7 +830,7 @@
     <ClInclude Include="Code\FSM\EqualTransition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Core\Value.h">
+    <ClInclude Include="Code\FSM\Value.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Core\Application.h">
@@ -2264,6 +2280,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Asset\Asset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Asset\AnimatorControllerAsset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Animations\AnimatorController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Animations\AnimatorState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Animations\AnimatorTransition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

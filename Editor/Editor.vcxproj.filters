@@ -78,6 +78,9 @@
     <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiComponents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\EditorMouse.h">
@@ -174,6 +177,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiComponents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

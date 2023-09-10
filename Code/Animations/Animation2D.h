@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "../Graphics/Texture.h"
+#include "Graphics/Texture.h"
 
 struct Animation2D
 {

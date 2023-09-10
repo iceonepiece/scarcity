@@ -3,41 +3,41 @@
 #include <vector>
 #include <imgui/imgui.h>
 #include "imgui/imgui_stdlib.h"
-#include "../Animations/Sprite.h"
-#include "../Animations/SpriteAnimation.h"
+#include "Animations/Sprite.h"
+#include "Animations/SpriteAnimation.h"
+#include "Animations/AnimatorController.h"
 #include "Utils/FileDialog.h"
 
 struct SpriteAnimatorComponent
 {
 	static std::string Name() { return "SpriteAnimator"; }
 
-	FiniteStateMachine* fsm = nullptr;
-	std::string fileName;
+	static AnimatorController* CreateNullController()
+	{
+		return new AnimatorController();
+	}
 
-	SpriteAnimatorComponent() = default;
-
-	SpriteAnimatorComponent(FiniteStateMachine *fsm)
-		: fsm(fsm)
-	{}
+	AnimatorController* controller = nullptr;
+	std::string controllerName;
 };
 
 static void DoSerialize(const SpriteAnimatorComponent& animator, json& entityJson)
 {
-	entityJson["SpriteAnimator"]["fileName"] = animator.fileName;
+	entityJson["SpriteAnimator"]["controllerName"] = animator.controllerName;
 }
 
 static void DoDeserialize(SpriteAnimatorComponent& animator, json& animatorJson)
 {
-	animator.fileName = animatorJson["fileName"];
+	animator.controllerName = animatorJson["controllerName"];
 }
 
 static void RenderImGui(SpriteAnimatorComponent& anim)
 {
 	std::string directory;
-	ImGui::InputText("File Name", &anim.fileName); ImGui::SameLine();
+	ImGui::InputText("Controller Name", &anim.controllerName); ImGui::SameLine();
 	if (ImGui::Button("Browse"))
 	{
 		directory = FileDialog::OpenFile("");
-		anim.fileName = directory;
+		anim.controllerName = directory;
 	}
 }

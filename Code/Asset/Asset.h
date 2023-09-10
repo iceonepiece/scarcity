@@ -7,6 +7,7 @@ enum class AssetType
 {
 	None,
 	Texture,
+	AnimatorController,
 	Audio
 };
 

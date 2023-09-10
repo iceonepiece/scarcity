@@ -29,6 +29,6 @@ public:
 	}
 
 protected:
-	entt::entity m_id;
-	EntityManager* m_manager;
+	entt::entity m_id = entt::null;
+	EntityManager* m_manager = nullptr;
 };

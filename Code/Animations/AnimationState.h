@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Core/FSMState.h"
+#include "FSM/FSMState.h"
 #include "SpriteAnimation.h"
-#include "../Core/Timer.h"
+#include "Core/Timer.h"
 
 class AnimationState : public FSMState
 {

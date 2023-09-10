@@ -14,6 +14,7 @@
 #include "../Graphics/Shader.h"
 #include "Animations/Sprite.h"
 #include "Asset/Asset.h"
+#include "Asset/AnimatorControllerAsset.h"
 
 class ResourceManager
 {
@@ -61,10 +62,20 @@ public:
 	}
 
 	inline std::map<std::string, Sprite*>& GetSpriteMap() { return m_spriteMap; }
+	inline AnimatorController* GetAnimatorController(const std::string& name)
+	{
+		if (m_animControllerMap.find(name) != m_animControllerMap.end())
+			return m_animControllerMap[name]->GetController();
+
+		return nullptr;
+	}
+
 
 protected:
 	std::map<std::string, std::unique_ptr<Asset>> m_assetMap;
 	std::map<std::string, Sprite*> m_spriteMap;
+	std::map<std::string, std::unique_ptr<AnimatorControllerAsset>> m_animControllerMap;
+
 	std::unordered_map<std::string, std::unique_ptr<Texture>> m_textures;
 	std::unordered_map<std::string, ParticleProps> m_particles;
 };

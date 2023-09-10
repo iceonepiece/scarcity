@@ -1,7 +1,7 @@
 #pragma once
 
 #include <type_traits>
-#include "../Core/FSMTransition.h"
+#include "FSM/FSMTransition.h"
 
 template<typename T>
 class EqualTransition : public FSMTransition

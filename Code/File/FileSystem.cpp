@@ -34,6 +34,11 @@ bool FileSystem::IsImageFile(const std::filesystem::path& path)
 	return false;
 }
 
+bool FileSystem::IsAnimatorFile(const std::filesystem::path& path)
+{
+	return path.extension().generic_string() == ".controller";
+}
+
 void FileSystem::GenerateImageMetaFile(const std::filesystem::path& path)
 {
 	if (!FileUtils::FileExists(path.string() + ".meta"))

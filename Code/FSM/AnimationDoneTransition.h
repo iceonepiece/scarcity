@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Core/FSMTransition.h"
-#include "../Animations/AnimationState.h"
+#include "FSMTransition.h"
+#include "Animations/AnimationState.h"
 
 class AnimationDoneTransition : public FSMTransition
 {

@@ -45,13 +45,14 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
         }
     );
 
-    ResourceManager* resourceManager = ResourceAPI::GetResourceManager();
-    resourceManager->InitializeAssets(m_activeProject->GetDirectory());
-
     std::filesystem::path path = m_activeProject->GetDirectory() / (m_activeProject->GetName() + ".lua");
 
     if (FileUtils::FileExists(path))
         luaEngine.ReadScript(path.string());
+
+    ResourceManager* resourceManager = ResourceAPI::GetResourceManager();
+    resourceManager->InitializeAssets(m_activeProject->GetDirectory());
+
     /*
     m_activeScene = std::make_unique<Scene>();
     m_activeScene->SetApplication((Application*)&m_app);

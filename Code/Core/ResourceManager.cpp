@@ -29,6 +29,11 @@ void ResourceManager::InitializeAssets(const std::filesystem::path& path)
 				std::unique_ptr<TextureAsset> textureAsset = std::make_unique<TextureAsset>(targetPath);
 				m_assetMap.insert({ targetPath.string(), std::move(textureAsset) });
 			}
+			else if (FileSystem::IsAnimatorFile(targetPath))
+			{
+				std::cout << "[Animator Controller]";
+				m_animControllerMap.insert({ targetPath.string(), std::make_unique<AnimatorControllerAsset>(targetPath) });
+			}
 			else
 			{
 				std::cout << "[Not supported]";

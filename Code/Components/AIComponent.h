@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Core/FiniteStateMachine.h"
+#include "FSM/FiniteStateMachine.h"
 
 struct AIComponent
 {

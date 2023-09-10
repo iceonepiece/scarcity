@@ -2,6 +2,13 @@
 #include "FSMState.h"
 #include "FSMTransition.h"
 
+FiniteStateMachine::FiniteStateMachine()
+    : m_entity(Entity{})
+    , m_currentState(nullptr)
+    , m_anyState(new FSMState())
+{
+}
+
 FiniteStateMachine::FiniteStateMachine(Entity entity)
     : m_entity(entity)
     , m_currentState(nullptr)

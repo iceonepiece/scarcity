@@ -147,6 +147,7 @@
     <ClCompile Include="Code\EditorGUI\ImGuiMainMenuBar.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiNodeEditor.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiAssetProperties.cpp" />
+    <ClCompile Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiWindow.cpp" />
     <ClCompile Include="Code\EditorScene.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Code\EditorGUI\ImGuiAssetProperties.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiMainMenuBar.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiNodeEditor.h" />
+    <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.h" />
     <ClInclude Include="Code\EditorMouse.h" />

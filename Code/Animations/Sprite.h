@@ -3,7 +3,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include <string>
-#include "../Graphics/Texture.h"
+#include "Graphics/Texture.h"
 
 class Sprite
 {
@@ -33,9 +33,6 @@ public:
 		m_right = m_left + m_width / m_texture->GetWidth();
 		m_bottom = m_y / m_texture->GetHeight();
 		m_top = m_bottom + m_height / m_texture->GetHeight();
-
-		std::cout << "Left " << m_left << " : RIght " << m_right << std::endl;
-		std::cout << "Bottom " << m_bottom << " : Top " << m_top << std::endl;
 	}
 
 	inline std::string GetName() { return m_name; }

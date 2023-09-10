@@ -94,10 +94,13 @@ void Scene::Start()
 
     std::cout << "Scene::Start()\n";
     auto view = m_manager.m_registry.view<SpriteAnimatorComponent>();
+
     for (auto [entity, animator] : view.each())
     {
-        Entity myEntity { &m_manager, entity };
-        animator.fsm = AnimationSerializer::DeserializeFSM(animator.fileName, myEntity);
+        Entity myEntity{ &m_manager, entity };
+
+        AnimatorController* baseAnimator = ResourceAPI::GetResourceManager()->GetAnimatorController(animator.controllerName);
+        animator.controller = baseAnimator != nullptr ? new AnimatorController(*baseAnimator) : nullptr;
     }
 }
 
@@ -114,7 +117,7 @@ void Scene::Stop()
     auto animators = m_manager.m_registry.view<SpriteAnimatorComponent>();
     for (auto [entity, animator] : animators.each())
     {
-        delete animator.fsm;
+        delete animator.controller;
     }
 }
 
@@ -307,8 +310,16 @@ void Scene::Render()
             renderer.DrawCircle2D(circle);
         }
 
-        if (sprite.sprite != nullptr)
-            renderer.DrawSprite(*sprite.sprite, transform.position, transform.scale, transform.rotation.z);
+        SpriteAnimatorComponent* spriteAnimator = m_manager.m_registry.try_get<SpriteAnimatorComponent>(entity);
+        if (spriteAnimator != nullptr && spriteAnimator->controller->GetCurrentState())
+        {
+            AnimatorState* animState = spriteAnimator->controller->GetCurrentState();
+            SpriteAnimation& spriteAnim = animState->GetSpriteAnimation();
+            Sprite sprite = spriteAnim.GetSprite();
+            renderer.DrawSprite(sprite, transform.position, transform.scale, transform.rotation.z);
+        }
+        else if (sprite.sprite != nullptr)
+            renderer.DrawSprite(*(sprite.sprite), transform.position, transform.scale, transform.rotation.z);
     }
 
     glDisable(GL_BLEND);
