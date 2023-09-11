@@ -283,6 +283,9 @@
     <None Include="External\Include\glm\gtx\vector_angle.inl" />
     <None Include="External\Include\glm\gtx\vector_query.inl" />
     <None Include="External\Include\glm\gtx\wrap.inl" />
+    <None Include="External\Include\ImGuiNodeEditor\imgui_bezier_math.inl" />
+    <None Include="External\Include\ImGuiNodeEditor\imgui_extra_math.inl" />
+    <None Include="External\Include\ImGuiNodeEditor\imgui_node_editor_internal.inl" />
     <None Include="imgui.ini" />
     <None Include="LICENSE" />
     <None Include="Makefile" />
@@ -299,6 +302,7 @@
     <ClCompile Include="Code\Core\Application.cpp" />
     <ClCompile Include="Code\Core\GameState.cpp" />
     <ClCompile Include="Code\Core\ResourceManager.cpp" />
+    <ClCompile Include="Code\Core\Window.cpp" />
     <ClCompile Include="Code\File\FileSystem.cpp" />
     <ClCompile Include="Code\FSM\FSMState.cpp" />
     <ClCompile Include="Code\Game\Character.cpp" />
@@ -328,7 +332,6 @@
     <ClCompile Include="Code\Project\Project.cpp" />
     <ClCompile Include="Code\Scene\Scene.cpp" />
     <ClCompile Include="Code\Core\ScriptManager.cpp" />
-    <ClCompile Include="code\Main.cpp" />
     <ClCompile Include="Code\Physics\Physics.cpp" />
     <ClCompile Include="Code\Graphics\FontSystem.cpp" />
     <ClCompile Include="Code\Graphics\Renderer.cpp" />
@@ -346,11 +349,11 @@
     <ClCompile Include="External\Include\angelscript\scriptstdstring\scriptstdstring_utils.cpp" />
     <ClCompile Include="External\Include\glad\glad.c" />
     <ClCompile Include="External\Include\glm\detail\glm.cpp" />
-    <ClCompile Include="External\Include\imgui-node-editor\crude_json.cpp" />
-    <ClCompile Include="External\Include\imgui-node-editor\imgui_canvas.cpp" />
-    <ClCompile Include="External\Include\imgui-node-editor\imgui_node_editor.cpp" />
-    <ClCompile Include="External\Include\imgui-node-editor\imgui_node_editor_api.cpp" />
     <ClCompile Include="External\Include\ImGuiFileDialog\ImGuiFileDialog.cpp" />
+    <ClCompile Include="External\Include\ImGuiNodeEditor\crude_json.cpp" />
+    <ClCompile Include="External\Include\ImGuiNodeEditor\imgui_canvas.cpp" />
+    <ClCompile Include="External\Include\ImGuiNodeEditor\imgui_node_editor.cpp" />
+    <ClCompile Include="External\Include\ImGuiNodeEditor\imgui_node_editor_api.cpp" />
     <ClCompile Include="External\Include\imgui\imgui.cpp" />
     <ClCompile Include="External\Include\imgui\ImGuizmo.cpp" />
     <ClCompile Include="External\Include\imgui\imgui_demo.cpp" />
@@ -884,6 +887,12 @@
     <ClInclude Include="External\Include\ImGuiFileDialog\dirent\dirent.h" />
     <ClInclude Include="External\Include\ImGuiFileDialog\ImGuiFileDialog.h" />
     <ClInclude Include="External\Include\ImGuiFileDialog\ImGuiFileDialogConfig.h" />
+    <ClInclude Include="External\Include\ImGuiNodeEditor\crude_json.h" />
+    <ClInclude Include="External\Include\ImGuiNodeEditor\imgui_bezier_math.h" />
+    <ClInclude Include="External\Include\ImGuiNodeEditor\imgui_canvas.h" />
+    <ClInclude Include="External\Include\ImGuiNodeEditor\imgui_extra_math.h" />
+    <ClInclude Include="External\Include\ImGuiNodeEditor\imgui_node_editor.h" />
+    <ClInclude Include="External\Include\ImGuiNodeEditor\imgui_node_editor_internal.h" />
     <ClInclude Include="External\Include\imgui\imconfig.h" />
     <ClInclude Include="External\Include\imgui\imgui.h" />
     <ClInclude Include="External\Include\imgui\ImGuizmo.h" />

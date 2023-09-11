@@ -14,14 +14,21 @@ class ImGuiManager;
 class Layer;
 class Renderer;
 
+struct ApplicationConfigs
+{
+	std::string name = "BossFight Application";
+};
+
 class Application
 {
 public:
-	Application();
+	Application(const ApplicationConfigs& configs);
 	virtual ~Application();
 
+	static Application& Get() { return *s_instance; }
+
 	virtual void Initialize(std::string title, int width, int height) = 0;
-	virtual void Run();
+	void Run();
 
 	virtual void OnEvent(Event& e);
 
@@ -51,6 +58,9 @@ protected:
 	virtual void ProcessInput() {}
 	virtual void Update() {}
 	virtual void Render() {}
+
+	static Application* s_instance;
+	ApplicationConfigs m_configs;
 
 	bool m_running = true;
 	std::unique_ptr<Window> m_window;

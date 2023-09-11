@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include <iostream>
+#include "Platforms\OpenGL\OpenGLRenderer.h"
 
 /*
 unsigned int Renderer::m_VBO = 0;
@@ -17,6 +18,11 @@ Shader Renderer::s_textureShader;
 void Renderer::SetCamera(Camera *camera)
 {
     m_camera = camera;
+}
+
+std::unique_ptr<Renderer> Renderer::Create()
+{
+    return std::make_unique<OpenGLRenderer>();
 }
 
 /*

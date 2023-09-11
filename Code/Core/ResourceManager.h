@@ -27,7 +27,10 @@ public:
 	void AddSprites(std::vector<Sprite>& sprites)
 	{
 		for (auto& sprite : sprites)
+		{
+			std::cout << sprite.GetName() << " Added\n";
 			m_spriteMap.insert({ sprite.GetName(), &sprite });
+		}
 	}
 
 	void RemoveSprites(std::vector<Sprite>& sprites)

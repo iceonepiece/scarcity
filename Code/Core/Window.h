@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 #include <functional>
 #include "Events/Event.h"
 
@@ -12,6 +13,13 @@ enum class CursorShape
 {
 	Arrow,
 	Hand
+};
+
+struct WindowConfigs
+{
+	std::string title = "Untitled";
+	uint32_t width = 1280;
+	uint32_t height = 720;
 };
 
 struct WindowData
@@ -34,6 +42,8 @@ public:
 		, m_height(height)
 		, m_ratio(width / (float)height)
 	{}
+
+	static std::unique_ptr<Window> Create(const WindowConfigs& configs = WindowConfigs());
 
 	virtual void SetEventCallback(EventCallbackFn callback) = 0;
 

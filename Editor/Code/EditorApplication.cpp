@@ -15,7 +15,8 @@
 #include "Core/ResourceAPI.h"
 #include "Platforms/OpenGL/OpenGLResourceManager.h"
 
-EditorApplication::EditorApplication()
+EditorApplication::EditorApplication(const ApplicationConfigs& configs)
+    : Application(configs)
 {
 }
 
@@ -25,11 +26,6 @@ EditorApplication::~EditorApplication()
 
 void EditorApplication::Initialize(std::string title, int width, int height)
 {
-    m_window = std::make_unique<OpenGLWindow>(this, title, width, height);
-
-    m_renderer = std::make_unique<OpenGLRenderer>();
-    m_renderer->Initialize();
-
     m_input = std::make_unique<GLFWInput>(*((GLFWwindow*)m_window->GetNativeWindow()));
     Input::Init();
 

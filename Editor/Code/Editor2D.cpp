@@ -103,18 +103,6 @@ void Editor2D::OnEvent(Event& event)
     //m_events.push_back(std::unique_ptr<Event>(event));
 }
 
-void Editor2D::Run()
-{
-    while (m_running)
-    {
-        Timer::Tick();
-
-        ProcessInput();
-        Update();
-        Render();
-    }
-}
-
 void Editor2D::ProcessInput()
 {
     m_window->ProcessInput();

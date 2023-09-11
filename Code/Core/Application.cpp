@@ -6,8 +6,17 @@
 #include "Graphics/Renderer.h"
 #include "Lua/LuaEngine.h"
 
-Application::Application()
+Application* Application::s_instance = nullptr;
+
+Application::Application(const ApplicationConfigs& configs)
+	: m_configs(configs)
 {
+	s_instance = this;
+
+	m_window = Window::Create(WindowConfigs(configs.name));
+	m_renderer = Renderer::Create();
+	m_renderer->Initialize();
+
 	m_luaEngine = std::make_unique<LuaEngine>();
 }
 

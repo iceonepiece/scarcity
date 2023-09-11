@@ -1,33 +1,39 @@
 #pragma once
 
 #include "Core/Application.h"
+#include "Core/ResourceAPI.h"
 #include "Platforms/OpenGL/OpenGLWindow.h"
 #include "Platforms/OpenGL/OpenGLRenderer.h"
+#include "Platforms/OpenGL/OpenGLResourceManager.h"
+#include "Platforms/GLFW/GLFWInput.h"
+#include "Utils/FileDialog.h"
+#include "ImGui/ImGuiManager.h"
+#include "GameLayer.h"
 
 class SandboxApplication : public Application
 {
 public:
+    SandboxApplication()
+        : Application({"Sandbox"})
+    {}
+
     virtual ~SandboxApplication() override
     {
         std::cout << "Sandbox Application destroyed" << std::endl;
     }
 
 	virtual void Initialize(std::string title, int width, int height) override
-	{
-        m_window = std::make_unique<OpenGLWindow>(this, title, width, height);
+	{   
+        m_input = std::make_unique<GLFWInput>(*((GLFWwindow*)m_window->GetNativeWindow()));
+        Input::Init();
 
-        m_renderer = std::make_unique<OpenGLRenderer>();
-        m_renderer->Initialize();
-	}
+        ResourceAPI::Initialize(new OpenGLResourceManager());
 
-	virtual void Run() override
-	{
-        while (m_running)
-        {
-            ProcessInput();
-            Update();
-            Render();
-        }
+        m_imguiManager = std::make_unique<ImGuiManager>(*this);
+
+        FileDialog::SetNativeWindow(m_window->GetNativeWindow());
+
+        AddLayer(std::make_unique<GameLayer>());
 	}
 
 protected:

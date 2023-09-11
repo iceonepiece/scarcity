@@ -9,6 +9,7 @@
 class OpenGLWindow : public Window
 {
 public:
+	OpenGLWindow(const WindowConfigs& configs);
 	OpenGLWindow(Application* app, std::string title, int width, int height);
 	virtual ~OpenGLWindow();
 	

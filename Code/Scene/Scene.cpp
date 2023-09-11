@@ -249,7 +249,7 @@ void Scene::Enter()
     for (auto [entity, scriptable] : view.each())
         scriptable.scriptable->Start();
 
-    m_app->GetRenderer().SetCamera(m_camera.get());
+   Application::Get().GetRenderer().SetCamera(m_camera.get());
 }
 
 void Scene::Exit()
@@ -259,8 +259,8 @@ void Scene::Exit()
 
 void Scene::SetCamera(Camera* camera)
 {
-    Renderer& renderer = m_app->GetRenderer();
-
+    Application& app = Application::Get();
+    Renderer& renderer = app.GetRenderer();
 
     if (camera != nullptr)
     {
@@ -273,7 +273,7 @@ void Scene::SetCamera(Camera* camera)
         auto view = m_manager.m_registry.view<TransformComponent, CameraComponent>();
         for (auto [entity, transform, camera] : view.each())
         {
-            WindowData window = m_app->GetWindow().GetWindowData();
+            WindowData window = app.GetWindow().GetWindowData();
             float ratio = window.width / (float)window.height;
             float width = camera.size * ratio;
 
@@ -285,7 +285,7 @@ void Scene::SetCamera(Camera* camera)
 
 void Scene::Render()
 {
-    Renderer& renderer = m_app->GetRenderer();
+    Renderer& renderer = Application::Get().GetRenderer();
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -330,7 +330,7 @@ void Scene::Render()
 
 void Scene::RenderEditor()
 {
-    Renderer& renderer = m_app->GetRenderer();
+    Renderer& renderer = Application::Get().GetRenderer();
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

@@ -9,11 +9,10 @@
 class EditorApplication : public Application
 {
 public:
-	EditorApplication();
+	EditorApplication(const ApplicationConfigs& configs);
 	virtual ~EditorApplication();
 
 	virtual void Initialize(std::string title, int width, int height) override;
-	virtual void Run() override;
 
 protected:
 	virtual void ProcessInput() override;

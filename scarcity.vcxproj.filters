@@ -448,11 +448,17 @@
     <None Include="Assets\Scripts\premake5.lua" />
     <None Include="Assets\Animations\CatAnimation.json" />
     <None Include="Assets\Examples\AnimatorControllerExample.controller" />
+    <None Include="External\Include\ImGuiNodeEditor\imgui_bezier_math.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="External\Include\ImGuiNodeEditor\imgui_extra_math.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="External\Include\ImGuiNodeEditor\imgui_node_editor_internal.inl">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="code\Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Core\Camera2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -624,18 +630,6 @@
     <ClCompile Include="Code\Scene\ScriptableEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="External\Include\imgui-node-editor\imgui_node_editor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="External\Include\imgui-node-editor\imgui_canvas.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="External\Include\imgui-node-editor\imgui_node_editor_api.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="External\Include\imgui-node-editor\crude_json.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Utils\FileUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -667,6 +661,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Game\Character.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Core\Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="External\Include\ImGuiNodeEditor\crude_json.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="External\Include\ImGuiNodeEditor\imgui_canvas.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="External\Include\ImGuiNodeEditor\imgui_node_editor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="External\Include\ImGuiNodeEditor\imgui_node_editor_api.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -2298,6 +2307,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Game\Character.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="External\Include\ImGuiNodeEditor\crude_json.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="External\Include\ImGuiNodeEditor\imgui_bezier_math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="External\Include\ImGuiNodeEditor\imgui_canvas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="External\Include\ImGuiNodeEditor\imgui_extra_math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="External\Include\ImGuiNodeEditor\imgui_node_editor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="External\Include\ImGuiNodeEditor\imgui_node_editor_internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

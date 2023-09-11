@@ -8,6 +8,11 @@
 #include "Events/MouseEvent.h"
 #include "Events/WindowEvent.h"
 
+OpenGLWindow::OpenGLWindow(const WindowConfigs& configs)
+    : OpenGLWindow(&Application::Get(), configs.title, configs.width, configs.height)
+{
+}
+
 OpenGLWindow::OpenGLWindow(Application* app, std::string title, int width, int height)
 	: Window(app, title, width, height)
 {

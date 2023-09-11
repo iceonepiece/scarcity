@@ -31,7 +31,6 @@ public:
 	};
 
 	virtual void Initialize(std::string title, int width, int height) override;
-	virtual void Run() override;
 	virtual void OnEvent(Event& event) override;
 	virtual void OnKeyPressed(KeyPressedEvent& event) override;
 	virtual void OnMouseButtonPressed(int button) override;

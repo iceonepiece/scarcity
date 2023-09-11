@@ -27,8 +27,8 @@ public:
 		Renderer& renderer = m_app->GetRenderer();
 		renderer.SetCamera(m_camera.get());
 
-		LuaEngine& luaEngine = m_app->GetLuaEngine();
-		luaEngine.ReadScript("Scripts/sample.lua");
+		///LuaEngine& luaEngine = m_app->GetLuaEngine();
+		//luaEngine.ReadScript("Scripts/sample.lua");
 	
 		/*
 		ResourceAPI::LoadTexture("cat-idle", "Images/cat/Sprites-Idle-no shadow.png", true);
@@ -36,6 +36,7 @@ public:
 		ResourceAPI::LoadTexture("cat-jump", "Images/cat/Sprites-jumping .png", true);
 		*/
 			
+		/*
 		auto player = m_manager.CreateEntity();
 		b2Body* playerBody = m_physics->CreateBodyWithFixture({ 0, 5 }, { 0.85, 0.65 }, new PlayerFixtureData(player), true, false, PhysicsLayer::Layer_Player, { 0, -0.35 });
 		player.AddComponent<TransformComponent>();
@@ -86,5 +87,6 @@ public:
 		m_systems.emplace_back(new AnimationSystem(this));
 		m_systems.emplace_back(new PlayerSystem(this));
 		m_systems.emplace_back(new Collider2DSystem(this));
+		*/
 	}
 };
