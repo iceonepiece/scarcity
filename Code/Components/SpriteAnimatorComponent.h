@@ -1,12 +1,12 @@
 #pragma once
 
 #include <vector>
-#include <imgui/imgui.h>
-#include "imgui/imgui_stdlib.h"
+#include <nlohmann/json.hpp>
 #include "Animations/Sprite.h"
 #include "Animations/SpriteAnimation.h"
 #include "Animations/AnimatorController.h"
-#include "Utils/FileDialog.h"
+
+using json = nlohmann::json;
 
 struct SpriteAnimatorComponent
 {
@@ -29,15 +29,4 @@ static void DoSerialize(const SpriteAnimatorComponent& animator, json& entityJso
 static void DoDeserialize(SpriteAnimatorComponent& animator, json& animatorJson)
 {
 	animator.controllerName = animatorJson["controllerName"];
-}
-
-static void RenderImGui(SpriteAnimatorComponent& anim)
-{
-	std::string directory;
-	ImGui::InputText("Controller Name", &anim.controllerName); ImGui::SameLine();
-	if (ImGui::Button("Browse"))
-	{
-		directory = FileDialog::OpenFile("");
-		anim.controllerName = directory;
-	}
 }

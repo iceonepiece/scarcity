@@ -311,7 +311,7 @@ void Scene::Render()
         }
 
         SpriteAnimatorComponent* spriteAnimator = m_manager.m_registry.try_get<SpriteAnimatorComponent>(entity);
-        if (spriteAnimator != nullptr && spriteAnimator->controller->GetCurrentState())
+        if (spriteAnimator != nullptr && spriteAnimator->controller != nullptr)
         {
             AnimatorState* animState = spriteAnimator->controller->GetCurrentState();
             SpriteAnimation& spriteAnim = animState->GetSpriteAnimation();

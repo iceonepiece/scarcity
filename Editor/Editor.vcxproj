@@ -141,7 +141,8 @@
   <ItemGroup>
     <ClCompile Include="Code\EditorApplication.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiAssetPanel.cpp" />
-    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiComponents.cpp" />
+    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteAnimatorComponent.cpp" />
+    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteRendererComponent.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiEntityProperties.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiHierarchy.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiMainMenuBar.cpp" />

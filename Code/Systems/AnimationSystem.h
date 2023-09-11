@@ -30,6 +30,7 @@ public:
 
 	virtual void Render() override
 	{
+		/*
 		Renderer& renderer = m_scene->m_app->GetRenderer();
 
 		glEnable(GL_BLEND);
@@ -57,6 +58,6 @@ public:
 		}
 
 		glDisable(GL_BLEND);
-
+		*/
 	}
 };

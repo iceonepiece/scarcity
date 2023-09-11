@@ -7,7 +7,8 @@ class EditorLayer;
 enum class ImGuiWindowType
 {
 	None,
-	SelectSprite
+	SelectSprite,
+	SelectAnimatorController
 };
 
 class ImGuiWindow

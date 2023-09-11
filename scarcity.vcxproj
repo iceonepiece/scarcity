@@ -301,6 +301,7 @@
     <ClCompile Include="Code\Core\ResourceManager.cpp" />
     <ClCompile Include="Code\File\FileSystem.cpp" />
     <ClCompile Include="Code\FSM\FSMState.cpp" />
+    <ClCompile Include="Code\Game\Character.cpp" />
     <ClCompile Include="Code\ImGui\ImGuiManager.cpp" />
     <ClCompile Include="Code\Core\Layer.cpp" />
     <ClCompile Include="Code\Core\ResourceAPI.cpp" />
@@ -389,6 +390,7 @@
     <ClInclude Include="Code\Core\Common.h" />
     <ClInclude Include="Code\File\FileSystem.h" />
     <ClInclude Include="Code\File\MetaSerializer.h" />
+    <ClInclude Include="Code\Game\Character.h" />
     <ClInclude Include="Code\ImGui\ImGuiManager.h" />
     <ClInclude Include="Code\Core\Input.h" />
     <ClInclude Include="Code\Core\Layer.h" />

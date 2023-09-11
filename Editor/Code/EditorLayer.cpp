@@ -17,6 +17,7 @@
 #include "File/FileSystem.h"
 #include "File/MetaSerializer.h"
 #include "EditorGUI/Windows/ImGuiSelectSpriteWindow.h"
+#include "EditorGUI/Windows/ImGuiSelectAnimatorControllerWindow.h"
 
 EditorLayer* EditorLayer::s_instance = nullptr;
 
@@ -60,6 +61,7 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     */
 
     m_imGuiWindowMap[ImGuiWindowType::SelectSprite] = std::make_unique<ImGuiSelectSpriteWindow>(*this, m_activeProject->GetDirectory());
+    m_imGuiWindowMap[ImGuiWindowType::SelectAnimatorController] = std::make_unique<ImGuiSelectAnimatorControllerWindow>(*this, m_activeProject->GetDirectory());
 
     std::cout << "Start Scene: " << m_activeProject->GetStartScene() << std::endl;
     OpenScene(m_activeProject->GetStartScene());

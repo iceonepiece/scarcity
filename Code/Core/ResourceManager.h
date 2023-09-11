@@ -70,6 +70,11 @@ public:
 		return nullptr;
 	}
 
+	inline std::map<std::string, std::unique_ptr<AnimatorControllerAsset>>& GetAnimatorControllerAssets()
+	{
+		return m_animControllerMap;
+	}
+
 
 protected:
 	std::map<std::string, std::unique_ptr<Asset>> m_assetMap;

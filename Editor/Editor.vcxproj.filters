@@ -75,10 +75,13 @@
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiComponents.cpp">
+    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteRendererComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteAnimatorComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
