@@ -35,3 +35,8 @@ extern "C" {
         } \
     }; \
     static Class##className##Registration className##RegistrationInstance;
+
+#define EXPORT_CLASS(className) \
+    virtual ScriptableEntity* Copy() { \
+        return new className; \
+    }
