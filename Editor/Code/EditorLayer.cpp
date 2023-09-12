@@ -250,6 +250,9 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
 
     std::cout << "On Key PRessed" << std::endl;
 
+    bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
+
+
     switch (event.GetKeyCode())
     {
         case Key::Q:
@@ -273,6 +276,13 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
         case Key::R:
         {
             m_currentMode = EditorMode::ScaleMode;
+        }
+        break;
+
+        case Key::D:
+        {
+            if (control)
+                DuplicateEntity();
         }
         break;
 
@@ -497,6 +507,17 @@ void EditorLayer::OnEvent(Event& event)
             break;
         }
     }
+}
+
+void EditorLayer::DuplicateEntity()
+{
+    if (m_scenePlaying)
+        return;
+
+    if (m_selectedObject.type != EditorObjectType::Entity || m_selectedObject.entity == entt::null)
+        return;
+
+    m_activeScene->DuplicateEntity(m_selectedObject.entity);
 }
 
 void EditorLayer::DeleteEntity(entt::entity entity)

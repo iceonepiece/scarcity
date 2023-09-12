@@ -33,6 +33,24 @@ void Scene::Initialize()
         m_initializeFunction(*this);
 }
 
+entt::entity Scene::DuplicateEntity(entt::entity entity)
+{
+    entt::registry& registry = m_manager.m_registry;
+    auto newEntity = registry.create();
+
+    DuplicateComponent<BaseComponent>(registry, entity, newEntity);
+    DuplicateComponent<TransformComponent>(registry, entity, newEntity);
+    DuplicateComponent<SpriteAnimatorComponent>(registry, entity, newEntity);
+    DuplicateComponent<SpriteRendererComponent>(registry, entity, newEntity);
+    DuplicateComponent<Rigidbody2DComponent>(registry, entity, newEntity);
+    DuplicateComponent<BoxCollider2DComponent>(registry, entity, newEntity);
+    DuplicateComponent<CircleCollider2DComponent>(registry, entity, newEntity);
+    DuplicateComponent<CameraComponent>(registry, entity, newEntity);
+    DuplicateComponent<NativeScriptComponent>(registry, entity, newEntity);
+
+    return newEntity;
+}
+
 std::unique_ptr<Scene> Scene::CreateDefaultScene(std::filesystem::path directory)
 {
     std::unique_ptr<Scene> defaultScene = std::make_unique<Scene>();

@@ -72,6 +72,7 @@ public:
 	void SetPickedEntity(entt::entity picked);
 	void UnselectObject();
 
+	void DuplicateEntity();
 	void DeleteEntity(entt::entity entity);
 
 	bool NewScene();

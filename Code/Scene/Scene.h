@@ -35,6 +35,7 @@ public:
 	
 	bool HasSaved();
 
+	entt::entity DuplicateEntity(entt::entity entity);
 
 	virtual void Start();
 	virtual void Stop();
@@ -58,6 +59,15 @@ public:
 		if (srcRegistry.all_of<Component>(srcEntity)) {
 			auto& component = srcRegistry.get<Component>(srcEntity);
 			destRegistry.emplace_or_replace<Component>(destEntity, component);
+		}
+	}
+
+	template<typename Component>
+	static void DuplicateComponent(entt::registry& registry, entt::entity srcEntity, entt::entity destEntity)
+	{
+		if (registry.all_of<Component>(srcEntity)) {
+			auto& component = registry.get<Component>(srcEntity);
+			registry.emplace_or_replace<Component>(destEntity, component);
 		}
 	}
 

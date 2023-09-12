@@ -1,4 +1,5 @@
 #include "Input.h"
+#include "Core/Application.h"
 
 std::vector<InputCommand> Input::s_inputCommands;
 std::vector<MouseCommand> Input::s_mouseCommands;
@@ -13,6 +14,8 @@ void Input::Init()
     AddInputCommand(GLFW_KEY_RIGHT, Key::Right);
     AddInputCommand(GLFW_KEY_SPACE, Key::Space);
     AddInputCommand(GLFW_KEY_ENTER, Key::Enter);
+    AddInputCommand(GLFW_KEY_LEFT_CONTROL, Key::LeftControl);
+    AddInputCommand(GLFW_KEY_RIGHT_CONTROL, Key::RightControl);
     AddInputCommand(GLFW_KEY_W, Key::W);
     AddInputCommand(GLFW_KEY_A, Key::A);
     AddInputCommand(GLFW_KEY_S, Key::S);
@@ -21,6 +24,7 @@ void Input::Init()
     AddInputCommand(GLFW_KEY_Z, Key::Z);
     AddInputCommand(GLFW_KEY_X, Key::X);
     AddInputCommand(GLFW_KEY_Q, Key::Q);
+
 
     AddMouseCommand(GLFW_MOUSE_BUTTON_LEFT, Mouse::ButtonLeft);
     AddMouseCommand(GLFW_MOUSE_BUTTON_RIGHT, Mouse::ButtonRight);
@@ -54,6 +58,7 @@ void Input::PollInputs(GLFWwindow* glfwWindow)
 
 bool Input::IsKeyPressed(KeyCode keyCode)
 {
+    /*
     for (auto& inputCommand : s_inputCommands)
     {
         if (inputCommand.keyCode == keyCode
@@ -64,6 +69,11 @@ bool Input::IsKeyPressed(KeyCode keyCode)
     }
 
     return false;
+    */
+
+    auto* window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
+    auto state = glfwGetKey(window, static_cast<int32_t>(keyCode));
+    return state == GLFW_PRESS;
 }
 
 bool Input::IsKeyHeld(KeyCode keyCode)
