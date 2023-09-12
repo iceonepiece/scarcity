@@ -30,6 +30,34 @@ struct Rigidbody2DComponent
 	BodyType type = BodyType::Static;
 	bool fixedRotation = false;
 	void* body = nullptr;
+
+	float GetVelocityX()
+	{
+		if (b2Body* b = (b2Body*)body)
+			return b->GetLinearVelocity().x;
+
+		return 0.0f;
+	}
+
+	float GetVerticalY()
+	{
+		if (b2Body* b = (b2Body*)body)
+			return b->GetLinearVelocity().y;
+
+		return 0.0f;
+	}
+
+	void SetVelocity(float x, float y)
+	{
+		if (b2Body* b = (b2Body*)body)
+			b->SetLinearVelocity({ x,  y });
+	}
+
+	void ApplyImpulse(float x, float y)
+	{
+		if (b2Body* b = (b2Body*)body)
+			b->ApplyLinearImpulse(b2Vec2(x, y), b->GetWorldCenter(), true);
+	}
 };
 
 static void DoSerialize(const Rigidbody2DComponent& rb2d, json& entityJson)
