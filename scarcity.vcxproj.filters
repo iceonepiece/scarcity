@@ -594,7 +594,7 @@
     <ClCompile Include="External\Include\imgui\imgui_stdlib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\PCH.cpp">
+    <ClCompile Include="Code\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Core\System.cpp">
@@ -2216,7 +2216,7 @@
     <ClInclude Include="Code\Systems\RenderSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\PCH.h">
+    <ClInclude Include="Code\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Project\Project.h">

@@ -319,7 +319,7 @@
     <ClCompile Include="Code\Input\NewInput.cpp" />
     <ClCompile Include="Code\Lua\LuaEngine.cpp" />
     <ClCompile Include="Code\NativeScript\NativeScriptEngine.cpp" />
-    <ClCompile Include="Code\PCH.cpp" />
+    <ClCompile Include="Code\pch.cpp" />
     <ClCompile Include="Code\Platforms\GLFW\GLFWInput.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLFontSystem.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLWindow.cpp" />
@@ -412,7 +412,7 @@
     <ClInclude Include="Code\Math\Math.h" />
     <ClInclude Include="Code\NativeScript\NativeScriptEngine.h" />
     <ClInclude Include="Code\NativeScript\NativeScript.h" />
-    <ClInclude Include="Code\PCH.h" />
+    <ClInclude Include="Code\pch.h" />
     <ClInclude Include="Code\Platforms\GLFW\GLFWInput.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLFontSystem.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLWindow.h" />
