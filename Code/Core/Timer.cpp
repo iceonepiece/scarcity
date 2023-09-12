@@ -1,4 +1,4 @@
-#include <GLFW/glfw3.h>
+#include <chrono>
 #include <iostream>
 #include "Timer.h"
 
@@ -9,9 +9,14 @@ int Timer::m_frameCount = 0;
 
 void Timer::Tick()
 {
-	double currentFrame = glfwGetTime();
-	m_deltaTime = currentFrame - m_lastFrame;
-	m_lastFrame = currentFrame;
+	auto currentTime = std::chrono::high_resolution_clock::now();
+
+	auto currentTimePoint = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> duration = currentTimePoint.time_since_epoch();
+	double currentTimeInSeconds = duration.count();
+
+	m_deltaTime = currentTimeInSeconds - m_lastFrame;
+	m_lastFrame = currentTimeInSeconds;
 }
 
 double Timer::GetDeltaTime()
