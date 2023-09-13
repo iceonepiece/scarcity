@@ -38,15 +38,9 @@ entt::entity Scene::DuplicateEntity(entt::entity entity)
     entt::registry& registry = m_manager.m_registry;
     auto newEntity = registry.create();
 
-    DuplicateComponent<BaseComponent>(registry, entity, newEntity);
-    DuplicateComponent<TransformComponent>(registry, entity, newEntity);
-    DuplicateComponent<SpriteAnimatorComponent>(registry, entity, newEntity);
-    DuplicateComponent<SpriteRendererComponent>(registry, entity, newEntity);
-    DuplicateComponent<Rigidbody2DComponent>(registry, entity, newEntity);
-    DuplicateComponent<BoxCollider2DComponent>(registry, entity, newEntity);
-    DuplicateComponent<CircleCollider2DComponent>(registry, entity, newEntity);
-    DuplicateComponent<CameraComponent>(registry, entity, newEntity);
-    DuplicateComponent<NativeScriptComponent>(registry, entity, newEntity);
+    std::apply([&](auto... componentTypes) {
+        (DuplicateComponent<decltype(componentTypes)>(registry, entity, newEntity), ...);
+    }, ComponentList{});
 
     return newEntity;
 }
@@ -92,15 +86,9 @@ std::unique_ptr<Scene> Scene::Copy(Scene& sourceScene)
     srcRegistry.each([&](auto srcEntity) {
         auto destEntity = destRegistry.create();
 
-        CopyComponent<BaseComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
-        CopyComponent<TransformComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
-        CopyComponent<SpriteAnimatorComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
-        CopyComponent<SpriteRendererComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
-        CopyComponent<Rigidbody2DComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
-        CopyComponent<BoxCollider2DComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
-        CopyComponent<CircleCollider2DComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
-        CopyComponent<CameraComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
-        CopyComponent<NativeScriptComponent>(srcRegistry, destRegistry, srcEntity, destEntity);
+        std::apply([&](auto... componentTypes) {
+            (CopyComponent<decltype(componentTypes)>(srcRegistry, destRegistry, srcEntity, destEntity), ...);
+        }, ComponentList{});
     });
 
     return newScene;
