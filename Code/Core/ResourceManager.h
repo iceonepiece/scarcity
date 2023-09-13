@@ -15,6 +15,7 @@
 #include "Animations/Sprite.h"
 #include "Asset/Asset.h"
 #include "Asset/AnimatorControllerAsset.h"
+#include "Asset/TextureAsset.h"
 
 class ResourceManager
 {
@@ -24,24 +25,24 @@ public:
 
 	void InitializeAssets(const std::filesystem::path& path);
 
-	void AddSprites(std::vector<Sprite>& sprites)
+	void AddSpriteAssets(std::vector<SpriteAsset>& spriteAssets)
 	{
-		for (auto& sprite : sprites)
+		for (auto& sprite : spriteAssets)
 		{
-			std::cout << sprite.GetName() << " Added\n";
-			m_spriteMap.insert({ sprite.GetName(), &sprite });
+			std::cout << sprite.GetSprite().GetName() << " Added\n";
+			m_spriteAssetMap.insert({ sprite.GetSprite().GetName(), &sprite });
 		}
 	}
 
-	void RemoveSprites(std::vector<Sprite>& sprites)
+	void RemoveSpriteAssets(std::vector<SpriteAsset>& spriteAssets)
 	{
-		for (auto& sprite : sprites)
-			m_spriteMap.erase(sprite.GetName());
+		for (auto& sprite : spriteAssets)
+			m_spriteAssetMap.erase(sprite.GetSprite().GetName());
 	}
 
-	Sprite* GetSprite(const std::string& name)
+	SpriteAsset* GetSpriteAsset(const std::string& name)
 	{
-		return m_spriteMap.find(name) != m_spriteMap.end() ? m_spriteMap[name] : nullptr;
+		return m_spriteAssetMap.find(name) != m_spriteAssetMap.end() ? m_spriteAssetMap[name] : nullptr;
 	}
 
 	bool HasTexture(const std::string& name)
@@ -64,7 +65,7 @@ public:
 		return m_particles[name];
 	}
 
-	inline std::map<std::string, Sprite*>& GetSpriteMap() { return m_spriteMap; }
+	inline std::map<std::string, SpriteAsset*>& GetSpriteMap() { return m_spriteAssetMap; }
 	inline AnimatorController* GetAnimatorController(const std::string& name)
 	{
 		if (m_animControllerMap.find(name) != m_animControllerMap.end())
@@ -81,7 +82,7 @@ public:
 
 protected:
 	std::map<std::string, std::unique_ptr<Asset>> m_assetMap;
-	std::map<std::string, Sprite*> m_spriteMap;
+	std::map<std::string, SpriteAsset*> m_spriteAssetMap;
 	std::map<std::string, std::unique_ptr<AnimatorControllerAsset>> m_animControllerMap;
 
 	std::unordered_map<std::string, std::unique_ptr<Texture>> m_textures;

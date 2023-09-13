@@ -9,7 +9,7 @@
 class EditorLayer;
 
 using AssetEventFunction = std::function<void()>;
-using OnSelectSpriteFunction = std::function<void(Sprite&)>;
+using OnSelectSpriteFunction = std::function<void(SpriteAsset&)>;
 
 class ImGuiAssetPanel
 {
@@ -23,7 +23,7 @@ public:
 		m_currentDirectory = path;
 	}
 
-	static void RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn = [](Sprite&){});
+	static void RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn = [](SpriteAsset&){}, const std::string& note = "");
 	static void RenderFolder(const std::filesystem::path& path, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	void RenderUnsupportedFile(const std::filesystem::path& path);
 

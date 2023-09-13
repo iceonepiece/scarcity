@@ -36,7 +36,8 @@ struct EditorObject
 {
 	EditorObjectType type = EditorObjectType::None;
 	entt::entity entity = entt::null;
-	std::filesystem::path path = "";
+	Asset* asset = nullptr;
+	std::string note = "";
 };
 
 class EditorLayer : public Layer
@@ -63,10 +64,14 @@ public:
 
 	inline std::filesystem::path GetSelectedPath()
 	{
-		return m_selectedObject.path;
+		if (m_selectedObject.type == EditorObjectType::Path && m_selectedObject.asset)
+			return m_selectedObject.asset->GetPath();
+
+		return "";
 	}
 
-	void SetSelectedPath(const std::filesystem::path& path);
+	void SetSelectedAsset(Asset* asset, const std::string& note);
+	void SetSelectedPath(const std::filesystem::path& path, const std::string& note = "");
 	void LoadAsset(const std::filesystem::path& path);
 
 	void SetPickedEntity(entt::entity picked);
@@ -95,7 +100,7 @@ public:
 	void CalculateWorldCursorPosition();
 
 	inline EditorObject& GetSelectedObject() { return m_selectedObject; }
-	inline Asset* GetSelectedAsset() { return m_selectedAsset; }
+	inline Asset* GetSelectedAsset() { return m_selectedObject.asset; }
 
 	static Asset* GetAsset(const std::filesystem::path& path);
 
@@ -122,7 +127,6 @@ private:
 
 	std::unordered_map<std::string, Sprite> m_spriteMap;
 
-	Asset* m_selectedAsset;
 	std::unordered_map<std::string, std::unique_ptr<Asset>> m_assetMap;
 
 	std::mutex m_fileEventMutex;

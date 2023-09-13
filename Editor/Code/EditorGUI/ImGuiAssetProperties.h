@@ -7,4 +7,6 @@ class ImGuiAssetProperties
 {
 public:
 	void Render(Asset* asset);
+	void RenderTextureAsset(TextureAsset& textureAsset);
+	void RenderSpriteAsset(SpriteAsset& spriteAsset);
 };

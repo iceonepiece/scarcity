@@ -32,8 +32,7 @@ public:
 
 	inline void SetScreenSize(int width, int height)
 	{
-		m_screenSize.x = width;
-		m_screenSize.y = height;
+		m_screenSize = { width, height };
 	}
 
 	inline float GetScreenSizePercentage() { return m_screenSize.x / m_defaultScreenSize.x; }

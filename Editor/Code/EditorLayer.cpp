@@ -188,16 +188,23 @@ void EditorLayer::SetPickedEntity(entt::entity picked)
 {
     m_selectedObject.type = EditorObjectType::Entity;
     m_selectedObject.entity = picked;
-    m_selectedObject.path = "";
+    m_selectedObject.asset = nullptr;
 }
 
-void EditorLayer::SetSelectedPath(const std::filesystem::path& path)
+void EditorLayer::SetSelectedAsset(Asset* asset, const std::string& note)
 {
     m_selectedObject.type = EditorObjectType::Path;
-    m_selectedObject.path = path;
+    m_selectedObject.asset = asset;
     m_selectedObject.entity = entt::null;
+    m_selectedObject.note = note;
+}
 
-    m_selectedAsset = GetAsset(path);
+void EditorLayer::SetSelectedPath(const std::filesystem::path& path, const std::string& note)
+{
+    m_selectedObject.type = EditorObjectType::Path;
+    m_selectedObject.asset = GetAsset(path);
+    m_selectedObject.entity = entt::null;
+    m_selectedObject.note = note;
 }
 
 Asset* EditorLayer::GetAsset(const std::filesystem::path& path)
@@ -218,8 +225,8 @@ void EditorLayer::LoadAsset(const std::filesystem::path& path)
     if (FileSystem::IsImageFile(path))
     {
         std::cout << "LoadAsset (Texture): " << path << "\n";
-        std::unique_ptr<TextureAsset> sprite = std::make_unique<TextureAsset>(path);
-        m_assetMap.insert({ path.string(), std::move(sprite) });
+        std::unique_ptr<TextureAsset> textureAsset = std::make_unique<TextureAsset>(path);
+        m_assetMap.insert({ path.string(), std::move(textureAsset) });
     }
 }
 
@@ -228,7 +235,8 @@ void EditorLayer::UnselectObject()
 {
     m_selectedObject.type = EditorObjectType::None;
     m_selectedObject.entity = entt::null;
-    m_selectedObject.path = "";
+    m_selectedObject.asset = nullptr;
+    m_selectedObject.note = "";
 }
 
 void EditorLayer::OnMouseMoved(MouseMovedEvent& event)

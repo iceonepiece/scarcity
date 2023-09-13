@@ -11,6 +11,27 @@ enum class SpriteMode
 	Multiple
 };
 
+class TextureAsset;
+
+class SpriteAsset : public Asset
+{
+public:
+	SpriteAsset(Sprite sprite, TextureAsset& textureAsset)
+		: Asset("")
+		, m_sprite(sprite)
+		, m_textureAsset(textureAsset)
+	{
+
+	}
+
+	inline TextureAsset& GetTextureAsset() { return m_textureAsset; }
+	inline Sprite& GetSprite() { return m_sprite; }
+
+private:
+	Sprite m_sprite;
+	TextureAsset& m_textureAsset;
+};
+
 class TextureAsset : public Asset
 {
 public:
@@ -28,7 +49,7 @@ public:
 	inline int& GetRows() { return m_rows; }
 	inline int& GetCols() { return m_cols; }
 
-	inline std::vector<Sprite>& GetSprites() { return m_sprites; }
+	inline std::vector<SpriteAsset>& GetSpriteAssets() { return m_spriteAssets; }
 
 	friend class MetaSerializer;
 
@@ -38,5 +59,5 @@ private:
 	int m_cols = 0;
 	int m_rows = 0;
 
-	std::vector<Sprite> m_sprites;
+	std::vector<SpriteAsset> m_spriteAssets;
 };

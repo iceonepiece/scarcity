@@ -38,9 +38,9 @@ void ImGuiSelectSpriteWindow::Render()
 		{
 			if (TextureAsset* asset = dynamic_cast<TextureAsset*>(EditorLayer::GetAsset(path)))
 			{
-				ImGuiAssetPanel::RenderTexture(*asset, 0, [&](){}, [&](Sprite& sprite)
+				ImGuiAssetPanel::RenderTexture(*asset, 0, [&](){}, [&](SpriteAsset& sprite)
 				{
-					m_selectedSprite = &sprite;
+					m_selectedSprite = &sprite.GetSprite();
 				});
 			}
 		}

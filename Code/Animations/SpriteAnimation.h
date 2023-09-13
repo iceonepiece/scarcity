@@ -51,6 +51,7 @@ struct SpriteAnimation
 		float u = texture.GetWidth() / (float)cols;
 		float v = texture.GetHeight() / (float)rows;
 
-		return Sprite { &(texture), {u, v}, {x, y} };
+		return Sprite{};
+		//return Sprite { &(texture), {u, v}, {x, y} };
 	}
 };

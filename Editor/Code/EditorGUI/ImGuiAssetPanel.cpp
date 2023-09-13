@@ -34,11 +34,14 @@ void ImGuiAssetPanel::RenderUnsupportedFile(const std::filesystem::path& path)
 	}
 }
 
-void ImGuiAssetPanel::RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn)
+void ImGuiAssetPanel::RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn, const std::string& note)
 {
 	std::string useIcon = (ICON_FA_IMAGE " ");
 
 	flags |= ImGuiTreeNodeFlags_OpenOnArrow;
+
+	if (note != "")
+		flags &= ~ImGuiTreeNodeFlags_Selected;
 
 	bool opened = ImGui::TreeNodeEx(textureAsset.GetPath().string().c_str(), flags, (useIcon + textureAsset.GetName()).c_str());
 
@@ -46,11 +49,11 @@ void ImGuiAssetPanel::RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFla
 
 	if (opened)
 	{
-		std::vector<Sprite>& sprites = textureAsset.GetSprites();
+		std::vector<SpriteAsset>& spriteAssets = textureAsset.GetSpriteAssets();
 
-		for (auto& sprite : sprites)
+		for (auto& sprite : spriteAssets)
 		{
-			if (ImGui::Selectable(sprite.GetName().c_str(), false, ImGuiSelectableFlags_DontClosePopups))
+			if (ImGui::Selectable(sprite.GetSprite().GetName().c_str(), sprite.GetSprite().GetName() == note, ImGuiSelectableFlags_DontClosePopups))
 				selectSpriteFn(sprite);
 		}
 
@@ -137,11 +140,20 @@ void ImGuiAssetPanel::Render()
 			{
 				if (TextureAsset* textureAsset = dynamic_cast<TextureAsset*>(asset))
 				{
-					RenderTexture(*textureAsset, flags, [&]()
-					{
-						if (ImGui::IsItemClicked())
-							m_editor.SetSelectedPath(textureAsset->GetPath());
-					});
+					RenderTexture(*textureAsset, flags,
+						[&]()
+						{
+							if (ImGui::IsItemClicked())
+								m_editor.SetSelectedPath(textureAsset->GetPath());
+						},
+
+						[&](SpriteAsset& spriteAsset)
+						{
+							//m_editor.SetSelectedPath(textureAsset->GetPath(), sprite.GetName());
+							m_editor.SetSelectedAsset(&spriteAsset, spriteAsset.GetSprite().GetName());
+						},
+						m_editor.GetSelectedObject().note
+					);
 				}
 			}
 		}

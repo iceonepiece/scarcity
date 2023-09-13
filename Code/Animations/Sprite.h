@@ -37,40 +37,18 @@ public:
 
 	inline std::string GetName() { return m_name; }
 
-	void SetTexture(Texture* texture)
-	{
-		m_texture = texture;
-	}
+	inline void SetTexture(Texture* texture) { m_texture = texture; }
+	inline Texture* GetTexture() { return m_texture; }
 
-	Texture* GetTexture()
-	{
-		return m_texture;
-	}
+	inline float GetLeft() { return m_left; }
+	inline float GetRight() { return m_right; }
+	inline float GetBottom() { return m_bottom; }
+	inline float GetTop() { return m_top; }
 
-	float GetLeft()
-	{
-		return m_left;
-	}
+	inline float GetWidth() { return m_width; }
+	inline float GetHeight() { return m_height; }
 
-	float GetRight()
-	{
-		return m_right;
-	}
-
-	float GetBottom()
-	{
-		return m_bottom;
-	}
-
-	float GetTop()
-	{
-		return m_top;
-	}
-
-	glm::vec2 GetRatio()
-	{
-		return m_ratio;
-	}
+	inline glm::vec2 GetRatio() { return m_ratio; }
 
 private:
 	std::string m_name;

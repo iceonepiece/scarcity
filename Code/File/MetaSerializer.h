@@ -72,8 +72,8 @@ public:
 		if (metaFile.is_open())
 		{
 			ResourceManager* resourceManager = ResourceAPI::GetResourceManager();
-			resourceManager->RemoveSprites(textureAsset.m_sprites);
-			textureAsset.m_sprites.clear();
+			resourceManager->RemoveSpriteAssets(textureAsset.m_spriteAssets);
+			textureAsset.m_spriteAssets.clear();
 
 			json imageJson = json::parse(metaFile);
 			textureAsset.m_spriteMode = (SpriteMode)imageJson["spriteMode"];
@@ -84,33 +84,39 @@ public:
 
 				for (auto& json_sprite : json_sprites)
 				{
-					Sprite sprite{
-						json_sprite["name"],
-						textureAsset.m_texture,
-						json_sprite["x"],
-						json_sprite["y"],
-						json_sprite["width"],
-						json_sprite["height"]
+					SpriteAsset spriteAsset {
+						Sprite {
+							json_sprite["name"],
+							textureAsset.m_texture,
+							json_sprite["x"],
+							json_sprite["y"],
+							json_sprite["width"],
+							json_sprite["height"]
+						},
+						textureAsset
 					};
 
-					textureAsset.m_sprites.push_back(sprite);
+					textureAsset.m_spriteAssets.push_back(spriteAsset);
 				}
 			}
 			else if (textureAsset.m_spriteMode == SpriteMode::Single)
 			{
-				Sprite sprite{
-					textureAsset.m_path.stem().string(),
-					textureAsset.m_texture,
-					0,
-					0,
-					(float)textureAsset.GetTexture()->GetWidth(),
-					(float)textureAsset.GetTexture()->GetHeight()
+				SpriteAsset spriteAsset {
+					Sprite {
+						textureAsset.m_path.stem().string(),
+						textureAsset.m_texture,
+						0,
+						0,
+						(float)textureAsset.GetTexture()->GetWidth(),
+						(float)textureAsset.GetTexture()->GetHeight()
+					},
+					textureAsset
 				};
 
-				textureAsset.m_sprites.push_back(sprite);
+				textureAsset.m_spriteAssets.push_back(spriteAsset);
 			}
 
-			resourceManager->AddSprites(textureAsset.m_sprites);
+			resourceManager->AddSpriteAssets(textureAsset.m_spriteAssets);
 		}
 		else
 		{
