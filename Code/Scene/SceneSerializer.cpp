@@ -10,6 +10,31 @@
 
 using json = nlohmann::json;
 
+void SceneSerializer::SerializeEntity(Scene& scene, entt::entity entity, std::filesystem::path filePath)
+{
+	auto& registry = scene.m_manager.m_registry;
+
+	BaseComponent* base = registry.try_get<BaseComponent>(entity);
+
+	if (base == nullptr)
+		return;
+
+	FileSystem::OpenAndWriteFile(filePath / (base->name + ".prefab"), [&](std::ofstream& fs)
+	{
+		ComponentSerializer serializer(registry);
+
+		json entityJson = {};
+		entityJson["id"] = entity;
+
+		std::apply([&](auto... componentTypes) {
+			(serializer.Serialize<decltype(componentTypes)>(entityJson, entity), ...);
+		}, ComponentList{});
+
+		fs << entityJson.dump(4);
+	});
+}
+
+
 bool SceneSerializer::Serialize(Scene& scene, std::filesystem::path filePath)
 {
 	std::ofstream sceneFile;

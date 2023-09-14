@@ -5,6 +5,7 @@
 #include <functional>
 #include "Graphics/Texture.h"
 #include "Asset/TextureAsset.h"
+#include "Asset/PrefabAsset.h"
 
 class EditorLayer;
 
@@ -23,6 +24,7 @@ public:
 		m_currentDirectory = path;
 	}
 
+	static void RenderPrefab(PrefabAsset& prefabAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn = [](SpriteAsset&){}, const std::string& note = "");
 	static void RenderFolder(const std::filesystem::path& path, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	void RenderUnsupportedFile(const std::filesystem::path& path);

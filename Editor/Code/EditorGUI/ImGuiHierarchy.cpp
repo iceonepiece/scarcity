@@ -2,6 +2,9 @@
 #include "ImGuiHierarchy.h"
 #include "Components/Components.h"
 #include "Components/Relationship.h"
+#include <IconsFontAwesome6.h>
+
+
 
 ImGuiHierarchy::ImGuiHierarchy(EditorLayer& editor)
     : m_editor(editor)
@@ -11,6 +14,8 @@ ImGuiHierarchy::ImGuiHierarchy(EditorLayer& editor)
 
 void ImGuiHierarchy::Render()
 {
+    std::string useIcon = (ICON_FA_CUBE " ");
+
     ImGui::Begin("Hierarchy");
     EntityManager& manager = m_editor.GetScene()->GetEntityManager();
     auto& registry = manager.m_registry;
@@ -26,7 +31,18 @@ void ImGuiHierarchy::Render()
 
             ImGuiTreeNodeFlags flags = ((m_editor.GetPickedEntity() == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
             flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
-            bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, base.name.c_str());
+            flags |= ImGuiTreeNodeFlags_SpanFullWidth;
+
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(140, 200, 255, 255));
+            bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, (useIcon + base.name).c_str());
+            ImGui::PopStyleColor();
+
+            if (ImGui::BeginDragDropSource())
+            {
+                ImGui::SetDragDropPayload("HIERARCHY_ENTITY", &entity, sizeof(entt::entity));
+                ImGui::Text(base.name.c_str());
+                ImGui::EndDragDropSource();
+            }
 
             if (ImGui::IsItemClicked())
             {

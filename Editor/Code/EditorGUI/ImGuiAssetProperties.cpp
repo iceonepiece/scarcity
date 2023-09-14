@@ -13,6 +13,15 @@ void ImGuiAssetProperties::Render(Asset* asset)
     else if (SpriteAsset* spriteAsset = dynamic_cast<SpriteAsset*>(asset))
         RenderSpriteAsset(*spriteAsset);
 
+    else if (PrefabAsset* prefabAsset = dynamic_cast<PrefabAsset*>(asset))
+        RenderPrefabAsset(*prefabAsset);
+
+}
+
+void ImGuiAssetProperties::RenderPrefabAsset(PrefabAsset& prefabAsset)
+{
+    std::string name = prefabAsset.GetPath().stem().string() + " (Prefab)";
+    ImGui::Text(name.c_str());
 }
 
 void ImGuiAssetProperties::RenderTextureAsset(TextureAsset& textureAsset)

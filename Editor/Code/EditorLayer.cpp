@@ -18,6 +18,7 @@
 #include "File/MetaSerializer.h"
 #include "EditorGUI/Windows/ImGuiSelectSpriteWindow.h"
 #include "EditorGUI/Windows/ImGuiSelectAnimatorControllerWindow.h"
+#include "Components/ComponentSerializer.h"
 
 EditorLayer* EditorLayer::s_instance = nullptr;
 
@@ -176,6 +177,14 @@ bool EditorLayer::OpenScene(std::filesystem::path path)
     return success;
 }
 
+void EditorLayer::CreatePrefab(entt::entity entity, const std::filesystem::path& path)
+{
+    if (m_activeScene)
+    {
+        SceneSerializer::SerializeEntity(*m_activeScene, entity, path);
+    }
+}
+
 void EditorLayer::CalculateWorldCursorPosition()
 {
     glm::vec2 ndcPosition = Math::ConvertToNDC(m_cursorPosition, m_camera->GetScreenSize());
@@ -227,6 +236,12 @@ void EditorLayer::LoadAsset(const std::filesystem::path& path)
         std::cout << "LoadAsset (Texture): " << path << "\n";
         std::unique_ptr<TextureAsset> textureAsset = std::make_unique<TextureAsset>(path);
         m_assetMap.insert({ path.string(), std::move(textureAsset) });
+    }
+    else if (FileSystem::IsPrefabFile(path))
+    {
+        std::cout << "LoadAsset (Prefab): " << path << "\n";
+        std::unique_ptr<PrefabAsset> prefabAsset = std::make_unique<PrefabAsset>(path);
+        m_assetMap.insert({ path.string(), std::move(prefabAsset) });
     }
 }
 

@@ -6,6 +6,7 @@
 enum class AssetType
 {
 	None,
+	Prefab,
 	Texture,
 	Sprite,
 	AnimatorController,

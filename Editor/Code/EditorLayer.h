@@ -55,6 +55,8 @@ public:
 
 	void OnSceneUpdate();
 
+	void CreatePrefab(entt::entity entity, const std::filesystem::path& path);
+
 	inline bool IsEntityPicked() { return m_entityPicked; }
 
 	inline entt::entity GetPickedEntity()

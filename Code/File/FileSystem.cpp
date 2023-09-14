@@ -3,14 +3,31 @@
 #include "MetaSerializer.h"
 #include "Asset/TextureAsset.h"
 
+bool FileSystem::OpenAndWriteFile(const std::filesystem::path& path, HandleFileCallback callback)
+{
+	std::ofstream file(path);
+
+	if (file.is_open())
+	{
+		callback(file);
+	}
+	else
+	{
+		std::cerr << "Error opening the file!" << std::endl;
+		return false;
+	}
+
+	file.close();
+
+	return true;
+}
+
 void FileSystem::HandleMetaFile(const std::filesystem::path& path)
 {
-	if (!FileUtils::FileExists(path.string() + ".meta"))
+	if (IsImageFile(path) && !FileUtils::FileExists(path.string() + ".meta"))
 	{
-		std::cout << "No meta file exists for " << path << std::endl;
-
-		if (IsImageFile(path))
-			GenerateImageMetaFile(path);
+		std::cout << "No meta file exists for an image: " << path << std::endl;
+		GenerateImageMetaFile(path);
 	}
 }
 
@@ -37,6 +54,11 @@ bool FileSystem::IsImageFile(const std::filesystem::path& path)
 bool FileSystem::IsAnimatorFile(const std::filesystem::path& path)
 {
 	return path.extension().generic_string() == ".controller";
+}
+
+bool FileSystem::IsPrefabFile(const std::filesystem::path& path)
+{
+	return path.extension().generic_string() == ".prefab";
 }
 
 void FileSystem::GenerateImageMetaFile(const std::filesystem::path& path)

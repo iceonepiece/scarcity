@@ -34,6 +34,25 @@ void ImGuiAssetPanel::RenderUnsupportedFile(const std::filesystem::path& path)
 	}
 }
 
+void ImGuiAssetPanel::RenderPrefab(PrefabAsset& prefabAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
+{
+	std::string useIcon = ICON_FA_CUBE;
+
+	flags |= ImGuiTreeNodeFlags_Leaf;
+
+	ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(140, 200, 255, 255));
+	bool opened = ImGui::TreeNodeEx(prefabAsset.GetPath().c_str(), flags, useIcon.c_str());
+	ImGui::PopStyleColor();
+
+	callback();
+
+	ImGui::SameLine();
+	ImGui::Text(prefabAsset.GetPath().filename().string().c_str());
+
+	if (opened)
+		ImGui::TreePop();
+}
+
 void ImGuiAssetPanel::RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn, const std::string& note)
 {
 	std::string useIcon = (ICON_FA_IMAGE " ");
@@ -73,13 +92,18 @@ void ImGuiAssetPanel::RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFla
 
 void ImGuiAssetPanel::RenderFolder(const std::filesystem::path& path, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
 {
-	std::string useIcon = (ICON_FA_FOLDER " ");
+	std::string useIcon = ICON_FA_FOLDER;
 
 	flags |= ImGuiTreeNodeFlags_Leaf;
 
-	bool opened = ImGui::TreeNodeEx(path.c_str(), flags, (useIcon + path.filename().string()).c_str());
+	ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(235, 231, 108, 255));
+	bool opened = ImGui::TreeNodeEx(path.c_str(), flags, useIcon.c_str());
+	ImGui::PopStyleColor();
 
 	callback();
+
+	ImGui::SameLine();
+	ImGui::Text(path.filename().string().c_str());
 
 	if (opened)
 		ImGui::TreePop();
@@ -99,6 +123,7 @@ void ImGuiAssetPanel::Render()
 	ImGui::Text(m_currentDirectory.string().c_str());
 	ImGui::Separator();
 
+	ImGui::BeginChild("Asset Area");
 	static float padding = 18.0f;
 	static float thumbnailSize = 512.0f;
 	float cellSize = thumbnailSize + padding;
@@ -133,28 +158,36 @@ void ImGuiAssetPanel::Render()
 				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 					m_currentDirectory /= path.filename();
 			});
-		}
-		else if (FileSystem::GetAssetType(path) != AssetType::None)
-		{
-			if (Asset* asset = m_editor.GetAsset(path))
-			{
-				if (TextureAsset* textureAsset = dynamic_cast<TextureAsset*>(asset))
-				{
-					RenderTexture(*textureAsset, flags,
-						[&]()
-						{
-							if (ImGui::IsItemClicked())
-								m_editor.SetSelectedPath(textureAsset->GetPath());
-						},
 
-						[&](SpriteAsset& spriteAsset)
-						{
-							//m_editor.SetSelectedPath(textureAsset->GetPath(), sprite.GetName());
-							m_editor.SetSelectedAsset(&spriteAsset, spriteAsset.GetSprite().GetName());
-						},
-						m_editor.GetSelectedObject().note
-					);
-				}
+		}
+		else if (Asset* asset = m_editor.GetAsset(path))
+		{
+			if (asset->GetType() == AssetType::Texture)
+			{
+				TextureAsset* textureAsset = static_cast<TextureAsset*>(asset);
+				RenderTexture(*textureAsset, flags,
+					[&]()
+					{
+						if (ImGui::IsItemClicked())
+							m_editor.SetSelectedPath(textureAsset->GetPath());
+					},
+
+					[&](SpriteAsset& spriteAsset)
+					{
+						//m_editor.SetSelectedPath(textureAsset->GetPath(), sprite.GetName());
+						m_editor.SetSelectedAsset(&spriteAsset, spriteAsset.GetSprite().GetName());
+					},
+					m_editor.GetSelectedObject().note
+				);
+			}
+			else if (asset->GetType() == AssetType::Prefab)
+			{
+				PrefabAsset* prefabAsset = static_cast<PrefabAsset*>(asset);
+				RenderPrefab(*prefabAsset, flags, [&]()
+				{
+					if (ImGui::IsItemClicked())
+						m_editor.SetSelectedPath(prefabAsset->GetPath());
+				});
 			}
 		}
 		else
@@ -178,11 +211,27 @@ void ImGuiAssetPanel::Render()
 		ImGui::NextColumn();
 	}
 
+
+
 	ImGui::Columns(1);
+	ImGui::EndChild();
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("HIERARCHY_ENTITY"))
+		{
+			entt::entity payload_entity = *(entt::entity*)payload->Data;
+			std::cout << "Drag Drop: " << (int)payload_entity << std::endl;
+			m_editor.CreatePrefab(payload_entity, m_currentDirectory);
+		}
+		ImGui::EndDragDropTarget();
+	}
+
 
 	//ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
 	//ImGui::SliderFloat("Padding", &padding, 0, 32);
 
 	// TODO: status bar
 	ImGui::End();
+
 }

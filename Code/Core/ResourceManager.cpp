@@ -1,5 +1,6 @@
 #include "Core/ResourceManager.h"
 #include "Asset/TextureAsset.h"
+#include "Asset/PrefabAsset.h"
 
 void ResourceManager::InitializeAssets(const std::filesystem::path& path)
 {
@@ -33,6 +34,12 @@ void ResourceManager::InitializeAssets(const std::filesystem::path& path)
 			{
 				std::cout << "[Animator Controller]";
 				m_animControllerMap.insert({ targetPath.string(), std::make_unique<AnimatorControllerAsset>(targetPath) });
+			}
+			else if (FileSystem::IsPrefabFile(targetPath))
+			{
+				std::cout << "[Prefab]";
+				std::unique_ptr<PrefabAsset> prefabAsset = std::make_unique<PrefabAsset>(targetPath);
+				m_assetMap.insert({ targetPath.string(), std::move(prefabAsset) });
 			}
 			else
 			{
