@@ -93,6 +93,8 @@ bool OpenALAudio::LoadSound(const std::string& name, const std::string& filePath
     alSourcei(source, AL_BUFFER, buffer);
 
     s_audioSources.emplace(name, AudioSource{ buffer, source });
+
+    return true;
 }
 
 void OpenALAudio::Destroy()

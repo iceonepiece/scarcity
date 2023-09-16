@@ -2,7 +2,6 @@
 
 #include "Actionable.h"
 #include "Shapes/Shape2D.h"
-#include "../Editor2D.h"
 
 class ActionableRect : public Actionable
 {

@@ -4,7 +4,6 @@
 #include <functional>
 #include <memory>
 #include "Core/Layer.h"
-#include "EditorGUI/ImGuiMain.h"
 #include "Scene/Scene.h"
 #include "EditorApplication.h"
 #include "Gizmos/Gizmo.h"
@@ -16,6 +15,11 @@
 #include "Asset/Asset.h"
 #include "Animations/Sprite.h"
 #include "EditorGUI/Windows/ImGuiWindow.h"
+#include "EditorGUI/ImGuiMainMenuBar.h"
+#include "EditorGUI/ImGuiEntityProperties.h"
+#include "EditorGUI/ImGuiHierarchy.h"
+#include "EditorGUI/ImGuiAssetPanel.h"
+
 
 enum EditorMode
 {
@@ -127,6 +131,7 @@ private:
 private:
 	static EditorLayer* s_instance;
 
+	EntityManager m_prefabManager;
 	std::unordered_map<std::string, Sprite> m_spriteMap;
 
 	std::unordered_map<std::string, std::unique_ptr<Asset>> m_assetMap;
@@ -153,7 +158,6 @@ private:
 	bool m_entityPicked;
 	bool m_scenePlaying = false;
 	std::unique_ptr<Camera> m_camera;
-	std::unique_ptr<ImGuiMain> m_imgui;
 
 	std::unique_ptr<Scene> m_playingScene = nullptr;
 

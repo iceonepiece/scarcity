@@ -19,7 +19,7 @@ void SceneSerializer::SerializeEntity(Scene& scene, entt::entity entity, std::fi
 	if (base == nullptr)
 		return;
 
-	FileSystem::OpenAndWriteFile(filePath / (base->name + ".prefab"), [&](std::ofstream& fs)
+	FileSystem::ReadOrWriteFile(filePath / (base->name + ".prefab"), [&](std::fstream& fs)
 	{
 		ComponentSerializer serializer(registry);
 
@@ -99,45 +99,6 @@ bool SceneSerializer::Deserialize(Scene& scene, std::filesystem::path filepath)
 			std::apply([&](auto... componentTypes) {
 				(serializer.Deserialize<decltype(componentTypes)>(entityJson, entity), ...);
 			}, ComponentList{});
-
-			/*
-			if (entityJson["Base"].is_object())
-			{
-				BaseComponent base;
-				json baseJson = entityJson["Base"];
-				entity.AddComponent<BaseComponent>(transform);
-			}
-
-			if (entityJson["Transform"].is_object())
-			{
-				json transformJson = entityJson["Transform"];
-
-				auto& positionJson = transformJson["position"];
-				glm::vec3 position { positionJson[0].get<float>(), positionJson[1].get<float>(), positionJson[2].get<float>() };
-	
-				auto& rotationJson = transformJson["rotation"];
-				glm::vec3 rotation { rotationJson[0].get<float>(), rotationJson[1].get<float>(), rotationJson[2].get<float>() };
-
-				auto& scaleJson = transformJson["scale"];
-				glm::vec3 scale { scaleJson[0].get<float>(), scaleJson[1].get<float>(), scaleJson[2].get<float>() };
-
-				entity.AddComponent<TransformComponent>(
-					position,
-					rotation,
-					scale
-				);
-			}
-
-			if (entityJson["SpriteRenderer"].is_object())
-			{
-				json spriteRendererJson = entityJson["SpriteRenderer"];
-
-				auto& colorJson = spriteRendererJson["color"];
-				glm::vec4 color { colorJson[0].get<float>(), colorJson[1].get<float>(), colorJson[2].get<float>(), colorJson[3].get<float>() };
-
-				entity.AddComponent<SpriteRendererComponent>(Shape_Square, color);
-			}
-			*/
 		}
 	}
 	else

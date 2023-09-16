@@ -4,7 +4,7 @@
 #include "../../EditorLayer.h"
 #include "Utils/FileDialog.h"
 
-void RenderImGui(SpriteAnimatorComponent& spriteAnimator)
+static void RenderImGui(SpriteAnimatorComponent& spriteAnimator)
 {
 	if (ImGui::Button("Browse"))
 		ImGui::OpenPopup("Select AnimatorController");

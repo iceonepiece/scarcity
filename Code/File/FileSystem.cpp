@@ -3,9 +3,9 @@
 #include "MetaSerializer.h"
 #include "Asset/TextureAsset.h"
 
-bool FileSystem::OpenAndWriteFile(const std::filesystem::path& path, HandleFileCallback callback)
+bool FileSystem::ReadOrWriteFile(const std::filesystem::path& path, HandleFileCallback callback)
 {
-	std::ofstream file(path);
+	std::fstream file(path);
 
 	if (file.is_open())
 	{

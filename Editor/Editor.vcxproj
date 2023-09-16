@@ -111,7 +111,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)External\Library-Debug</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;lua54.lib;freetype.lib;OpenAL32.lib;angelscriptd.lib;box2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;lua54.lib;freetype.lib;OpenAL32.lib;angelscriptd.lib;box2d.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -156,7 +156,6 @@
     <ClCompile Include="Code\HubLayer.cpp" />
     <ClCompile Include="Code\ImGuiComponent.cpp" />
     <ClCompile Include="Code\ImGuiLayer.cpp" />
-    <ClCompile Include="Code\EditorGUI\ImGuiMain.cpp" />
     <ClCompile Include="Code\Main.cpp" />
     <ClCompile Include="Code\SceneLayer.cpp" />
     <ClCompile Include="Code\EditorLayer.cpp" />
@@ -196,7 +195,6 @@
     <ClInclude Include="Code\HubLayer.h" />
     <ClInclude Include="Code\ImGuiComponent.h" />
     <ClInclude Include="Code\ImGuiLayer.h" />
-    <ClInclude Include="Code\EditorGUI\ImGuiMain.h" />
     <ClInclude Include="Code\EditorScene.h" />
     <ClInclude Include="Code\SampleScene.h" />
     <ClInclude Include="Code\SceneLayer.h" />

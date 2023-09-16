@@ -3,7 +3,7 @@
 #include "../ImGuiUtils.h"
 #include "Components/TransformComponent.h"
 
-void RenderImGui(TransformComponent& transform)
+static void RenderImGui(TransformComponent& transform)
 {
     ImGuiUtils::RenderInputVec3("Position", transform.position);
     ImGuiUtils::RenderInputVec3("Rotation", transform.rotation);

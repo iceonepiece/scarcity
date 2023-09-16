@@ -28,6 +28,9 @@ public:
 		return m_manager->m_registry.try_get<T>(m_id);
 	}
 
+	entt::entity GetEntity() { return m_id; }
+	entt::registry& GetRegistry() { return m_manager->m_registry; }
+
 protected:
 	entt::entity m_id = entt::null;
 	EntityManager* m_manager = nullptr;

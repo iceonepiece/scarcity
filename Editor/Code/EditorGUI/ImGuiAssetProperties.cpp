@@ -4,6 +4,9 @@
 #include "Core/ResourceAPI.h"
 #include <iostream>
 #include "File/MetaSerializer.h"
+#include "ImGuiEntityProperties.h"
+#include "ImGuiComponents/ImGuiComponentRenderer.h"
+
 
 void ImGuiAssetProperties::Render(Asset* asset)
 {
@@ -22,6 +25,17 @@ void ImGuiAssetProperties::RenderPrefabAsset(PrefabAsset& prefabAsset)
 {
     std::string name = prefabAsset.GetPath().stem().string() + " (Prefab)";
     ImGui::Text(name.c_str());
+
+    Entity& entity = prefabAsset.GetEntity();
+    auto& registry = entity.GetRegistry();
+
+    ImGui::PushID((int)entity.GetEntity());
+
+    std::apply([&](auto... componentTypes) {
+        (ImGuiComponentRenderer::RenderComponent<decltype(componentTypes)>(registry, entity.GetEntity()), ...);
+    }, ComponentList{});
+
+    ImGui::PopID();
 }
 
 void ImGuiAssetProperties::RenderTextureAsset(TextureAsset& textureAsset)

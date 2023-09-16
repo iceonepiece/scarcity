@@ -6,7 +6,7 @@
 #include <functional>
 #include "Asset/Asset.h"
 
-using HandleFileCallback = std::function<void(std::ofstream&)>;
+using HandleFileCallback = std::function<void(std::fstream&)>;
 
 class FileSystem
 {
@@ -17,7 +17,7 @@ public:
 	static bool IsAnimatorFile(const std::filesystem::path& path);
 	static bool IsPrefabFile(const std::filesystem::path& path);
 
-	static bool OpenAndWriteFile(const std::filesystem::path& path, HandleFileCallback callback);
+	static bool ReadOrWriteFile(const std::filesystem::path& path, HandleFileCallback callback);
 
 	static void GenerateImageMetaFile(const std::filesystem::path& path);
 };

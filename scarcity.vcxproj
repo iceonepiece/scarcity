@@ -354,15 +354,10 @@
     <ClCompile Include="External\Include\ImGuiNodeEditor\imgui_canvas.cpp" />
     <ClCompile Include="External\Include\ImGuiNodeEditor\imgui_node_editor.cpp" />
     <ClCompile Include="External\Include\ImGuiNodeEditor\imgui_node_editor_api.cpp" />
-    <ClCompile Include="External\Include\imgui\imgui.cpp" />
     <ClCompile Include="External\Include\imgui\ImGuizmo.cpp" />
-    <ClCompile Include="External\Include\imgui\imgui_demo.cpp" />
-    <ClCompile Include="External\Include\imgui\imgui_draw.cpp" />
     <ClCompile Include="External\Include\imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="External\Include\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="External\Include\imgui\imgui_stdlib.cpp" />
-    <ClCompile Include="External\Include\imgui\imgui_tables.cpp" />
-    <ClCompile Include="External\Include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLResourceManager.cpp" />
     <ClCompile Include="Code\Project\ProjectSerializer.cpp" />
   </ItemGroup>

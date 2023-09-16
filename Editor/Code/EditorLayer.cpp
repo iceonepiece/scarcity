@@ -19,6 +19,7 @@
 #include "EditorGUI/Windows/ImGuiSelectSpriteWindow.h"
 #include "EditorGUI/Windows/ImGuiSelectAnimatorControllerWindow.h"
 #include "Components/ComponentSerializer.h"
+#include "Scene/SceneSerializer.h"
 
 EditorLayer* EditorLayer::s_instance = nullptr;
 
@@ -240,7 +241,8 @@ void EditorLayer::LoadAsset(const std::filesystem::path& path)
     else if (FileSystem::IsPrefabFile(path))
     {
         std::cout << "LoadAsset (Prefab): " << path << "\n";
-        std::unique_ptr<PrefabAsset> prefabAsset = std::make_unique<PrefabAsset>(path);
+        Entity entity = m_prefabManager.CreateEntity();
+        std::unique_ptr<PrefabAsset> prefabAsset = std::make_unique<PrefabAsset>(path, entity);
         m_assetMap.insert({ path.string(), std::move(prefabAsset) });
     }
 }

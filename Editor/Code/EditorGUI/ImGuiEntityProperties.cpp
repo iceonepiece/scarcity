@@ -1,11 +1,11 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "ImGuiEntityProperties.h"
+#include "ImGuiComponents/ImGuiComponentRenderer.h"
 #include "Components/Components.h"
 #include "../EditorLayer.h"
 #include "imgui/imgui_stdlib.h"
 #include <string>
 #include "Core/ResourceAPI.h"
-#include "ImGuiComponents/ImGuiComponentRenderer.h"
 
 std::string EditorComponentNames[] = {
     "Box Collider 2D",

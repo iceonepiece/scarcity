@@ -7,6 +7,7 @@
 #include <memory>
 #include <filesystem>
 #include <sol/sol.hpp>
+#include <entt/entt.hpp>
 
 #include "File/FileSystem.h"
 #include "../Graphics/Texture.h"
@@ -81,6 +82,9 @@ public:
 
 
 protected:
+	//entt::registry m_prefabRegistry;
+	EntityManager m_prefabManager;
+
 	std::map<std::string, std::unique_ptr<Asset>> m_assetMap;
 	std::map<std::string, SpriteAsset*> m_spriteAssetMap;
 	std::map<std::string, std::unique_ptr<AnimatorControllerAsset>> m_animControllerMap;
