@@ -141,8 +141,6 @@
   <ItemGroup>
     <ClCompile Include="Code\EditorApplication.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiAssetPanel.cpp" />
-    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteAnimatorComponent.cpp" />
-    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteRendererComponent.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiEntityProperties.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiHierarchy.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiMainMenuBar.cpp" />
@@ -172,7 +170,11 @@
     <ClInclude Include="Code\EditorApplication.h" />
     <ClInclude Include="Code\EditorCamera.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiAssetPanel.h" />
-    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiComponents.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiBaseComponent.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiComponentRenderer.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteAnimatorComponent.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteRendererComponent.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiTransformComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiEntityProperties.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiHierarchy.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiAssetProperties.h" />

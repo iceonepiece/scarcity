@@ -1,11 +1,11 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "ImGuiEntityProperties.h"
 #include "Components/Components.h"
-#include "ImGuiComponents/ImGuiComponents.h"
 #include "../EditorLayer.h"
 #include "imgui/imgui_stdlib.h"
 #include <string>
 #include "Core/ResourceAPI.h"
+#include "ImGuiComponents/ImGuiComponentRenderer.h"
 
 std::string EditorComponentNames[] = {
     "Box Collider 2D",
@@ -71,33 +71,9 @@ void ImGuiEntityProperties::Render()
        
         ImGui::PushID((int)entity);
 
-        BaseComponent* base = scene->GetEntityManager().m_registry.try_get<BaseComponent>(entity);
-        if (base != nullptr)
-        {
-            ImGui::Text("Name: "); ImGui::SameLine();
-            ImGui::InputText("##name", &base->name);
-        }
-
-        TransformComponent* transform = scene->GetEntityManager().m_registry.try_get<TransformComponent>(entity);
-
-        if (transform != nullptr)
-        {
-            if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
-            {
-                RenderInputVec3("Position", transform->position);
-                RenderInputVec3("Rotation", transform->rotation);
-                RenderInputVec3("Scale", transform->scale);
-            }
-        }
-
-        RenderComponent<SpriteRendererComponent>("Sprite Renderer", registry, entity);
-        RenderComponent<CameraComponent>("Camera", registry, entity);
-        RenderComponent<Rigidbody2DComponent>("Rigidbody 2D", registry, entity);
-        RenderComponent<BoxCollider2DComponent>("Box Collider 2D", registry, entity);
-        RenderComponent<CircleCollider2DComponent>("Circle Collider 2D", registry, entity);
-        RenderComponent<NativeScriptComponent>("Native Script", registry, entity);
-        RenderComponent<MockComponent>("Mock", registry, entity);
-        RenderComponent<SpriteAnimatorComponent>("Sprite Animator", registry, entity);
+        std::apply([&](auto... componentTypes) {
+            (ImGuiComponentRenderer::RenderComponent<decltype(componentTypes)>(registry, entity), ...);
+        }, ComponentList{});
 
         if (ImGui::Button("Add Component"))
             ImGui::OpenPopup("add_component");

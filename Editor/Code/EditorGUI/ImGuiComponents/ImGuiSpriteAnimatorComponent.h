@@ -1,4 +1,5 @@
-#include "ImGuiComponents.h"
+#pragma once
+
 #include "../Windows/ImGuiSelectAnimatorControllerWindow.h"
 #include "../../EditorLayer.h"
 #include "Utils/FileDialog.h"
@@ -13,7 +14,7 @@ void RenderImGui(SpriteAnimatorComponent& spriteAnimator)
 	ImGui::Text(("Controller: " + spriteAnimator.controllerName).c_str());
 	ImGui::PopItemWidth();
 
-
+	/*
 	if (ImGui::BeginPopupModal("Select AnimatorController"))
 	{
 		ImGuiSelectAnimatorControllerWindow* window = dynamic_cast<ImGuiSelectAnimatorControllerWindow*>(EditorLayer::GetImGuiWindow(ImGuiWindowType::SelectAnimatorController));
@@ -36,4 +37,5 @@ void RenderImGui(SpriteAnimatorComponent& spriteAnimator)
 		ImGui::EndPopup();
 	}
 
+	*/
 }

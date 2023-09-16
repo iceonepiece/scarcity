@@ -75,13 +75,7 @@
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteRendererComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteAnimatorComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -179,10 +173,22 @@
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiComponents.h">
+    <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.h">
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiComponentRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiBaseComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteAnimatorComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteRendererComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiTransformComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

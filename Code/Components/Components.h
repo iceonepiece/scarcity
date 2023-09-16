@@ -19,11 +19,11 @@
 
 using ComponentList = std::tuple<
 	BaseComponent,
+	TransformComponent,
+	SpriteAnimatorComponent,
+	SpriteRendererComponent,
 	BoxCollider2DComponent,
 	CameraComponent,
 	NativeScriptComponent,
-	Rigidbody2DComponent,
-	SpriteAnimatorComponent,
-	SpriteRendererComponent,
-	TransformComponent
+	Rigidbody2DComponent
 >;

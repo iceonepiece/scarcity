@@ -1,8 +1,10 @@
-#include "ImGuiComponents.h"
+#pragma once
+
+#include "Components/SpriteRendererComponent.h"
 #include "../Windows/ImGuiSelectSpriteWindow.h"
 #include "../../EditorLayer.h"
 
-void RenderImGui(SpriteRendererComponent& spriteRenderer)
+static void RenderImGui(SpriteRendererComponent& spriteRenderer)
 {
 	const char* shapeTypeStrings[] = { "None", "Square", "Circle" };
 	const char* currentShapeTypeString = shapeTypeStrings[(int)spriteRenderer.shape];
@@ -32,6 +34,7 @@ void RenderImGui(SpriteRendererComponent& spriteRenderer)
 	ImGui::Text(("Sprite: " + spriteRenderer.spriteName).c_str());
 	ImGui::PopItemWidth();
 
+	/*
 	if (ImGui::BeginPopupModal("Select Sprite"))
 	{
 		ImGuiSelectSpriteWindow* window = dynamic_cast<ImGuiSelectSpriteWindow*>(EditorLayer::GetImGuiWindow(ImGuiWindowType::SelectSprite));
@@ -63,6 +66,7 @@ void RenderImGui(SpriteRendererComponent& spriteRenderer)
 		ImGui::EndPopup();
 	}
 
+	*/
 	/*
 	ImGui::InputText("Sprite Name", &spriteRenderer.spriteName); ImGui::SameLine();
 	if (ImGui::Button("Load Sprite"))
