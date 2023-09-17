@@ -11,6 +11,11 @@ using HandleFileCallback = std::function<void(std::fstream&)>;
 class FileSystem
 {
 public:
+	static bool CopyFile_(std::filesystem::path sourcePath, std::filesystem::path destPath);
+	static bool RemoveFile(std::filesystem::path path);
+	static bool FileExists(std::filesystem::path filePath);
+	static bool CreateFolder(std::filesystem::path directoryPath);
+
 	static void HandleMetaFile(const std::filesystem::path& path);
 	static AssetType GetAssetType(const std::filesystem::path& path);
 	static bool IsImageFile(const std::filesystem::path& path);

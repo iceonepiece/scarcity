@@ -615,9 +615,6 @@
     <ClCompile Include="Code\Scene\ScriptableEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Utils\FileUtils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Utils\FileDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -2217,9 +2214,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\ImGui\ImGuiManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Utils\FileUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="External\Include\ImGuiFileDialog\ImGuiFileDialogConfig.h">

@@ -4,7 +4,7 @@
 #include "Graphics/Renderer.h"
 #include "Core/Camera2D.h"
 #include "Components/Components.h"
-#include "Utils/FileUtils.h"
+#include "File/FileSystem.h"
 #include "NativeScript/NativeScriptEngine.h"
 #include "Animations/AnimationSerializer.h"
 #include "Systems/AnimationSystem.h"
@@ -209,7 +209,7 @@ void Scene::StopPhysics()
 
 bool Scene::HasSaved()
 {
-    return FileUtils::FileExists(m_path);
+    return FileSystem::FileExists(m_path);
 }
 
 void Scene::Update(float deltaTime)

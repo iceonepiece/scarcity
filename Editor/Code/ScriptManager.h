@@ -45,7 +45,7 @@ public:
             std::string cdCommand = "cd \"" + location.string() + "\"";
             std::system((cdCommand + " && " + PREMAKE_COMMAND).c_str());
 
-            FileUtils::RemoveFile(location / PREMAKE_FILE_NAME);
+            FileSystem::RemoveFile(location / PREMAKE_FILE_NAME);
         }
         else
         {

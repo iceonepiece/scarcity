@@ -7,7 +7,7 @@
 #include "Core/Camera2D.h"
 #include "ImGui/ImGuiManager.h"
 #include "Utils/FileDialog.h"
-#include "Utils/FileUtils.h"
+#include "File/FileSystem.h"
 #include "Project/ProjectSerializer.h"
 #include "Scene/SceneSerializer.h"
 #include "ScriptManager.h"
@@ -43,11 +43,11 @@ bool EditorApplication::NewProject(const std::string& name, std::filesystem::pat
 {
     std::filesystem::path directory = location / name;
 
-    if (FileUtils::CreateFolder(directory))
+    if (FileSystem::CreateFolder(directory))
     {
         Project project(name, directory);
-        FileUtils::CreateFolder(directory / "Scenes");
-        FileUtils::CreateFolder(directory / "Scripts");
+        FileSystem::CreateFolder(directory / "Scenes");
+        FileSystem::CreateFolder(directory / "Scripts");
 
         ScriptManager::CreateVisualStudioFiles(directory, name);
 

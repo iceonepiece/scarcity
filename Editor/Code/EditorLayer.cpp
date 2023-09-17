@@ -6,7 +6,7 @@
 #include "Gizmos/TranslateGizmo.h"
 #include "Gizmos/RotateGizmo.h"
 #include "Gizmos/ScaleGizmo.h"
-#include "Utils/FileUtils.h"
+#include "File/FileSystem.h"
 #include "Utils/FileDialog.h"
 #include <iostream>
 #include "Input/NewInput.h"
@@ -50,7 +50,7 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
 
     std::filesystem::path path = m_activeProject->GetDirectory() / (m_activeProject->GetName() + ".lua");
 
-    if (FileUtils::FileExists(path))
+    if (FileSystem::FileExists(path))
         luaEngine.ReadScript(path.string());
 
     ResourceManager* resourceManager = ResourceAPI::GetResourceManager();
