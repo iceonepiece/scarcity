@@ -41,16 +41,23 @@ void ImGuiAssetPanel::RenderPrefab(PrefabAsset& prefabAsset, ImGuiTreeNodeFlags 
 	flags |= ImGuiTreeNodeFlags_Leaf;
 
 	ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(140, 200, 255, 255));
-	bool opened = ImGui::TreeNodeEx(prefabAsset.GetPath().c_str(), flags, useIcon.c_str());
+	bool opened = ImGui::TreeNodeEx(prefabAsset.GetPath().string().c_str(), flags, useIcon.c_str());
 	ImGui::PopStyleColor();
 
 	callback();
+
+	if (ImGui::BeginDragDropSource())
+	{
+		ImGui::EndDragDropSource();
+	}
 
 	ImGui::SameLine();
 	ImGui::Text(prefabAsset.GetPath().filename().string().c_str());
 
 	if (opened)
 		ImGui::TreePop();
+
+
 }
 
 void ImGuiAssetPanel::RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn, const std::string& note)

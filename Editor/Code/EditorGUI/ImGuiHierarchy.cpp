@@ -22,12 +22,10 @@ void ImGuiHierarchy::Render()
 
     std::string sceneHeader = "Scene: " + m_editor.GetScene()->m_name;
 
-    if (ImGui::TreeNode(sceneHeader.c_str()))
+    if (ImGui::TreeNodeEx(sceneHeader.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
     {
         registry.each([&](entt::entity entity) {
             BaseComponent& base = registry.get<BaseComponent>(entity);
-
-            std::string name = base.name + "###ID" + std::to_string((int)entity);
 
             ImGuiTreeNodeFlags flags = ((m_editor.GetPickedEntity() == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
             flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
