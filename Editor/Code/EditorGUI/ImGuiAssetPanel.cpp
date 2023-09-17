@@ -34,6 +34,27 @@ void ImGuiAssetPanel::RenderUnsupportedFile(const std::filesystem::path& path)
 	}
 }
 
+void ImGuiAssetPanel::RenderNativeScript(NativeScriptAsset& nativeScriptAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
+{
+	std::string useIcon = (ICON_FA_FILE_CODE " ");
+
+	flags |= ImGuiTreeNodeFlags_Leaf;
+
+	bool opened = ImGui::TreeNodeEx(nativeScriptAsset.GetPath().string().c_str(), flags, (useIcon + nativeScriptAsset.GetName()).c_str());
+
+	if (opened)
+	{
+		ImGui::TreePop();
+	}
+
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	{
+		ImGui::SetDragDropPayload("NATIVE_SCRIPT_FILE", &nativeScriptAsset, sizeof(nativeScriptAsset));
+
+		ImGui::EndDragDropSource();
+	}
+}
+
 void ImGuiAssetPanel::RenderPrefab(PrefabAsset& prefabAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
 {
 	std::string useIcon = ICON_FA_CUBE;
@@ -56,8 +77,6 @@ void ImGuiAssetPanel::RenderPrefab(PrefabAsset& prefabAsset, ImGuiTreeNodeFlags 
 
 	if (opened)
 		ImGui::TreePop();
-
-
 }
 
 void ImGuiAssetPanel::RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn, const std::string& note)
@@ -186,6 +205,15 @@ void ImGuiAssetPanel::Render()
 					},
 					m_editor.GetSelectedObject().note
 				);
+			}
+			else if (asset->GetType() == AssetType::NativeScript)
+			{
+				NativeScriptAsset* nativeScriptAsset = static_cast<NativeScriptAsset*>(asset);
+				RenderNativeScript(*nativeScriptAsset, flags, [&]()
+				{
+					if (ImGui::IsItemClicked())
+						m_editor.SetSelectedPath(nativeScriptAsset->GetPath());
+				});
 			}
 			else if (asset->GetType() == AssetType::Prefab)
 			{

@@ -6,6 +6,7 @@
 #include "Graphics/Texture.h"
 #include "Asset/TextureAsset.h"
 #include "Asset/PrefabAsset.h"
+#include "Asset/NativeScriptAsset.h"
 
 class EditorLayer;
 
@@ -26,6 +27,7 @@ public:
 
 	static void RenderPrefab(PrefabAsset& prefabAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn = [](SpriteAsset&){}, const std::string& note = "");
+	static void RenderNativeScript(NativeScriptAsset& nativeScriptAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderFolder(const std::filesystem::path& path, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	void RenderUnsupportedFile(const std::filesystem::path& path);
 

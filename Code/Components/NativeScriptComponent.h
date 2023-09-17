@@ -38,8 +38,3 @@ static void DoDeserialize(NativeScriptComponent& nativeScript, json& nativeScrip
 {
 	nativeScript.className = nativeScriptJson["className"].get<std::string>();
 }
-
-static void RenderImGui(NativeScriptComponent& script)
-{
-	ImGui::InputText("Class Name", &script.className);
-}

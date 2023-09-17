@@ -6,6 +6,7 @@
 enum class AssetType
 {
 	None,
+	NativeScript,
 	Prefab,
 	Texture,
 	Sprite,

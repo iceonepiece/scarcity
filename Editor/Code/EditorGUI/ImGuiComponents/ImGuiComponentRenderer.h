@@ -6,6 +6,7 @@
 #include "ImGuiSpriteRendererComponent.h"
 #include "ImGuiSpriteAnimatorComponent.h"
 #include "ImGuiTransformComponent.h"
+#include "ImGuiNativeScriptComponent.h"
 
 class ImGuiComponentRenderer
 {

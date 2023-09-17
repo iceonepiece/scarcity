@@ -97,6 +97,18 @@ AssetType FileSystem::GetAssetType(const std::filesystem::path& path)
 	return AssetType::None;
 }
 
+bool FileSystem::IsNativeScriptFile(const std::filesystem::path& path)
+{
+	const std::string extension = path.extension().generic_string();
+	for (const auto& format : supportedNativeScriptFormats)
+	{
+		if (extension == format)
+			return true;
+	}
+
+	return false;
+}
+
 bool FileSystem::IsImageFile(const std::filesystem::path& path)
 {
 	const std::string extension = path.extension().generic_string();

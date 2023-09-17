@@ -172,6 +172,7 @@
     <ClInclude Include="Code\EditorGUI\ImGuiAssetPanel.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiBaseComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiComponentRenderer.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiNativeScriptComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteAnimatorComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteRendererComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiTransformComponent.h" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Code\EditorGUI\ImGuiNodeEditor.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiPrefabEditorWIndow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.h" />
+    <ClInclude Include="Code\EditorGUI\Windows\ImGuiViewportWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.h" />
     <ClInclude Include="Code\EditorMouse.h" />

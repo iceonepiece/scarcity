@@ -245,6 +245,12 @@ void EditorLayer::LoadAsset(const std::filesystem::path& path)
         std::unique_ptr<PrefabAsset> prefabAsset = std::make_unique<PrefabAsset>(path, entity);
         m_assetMap.insert({ path.string(), std::move(prefabAsset) });
     }
+    else if (FileSystem::IsNativeScriptFile(path))
+    {
+        std::cout << "LoadAsset (NativeScrpt): " << path << "\n";
+        std::unique_ptr<NativeScriptAsset> nativeScritpAsset = std::make_unique<NativeScriptAsset>(path);
+        m_assetMap.insert({ path.string(), std::move(nativeScritpAsset) });
+    }
 }
 
 

@@ -191,5 +191,11 @@
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiPrefabEditorWIndow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Code\EditorGUI\Windows\ImGuiViewportWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiNativeScriptComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
