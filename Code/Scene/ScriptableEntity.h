@@ -4,6 +4,8 @@
 #include <memory>
 #include "Core/Application.h"
 #include "Core/Entity.h"
+#include "Components/TransformComponent.h"
+#include "Scene.h"
 
 #define SERIALIZE_FIELD(type, name) type name;
 
@@ -29,6 +31,14 @@ public:
 		return m_entity.GetComponent<T>();
 	}
 
+	void CreateCollision(TransformComponent tranform)
+	{
+		if (m_scene != nullptr)
+			m_scene->InstantiateEntity(1, tranform.position, tranform.scale);
+	}
+
+	void Test() {}
+
 	virtual void Start() {}
 	virtual void Destroy() {}
 	virtual void Update(float dt) {}
@@ -36,6 +46,7 @@ public:
 protected:
 	Application* m_app;
 	Entity m_entity;
+	Scene* m_scene = nullptr;
 
 	friend class Scene;
 };

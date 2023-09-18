@@ -45,6 +45,11 @@ entt::entity Scene::DuplicateEntity(entt::entity entity)
     return newEntity;
 }
 
+void Scene::InstantiateEntity(int type, const glm::vec3& position, const glm::vec3& scale)
+{
+    m_instantiateCommands.push_back({ type, position, scale });
+}
+
 std::unique_ptr<Scene> Scene::CreateDefaultScene(std::filesystem::path directory)
 {
     std::unique_ptr<Scene> defaultScene = std::make_unique<Scene>();
@@ -141,9 +146,60 @@ void Scene::StartNativeScripts(NativeScriptEngine& scriptEngine)
         {
             std::cout << "Start Native Class: " << script.className << std::endl;
             script.instance->m_app = m_app;
+            script.instance->m_scene = this;
             script.instance->m_entity = Entity { &m_manager, entity };
             script.instance->Start();
         }
+    }
+}
+
+void Scene::InitializePhysicsEntity(entt::entity entity, TransformComponent& transform, Rigidbody2DComponent& rb2d)
+{
+    b2BodyDef bodyDef;
+    bodyDef.type = Rigidbody2DTypeToBox2DBody(rb2d.type);
+    bodyDef.position.Set(transform.position.x, transform.position.y);
+    bodyDef.angle = transform.rotation.z;
+
+    b2Body* body = m_physics->CreateBody(&bodyDef);
+    body->SetFixedRotation(rb2d.fixedRotation);
+    rb2d.body = body;
+
+    if (m_manager.m_registry.all_of<BoxCollider2DComponent>(entity))
+    {
+        auto& bc2d = m_manager.m_registry.get<BoxCollider2DComponent>(entity);
+
+        glm::vec2 absoluteScale { std::abs(transform.scale.x), std::abs(transform.scale.y) };
+
+        b2PolygonShape boxShape;
+        boxShape.SetAsBox(
+            bc2d.size.x * absoluteScale.x / 2,
+            bc2d.size.y * absoluteScale.y / 2,
+            b2Vec2(bc2d.offset.x * absoluteScale.x, bc2d.offset.y * absoluteScale.y),
+            0.0f
+        );
+
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &boxShape;
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.0f;
+
+        body->CreateFixture(&fixtureDef);
+    }
+
+    if (m_manager.m_registry.all_of<CircleCollider2DComponent>(entity))
+    {
+        auto& cc2d = m_manager.m_registry.get<CircleCollider2DComponent>(entity);
+
+        b2CircleShape circleShape;
+        circleShape.m_p.Set(cc2d.offset.x, cc2d.offset.y);
+        circleShape.m_radius = transform.scale.x * cc2d.radius;
+
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &circleShape;
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.0f;
+
+        body->CreateFixture(&fixtureDef);
     }
 }
 
@@ -155,50 +211,7 @@ void Scene::StartPhysics()
 	auto view = m_manager.m_registry.view<TransformComponent, Rigidbody2DComponent>();
 	for (auto [entity, transform, rb2d] : view.each())
 	{
-		b2BodyDef bodyDef;
-		bodyDef.type = Rigidbody2DTypeToBox2DBody(rb2d.type);
-		bodyDef.position.Set(transform.position.x, transform.position.y);
-		bodyDef.angle = transform.rotation.z;
-
-		b2Body* body = m_physics->CreateBody(&bodyDef);
-		body->SetFixedRotation(rb2d.fixedRotation);
-		rb2d.body = body;
-
-		if (m_manager.m_registry.all_of<BoxCollider2DComponent>(entity))
-		{
-			auto& bc2d = m_manager.m_registry.get<BoxCollider2DComponent>(entity);
-
-			b2PolygonShape boxShape;
-			boxShape.SetAsBox(
-                bc2d.size.x * transform.scale.x / 2,
-                bc2d.size.y * transform.scale.y / 2,
-                b2Vec2(bc2d.offset.x * transform.scale.x, bc2d.offset.y * transform.scale.y),
-                0.0f
-            );
-
-			b2FixtureDef fixtureDef;
-			fixtureDef.shape = &boxShape;
-            fixtureDef.density = 1.0f;
-            fixtureDef.friction = 0.0f;
-
-			body->CreateFixture(&fixtureDef);
-		}
-
-        if (m_manager.m_registry.all_of<CircleCollider2DComponent>(entity))
-        {
-            auto& cc2d = m_manager.m_registry.get<CircleCollider2DComponent>(entity);
-
-            b2CircleShape circleShape;
-            circleShape.m_p.Set(cc2d.offset.x, cc2d.offset.y);
-            circleShape.m_radius = transform.scale.x * cc2d.radius;
-
-            b2FixtureDef fixtureDef;
-            fixtureDef.shape = &circleShape;
-            fixtureDef.density = 1.0f;
-            fixtureDef.friction = 0.0f;
-
-            body->CreateFixture(&fixtureDef);
-        }
+        InitializePhysicsEntity(entity, transform, rb2d);
 	}
 }
 
@@ -246,6 +259,20 @@ void Scene::Update(float deltaTime)
     }
 
     m_camera->Update();
+
+    for (auto& command : m_instantiateCommands)
+    {
+        if (command.type == 1)
+        {
+            Entity entity = m_manager.CreateEntity();
+            TransformComponent& transform = entity.AddComponent<TransformComponent>(command.position, glm::vec3 { 0.0 }, command.scale);
+            Rigidbody2DComponent& rb2d = entity.AddComponent<Rigidbody2DComponent>();
+            entity.AddComponent<BoxCollider2DComponent>();
+
+            InitializePhysicsEntity(entity.GetEntity(), transform, rb2d);
+        }
+    }
+    m_instantiateCommands.clear();
 }
 
 void Scene::Enter()
@@ -332,6 +359,18 @@ void Scene::Render()
 
     for (auto& system : m_systems)
         system->Render();
+
+    auto box2dColliders = m_manager.m_registry.view<TransformComponent, BoxCollider2DComponent>();
+
+    for (auto [entity, transform, box] : box2dColliders.each())
+    {
+        glm::vec2 drawPosition {
+            transform.position.x + transform.scale.x * box.offset.x,
+                transform.position.y + transform.scale.y * box.offset.y
+        };
+        glm::vec2 drawSize { box.size.x* transform.scale.x, box.size.y* transform.scale.y };
+        renderer.DrawRect(drawPosition, drawSize, transform.rotation.z, { 0.0f, 1.0f, 0.0f, 1.0f }, 0.02f);
+    }
 }
 
 void Scene::RenderEditor()

@@ -12,11 +12,20 @@
 #include "Events/Event.h"
 #include "Core/System.h"
 #include "Core/GameState.h"
+#include "Components/TransformComponent.h"
+#include "Components/Rigidbody2DComponent.h"
 
 #include "Events/Event.h"
 
 using InitializeFunction = std::function<void(Scene&)>;
 class NativeScriptEngine;
+
+struct InstantiateCommand
+{
+	int type;
+	glm::vec3 position;
+	glm::vec3 scale;
+};
 
 class Scene
 {
@@ -36,10 +45,12 @@ public:
 	bool HasSaved();
 
 	entt::entity DuplicateEntity(entt::entity entity);
+	void InstantiateEntity(int type, const glm::vec3& position, const glm::vec3& scale);
 
 	virtual void Start();
 	virtual void Stop();
 
+	void InitializePhysicsEntity(entt::entity entity, TransformComponent& transform, Rigidbody2DComponent& rb2d);
 	void StartPhysics();
 	void StopPhysics();
 	void StartNativeScripts(NativeScriptEngine& scriptEngine);
@@ -94,6 +105,8 @@ public:
 	void ChangeGameState(std::string gameStateName);
 
 	EntityManager& GetEntityManager();
+
+	std::vector<InstantiateCommand> m_instantiateCommands;
 
 	std::string m_name;
 	std::filesystem::path m_location;
