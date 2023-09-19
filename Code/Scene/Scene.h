@@ -25,6 +25,7 @@ struct InstantiateCommand
 	int type;
 	glm::vec3 position;
 	glm::vec3 scale;
+	float lifeTime;
 };
 
 class Scene
@@ -45,7 +46,8 @@ public:
 	bool HasSaved();
 
 	entt::entity DuplicateEntity(entt::entity entity);
-	void InstantiateEntity(int type, const glm::vec3& position, const glm::vec3& scale);
+	void DestroyEntity(entt::entity entity);
+	void InstantiateEntity(int type, const glm::vec3& position, const glm::vec3& scale, float lifeTime);
 
 	virtual void Start();
 	virtual void Stop();

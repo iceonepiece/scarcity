@@ -31,10 +31,10 @@ public:
 		return m_entity.GetComponent<T>();
 	}
 
-	void CreateCollision(TransformComponent tranform)
+	void CreateCollision(TransformComponent tranform, float lifeTime = -0.1f)
 	{
 		if (m_scene != nullptr)
-			m_scene->InstantiateEntity(1, tranform.position, tranform.scale);
+			m_scene->InstantiateEntity(1, tranform.position, tranform.scale, lifeTime);
 	}
 
 	void Test() {}

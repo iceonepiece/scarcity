@@ -15,6 +15,7 @@
 #include "ScriptableComponent.h"
 #include "SpriteAnimatorComponent.h"
 #include "SpriteRendererComponent.h"
+#include "TimerComponent.h"
 #include "TransformComponent.h"
 
 using ComponentList = std::tuple<

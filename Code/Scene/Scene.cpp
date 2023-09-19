@@ -45,9 +45,17 @@ entt::entity Scene::DuplicateEntity(entt::entity entity)
     return newEntity;
 }
 
-void Scene::InstantiateEntity(int type, const glm::vec3& position, const glm::vec3& scale)
+void Scene::InstantiateEntity(int type, const glm::vec3& position, const glm::vec3& scale, float lifeTime)
 {
-    m_instantiateCommands.push_back({ type, position, scale });
+    m_instantiateCommands.push_back({ type, position, scale, lifeTime });
+}
+
+void Scene::DestroyEntity(entt::entity entity)
+{
+    if (Rigidbody2DComponent* rb2d = m_manager.m_registry.try_get<Rigidbody2DComponent>(entity))
+        m_physics->DestroyBody((b2Body*)rb2d->body);
+
+    m_manager.m_registry.destroy(entity);
 }
 
 std::unique_ptr<Scene> Scene::CreateDefaultScene(std::filesystem::path directory)
@@ -260,6 +268,16 @@ void Scene::Update(float deltaTime)
 
     m_camera->Update();
 
+    auto timerView = m_manager.m_registry.view<TimerComponent>();
+
+    for (auto [entity, timer] : timerView.each())
+    {
+        timer.timer += deltaTime;
+
+        if (timer.timer >= timer.lifeTime)
+            DestroyEntity(entity);
+    }
+
     for (auto& command : m_instantiateCommands)
     {
         if (command.type == 1)
@@ -268,6 +286,9 @@ void Scene::Update(float deltaTime)
             TransformComponent& transform = entity.AddComponent<TransformComponent>(command.position, glm::vec3 { 0.0 }, command.scale);
             Rigidbody2DComponent& rb2d = entity.AddComponent<Rigidbody2DComponent>();
             entity.AddComponent<BoxCollider2DComponent>();
+
+            if (command.lifeTime > 0)
+                entity.AddComponent<TimerComponent>();
 
             InitializePhysicsEntity(entity.GetEntity(), transform, rb2d);
         }
