@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include "PCH.h"
 #include "Window.h"
 //#include "Graphics/Renderer.h"
@@ -13,6 +14,8 @@ class LuaEngine;
 class ImGuiManager;
 class Layer;
 class Renderer;
+
+constexpr int TAG_SIZE = 8;
 
 struct ApplicationConfigs
 {
@@ -54,6 +57,8 @@ public:
 	inline Window& GetWindow() { return *m_window; }
 	inline NewInput& GetInput() { return *m_input; }
 
+	std::array<std::string, TAG_SIZE>& GetTags() { return m_tags; };
+
 protected:
 	virtual void ProcessInput() {}
 	virtual void Update() {}
@@ -70,4 +75,5 @@ protected:
 	std::unique_ptr<NewInput> m_input;
 
 	std::vector<std::unique_ptr<Layer>> m_layers;
+	std::array<std::string, TAG_SIZE> m_tags { "Player", "Enemy", "Platform", "", "", "", "", ""  };
 };
