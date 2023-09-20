@@ -10,7 +10,7 @@ struct BaseComponent
 	static std::string Name() { return "Base"; }
 
 	std::string name = "";
-	int tag;
+	int tag = 0;
 };
 
 static void DoSerialize(const BaseComponent& base, json& entityJson)

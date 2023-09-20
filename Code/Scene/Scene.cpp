@@ -8,6 +8,7 @@
 #include "NativeScript/NativeScriptEngine.h"
 #include "Animations/AnimationSerializer.h"
 #include "Systems/AnimationSystem.h"
+#include "Physics/NullFixtureData.h"
 
 Scene::Scene(const std::string& name)
     : m_name(name)
@@ -161,6 +162,23 @@ void Scene::StartNativeScripts(NativeScriptEngine& scriptEngine)
     }
 }
 
+void Scene::RenderCollisionComponents()
+{
+    Renderer& renderer = Application::Get().GetRenderer();
+
+    auto box2dColliders = m_manager.m_registry.view<TransformComponent, BoxCollider2DComponent>();
+
+    for (auto [entity, transform, box] : box2dColliders.each())
+    {
+        glm::vec2 drawPosition {
+            transform.position.x + transform.scale.x * box.offset.x,
+                transform.position.y + transform.scale.y * box.offset.y
+        };
+        glm::vec2 drawSize { box.size.x * transform.scale.x, box.size.y * transform.scale.y };
+        renderer.DrawRect(drawPosition, drawSize, transform.rotation.z, { 0.0f, 1.0f, 0.0f, 1.0f }, 0.02f);
+    }
+}
+
 void Scene::InitializePhysicsEntity(entt::entity entity, TransformComponent& transform, Rigidbody2DComponent& rb2d)
 {
     b2BodyDef bodyDef;
@@ -191,6 +209,22 @@ void Scene::InitializePhysicsEntity(entt::entity entity, TransformComponent& tra
         fixtureDef.density = 1.0f;
         fixtureDef.friction = 0.0f;
 
+        FixtureData* fixtureData = nullptr;
+
+        if (GroundDetectionComponent* detection = m_manager.m_registry.try_get<GroundDetectionComponent>(entity))
+        {
+            fixtureData = new GroundDetectionFixtureData(Entity{ &m_manager, entity }, *detection);
+        }
+        else
+        {
+            fixtureData = new NullFixtureData(Entity{ &m_manager, entity });
+        }
+
+        fixtureData->tag = m_manager.m_registry.get<BaseComponent>(entity).tag;
+
+        fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
+        rb2d.fixtureData = fixtureData;
+
         body->CreateFixture(&fixtureDef);
     }
 
@@ -215,6 +249,8 @@ void Scene::InitializePhysicsEntity(entt::entity entity, TransformComponent& tra
 void Scene::StartPhysics()
 {
     m_physics = std::make_unique<b2World>(b2Vec2 { 0.0f, -9.8f });
+    m_contactListener = std::make_unique<ContactListener>();
+    m_physics->SetContactListener(m_contactListener.get());
 
 	auto view = m_manager.m_registry.view<TransformComponent, Rigidbody2DComponent>();
 	for (auto [entity, transform, rb2d] : view.each())
@@ -225,6 +261,12 @@ void Scene::StartPhysics()
 
 void Scene::StopPhysics()
 {
+    auto view = m_manager.m_registry.view<Rigidbody2DComponent>();
+    for (auto [entity, rb2d] : view.each())
+    {
+        delete rb2d.fixtureData;
+    }
+
     m_physics.reset();
 }
 
@@ -381,17 +423,7 @@ void Scene::Render()
     for (auto& system : m_systems)
         system->Render();
 
-    auto box2dColliders = m_manager.m_registry.view<TransformComponent, BoxCollider2DComponent>();
-
-    for (auto [entity, transform, box] : box2dColliders.each())
-    {
-        glm::vec2 drawPosition {
-            transform.position.x + transform.scale.x * box.offset.x,
-                transform.position.y + transform.scale.y * box.offset.y
-        };
-        glm::vec2 drawSize { box.size.x* transform.scale.x, box.size.y* transform.scale.y };
-        renderer.DrawRect(drawPosition, drawSize, transform.rotation.z, { 0.0f, 1.0f, 0.0f, 1.0f }, 0.02f);
-    }
+    RenderCollisionComponents();
 }
 
 void Scene::RenderEditor()
@@ -429,17 +461,7 @@ void Scene::RenderEditor()
 
     glDisable(GL_BLEND);
 
-    auto box2dColliders = m_manager.m_registry.view<TransformComponent, BoxCollider2DComponent>();
-
-    for (auto [entity, transform, box] : box2dColliders.each())
-    {
-        glm::vec2 drawPosition {
-            transform.position.x + transform.scale.x * box.offset.x,
-            transform.position.y + transform.scale.y * box.offset.y
-        };
-        glm::vec2 drawSize { box.size.x * transform.scale.x, box.size.y * transform.scale.y };
-        renderer.DrawRect(drawPosition, drawSize, transform.rotation.z, {0.0f, 1.0f, 0.0f, 1.0f}, 0.02f);
-    }
+    RenderCollisionComponents();
 }
 
 void Scene::RenderUI()

@@ -56,6 +56,7 @@ public:
 	void StartPhysics();
 	void StopPhysics();
 	void StartNativeScripts(NativeScriptEngine& scriptEngine);
+	void RenderCollisionComponents();
 
 	virtual void Enter();
 	virtual void Exit();
@@ -124,6 +125,7 @@ public:
 	
 	std::unique_ptr<Camera> m_camera;
 	std::unique_ptr<b2World> m_physics = nullptr;
+	std::unique_ptr<b2ContactListener> m_contactListener;
 
 	EntityManager m_manager;
 	UI m_ui;

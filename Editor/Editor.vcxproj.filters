@@ -197,5 +197,11 @@
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiNativeScriptComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiGroundDetectionComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiBoxCollider2DComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 #pragma once
 #include <nlohmann/json.hpp>
 #include <imgui/imgui.h>
+#include "Physics/FixtureData.h"
 
 using json = nlohmann::json;
 
@@ -30,6 +31,7 @@ struct Rigidbody2DComponent
 	BodyType type = BodyType::Static;
 	bool fixedRotation = false;
 	void* body = nullptr;
+	FixtureData* fixtureData = nullptr;
 
 	float GetVelocityX()
 	{
