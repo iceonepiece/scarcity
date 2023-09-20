@@ -1,5 +1,6 @@
 #include "ImGuiMainMenuBar.h"
 #include "../EditorLayer.h"
+#include "Core/Timer.h"
 
 ImGuiMainMenuBar::ImGuiMainMenuBar(EditorLayer& editor)
 	: m_editor(editor)
@@ -53,6 +54,8 @@ void ImGuiMainMenuBar::Render()
     {
         m_editor.ReloadNativeScripts();
     }
+
+    ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
 
     ImGui::EndMainMenuBar();
     

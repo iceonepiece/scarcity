@@ -14,6 +14,16 @@ public:
 	ImGuiEntityProperties(EditorLayer& editor);
 	void Render();
 
+	template <typename T>
+	void RenderAddComponent(entt::registry& registry, entt::entity entity)
+	{
+		if (ImGui::Selectable(T::Name().c_str()))
+		{
+			if (registry.try_get<T>(entity) == nullptr)
+				registry.emplace<T>(entity);
+		}
+	}
+
 private:
 	EditorLayer& m_editor;
 	ImGuiAssetProperties m_imguiAssetProperties;

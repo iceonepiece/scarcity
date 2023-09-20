@@ -84,48 +84,11 @@ void ImGuiEntityProperties::Render()
         {
             ImGui::Text("Component");
             ImGui::Separator();
-            for (int i = 0; i < IM_ARRAYSIZE(EditorComponentNames); i++)
-            {
-                if (ImGui::Selectable(EditorComponentNames[i].c_str()))
-                {
-                    if (EditorComponentNames[i] == "Rigidbody 2D")
-                    {
-                        if (registry.try_get<Rigidbody2DComponent>(entity) == nullptr)
-                            registry.emplace<Rigidbody2DComponent>(entity);
-                    }
-                    else if (EditorComponentNames[i] == "Box Collider 2D")
-                    {
-                        if (registry.try_get<BoxCollider2DComponent>(entity) == nullptr)
-                            registry.emplace<BoxCollider2DComponent>(entity);
-                    }
-                    else if (EditorComponentNames[i] == "Circle Collider 2D")
-                    {
-                        if (registry.try_get<CircleCollider2DComponent>(entity) == nullptr)
-                            registry.emplace<CircleCollider2DComponent>(entity);
-                    }
-                    else if (EditorComponentNames[i] == "Sprite Animator")
-                    {
-                        if (registry.try_get<SpriteAnimatorComponent>(entity) == nullptr)
-                            registry.emplace<SpriteAnimatorComponent>(entity);
-                    }
-                    else if (EditorComponentNames[i] == "Sprite Renderer")
-                    {
-                        if (registry.try_get<SpriteRendererComponent>(entity) == nullptr)
-                            registry.emplace<SpriteRendererComponent>(entity);
-                    }
-                    else if (EditorComponentNames[i] == "Native Script")
-                    {
-                        if (registry.try_get<NativeScriptComponent>(entity) == nullptr)
-                            registry.emplace<NativeScriptComponent>(entity);
-                    }
-                    else if (EditorComponentNames[i] == "Mock")
-                    {
-                        if (registry.try_get<MockComponent>(entity) == nullptr)
-                            registry.emplace<MockComponent>(entity);
-                    }
 
-                }
-            }
+            std::apply([&](auto... componentTypes) {
+                (RenderAddComponent<decltype(componentTypes)>(registry, entity), ...);
+            }, ComponentList{});
+
             ImGui::EndPopup();
         }
 
