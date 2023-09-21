@@ -18,7 +18,7 @@ public:
 	{
 		ComponentSerializer serializer(m_entity.GetRegistry());
 
-		FileSystem::ReadOrWriteFile(path, [&](std::fstream& fs)
+		FileSystem::ReadFile(path, [&](std::fstream& fs)
 		{
 			json entityJson = json::parse(fs);
 

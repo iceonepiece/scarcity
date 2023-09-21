@@ -19,7 +19,7 @@ void SceneSerializer::SerializeEntity(Scene& scene, entt::entity entity, std::fi
 	if (base == nullptr)
 		return;
 
-	FileSystem::ReadOrWriteFile(filePath / (base->name + ".prefab"), [&](std::fstream& fs)
+	FileSystem::WriteFile(filePath / (base->name + ".prefab"), [&](std::fstream& fs)
 	{
 		ComponentSerializer serializer(registry);
 

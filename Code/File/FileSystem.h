@@ -23,7 +23,8 @@ public:
 	static bool IsAnimatorFile(const std::filesystem::path& path);
 	static bool IsPrefabFile(const std::filesystem::path& path);
 
-	static bool ReadOrWriteFile(const std::filesystem::path& path, HandleFileCallback callback);
+	static bool ReadFile(const std::filesystem::path& path, HandleFileCallback callback);
+	static bool WriteFile(const std::filesystem::path& path, HandleFileCallback callback);
 
 	static void GenerateImageMetaFile(const std::filesystem::path& path);
 };

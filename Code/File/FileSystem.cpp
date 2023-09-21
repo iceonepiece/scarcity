@@ -61,9 +61,30 @@ bool FileSystem::CreateFolder(std::filesystem::path directoryPath)
 	return false;
 }
 
-bool FileSystem::ReadOrWriteFile(const std::filesystem::path& path, HandleFileCallback callback)
+bool FileSystem::ReadFile(const std::filesystem::path& path, HandleFileCallback callback)
 {
-	std::fstream file(path);
+	std::fstream file;
+	file.open(path, std::ios_base::in);
+
+	if (file.is_open())
+	{
+		callback(file);
+	}
+	else
+	{
+		std::cerr << "Error opening the file!" << std::endl;
+		return false;
+	}
+
+	file.close();
+
+	return true;
+}
+
+bool FileSystem::WriteFile(const std::filesystem::path& path, HandleFileCallback callback)
+{
+	std::fstream file;
+	file.open(path, std::ios_base::out);
 
 	if (file.is_open())
 	{
