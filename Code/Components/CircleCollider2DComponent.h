@@ -5,12 +5,24 @@
 
 struct CircleCollider2DComponent
 {
+	static std::string Name() { return "CircleCollider2D"; }
+
 	glm::vec2 offset = { 0.0f, 0.0f };
 	float radius = 0.5;
 };
 
-static void RenderImGui(CircleCollider2DComponent& circle)
+static void DoSerialize(const CircleCollider2DComponent& circle, json& entityJson)
 {
-    ImGui::DragFloat2("Offset", glm::value_ptr(circle.offset));
-    ImGui::InputFloat("Radius", &circle.radius);
+	json offset = json::object();
+	offset["x"] = circle.offset.x;
+	offset["y"] = circle.offset.y;
+	entityJson[circle.Name()]["offset"] = offset;
+	entityJson[circle.Name()]["radius"] = circle.radius;
+}
+
+static void DoDeserialize(CircleCollider2DComponent& circle, json& circleJson)
+{
+	auto& offsetJson = circleJson["offset"];
+	circle.offset = { offsetJson["x"].get<float>(), offsetJson["y"].get<float>() };
+	circle.radius = circleJson["radius"].get<float>();
 }
