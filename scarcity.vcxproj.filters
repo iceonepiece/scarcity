@@ -540,9 +540,6 @@
     <ClCompile Include="Code\Core\ResourceAPI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Components\Components.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="External\Include\angelscript\scriptstdstring\scriptstdstring.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -2322,6 +2319,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Physics\GroundDetectionFixtureData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Physics\EntityFixtureData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

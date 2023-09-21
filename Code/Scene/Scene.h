@@ -20,12 +20,9 @@
 using InitializeFunction = std::function<void(Scene&)>;
 class NativeScriptEngine;
 
-struct InstantiateCommand
+struct SpawnCommand
 {
-	int type;
-	glm::vec3 position;
-	glm::vec3 scale;
-	float lifeTime;
+	Collision2D* collision = nullptr;
 };
 
 class Scene
@@ -47,12 +44,13 @@ public:
 
 	entt::entity DuplicateEntity(entt::entity entity);
 	void DestroyEntity(entt::entity entity);
-	void InstantiateEntity(int type, const glm::vec3& position, const glm::vec3& scale, float lifeTime);
+	void SpawnCollision2D(Collision2D* collision);
 
 	virtual void Start();
 	virtual void Stop();
 
 	void InitializePhysicsEntity(entt::entity entity, TransformComponent& transform, Rigidbody2DComponent& rb2d);
+	void DestroyPhysicsEntity(Rigidbody2DComponent& rb2d);
 	void StartPhysics();
 	void StopPhysics();
 	void StartNativeScripts(NativeScriptEngine& scriptEngine);
@@ -109,7 +107,7 @@ public:
 
 	EntityManager& GetEntityManager();
 
-	std::vector<InstantiateCommand> m_instantiateCommands;
+	std::vector<SpawnCommand> m_spawnCommands;
 
 	std::string m_name;
 	std::filesystem::path m_location;

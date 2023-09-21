@@ -9,6 +9,7 @@
 #include "Animations/AnimationSerializer.h"
 #include "Systems/AnimationSystem.h"
 #include "Physics/NullFixtureData.h"
+#include "Physics/EntityFixtureData.h"
 
 Scene::Scene(const std::string& name)
     : m_name(name)
@@ -46,15 +47,17 @@ entt::entity Scene::DuplicateEntity(entt::entity entity)
     return newEntity;
 }
 
-void Scene::InstantiateEntity(int type, const glm::vec3& position, const glm::vec3& scale, float lifeTime)
+void Scene::SpawnCollision2D(Collision2D* collision)
 {
-    m_instantiateCommands.push_back({ type, position, scale, lifeTime });
+    m_spawnCommands.push_back({ collision });
 }
 
 void Scene::DestroyEntity(entt::entity entity)
 {
-    if (Rigidbody2DComponent* rb2d = m_manager.m_registry.try_get<Rigidbody2DComponent>(entity))
-        m_physics->DestroyBody((b2Body*)rb2d->body);
+    if (m_manager.m_registry.all_of<Rigidbody2DComponent>(entity))
+    {
+        DestroyPhysicsEntity(m_manager.m_registry.get<Rigidbody2DComponent>(entity));
+    }
 
     m_manager.m_registry.destroy(entity);
 }
@@ -172,10 +175,28 @@ void Scene::RenderCollisionComponents()
     {
         glm::vec2 drawPosition {
             transform.position.x + transform.scale.x * box.offset.x,
-                transform.position.y + transform.scale.y * box.offset.y
+            transform.position.y + transform.scale.y * box.offset.y
         };
         glm::vec2 drawSize { box.size.x * transform.scale.x, box.size.y * transform.scale.y };
         renderer.DrawRect(drawPosition, drawSize, transform.rotation.z, { 0.0f, 1.0f, 0.0f, 1.0f }, 0.02f);
+    }
+
+    auto circle2dColliders = m_manager.m_registry.view<TransformComponent, CircleCollider2DComponent>();
+
+    for (auto [entity, transform, circle] : circle2dColliders.each())
+    {
+        glm::vec2 drawPosition {
+            transform.position.x + transform.scale.x * circle.offset.x,
+            transform.position.y + transform.scale.y * circle.offset.y
+        };
+
+        Circle2D renderCircle;
+        renderCircle.position = drawPosition;
+        renderCircle.scale = transform.scale;
+        renderCircle.radius = circle.radius;
+        renderCircle.color = { 0, 1, 0, 1 };
+
+        renderer.DrawCircle2D(renderCircle, 0.01f);
     }
 }
 
@@ -209,19 +230,8 @@ void Scene::InitializePhysicsEntity(entt::entity entity, TransformComponent& tra
         fixtureDef.density = 1.0f;
         fixtureDef.friction = 0.0f;
 
-        FixtureData* fixtureData = nullptr;
-
-        if (GroundDetectionComponent* detection = m_manager.m_registry.try_get<GroundDetectionComponent>(entity))
-        {
-            fixtureData = new GroundDetectionFixtureData(Entity{ &m_manager, entity }, *detection);
-        }
-        else
-        {
-            fixtureData = new NullFixtureData(Entity{ &m_manager, entity });
-        }
-
+        FixtureData* fixtureData = new EntityFixtureData(Entity{ &m_manager, entity });
         fixtureData->tag = m_manager.m_registry.get<BaseComponent>(entity).tag;
-
         fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
         rb2d.fixtureData = fixtureData;
 
@@ -241,10 +251,41 @@ void Scene::InitializePhysicsEntity(entt::entity entity, TransformComponent& tra
         fixtureDef.density = 1.0f;
         fixtureDef.friction = 0.0f;
 
+        FixtureData* fixtureData = new EntityFixtureData(Entity{ &m_manager, entity });
+        fixtureData->tag = m_manager.m_registry.get<BaseComponent>(entity).tag;
+        fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
+        rb2d.fixtureData = fixtureData;
+
         body->CreateFixture(&fixtureDef);
     }
 }
 
+void Scene::DestroyPhysicsEntity(Rigidbody2DComponent& rb2d)
+{
+    std::vector<FixtureData*> pendingList;
+
+    if (b2Body* body = (b2Body*)rb2d.body)
+    {
+        auto fixture = body->GetFixtureList();
+
+        while (fixture)
+        {
+            if (FixtureData* fixtureData = (FixtureData*)fixture->GetUserData().pointer)
+            {
+                pendingList.push_back((FixtureData*)fixture->GetUserData().pointer);
+            }
+
+            fixture = fixture->GetNext();
+        }
+
+        m_physics->DestroyBody(body);
+    }
+
+    for (auto fixtureData : pendingList)
+    {
+        delete fixtureData;
+    }
+}
 
 void Scene::StartPhysics()
 {
@@ -264,7 +305,7 @@ void Scene::StopPhysics()
     auto view = m_manager.m_registry.view<Rigidbody2DComponent>();
     for (auto [entity, rb2d] : view.each())
     {
-        delete rb2d.fixtureData;
+        DestroyPhysicsEntity(rb2d);
     }
 
     m_physics.reset();
@@ -310,6 +351,37 @@ void Scene::Update(float deltaTime)
 
     m_camera->Update();
 
+    for (auto& command : m_spawnCommands)
+    {
+        Entity entity = m_manager.CreateEntity();
+        auto& base = entity.AddComponent<BaseComponent>();
+        base.name = command.collision->name;
+        base.tag = command.collision->tag;
+
+        auto& transform = entity.AddComponent<TransformComponent>(glm::vec3 { command.collision->x, command.collision->y, 0.0f }, glm::vec3 {0}, glm::vec3 {1, 1, 0});
+        auto& rb2d = entity.AddComponent<Rigidbody2DComponent>();
+
+        if (BoxCollision2D* collision = (BoxCollision2D*)(command.collision))
+        {
+            entity.AddComponent<BoxCollider2DComponent>();
+        }
+        else if (CircleCollision2D* collision = (CircleCollision2D*)(command.collision))
+        {
+            auto& circle = entity.AddComponent<CircleCollider2DComponent>();
+            circle.radius = collision->radius;
+        }
+
+        if (command.collision->lifetime > 0.0f)
+        {
+            entity.AddComponent<TimerComponent>(0.0f, command.collision->lifetime);
+        }
+
+        InitializePhysicsEntity(entity.GetEntity(), transform, rb2d);
+
+        delete command.collision;
+    }
+    m_spawnCommands.clear();
+
     auto timerView = m_manager.m_registry.view<TimerComponent>();
 
     for (auto [entity, timer] : timerView.each())
@@ -319,23 +391,6 @@ void Scene::Update(float deltaTime)
         if (timer.timer >= timer.lifeTime)
             DestroyEntity(entity);
     }
-
-    for (auto& command : m_instantiateCommands)
-    {
-        if (command.type == 1)
-        {
-            Entity entity = m_manager.CreateEntity();
-            TransformComponent& transform = entity.AddComponent<TransformComponent>(command.position, glm::vec3 { 0.0 }, command.scale);
-            Rigidbody2DComponent& rb2d = entity.AddComponent<Rigidbody2DComponent>();
-            entity.AddComponent<BoxCollider2DComponent>();
-
-            if (command.lifeTime > 0)
-                entity.AddComponent<TimerComponent>();
-
-            InitializePhysicsEntity(entity.GetEntity(), transform, rb2d);
-        }
-    }
-    m_instantiateCommands.clear();
 }
 
 void Scene::Enter()

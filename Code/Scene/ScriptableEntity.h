@@ -6,6 +6,7 @@
 #include "Core/Entity.h"
 #include "Components/TransformComponent.h"
 #include "Scene.h"
+#include "Physics/Physics.h"
 
 #define SERIALIZE_FIELD(type, name) type name;
 
@@ -31,13 +32,14 @@ public:
 		return m_entity.GetComponent<T>();
 	}
 
-	void CreateCollision(TransformComponent tranform, float lifeTime = -0.1f)
-	{
-		if (m_scene != nullptr)
-			m_scene->InstantiateEntity(1, tranform.position, tranform.scale, lifeTime);
-	}
+	virtual void OnCollisionEnter(Collision2D collision) {}
+	virtual void OnCollisionExit(Collision2D collision) {}
 
-	void Test() {}
+	void SpawnCollision2D(Collision2D* collision)
+	{
+		if (collision)
+			m_scene->SpawnCollision2D(collision);
+	}
 
 	virtual void Start() {}
 	virtual void Destroy() {}

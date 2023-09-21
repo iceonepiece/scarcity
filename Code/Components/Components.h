@@ -25,6 +25,7 @@ using ComponentList = std::tuple<
 	SpriteAnimatorComponent,
 	SpriteRendererComponent,
 	BoxCollider2DComponent,
+	CircleCollider2DComponent,
 	CameraComponent,
 	GroundDetectionComponent,
 	NativeScriptComponent,

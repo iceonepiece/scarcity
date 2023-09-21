@@ -14,6 +14,26 @@ enum PhysicsLayer : uint16_t
 	Layer_Enemy
 };
 
+struct Collision2D
+{
+	std::string name;
+	int tag;
+	float x;
+	float y;
+	float lifetime = -1.0f;
+};
+
+struct BoxCollision2D : public Collision2D
+{
+	float width;
+	float height;
+};
+
+struct CircleCollision2D : public Collision2D
+{
+	float radius;
+};
+
 class Physics
 {
 public:

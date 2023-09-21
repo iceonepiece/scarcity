@@ -298,7 +298,6 @@
     <ClCompile Include="Code\Animations\AnimatorTransition.cpp" />
     <ClCompile Include="Code\Asset\TextureAsset.cpp" />
     <ClCompile Include="Code\Audio\OpenALAudio.cpp" />
-    <ClCompile Include="Code\Components\Components.cpp" />
     <ClCompile Include="Code\Core\Application.cpp" />
     <ClCompile Include="Code\Core\GameState.cpp" />
     <ClCompile Include="Code\Core\ResourceManager.cpp" />
@@ -412,6 +411,7 @@
     <ClInclude Include="Code\NativeScript\NativeScriptEngine.h" />
     <ClInclude Include="Code\NativeScript\NativeScript.h" />
     <ClInclude Include="Code\pch.h" />
+    <ClInclude Include="Code\Physics\EntityFixtureData.h" />
     <ClInclude Include="Code\Physics\GroundDetectionFixtureData.h" />
     <ClInclude Include="Code\Platforms\GLFW\GLFWInput.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLFontSystem.h" />
