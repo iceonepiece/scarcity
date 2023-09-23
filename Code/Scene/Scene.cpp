@@ -229,6 +229,7 @@ void Scene::InitializePhysicsEntity(entt::entity entity, TransformComponent& tra
         fixtureDef.shape = &boxShape;
         fixtureDef.density = 1.0f;
         fixtureDef.friction = 0.0f;
+        fixtureDef.isSensor = bc2d.isTrigger;
 
         FixtureData* fixtureData = new EntityFixtureData(Entity{ &m_manager, entity });
         fixtureData->tag = m_manager.m_registry.get<BaseComponent>(entity).tag;
@@ -250,6 +251,7 @@ void Scene::InitializePhysicsEntity(entt::entity entity, TransformComponent& tra
         fixtureDef.shape = &circleShape;
         fixtureDef.density = 1.0f;
         fixtureDef.friction = 0.0f;
+        fixtureDef.isSensor = cc2d.isTrigger;
 
         FixtureData* fixtureData = new EntityFixtureData(Entity{ &m_manager, entity });
         fixtureData->tag = m_manager.m_registry.get<BaseComponent>(entity).tag;

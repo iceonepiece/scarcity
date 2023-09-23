@@ -10,6 +10,7 @@ struct BoxCollider2DComponent
 {
 	static std::string Name() { return "BoxCollider2D"; }
 
+	bool isTrigger = false;
 	glm::vec2 offset = { 0.0f, 0.0f };
 	glm::vec2 size = { 1.0f, 1.0f };
 };
@@ -27,6 +28,7 @@ static void DoSerialize(const BoxCollider2DComponent& box, json& entityJson)
 	size["y"] = box.size.y;
 
 	entityJson["BoxCollider2D"]["size"] = size;
+	entityJson["BoxCollider2D"]["isTrigger"] = box.isTrigger;
 }
 
 static void DoDeserialize(BoxCollider2DComponent& box, json& boxJson)
@@ -39,4 +41,5 @@ static void DoDeserialize(BoxCollider2DComponent& box, json& boxJson)
 
 	box.offset = offset;
 	box.size = size;
+	box.isTrigger = boxJson["isTrigger"].get<bool>();
 }
