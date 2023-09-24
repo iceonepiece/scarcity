@@ -19,6 +19,7 @@
 #include "EditorGUI/ImGuiEntityProperties.h"
 #include "EditorGUI/ImGuiHierarchy.h"
 #include "EditorGUI/ImGuiAssetPanel.h"
+#include "GameLayer.h"
 
 
 enum EditorMode
@@ -48,7 +49,6 @@ class EditorLayer : public Layer
 {
 public:
 	EditorLayer(EditorApplication& app, std::unique_ptr<Project> project);
-	EditorLayer(EditorApplication& app, std::unique_ptr<Scene> scene);
 	virtual ~EditorLayer() = default;
 
 	virtual void Update(float deltaTime) override;
@@ -100,6 +100,11 @@ public:
 	inline bool IsScenePlaying() { return m_scenePlaying; }
 
 	Scene* GetScene() { return m_activeScene.get(); }
+	void ChangeScene(const std::string& name)
+	{
+		m_gameLayer.ChangeScene(name);
+	}
+
 	Camera& GetCamera() { return *m_camera; }
 
 	bool CheckPicking2D();
@@ -129,6 +134,7 @@ private:
 	void OnFileEvent(const FileEvent& event);
 
 private:
+	GameLayer m_gameLayer;
 	static EditorLayer* s_instance;
 
 	EntityManager m_prefabManager;
@@ -158,8 +164,6 @@ private:
 	bool m_entityPicked;
 	bool m_scenePlaying = false;
 	std::unique_ptr<Camera> m_camera;
-
-	std::unique_ptr<Scene> m_playingScene = nullptr;
 
 	EditorMode m_currentMode;
 

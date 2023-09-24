@@ -20,6 +20,7 @@
 #include "EditorGUI/Windows/ImGuiSelectAnimatorControllerWindow.h"
 #include "Components/ComponentSerializer.h"
 #include "Scene/SceneSerializer.h"
+#include "Scene/SceneManager.h"
 
 EditorLayer* EditorLayer::s_instance = nullptr;
 
@@ -30,6 +31,7 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     , m_hierarchy(*this)
     , m_mainMenuBar(*this)
     , m_assetPanel(*this)
+    , m_gameLayer(app)
 {
     std::cout << "EditorLayer Constructor()\n\n";
 
@@ -95,18 +97,6 @@ void EditorLayer::OnFileEvent(const FileEvent& event)
     }
 }
 
-EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Scene> scene)
-	: m_app(app)
-    , m_activeScene(std::move(scene))
-    , m_entityProperties(*this)
-    , m_hierarchy(*this)
-    , m_mainMenuBar(*this)
-    , m_assetPanel(*this)
-{
-	std::cout << "EditorLayer Constructor()\n\n";
-
-}
-
 void EditorLayer::Initialize()
 {
 	std::cout << "EditorLayer Initialize()\n\n";
@@ -162,11 +152,11 @@ bool EditorLayer::OpenScene(std::filesystem::path path)
     std::cout << "OpenScene: " << path << std::endl;
     bool success = true;
 
-    m_activeScene = std::make_unique<Scene>();
+    m_activeScene = SceneManager::LoadScene(path);
 
-    if (!SceneSerializer::Deserialize(*m_activeScene, path))
+    if (m_activeScene == nullptr)
     {
-        m_activeScene = Scene::CreateDefaultScene(m_activeProject->GetDirectory() / "Scenes");
+        m_activeScene = SceneManager::CreateDefaultScene(m_activeProject->GetDirectory() / "Scenes");
         success = false;
     }
 
@@ -400,9 +390,12 @@ void EditorLayer::Update(float deltaTime)
 
     if (m_scenePlaying)
     {
-        m_playingScene->Update(deltaTime);
-        m_playingScene->SetCamera(nullptr);
-        m_playingScene->Render();
+        if (Scene* playingScene = m_gameLayer.GetCurrentScene())
+        {
+            playingScene->Update(deltaTime);
+            playingScene->SetCamera(nullptr);
+            playingScene->Render();
+        }
     }
     else
     {
@@ -438,25 +431,25 @@ void EditorLayer::OnWindowResize(WindowResizeEvent& event)
 }
 
 void EditorLayer::PlayScene()
-{    
+{
     if (m_activeScene != nullptr)
     {
-        m_playingScene = Scene::Copy(*m_activeScene);
-        m_playingScene->SetApplication(&m_app);
-        m_playingScene->StartNativeScripts(m_nativeScriptEngine);
-        m_playingScene->Start();
+        Scene* playingScene = SceneManager::Copy(*m_activeScene);
+        playingScene->SetApplication(&m_app);
+        playingScene->StartNativeScripts(m_nativeScriptEngine);
+        playingScene->Start();
+
+        m_gameLayer.AddScene(m_activeScene->m_name, playingScene);
+        m_gameLayer.ChangeScene(m_activeScene->m_name);
+
         m_scenePlaying = true;
     }
 }
 
 void EditorLayer::StopScene()
 {
-    if (m_playingScene != nullptr)
-    {
-        m_playingScene->Stop();
-        m_playingScene.reset();
-        m_scenePlaying = false;
-    }
+    m_gameLayer.DestroyAllScenes();
+    m_scenePlaying = false;
 }
 
 void EditorLayer::OnMouseScrolled(MouseScrolledEvent& event)
@@ -568,7 +561,7 @@ bool EditorLayer::NewScene()
 {
     std::cout << "New Scene\n";
 
-    m_activeScene = Scene::CreateDefaultScene("");
+    m_activeScene = SceneManager::CreateDefaultScene("");
     m_activeScene->SetApplication(&m_app);
     m_activeScene->Initialize();
 

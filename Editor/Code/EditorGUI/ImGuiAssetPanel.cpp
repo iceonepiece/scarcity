@@ -225,6 +225,20 @@ void ImGuiAssetPanel::Render()
 				});
 			}
 		}
+		else if (FileSystem::IsSceneFile(path))
+		{
+			flags |= ImGuiTreeNodeFlags_Leaf;
+
+			std::string useIcon = (ICON_FA_TV " ");
+
+			bool opened = ImGui::TreeNodeEx(path.string().c_str(), flags, (useIcon + path.filename().string()).c_str());
+
+			if (ImGui::IsItemClicked())
+				m_editor.OpenScene(path);
+
+			if (opened)
+				ImGui::TreePop();
+		}
 		else
 		{
 			flags |= ImGuiTreeNodeFlags_Leaf;

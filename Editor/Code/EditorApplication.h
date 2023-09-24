@@ -15,6 +15,8 @@ public:
 
 	virtual void Initialize(std::string title, int width, int height) override;
 
+	virtual void ChangeScene(std::string name) override;
+
 	bool NewProject(const std::string& name, std::filesystem::path location);
 	void OpenProject(std::filesystem::path path);
 	void SaveProject();

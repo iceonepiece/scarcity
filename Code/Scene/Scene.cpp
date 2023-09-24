@@ -11,8 +11,9 @@
 #include "Physics/NullFixtureData.h"
 #include "Physics/EntityFixtureData.h"
 
-Scene::Scene(const std::string& name)
+Scene::Scene(const std::string& name, const std::filesystem::path& path)
     : m_name(name)
+    , m_path(path)
 	, m_camera(
         new Camera2D({ 0.0f, 0.0f, -14.0f }, { 0.5f, 0.25f }, { 1280, 720 })
     )
@@ -60,37 +61,6 @@ void Scene::DestroyEntity(entt::entity entity)
     }
 
     m_manager.m_registry.destroy(entity);
-}
-
-std::unique_ptr<Scene> Scene::CreateDefaultScene(std::filesystem::path directory)
-{
-    std::unique_ptr<Scene> defaultScene = std::make_unique<Scene>();
-    //defaultScene->m_path = directory / (defaultScene->m_name + ".scene.json");
-    defaultScene->m_location = directory;
-
-    defaultScene->SetInitializeFunction([](Scene& scene)
-    {
-        scene.m_camera = std::make_unique<Camera2D>(
-            glm::vec3 { 0.0f, 0.0f, -1.0f },
-            glm::vec2 { 1.0f, 1.0f },
-            glm::vec2 { 1280, 720 }
-        );
-
-        Renderer& renderer = scene.m_app->GetRenderer();
-        renderer.SetCamera(scene.m_camera.get());
-
-        Entity camera = scene.m_manager.CreateEntity();
-        camera.AddComponent<BaseComponent>("Main Camera");
-        camera.AddComponent<TransformComponent>(glm::vec3 { 0.0f, 0.0f, -1.0f }, glm::vec3 {0.0f}, glm::vec3 {1.0f});
-        camera.AddComponent<CameraComponent>();
-
-        Entity rect = scene.m_manager.CreateEntity();
-        rect.AddComponent<BaseComponent>("Rect");
-        rect.AddComponent<TransformComponent>(glm::vec3 {0.0f, 0.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {1.0f, 1.0f, 1.0f});
-        rect.AddComponent<SpriteRendererComponent>(Shape_Square);
-    });
-
-    return defaultScene;
 }
 
 std::unique_ptr<Scene> Scene::Copy(Scene& sourceScene)

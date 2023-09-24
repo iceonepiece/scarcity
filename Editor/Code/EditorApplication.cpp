@@ -10,6 +10,7 @@
 #include "File/FileSystem.h"
 #include "Project/ProjectSerializer.h"
 #include "Scene/SceneSerializer.h"
+#include "Scene/SceneManager.h"
 #include "ScriptManager.h"
 #include "Platforms/GLFW/GLFWInput.h"
 #include "Core/ResourceAPI.h"
@@ -39,6 +40,18 @@ void EditorApplication::Initialize(std::string title, int width, int height)
     //AddLayer(std::make_unique<EditorLayer>(*this));
 }
 
+void EditorApplication::ChangeScene(std::string name)
+{
+    for (auto& layer : m_layers)
+    {
+        if (EditorLayer* editorLayer = dynamic_cast<EditorLayer*>(layer.get()))
+        {
+            editorLayer->ChangeScene(name);
+        }
+    }
+
+}
+
 bool EditorApplication::NewProject(const std::string& name, std::filesystem::path location)
 {
     std::filesystem::path directory = location / name;
@@ -51,7 +64,7 @@ bool EditorApplication::NewProject(const std::string& name, std::filesystem::pat
 
         ScriptManager::CreateVisualStudioFiles(directory, name);
 
-        std::unique_ptr<Scene> defaultScene = Scene::CreateDefaultScene(directory);
+        std::unique_ptr<Scene> defaultScene = SceneManager::CreateDefaultScene(directory);
         defaultScene->SetApplication(this);
         defaultScene->Initialize();
 

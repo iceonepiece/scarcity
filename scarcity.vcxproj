@@ -336,6 +336,7 @@
     <ClCompile Include="Code\Graphics\FontSystem.cpp" />
     <ClCompile Include="Code\Graphics\Renderer.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLShader.cpp" />
+    <ClCompile Include="Code\Scene\SceneManager.cpp" />
     <ClCompile Include="Code\Scene\SceneSerializer.cpp" />
     <ClCompile Include="Code\Scene\ScriptableEntity.cpp" />
     <ClCompile Include="Code\UIs\UI.cpp" />
@@ -474,6 +475,7 @@
     <ClInclude Include="Code\Scenes\LevelScene.h" />
     <ClInclude Include="Code\Scenes\LuaScene.h" />
     <ClInclude Include="Code\Scenes\MenuScene.h" />
+    <ClInclude Include="Code\Scene\SceneManager.h" />
     <ClInclude Include="Code\Scene\SceneSerializer.h" />
     <ClInclude Include="Code\Scene\ScriptableEntity.h" />
     <ClInclude Include="Code\Shapes\Shape2D.h" />

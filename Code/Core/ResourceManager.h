@@ -17,6 +17,7 @@
 #include "Asset/Asset.h"
 #include "Asset/AnimatorControllerAsset.h"
 #include "Asset/TextureAsset.h"
+#include "Scene/Scene.h"
 
 class ResourceManager
 {
@@ -55,6 +56,14 @@ public:
 	{
 		m_textures.erase(name);
 	}
+
+	Scene* GetScene(const std::string& name)
+	{
+		if (m_sceneMap.find(name) != m_sceneMap.end())
+			return m_sceneMap[name].get();
+
+		return nullptr;
+	}
 	
 	Texture& GetTexture(const std::string& name)
 	{
@@ -85,6 +94,7 @@ protected:
 	//entt::registry m_prefabRegistry;
 	EntityManager m_prefabManager;
 
+	std::map<std::string, std::unique_ptr<Scene>> m_sceneMap;
 	std::map<std::string, std::unique_ptr<Asset>> m_assetMap;
 	std::map<std::string, SpriteAsset*> m_spriteAssetMap;
 	std::map<std::string, std::unique_ptr<AnimatorControllerAsset>> m_animControllerMap;

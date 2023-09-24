@@ -9,6 +9,7 @@
 #include "Events/MouseEvent.h"
 #include "Events/WindowEvent.h"
 #include "Input/NewInput.h"
+#include "Scene/Scene.h"
 
 class LuaEngine;
 class ImGuiManager;

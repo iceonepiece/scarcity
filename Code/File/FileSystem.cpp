@@ -130,6 +130,12 @@ bool FileSystem::IsNativeScriptFile(const std::filesystem::path& path)
 	return false;
 }
 
+bool FileSystem::IsSceneFile(const std::filesystem::path& path)
+{
+	return path.extension().generic_string() == ".bfs";
+}
+
+
 bool FileSystem::IsImageFile(const std::filesystem::path& path)
 {
 	const std::string extension = path.extension().generic_string();

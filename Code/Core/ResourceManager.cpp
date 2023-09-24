@@ -23,6 +23,14 @@ void ResourceManager::InitializeAssets(const std::filesystem::path& path)
 				std::cout << "[Folder]";
 				pathQueue.push(targetPath);
 			}
+			else if (FileSystem::IsSceneFile(targetPath))
+			{
+				std::cout << "[Scene]";
+				std::unique_ptr<Scene> scene = std::make_unique<Scene>(targetPath.stem().string(), targetPath);
+				m_sceneMap.insert({ targetPath.stem().string(),std::move(scene) });
+
+				std::cout << "Initialize Scene: " << targetPath.stem().string();
+			}
 			else if (FileSystem::IsImageFile(targetPath))
 			{
 				std::cout << "[Texture]";
