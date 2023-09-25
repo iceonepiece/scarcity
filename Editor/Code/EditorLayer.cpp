@@ -418,9 +418,13 @@ void EditorLayer::Update(float deltaTime)
 
 void EditorLayer::RenderImGui()
 {
-    m_entityProperties.Render();
-    m_hierarchy.Render();
-    m_assetPanel.Render();
+    if (!m_scenePlaying)
+    {
+        m_entityProperties.Render();
+        m_hierarchy.Render();
+        m_assetPanel.Render();
+    }
+
     m_mainMenuBar.Render();
     //m_nodeEditor.Render();
 }

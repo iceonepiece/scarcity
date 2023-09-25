@@ -55,7 +55,11 @@ void ImGuiMainMenuBar::Render()
         m_editor.ReloadNativeScripts();
     }
 
-    ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+    std::stringstream fpsText;
+    fpsText << "FPS: " << std::fixed << std::setprecision(1) << ImGui::GetIO().Framerate;
+
+    ImGui::SetCursorPosX(ImGui::GetWindowSize().x - 120);
+    ImGui::Text(fpsText.str().c_str());
 
     ImGui::EndMainMenuBar();
     
