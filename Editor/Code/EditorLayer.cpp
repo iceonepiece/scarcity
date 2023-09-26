@@ -260,7 +260,10 @@ void EditorLayer::OnMouseMoved(MouseMovedEvent& event)
     CalculateWorldCursorPosition();
 
     if (m_mouseActive)
-        m_gizmos[m_currentMode]->OnDragging(m_worldCursorPosition.x, m_worldCursorPosition.y);
+    {
+        std::cout << "GIZMO IS DRAGGING\n";
+        draggingGizmo = m_gizmos[m_currentMode]->OnDragging(m_worldCursorPosition.x, m_worldCursorPosition.y);
+    }
 }
 
 void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
@@ -307,6 +310,13 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
         }
         break;
 
+        case Key::Z:
+        {
+            if (control)
+                UndoCommand();
+        }
+        break;
+
         case Key::Delete:
         {
             if (m_selectedObject.type == EditorObjectType::Entity)
@@ -342,6 +352,11 @@ void EditorLayer::OnMouseButtonReleased(MouseButtonReleasedEvent& event)
     if (event.GetMouseButton() == Mouse::ButtonLeft)
     {
         m_mouseActive = false;
+
+        if (draggingGizmo)
+        {
+            draggingGizmo = false;
+        }
     }
 }
 

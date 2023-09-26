@@ -2,6 +2,7 @@
 
 #include "Gizmo.h"
 #include "ActionableRect.h"
+#include "../Commands/TranslateCommand.h"
 
 class TranslateGizmo : public Gizmo
 {
@@ -40,14 +41,21 @@ public:
 			return true;
 		});
 
-		m_actionables[1]->SetDraggingCallback([](Actionable& actor, float x, float y)
+		m_actionables[1]->SetDraggingCallback([&](Actionable& actor, float x, float y)
 		{
 			glm::vec2& previousCursor = actor.GetStartCursorPosition();
 			float diffX = x - previousCursor.x;
 			actor.SetStartCursorPosition(glm::vec2 {x, y});
 
-			TransformComponent* transform = actor.GetTransformComponent();
-			transform->position.x += diffX;
+			TranslateCommand* translateCommand = new TranslateCommand(
+				*actor.GetTransformComponent(),
+				glm::vec3{ diffX, 0.0f, 0.0f }
+			);
+
+			m_editor.AddCommand(translateCommand);
+
+			//TransformComponent* transform = actor.GetTransformComponent();
+			//transform->position.x += diffX;
 			return true;
 		});
 

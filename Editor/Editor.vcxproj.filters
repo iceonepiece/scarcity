@@ -206,5 +206,11 @@
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiCircleCollider2DComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Code\Commands\EditorCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Commands\TranslateCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

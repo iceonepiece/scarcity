@@ -167,6 +167,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\Commands\EditorCommand.h" />
+    <ClInclude Include="Code\Commands\TranslateCommand.h" />
     <ClInclude Include="Code\EditorApplication.h" />
     <ClInclude Include="Code\EditorCamera.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiAssetPanel.h" />

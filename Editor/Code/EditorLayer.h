@@ -20,6 +20,7 @@
 #include "EditorGUI/ImGuiHierarchy.h"
 #include "EditorGUI/ImGuiAssetPanel.h"
 #include "GameLayer.h"
+#include "Commands/EditorCommand.h"
 
 
 enum EditorMode
@@ -56,6 +57,26 @@ public:
 	virtual void Initialize() override;
 	virtual void Shutdown() override;
 	virtual void RenderImGui() override;
+
+	void AddCommand(EditorCommand* command)
+	{
+		if (command)
+		{
+			command->Do();
+			m_editorCommands.emplace_back(std::unique_ptr<EditorCommand>(command));
+		}
+	}
+
+	void UndoCommand()
+	{
+		if (m_editorCommands.size() > 0)
+		{
+			auto& latestCommand = m_editorCommands.back();
+			latestCommand->Undo();
+
+			m_editorCommands.pop_back();
+		}
+	}
 
 	void OnSceneUpdate();
 
@@ -134,6 +155,9 @@ private:
 	void OnFileEvent(const FileEvent& event);
 
 private:
+	bool draggingGizmo = false;
+	std::vector<std::unique_ptr<EditorCommand>> m_editorCommands;
+
 	GameLayer m_gameLayer;
 	static EditorLayer* s_instance;
 
