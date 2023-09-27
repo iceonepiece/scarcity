@@ -7,24 +7,32 @@
 class TranslateCommand : public EditorCommand
 {
 public:
-	TranslateCommand(TransformComponent& transform, const glm::vec3& position)
+	TranslateCommand(TransformComponent& transform, const glm::vec3& oldPosition)
 		: m_transform(transform)
-		, m_position(position)
+		, m_newPosition(transform.position)
+		, m_oldPosition(oldPosition)
 	{
 
 	}
 
-	virtual void Do() override
+	virtual void Execute() override
 	{
-		m_transform.position += m_position;
+		m_transform.position = m_newPosition;
+	}
+
+	virtual void Redo() override
+	{
+		m_transform.position = m_newPosition;
+		std::cout << "Translate Redo\n";
 	}
 
 	virtual void Undo() override
 	{
-		m_transform.position -= m_position;
+		m_transform.position = m_oldPosition;
 	}
 
 private:
 	TransformComponent& m_transform;
-	glm::vec3 m_position;
+	glm::vec3 m_newPosition;
+	glm::vec3 m_oldPosition;
 };

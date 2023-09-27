@@ -25,6 +25,9 @@ public:
 		return false;
 	}
 
+	virtual void OnDraggingStart() {}
+	virtual void OnDraggingEnd() {}
+
 protected:
 	EditorLayer& m_editor;
 	glm::vec2 m_position;

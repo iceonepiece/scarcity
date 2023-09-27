@@ -261,8 +261,14 @@ void EditorLayer::OnMouseMoved(MouseMovedEvent& event)
 
     if (m_mouseActive)
     {
-        std::cout << "GIZMO IS DRAGGING\n";
-        draggingGizmo = m_gizmos[m_currentMode]->OnDragging(m_worldCursorPosition.x, m_worldCursorPosition.y);
+        bool dragging = m_gizmos[m_currentMode]->OnDragging(m_worldCursorPosition.x, m_worldCursorPosition.y);
+
+        if (dragging && !m_gizmoStatus.dragging)
+        {
+            m_gizmos[m_currentMode]->OnDraggingStart();
+            m_gizmoStatus.dragging = true;
+            m_gizmoStatus.mode = m_currentMode;
+        }
     }
 }
 
@@ -317,12 +323,54 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
         }
         break;
 
+        case Key::Y:
+        {
+            if (control)
+                RedoCommand();
+        }
+        break;
+
         case Key::Delete:
         {
             if (m_selectedObject.type == EditorObjectType::Entity)
                 DeleteEntity(m_selectedObject.entity);
         }
         break;
+    }
+}
+
+void EditorLayer::AddCommand(EditorCommand* command)
+{
+    if (command)
+    {
+        int k = m_editorCommands.size() - 1;
+        if (m_currentCommandIndex < k)
+            m_editorCommands.erase(m_editorCommands.begin() + (m_currentCommandIndex + 1), m_editorCommands.begin() + m_editorCommands.size());
+
+        m_editorCommands.emplace_back(std::unique_ptr<EditorCommand>(command));
+        m_currentCommandIndex = m_editorCommands.size() - 1;
+
+        std::cout << "Add Command: index: " << m_currentCommandIndex << ", size: " << m_editorCommands.size() << std::endl;
+    }
+}
+
+void EditorLayer::RedoCommand()
+{
+    int k = m_editorCommands.size() - 1;
+    if (m_currentCommandIndex < k)
+    {
+        m_editorCommands[++m_currentCommandIndex]->Redo();
+        std::cout << "Redo Command: index: " << m_currentCommandIndex << ", size: " << m_editorCommands.size() << std::endl;
+    }
+}
+
+void EditorLayer::UndoCommand()
+{
+    if (m_currentCommandIndex >= 0 && m_editorCommands.size() > m_currentCommandIndex)
+    {
+        m_editorCommands[m_currentCommandIndex--]->Undo();
+
+        std::cout << "Undo Command: index: " << m_currentCommandIndex << ", size: " << m_editorCommands.size() << std::endl;
     }
 }
 
@@ -353,9 +401,10 @@ void EditorLayer::OnMouseButtonReleased(MouseButtonReleasedEvent& event)
     {
         m_mouseActive = false;
 
-        if (draggingGizmo)
+        if (m_gizmoStatus.dragging)
         {
-            draggingGizmo = false;
+            m_gizmos[m_currentMode]->OnDraggingEnd();
+            m_gizmoStatus.dragging = false;
         }
     }
 }

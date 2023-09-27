@@ -47,15 +47,8 @@ public:
 			float diffX = x - previousCursor.x;
 			actor.SetStartCursorPosition(glm::vec2 {x, y});
 
-			TranslateCommand* translateCommand = new TranslateCommand(
-				*actor.GetTransformComponent(),
-				glm::vec3{ diffX, 0.0f, 0.0f }
-			);
-
-			m_editor.AddCommand(translateCommand);
-
-			//TransformComponent* transform = actor.GetTransformComponent();
-			//transform->position.x += diffX;
+			TransformComponent* transform = actor.GetTransformComponent();
+			transform->position.x += diffX;
 			return true;
 		});
 
@@ -71,9 +64,24 @@ public:
 		});
 	}
 
+	virtual void OnDraggingStart() override
+	{
+		m_startPosition = m_actor->GetStartTransformComponent().position;
+	}
+
+	virtual void OnDraggingEnd() override
+	{
+		TransformComponent* transform = m_actor->GetTransformComponent();
+		TranslateCommand* command = new TranslateCommand(
+			*m_actor->GetTransformComponent(),
+			m_startPosition
+		);
+
+		m_editor.AddCommand(command);
+	}
+
 protected:
 	float m_length = 1.4f;
 	float m_thickness = 0.07f;
-
-
+	glm::vec3 m_startPosition { 0 };
 };

@@ -4,6 +4,7 @@ class EditorCommand
 {
 public:
 	virtual ~EditorCommand() = default;
-	virtual void Do() {}
-	virtual void Undo() {}
+	virtual void Execute() = 0;
+	virtual void Redo() = 0;
+	virtual void Undo() = 0;
 };

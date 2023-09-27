@@ -21,8 +21,10 @@ void Input::Init()
     AddInputCommand(GLFW_KEY_S, Key::S);
     AddInputCommand(GLFW_KEY_D, Key::D);
     AddInputCommand(GLFW_KEY_F, Key::F);
-    AddInputCommand(GLFW_KEY_Z, Key::Z);
+
     AddInputCommand(GLFW_KEY_X, Key::X);
+    AddInputCommand(GLFW_KEY_Y, Key::Y);
+    AddInputCommand(GLFW_KEY_Z, Key::Z);
     AddInputCommand(GLFW_KEY_Q, Key::Q);
 
 
