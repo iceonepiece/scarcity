@@ -109,7 +109,7 @@ void EditorLayer::Initialize()
     m_camera = std::make_unique<Camera2D>(
         glm::vec3 { 0.0f, 0.0f, -1.0f },
         glm::vec2 { 1.0f, 1.0f },
-        glm::vec2 { 1280, 720 }
+        glm::vec2 { m_app.GetWindow().GetWidth(), m_app.GetWindow().GetHeight() }
     );
 
     m_camera->SetCameraType(CameraType::Orthographic);

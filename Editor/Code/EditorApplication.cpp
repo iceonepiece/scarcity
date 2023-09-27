@@ -25,7 +25,7 @@ EditorApplication::~EditorApplication()
 {
 }
 
-void EditorApplication::Initialize(std::string title, int width, int height)
+void EditorApplication::Initialize()
 {
     m_input = std::make_unique<GLFWInput>(*((GLFWwindow*)m_window->GetNativeWindow()));
     Input::Init();

@@ -11,9 +11,11 @@ int main()
 
 	ApplicationConfigs configs;
 	configs.name = "BossFight Engine";
+	configs.width = 1920;
+	configs.height = 1080;
 
 	EditorApplication editor(configs);
-	editor.Initialize("BossFight Engine", 1280, 720);
+	editor.Initialize();
 	editor.Run();
 
 	//_CrtDumpMemoryLeaks();

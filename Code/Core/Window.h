@@ -53,6 +53,9 @@ public:
 	virtual void Render() = 0;
 	virtual bool WindowShouldClose() = 0;
 
+	inline uint32_t GetWidth() { return m_width; }
+	inline uint32_t GetHeight() { return m_height; }
+
 	inline WindowData GetWindowData() { return m_data; }
 	virtual void* GetNativeWindow() const = 0;
 

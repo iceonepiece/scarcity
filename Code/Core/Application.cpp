@@ -13,7 +13,7 @@ Application::Application(const ApplicationConfigs& configs)
 {
 	s_instance = this;
 
-	m_window = Window::Create(WindowConfigs(configs.name));
+	m_window = Window::Create(WindowConfigs(configs.name, configs.width, configs.height));
 	m_renderer = Renderer::Create();
 	m_renderer->Initialize();
 

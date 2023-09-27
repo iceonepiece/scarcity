@@ -21,6 +21,8 @@ constexpr int TAG_SIZE = 8;
 struct ApplicationConfigs
 {
 	std::string name = "BossFight Application";
+	uint32_t width = 1280;
+	uint32_t height = 720;
 };
 
 class Application
@@ -31,7 +33,7 @@ public:
 
 	static Application& Get() { return *s_instance; }
 
-	virtual void Initialize(std::string title, int width, int height) = 0;
+	virtual void Initialize() = 0;
 	void Run();
 
 	virtual void OnEvent(Event& e);

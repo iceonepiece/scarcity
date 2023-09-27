@@ -108,6 +108,7 @@ OpenGLWindow::OpenGLWindow(Application* app, std::string title, int width, int h
         MouseMovedEvent event((float)xPos, (float)yPos);
         app.OnEvent(event);
     });
+
 }
 
 OpenGLWindow::~OpenGLWindow()
