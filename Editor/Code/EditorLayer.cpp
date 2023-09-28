@@ -614,15 +614,10 @@ void EditorLayer::DuplicateEntity()
 
 void EditorLayer::DeleteEntity(entt::entity entity)
 {
-    if (m_activeScene->m_manager.m_registry.valid(entity))
-    {
-        std::cout << "Delete entity: " << (int)entity << std::endl;
-
-        if (m_selectedObject.entity == entity)
-            UnselectObject();
-
-        m_activeScene->m_manager.m_registry.destroy(entity);
-    }
+    if (m_activeScene->m_manager.DeleteEntity(entity) &&
+        !m_activeScene->m_manager.IsEntityValid(m_selectedObject.entity)
+    )
+        UnselectObject();
 }
 
 bool EditorLayer::NewScene()
