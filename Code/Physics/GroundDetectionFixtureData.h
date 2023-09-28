@@ -2,7 +2,7 @@
 
 #include "FixtureData.h"
 
-class GroundDetectionComponent;
+struct GroundDetectionComponent;
 
 class GroundDetectionFixtureData : public FixtureData
 {

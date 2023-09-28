@@ -7,7 +7,11 @@ class Entity;
 class EntityManager
 {
 public:
-  entt::registry m_registry;
+	Entity CreateEntity();
+	Entity CreateEmptyEntity(entt::entity parent = entt::null);
+	Entity CreateCanvasEntity(entt::entity parent = entt::null);
 
-  Entity CreateEntity();
+	void AddChild(entt::entity parent, Entity& child);
+
+	entt::registry m_registry;
 };

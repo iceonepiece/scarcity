@@ -438,7 +438,7 @@ TransformComponent* EditorLayer::GetEntityTransform()
     if (m_selectedObject.type != EditorObjectType::Entity)
         return nullptr;
 
-    return &m_activeScene->GetEntityManager().m_registry.get<TransformComponent>(m_selectedObject.entity);
+    return m_activeScene->GetEntityManager().m_registry.try_get<TransformComponent>(m_selectedObject.entity);
 }
 
 

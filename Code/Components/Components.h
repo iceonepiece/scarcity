@@ -18,10 +18,12 @@
 #include "SpriteRendererComponent.h"
 #include "TimerComponent.h"
 #include "TransformComponent.h"
+#include "UIComponents.h"
 
 using ComponentList = std::tuple<
 	BaseComponent,
 	TransformComponent,
+	CanvasComponent,
 	SpriteAnimatorComponent,
 	SpriteRendererComponent,
 	BoxCollider2DComponent,

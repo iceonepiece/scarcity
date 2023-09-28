@@ -10,6 +10,7 @@
 #include "ImGuiNativeScriptComponent.h"
 #include "ImGuiGroundDetectionComponent.h"
 #include "ImGuiCircleCollider2DComponent.h"
+#include "ImGuiRectTransformComponent.h"
 
 class ImGuiComponentRenderer
 {

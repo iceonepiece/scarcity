@@ -11,8 +11,8 @@ int main()
 
 	ApplicationConfigs configs;
 	configs.name = "BossFight Engine";
-	configs.width = 1920;
-	configs.height = 1080;
+	configs.width = 1600;
+	configs.height = 900;
 
 	EditorApplication editor(configs);
 	editor.Initialize();
