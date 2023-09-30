@@ -9,9 +9,8 @@ Gizmo::Gizmo(EditorLayer& editor)
 void Gizmo::Update(float dt)
 {
 	TransformComponent* transform = m_editor.GetEntityTransform();
-
+	
 	float zoom = m_editor.GetCamera().GetZoom();
-
 
 	if (transform != nullptr)
 	{
@@ -34,6 +33,7 @@ bool Gizmo::OnPicking2D(const glm::vec2& cursorPosition)
 			{
 				std::cout << "IsCursorOn: " << cursorPosition.x << ", " << cursorPosition.y << std::endl;
 				it->get()->SetStartCursorPosition(cursorPosition);
+				it->get()->SetEntity(m_editor.GetSelectedEntity());
 				it->get()->m_startTransform = *transform;
 				m_actor = it->get();
 				return true;

@@ -4,6 +4,7 @@
 #include <functional>
 #include "Graphics/Renderer.h"
 #include "Components/TransformComponent.h"
+#include "Core/Entity.h"
 
 enum TransformDepending
 {
@@ -43,6 +44,9 @@ public:
 	virtual void Render(Renderer& renderer) = 0;
 	virtual bool IsCursorOn(float x, float y, const glm::vec2& entityPosition) = 0;
 
+	inline Entity GetEntity() { return m_entity; }
+	inline void SetEntity(Entity entity) { m_entity = entity; }
+
 	inline void SetTransformComponent(TransformComponent* transform) { m_transform = transform; }
 
 	inline TransformComponent* GetTransformComponent() { return m_transform; }
@@ -64,6 +68,8 @@ protected:
 	int m_dependingFlags = DependOnNone;
 	
 	DraggingFunction m_draggingCallback;
+
+	Entity m_entity;
 
 	glm::vec2 m_startCursorPosition;
 	TransformComponent m_startTransform;

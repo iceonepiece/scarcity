@@ -35,9 +35,12 @@ public:
 			float diffY = y - previousCursor.y;
 			actor.SetStartCursorPosition(glm::vec2 {x, y});
 
-			TransformComponent* transform = actor.GetTransformComponent();
-			transform->position.x += diffX;
-			transform->position.y += diffY;
+			actor.GetEntity().UpdateEntityAndChildren([&](Entity& entity) {
+				TransformComponent* transform = entity.GetComponent<TransformComponent>();
+				transform->position.x += diffX;
+				transform->position.y += diffY;
+			});
+
 			return true;
 		});
 
@@ -47,8 +50,11 @@ public:
 			float diffX = x - previousCursor.x;
 			actor.SetStartCursorPosition(glm::vec2 {x, y});
 
-			TransformComponent* transform = actor.GetTransformComponent();
-			transform->position.x += diffX;
+			actor.GetEntity().UpdateEntityAndChildren([&](Entity& entity) {
+				TransformComponent* transform = entity.GetComponent<TransformComponent>();
+				transform->position.x += diffX;
+			});
+
 			return true;
 		});
 
@@ -58,8 +64,11 @@ public:
 			float diffY = y - previousCursor.y;
 			actor.SetStartCursorPosition(glm::vec2 {x, y});
 
-			TransformComponent* transform = actor.GetTransformComponent();
-			transform->position.y += diffY;
+			actor.GetEntity().UpdateEntityAndChildren([&](Entity& entity) {
+				TransformComponent* transform = entity.GetComponent<TransformComponent>();
+				transform->position.y += diffY;
+			});
+
 			return true;
 		});
 	}
@@ -71,9 +80,8 @@ public:
 
 	virtual void OnDraggingEnd() override
 	{
-		TransformComponent* transform = m_actor->GetTransformComponent();
 		TranslateCommand* command = new TranslateCommand(
-			*m_actor->GetTransformComponent(),
+			m_actor->GetEntity(),
 			m_startPosition
 		);
 

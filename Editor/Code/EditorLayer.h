@@ -74,6 +74,8 @@ public:
 
 	inline bool IsEntityPicked() { return m_entityPicked; }
 
+	Entity GetSelectedEntity();
+
 	inline entt::entity GetPickedEntity()
 	{
 		return m_selectedObject.entity;

@@ -168,6 +168,11 @@ bool EditorLayer::OpenScene(std::filesystem::path path)
     return success;
 }
 
+Entity EditorLayer::GetSelectedEntity()
+{
+    return Entity { &m_activeScene->m_manager, m_selectedObject.entity };
+}
+
 void EditorLayer::CreatePrefab(entt::entity entity, const std::filesystem::path& path)
 {
     if (m_activeScene)

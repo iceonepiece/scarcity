@@ -1,7 +1,13 @@
 #pragma once
 
+#include <functional>
 #include <entt/entt.hpp>
 #include "EntityManager.h"
+#include "Components/Relationship.h"
+
+class Entity;
+
+using UpdateEntityCallback = std::function<void(Entity&)>;
 
 class Entity
 {
@@ -26,6 +32,20 @@ public:
 	T* GetComponent()
 	{
 		return m_manager->m_registry.try_get<T>(m_id);
+	}
+
+	void UpdateEntityAndChildren(UpdateEntityCallback callback)
+	{
+		callback(*this);
+
+		if (ChildrenComponent* children = GetComponent<ChildrenComponent>())
+		{
+			for (int i = 0; i < children->size; i++)
+			{
+				Entity child = Entity(m_manager, children->entities[i]);
+				callback(child);
+			}
+		}
 	}
 
 	entt::entity GetEntity() { return m_id; }
