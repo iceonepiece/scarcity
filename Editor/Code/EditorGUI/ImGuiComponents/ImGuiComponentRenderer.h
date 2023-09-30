@@ -4,6 +4,7 @@
 #include <entt/entt.hpp>
 #include "ImGuiBaseComponent.h"
 #include "ImGuiBoxCollider2DComponent.h"
+#include "ImGuiButtonComponent.h"
 #include "ImGuiSpriteRendererComponent.h"
 #include "ImGuiSpriteAnimatorComponent.h"
 #include "ImGuiTransformComponent.h"

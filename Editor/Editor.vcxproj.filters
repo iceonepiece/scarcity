@@ -215,5 +215,8 @@
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiRectTransformComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiButtonComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

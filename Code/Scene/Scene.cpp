@@ -450,6 +450,7 @@ void Scene::Render()
     for (auto& system : m_systems)
         system->Render();
 
+    RenderUI();
     RenderCollisionComponents();
 }
 
@@ -488,12 +489,25 @@ void Scene::RenderEditor()
 
     glDisable(GL_BLEND);
 
+    auto canvas = m_manager.m_registry.view<TransformComponent, CanvasComponent, ButtonComponent>();
+    for (auto [entity, transform, canvas, button] : canvas.each())
+    {
+        renderer.DrawQuad2D(transform.position, { canvas.width, canvas.height }, transform.rotation.z);
+    }
+
     RenderCollisionComponents();
 }
 
 void Scene::RenderUI()
 {
-    m_ui.Render();
+    Renderer& renderer = Application::Get().GetRenderer();
+
+    auto canvas = m_manager.m_registry.view<TransformComponent, CanvasComponent, ButtonComponent>();
+    for (auto [entity, transform, canvas, button] : canvas.each())
+    {
+        glm::vec4 color{ 1 };
+        renderer.DrawQuadUI(transform.position, { canvas.width, canvas.height }, color, UIAlignment::CENTER);
+    }
 }
 
 EntityManager& Scene::GetEntityManager()

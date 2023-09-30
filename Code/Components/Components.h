@@ -31,5 +31,7 @@ using ComponentList = std::tuple<
 	CameraComponent,
 	GroundDetectionComponent,
 	NativeScriptComponent,
-	Rigidbody2DComponent
+	Rigidbody2DComponent,
+	ButtonComponent
+
 >;

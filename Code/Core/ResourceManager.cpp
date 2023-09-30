@@ -2,6 +2,14 @@
 #include "Asset/TextureAsset.h"
 #include "Asset/PrefabAsset.h"
 
+Scene* ResourceManager::GetScene(const std::string& name)
+{
+	if (m_sceneMap.find(name) != m_sceneMap.end())
+		return m_sceneMap[name].get();
+
+	return nullptr;
+}
+
 void ResourceManager::InitializeAssets(const std::filesystem::path& path)
 {
 	std::queue<std::filesystem::path> pathQueue;

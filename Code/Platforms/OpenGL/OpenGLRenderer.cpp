@@ -422,7 +422,8 @@ void OpenGLRenderer::DrawQuadUI(const glm::vec2& position, const glm::vec2& scal
     model = glm::scale(model, glm::vec3(realScale.x, realScale.y, 0.0f));
 
     m_uiShader.SetMatrix4("model", model);
-    m_uiShader.SetMatrix4("projection", m_camera->GetProjectionMatrix(CameraType::Orthographic));
+    //m_uiShader.SetMatrix4("projection", m_camera->GetProjectionMatrix(CameraType::Orthographic));
+    m_uiShader.SetMatrix4("projection", m_projectionMatrix);
     m_uiShader.SetVector4f("color", color);
 
     glBindVertexArray(m_quadVAO);

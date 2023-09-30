@@ -57,13 +57,7 @@ public:
 		m_textures.erase(name);
 	}
 
-	Scene* GetScene(const std::string& name)
-	{
-		if (m_sceneMap.find(name) != m_sceneMap.end())
-			return m_sceneMap[name].get();
-
-		return nullptr;
-	}
+	Scene* GetScene(const std::string& name);
 	
 	Texture& GetTexture(const std::string& name)
 	{
