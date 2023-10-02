@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <array>
 #include <string>
 #include <filesystem>
 #include <functional>
@@ -18,8 +18,10 @@ public:
 
 	static void HandleMetaFile(const std::filesystem::path& path);
 	static AssetType GetAssetType(const std::filesystem::path& path);
+
 	static bool IsSceneFile(const std::filesystem::path& path);
 	static bool IsImageFile(const std::filesystem::path& path);
+	static bool IsAudioFile(const std::filesystem::path& path);
 	static bool IsNativeScriptFile(const std::filesystem::path& path);
 	static bool IsAnimatorFile(const std::filesystem::path& path);
 	static bool IsPrefabFile(const std::filesystem::path& path);
@@ -28,15 +30,21 @@ public:
 	static bool WriteFile(const std::filesystem::path& path, HandleFileCallback callback);
 
 	static void GenerateImageMetaFile(const std::filesystem::path& path);
+	static void GenerateAudioMetaFile(const std::filesystem::path& path);
 };
 
-static const std::vector<std::string> supportedNativeScriptFormats {
+static const std::array<std::string, 3> supportedNativeScriptFormats {
 	".h",
 	".hpp",
 	".cpp"
 };
 
-static const std::vector<std::string> supportedImageFormats {
+static const std::array<std::string, 2> supportedImageFormats {
 	".jpg",
 	".png"
+};
+
+static const std::array<std::string, 2> supportedAudioFormats {
+	".wav",
+	".mp3"
 };

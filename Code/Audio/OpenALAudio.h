@@ -4,11 +4,32 @@
 #include <AL/alc.h>
 #include <AL/alext.h>
 #include "Audio.h"
+#include "AudioSource.h"
 
-struct AudioSource
+class OpenALAudioSource : public AudioSource
 {
-	ALuint buffer;
-	ALuint source;
+public:
+	OpenALAudioSource(ALuint buffer, ALuint source)
+		: m_buffer(buffer)
+		, m_source(source)
+	{
+
+	}
+
+	virtual void Play() override
+	{
+		alSourcePlay(m_source);
+	}
+
+	virtual void Destroy() override
+	{
+		alDeleteSources(1, &m_source);
+		alDeleteBuffers(1, &m_buffer);
+	}
+
+private:
+	ALuint m_buffer;
+	ALuint m_source;
 };
 
 class OpenALAudio : public Audio
@@ -32,5 +53,4 @@ public:
 private:
 	static ALCdevice* s_device;
 	static ALCcontext* s_context;
-	static std::unordered_map<std::string, AudioSource> s_audioSources;
 };

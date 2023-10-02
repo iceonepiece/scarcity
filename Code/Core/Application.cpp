@@ -5,6 +5,7 @@
 #include "Input/NewInput.h"
 #include "Graphics/Renderer.h"
 #include "Lua/LuaEngine.h"
+#include "Audio/OpenALAudio.h"
 
 Application* Application::s_instance = nullptr;
 
@@ -18,12 +19,17 @@ Application::Application(const ApplicationConfigs& configs)
 	m_renderer->Initialize();
 
 	m_luaEngine = std::make_unique<LuaEngine>();
+
+	m_audio = std::make_unique<OpenALAudio>();
+	m_audio->Initialize();
 }
 
 Application::~Application()
 {
 	for (auto& layer : m_layers)
 		layer->Shutdown();
+
+	m_audio->Destroy();
 }
 
 void Application::AddLayer(std::unique_ptr<Layer> layer)

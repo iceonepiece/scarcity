@@ -116,6 +116,21 @@ void ImGuiAssetPanel::RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFla
 	*/
 }
 
+void ImGuiAssetPanel::RenderAudio(AudioAsset& audioAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
+{
+	std::string useIcon = (ICON_FA_MUSIC " ");
+
+	flags |= ImGuiTreeNodeFlags_Leaf;
+
+	bool opened = ImGui::TreeNodeEx(audioAsset.GetPath().string().c_str(), flags, (useIcon + audioAsset.GetName()).c_str());
+
+	if (opened)
+	{
+		ImGui::TreePop();
+	}
+}
+
+
 void ImGuiAssetPanel::RenderFolder(const std::filesystem::path& path, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
 {
 	std::string useIcon = ICON_FA_FOLDER;
@@ -177,13 +192,13 @@ void ImGuiAssetPanel::Render()
 		if (directoryEntry.is_directory())
 		{
 			RenderFolder(path, flags, [&]()
-			{
-				if (ImGui::IsItemClicked())
-					m_editor.SetSelectedPath(path);
+				{
+					if (ImGui::IsItemClicked())
+						m_editor.SetSelectedPath(path);
 
-				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-					m_currentDirectory /= path.filename();
-			});
+					if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+						m_currentDirectory /= path.filename();
+				});
 
 		}
 		else if (Asset* asset = m_editor.GetAsset(path))
@@ -205,6 +220,15 @@ void ImGuiAssetPanel::Render()
 					},
 					m_editor.GetSelectedObject().note
 				);
+			}
+			else if (asset->GetType() == AssetType::Audio)
+			{
+				AudioAsset* audioAsset = static_cast<AudioAsset*>(asset);
+				RenderAudio(*audioAsset, flags, [&]()
+				{
+					if (ImGui::IsItemClicked())
+						m_editor.SetSelectedPath(audioAsset->GetPath());
+				});
 			}
 			else if (asset->GetType() == AssetType::NativeScript)
 			{

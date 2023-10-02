@@ -5,6 +5,7 @@
 #include <iostream>
 #include "File/MetaSerializer.h"
 #include "ImGuiEntityProperties.h"
+#include "Audio/AudioSource.h"
 #include "ImGuiComponents/ImGuiComponentRenderer.h"
 
 
@@ -19,6 +20,8 @@ void ImGuiAssetProperties::Render(Asset* asset)
     else if (PrefabAsset* prefabAsset = dynamic_cast<PrefabAsset*>(asset))
         RenderPrefabAsset(*prefabAsset);
 
+    else if (AudioAsset* audioAsset = dynamic_cast<AudioAsset*>(asset))
+        RenderAudioAsset(*audioAsset);
 }
 
 void ImGuiAssetProperties::RenderPrefabAsset(PrefabAsset& prefabAsset)
@@ -101,6 +104,21 @@ void ImGuiAssetProperties::RenderTextureAsset(TextureAsset& textureAsset)
         ImGui::Text("pointer = %p", texture->GetRendererID());
         ImGui::Text("size = %d x %d", texture->GetWidth(), texture->GetHeight());
         ImGui::Image((ImTextureID)texture->GetRendererID(), ImVec2(texture->GetWidth(), texture->GetHeight()), { 0, 1 }, { 1, 0 });
+    }
+}
+
+void ImGuiAssetProperties::RenderAudioAsset(AudioAsset& audioAsset)
+{
+    std::string name = audioAsset.GetName() + " (Audio)";
+    ImGui::Text(name.c_str());
+    
+    if (ImGui::Button("Play"))
+    {
+        if (AudioSource* audioSource = audioAsset.GetAudioSource())
+        {
+            audioSource->Play();
+        }
+
     }
 }
 

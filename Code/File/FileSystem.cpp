@@ -1,6 +1,7 @@
 #include "FileSystem.h"
 #include "MetaSerializer.h"
 #include "Asset/TextureAsset.h"
+#include "Asset/AudioAsset.h"
 
 bool FileSystem::CopyFile_(std::filesystem::path sourcePath, std::filesystem::path destPath)
 {
@@ -108,6 +109,11 @@ void FileSystem::HandleMetaFile(const std::filesystem::path& path)
 		std::cout << "No meta file exists for an image: " << path << std::endl;
 		GenerateImageMetaFile(path);
 	}
+	else if (IsAudioFile(path) && !FileSystem::FileExists(path.string() + ".meta"))
+	{
+		std::cout << "No meta file exists for an audio: " << path << std::endl;
+		GenerateAudioMetaFile(path);
+	}
 }
 
 AssetType FileSystem::GetAssetType(const std::filesystem::path& path)
@@ -148,6 +154,18 @@ bool FileSystem::IsImageFile(const std::filesystem::path& path)
 	return false;
 }
 
+bool FileSystem::IsAudioFile(const std::filesystem::path& path)
+{
+	const std::string extension = path.extension().generic_string();
+	for (const auto& format : supportedAudioFormats)
+	{
+		if (extension == format)
+			return true;
+	}
+
+	return false;
+}
+
 bool FileSystem::IsAnimatorFile(const std::filesystem::path& path)
 {
 	return path.extension().generic_string() == ".controller";
@@ -165,6 +183,21 @@ void FileSystem::GenerateImageMetaFile(const std::filesystem::path& path)
 		std::cout << "Create meta file for " << path << std::endl;
 		TextureAsset textureAsset(path, nullptr);
 		MetaSerializer::SerializeImage(textureAsset, path);
+	}
+	else
+	{
+		std::cout << "Meta file was already exist " << path << std::endl;
+	}
+
+}
+
+void FileSystem::GenerateAudioMetaFile(const std::filesystem::path& path)
+{
+	if (!FileSystem::FileExists(path.string() + ".meta"))
+	{
+		std::cout << "Create meta file for " << path << std::endl;
+		AudioAsset audioAsset(path);
+		//MetaSerializer::SerializeImage(textureAsset, path);
 	}
 	else
 	{

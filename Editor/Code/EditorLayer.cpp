@@ -233,6 +233,12 @@ void EditorLayer::LoadAsset(const std::filesystem::path& path)
         std::unique_ptr<TextureAsset> textureAsset = std::make_unique<TextureAsset>(path);
         m_assetMap.insert({ path.string(), std::move(textureAsset) });
     }
+    else if (FileSystem::IsAudioFile(path))
+    {
+        std::cout << "LoadAsset (Audio): " << path << "\n";
+        std::unique_ptr<AudioAsset> audioAsset = std::make_unique<AudioAsset>(path);
+        m_assetMap.insert({ path.string(), std::move(audioAsset) });
+    }
     else if (FileSystem::IsPrefabFile(path))
     {
         std::cout << "LoadAsset (Prefab): " << path << "\n";

@@ -15,6 +15,7 @@ class LuaEngine;
 class ImGuiManager;
 class Layer;
 class Renderer;
+class Audio;
 
 constexpr int TAG_SIZE = 8;
 
@@ -59,6 +60,7 @@ public:
 	inline Renderer& GetRenderer() { return *m_renderer; }
 	inline Window& GetWindow() { return *m_window; }
 	inline NewInput& GetInput() { return *m_input; }
+	inline Audio& GetAudio() { return *m_audio; }
 
 	std::array<std::string, TAG_SIZE>& GetTags() { return m_tags; };
 
@@ -76,6 +78,7 @@ protected:
 	std::unique_ptr<ImGuiManager> m_imguiManager;
 	std::unique_ptr<LuaEngine> m_luaEngine;
 	std::unique_ptr<NewInput> m_input;
+	std::unique_ptr<Audio> m_audio;
 
 	std::vector<std::unique_ptr<Layer>> m_layers;
 	std::array<std::string, TAG_SIZE> m_tags { "Player", "Enemy", "Platform", "", "", "", "", ""  };

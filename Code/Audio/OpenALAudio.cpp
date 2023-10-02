@@ -5,7 +5,6 @@
 
 ALCdevice* OpenALAudio::s_device;
 ALCcontext* OpenALAudio::s_context;
-std::unordered_map<std::string, AudioSource> OpenALAudio::s_audioSources;
 
 void OpenALAudio::Initialize()
 {
@@ -32,9 +31,11 @@ void OpenALAudio::PlaySound(const std::string& name)
     if (s_audioSources.find(name) == s_audioSources.end())
         return;
 
-    AudioSource audioSource = s_audioSources[name];
+    s_audioSources[name]->Play();
 
-    alSourcePlay(audioSource.source);
+    //AudioSource audioSource = s_audioSources[name];
+
+    //alSourcePlay(audioSource.source);
 
     /*
     ALint state = AL_PLAYING;
@@ -92,7 +93,7 @@ bool OpenALAudio::LoadSound(const std::string& name, const std::string& filePath
     alSourcei(source, AL_LOOPING, AL_FALSE);
     alSourcei(source, AL_BUFFER, buffer);
 
-    s_audioSources.emplace(name, AudioSource{ buffer, source });
+    s_audioSources.emplace(name, std::make_unique<OpenALAudioSource>(buffer, source));
 
     return true;
 }
@@ -100,10 +101,8 @@ bool OpenALAudio::LoadSound(const std::string& name, const std::string& filePath
 void OpenALAudio::Destroy()
 {
     for (auto& [_name, audioSource] : s_audioSources)
-    {
-        alDeleteSources(1, &(audioSource.source));
-        alDeleteBuffers(1, &(audioSource.buffer));
-    }
+        audioSource->Destroy();
+
     s_audioSources.clear();
 
     alcMakeContextCurrent(nullptr);
