@@ -6,7 +6,7 @@
 #include <fstream>
 #include <AL/al.h>
 
-std::int32_t convert_to_int(char* buffer, std::size_t len)
+static std::int32_t convert_to_int(char* buffer, std::size_t len)
 {
     std::int32_t a = 0;
     if (std::endian::native == std::endian::little)
@@ -17,7 +17,7 @@ std::int32_t convert_to_int(char* buffer, std::size_t len)
     return a;
 }
 
-bool load_wav_file_header(std::ifstream& file,
+static bool load_wav_file_header(std::ifstream& file,
     std::uint8_t& channels,
     std::int32_t& sampleRate,
     std::uint8_t& bitsPerSample,
@@ -152,7 +152,7 @@ bool load_wav_file_header(std::ifstream& file,
     return true;
 }
 
-bool load_wav(const std::string& filename,
+static bool load_wav(const std::string& filename,
     std::uint8_t& channels,
     std::int32_t& sampleRate,
     std::uint8_t& bitsPerSample,

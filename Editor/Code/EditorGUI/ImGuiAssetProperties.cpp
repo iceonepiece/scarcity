@@ -113,13 +113,13 @@ void ImGuiAssetProperties::RenderAudioAsset(AudioAsset& audioAsset)
 
     ImGui::Text(name.c_str());
 
-    if (AudioSource* audioSource = audioAsset.GetAudioSource())
+    if (AudioClip* audioClip = audioAsset.GetAudioClip())
     {
-        std::string durationText = "Seconds: " + std::to_string(audioSource->GetDuration());
+        std::string durationText = "Seconds: " + std::to_string(audioClip->GetDuration());
         ImGui::Text(durationText.c_str());
         if (ImGui::Button("Play"))
         {
-            audioSource->Play();
+            Application::Get().GetAudio().PlaySound(audioClip);
         }
 
     }

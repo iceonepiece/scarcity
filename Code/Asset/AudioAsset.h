@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "Asset.h"
 #include "Audio/Audio.h"
 #include "Core/Application.h"
@@ -10,18 +11,18 @@ public:
 	AudioAsset(const std::filesystem::path& path)
 		: Asset(path, AssetType::Audio)
 	{
-		Audio& audio = Application::Get().GetAudio();
-		audio.LoadSound(m_path.string(), m_path.string());
-		m_audioSource = audio.GetAudioSource(m_path.string());
+		AudioClip* audioClip = Application::Get().GetAudio().LoadAudioClip(path);
+		m_audioClip = std::unique_ptr<AudioClip>(audioClip);
+		m_audioClip->Load();
 	}
 
-	AudioSource* GetAudioSource()
+	AudioClip* GetAudioClip()
 	{
-		return m_audioSource;
+		return m_audioClip.get();
 	}
 
 	virtual std::string GetTypeString() { return "Audio"; }
 
 private:
-	AudioSource* m_audioSource = nullptr;
+	std::unique_ptr<AudioClip> m_audioClip = nullptr;
 };

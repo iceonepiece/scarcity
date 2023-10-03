@@ -1,10 +1,12 @@
 #include "OpenALAudio.h"
-#include "Wav.h"
+#include "OpenALAudioClip.h"
+#include "Audio/Wav.h"
 #include <iostream>
 #include <vector>
 
 ALCdevice* OpenALAudio::s_device;
 ALCcontext* OpenALAudio::s_context;
+std::unique_ptr<OpenALAudioSource> OpenALAudio::s_mainAudioSource = nullptr;
 
 void OpenALAudio::Initialize()
 {
@@ -24,6 +26,13 @@ void OpenALAudio::Initialize()
     {
         std::cerr << "ERROR: Could not make audio context current" << std::endl;
     }
+
+    s_mainAudioSource = std::make_unique<OpenALAudioSource>();
+}
+
+void OpenALAudio::PlaySound(AudioClip* audioClip)
+{
+    s_mainAudioSource->Play(audioClip);
 }
 
 void OpenALAudio::PlaySound(const std::string& name)
@@ -45,6 +54,18 @@ void OpenALAudio::PlaySound(const std::string& name)
         alGetSourcei(source, AL_SOURCE_STATE, &state);
     }
     */
+}
+
+AudioClip* OpenALAudio::LoadAudioClip(const std::filesystem::path& filePath)
+{
+    if (OpenALAudioClip* alClip = new OpenALAudioClip(filePath))
+    {
+        alClip->Load();
+
+        return alClip;
+    }
+
+    return nullptr;
 }
 
 
@@ -84,6 +105,7 @@ bool OpenALAudio::LoadSound(const std::string& name, const std::string& filePath
     alBufferData(buffer, format, soundData.data(), soundData.size(), sampleRate);
     soundData.clear(); // erase the sound in RAM
 
+    /*
     ALuint source;
     alGenSources(1, &source);
     alSourcef(source, AL_PITCH, 1);
@@ -94,6 +116,7 @@ bool OpenALAudio::LoadSound(const std::string& name, const std::string& filePath
     alSourcei(source, AL_BUFFER, buffer);
 
     s_audioSources.emplace(name, std::make_unique<OpenALAudioSource>(buffer, source));
+    */
 
     return true;
 }

@@ -570,7 +570,7 @@
     <ClCompile Include="Code\Scene\SceneSerializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Audio\OpenALAudio.cpp">
+    <ClCompile Include="Code\Audio\OpenAL\OpenALAudio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="External\Include\imgui\imgui_stdlib.cpp">
@@ -667,6 +667,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Audio\Audio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Audio\OpenAL\OpenALAudioSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -2177,7 +2180,7 @@
     <ClInclude Include="Code\Scene\SceneSerializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Audio\OpenALAudio.h">
+    <ClInclude Include="Code\Audio\OpenAL\OpenALAudio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Components\BaseComponent.h">
@@ -2349,6 +2352,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Audio\AudioSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Components\AudioSourceComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Audio\OpenAL\OpenALAudioSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Audio\AudioClip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Audio\OpenAL\OpenALAudioClip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

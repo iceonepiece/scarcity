@@ -298,7 +298,8 @@
     <ClCompile Include="Code\Animations\AnimatorTransition.cpp" />
     <ClCompile Include="Code\Asset\TextureAsset.cpp" />
     <ClCompile Include="Code\Audio\Audio.cpp" />
-    <ClCompile Include="Code\Audio\OpenALAudio.cpp" />
+    <ClCompile Include="Code\Audio\OpenAL\OpenALAudio.cpp" />
+    <ClCompile Include="Code\Audio\OpenAL\OpenALAudioSource.cpp" />
     <ClCompile Include="Code\Core\Application.cpp" />
     <ClCompile Include="Code\Core\GameState.cpp" />
     <ClCompile Include="Code\Core\ResourceManager.cpp" />
@@ -373,8 +374,12 @@
     <ClInclude Include="Code\Asset\AudioAsset.h" />
     <ClInclude Include="Code\Asset\NativeScriptAsset.h" />
     <ClInclude Include="Code\Asset\PrefabAsset.h" />
+    <ClInclude Include="Code\Audio\AudioClip.h" />
     <ClInclude Include="Code\Audio\AudioSource.h" />
-    <ClInclude Include="Code\Audio\OpenALAudio.h" />
+    <ClInclude Include="Code\Audio\OpenAL\OpenALAudio.h" />
+    <ClInclude Include="Code\Audio\OpenAL\OpenALAudioClip.h" />
+    <ClInclude Include="Code\Audio\OpenAL\OpenALAudioSource.h" />
+    <ClInclude Include="Code\Components\AudioSourceComponent.h" />
     <ClInclude Include="Code\Components\BaseComponent.h" />
     <ClInclude Include="Code\Components\BoxCollider2DComponent.h" />
     <ClInclude Include="Code\Components\CameraComponent.h" />

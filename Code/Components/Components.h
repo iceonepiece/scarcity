@@ -3,6 +3,7 @@
 #include <tuple>
 
 #include "AIComponent.h"
+#include "AudioSourceComponent.h"
 #include "BaseComponent.h"
 #include "BoxCollider2DComponent.h"
 #include "CameraComponent.h"
@@ -32,6 +33,7 @@ using ComponentList = std::tuple<
 	GroundDetectionComponent,
 	NativeScriptComponent,
 	Rigidbody2DComponent,
+	AudioSourceComponent,
 	ButtonComponent
 
 >;

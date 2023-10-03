@@ -5,7 +5,7 @@
 #include "Input/NewInput.h"
 #include "Graphics/Renderer.h"
 #include "Lua/LuaEngine.h"
-#include "Audio/OpenALAudio.h"
+#include "Audio/Audio.h"
 
 Application* Application::s_instance = nullptr;
 
@@ -20,7 +20,7 @@ Application::Application(const ApplicationConfigs& configs)
 
 	m_luaEngine = std::make_unique<LuaEngine>();
 
-	m_audio = std::make_unique<OpenALAudio>();
+	m_audio = Audio::Create();
 	m_audio->Initialize();
 }
 

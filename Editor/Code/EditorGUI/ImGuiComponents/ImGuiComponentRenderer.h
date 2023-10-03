@@ -2,6 +2,7 @@
 
 #include <string>
 #include <entt/entt.hpp>
+#include "ImGuiAudioSourceComponent.h"
 #include "ImGuiBaseComponent.h"
 #include "ImGuiBoxCollider2DComponent.h"
 #include "ImGuiButtonComponent.h"

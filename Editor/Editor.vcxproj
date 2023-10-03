@@ -172,6 +172,7 @@
     <ClInclude Include="Code\EditorApplication.h" />
     <ClInclude Include="Code\EditorCamera.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiAssetPanel.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiAudioSourceComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiBaseComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiBoxCollider2DComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiButtonComponent.h" />
