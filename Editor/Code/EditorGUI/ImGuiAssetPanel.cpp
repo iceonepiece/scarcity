@@ -124,6 +124,8 @@ void ImGuiAssetPanel::RenderAudio(AudioAsset& audioAsset, ImGuiTreeNodeFlags fla
 
 	bool opened = ImGui::TreeNodeEx(audioAsset.GetPath().string().c_str(), flags, (useIcon + audioAsset.GetName()).c_str());
 
+	callback();
+
 	if (opened)
 	{
 		ImGui::TreePop();

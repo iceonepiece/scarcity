@@ -109,11 +109,13 @@ void FileSystem::HandleMetaFile(const std::filesystem::path& path)
 		std::cout << "No meta file exists for an image: " << path << std::endl;
 		GenerateImageMetaFile(path);
 	}
+	/*
 	else if (IsAudioFile(path) && !FileSystem::FileExists(path.string() + ".meta"))
 	{
 		std::cout << "No meta file exists for an audio: " << path << std::endl;
 		GenerateAudioMetaFile(path);
 	}
+	*/
 }
 
 AssetType FileSystem::GetAssetType(const std::filesystem::path& path)

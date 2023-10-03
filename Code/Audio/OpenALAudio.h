@@ -13,7 +13,20 @@ public:
 		: m_buffer(buffer)
 		, m_source(source)
 	{
+		ALint sizeInBytes;
+		ALint channels;
+		ALint bits;
 
+		alGetBufferi(m_buffer, AL_SIZE, &sizeInBytes);
+		alGetBufferi(m_buffer, AL_CHANNELS, &channels);
+		alGetBufferi(m_buffer, AL_BITS, &bits);
+
+		int lengthInSamples = sizeInBytes * 8 / (channels * bits);
+
+		ALint frequency;
+		alGetBufferi(m_buffer, AL_FREQUENCY, &frequency);
+
+		m_duration = (float)lengthInSamples / (float)frequency;
 	}
 
 	virtual void Play() override
