@@ -12,7 +12,12 @@ struct AudioSourceComponent
 
 	float volume = 1.0f;
 	std::string audioClipPath = "";
-	AudioSource* audioClip = nullptr;
+	AudioSource* audioSource = nullptr;
+
+	void Play(AudioClip* clip)
+	{
+		audioSource->Play(clip);
+	}
 };
 
 static void DoSerialize(const AudioSourceComponent& audioSource, json& entityJson)

@@ -10,6 +10,8 @@
 #include "Events/WindowEvent.h"
 #include "Input/NewInput.h"
 #include "Scene/Scene.h"
+#include "Core/EntityManager.h"
+#include "Asset/AssetManager.h"
 
 class LuaEngine;
 class ImGuiManager;
@@ -61,6 +63,8 @@ public:
 	inline Window& GetWindow() { return *m_window; }
 	inline NewInput& GetInput() { return *m_input; }
 	inline Audio& GetAudio() { return *m_audio; }
+	inline AssetManager& GetAssetManager() { return *m_assetManager; }
+	inline EntityManager& GetPrefabManager() { return m_prefabManager; }
 
 	std::array<std::string, TAG_SIZE>& GetTags() { return m_tags; };
 
@@ -79,6 +83,9 @@ protected:
 	std::unique_ptr<LuaEngine> m_luaEngine;
 	std::unique_ptr<NewInput> m_input;
 	std::unique_ptr<Audio> m_audio;
+	std::unique_ptr<AssetManager> m_assetManager;
+
+	EntityManager m_prefabManager;
 
 	std::vector<std::unique_ptr<Layer>> m_layers;
 	std::array<std::string, TAG_SIZE> m_tags { "Player", "Enemy", "Platform", "", "", "", "", ""  };

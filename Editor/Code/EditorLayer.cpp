@@ -21,6 +21,7 @@
 #include "Components/ComponentSerializer.h"
 #include "Scene/SceneSerializer.h"
 #include "Scene/SceneManager.h"
+#include "Asset/AssetManager.h"
 
 EditorLayer* EditorLayer::s_instance = nullptr;
 
@@ -216,44 +217,15 @@ Asset* EditorLayer::GetAsset(const std::filesystem::path& path)
 {
     FileSystem::HandleMetaFile(path);
 
-    if (s_instance->m_assetMap.find(path.string()) == s_instance->m_assetMap.end())
-        s_instance->LoadAsset(path);
+    AssetManager& assetManager = s_instance->m_app.GetAssetManager();
+    
+    Asset* asset = assetManager.GetAsset(path);
 
-    if (s_instance->m_assetMap.find(path.string()) != s_instance->m_assetMap.end())
-        return s_instance->m_assetMap[path.string()].get();
+    if (asset == nullptr)
+        asset = assetManager.LoadAsset(path);
 
-    return nullptr;
+    return asset;
 }
-
-void EditorLayer::LoadAsset(const std::filesystem::path& path)
-{
-    if (FileSystem::IsImageFile(path))
-    {
-        std::cout << "LoadAsset (Texture): " << path << "\n";
-        std::unique_ptr<TextureAsset> textureAsset = std::make_unique<TextureAsset>(path);
-        m_assetMap.insert({ path.string(), std::move(textureAsset) });
-    }
-    else if (FileSystem::IsAudioFile(path))
-    {
-        std::cout << "LoadAsset (Audio): " << path << "\n";
-        std::unique_ptr<AudioAsset> audioAsset = std::make_unique<AudioAsset>(path);
-        m_assetMap.insert({ path.string(), std::move(audioAsset) });
-    }
-    else if (FileSystem::IsPrefabFile(path))
-    {
-        std::cout << "LoadAsset (Prefab): " << path << "\n";
-        Entity entity = m_prefabManager.CreateEntity();
-        std::unique_ptr<PrefabAsset> prefabAsset = std::make_unique<PrefabAsset>(path, entity);
-        m_assetMap.insert({ path.string(), std::move(prefabAsset) });
-    }
-    else if (FileSystem::IsNativeScriptFile(path))
-    {
-        std::cout << "LoadAsset (NativeScrpt): " << path << "\n";
-        std::unique_ptr<NativeScriptAsset> nativeScritpAsset = std::make_unique<NativeScriptAsset>(path);
-        m_assetMap.insert({ path.string(), std::move(nativeScritpAsset) });
-    }
-}
-
 
 void EditorLayer::UnselectObject()
 {

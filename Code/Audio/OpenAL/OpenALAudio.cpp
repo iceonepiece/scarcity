@@ -56,6 +56,11 @@ void OpenALAudio::PlaySound(const std::string& name)
     */
 }
 
+AudioSource* OpenALAudio::CreateAudioSource()
+{
+    return new OpenALAudioSource();
+}
+
 AudioClip* OpenALAudio::LoadAudioClip(const std::filesystem::path& filePath)
 {
     if (OpenALAudioClip* alClip = new OpenALAudioClip(filePath))

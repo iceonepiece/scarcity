@@ -27,6 +27,8 @@ public:
 
 	virtual void SetVolume(float volume) = 0;
 
+	virtual AudioSource* CreateAudioSource() = 0;
+
 	AudioSource* GetAudioSource(const std::string& name)
 	{
 		if (s_audioSources.find(name) != s_audioSources.end())

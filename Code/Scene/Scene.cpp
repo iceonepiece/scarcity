@@ -10,6 +10,7 @@
 #include "Systems/AnimationSystem.h"
 #include "Physics/NullFixtureData.h"
 #include "Physics/EntityFixtureData.h"
+#include "Audio/Audio.h"
 
 Scene::Scene(const std::string& name, const std::filesystem::path& path)
     : m_name(name)
@@ -95,6 +96,13 @@ void Scene::Start()
         AnimatorController* baseAnimator = ResourceAPI::GetResourceManager()->GetAnimatorController(animator.controllerName);
         animator.controller = baseAnimator != nullptr ? new AnimatorController(*baseAnimator) : nullptr;
     }
+
+    auto audioView = m_manager.m_registry.view<AudioSourceComponent>();
+
+    for (auto [entity, audioSource] : audioView.each())
+    {
+        audioSource.audioSource = m_app->GetAudio().CreateAudioSource();
+    }
 }
 
 void Scene::Stop()
@@ -111,6 +119,12 @@ void Scene::Stop()
     for (auto [entity, animator] : animators.each())
     {
         delete animator.controller;
+    }
+
+    auto audioView = m_manager.m_registry.view<AudioSourceComponent>();
+    for (auto [entity, audioSource] : audioView.each())
+    {
+        delete audioSource.audioSource;
     }
 }
 

@@ -296,6 +296,7 @@
     <ClCompile Include="Code\Animations\AnimatorController.cpp" />
     <ClCompile Include="Code\Animations\AnimatorState.cpp" />
     <ClCompile Include="Code\Animations\AnimatorTransition.cpp" />
+    <ClCompile Include="Code\Asset\AssetManager.cpp" />
     <ClCompile Include="Code\Asset\TextureAsset.cpp" />
     <ClCompile Include="Code\Audio\Audio.cpp" />
     <ClCompile Include="Code\Audio\OpenAL\OpenALAudio.cpp" />
@@ -371,6 +372,7 @@
     <ClInclude Include="Code\Animations\AnimatorTransition.h" />
     <ClInclude Include="Code\APIs\InputAPI.h" />
     <ClInclude Include="Code\Asset\AnimatorControllerAsset.h" />
+    <ClInclude Include="Code\Asset\AssetManager.h" />
     <ClInclude Include="Code\Asset\AudioAsset.h" />
     <ClInclude Include="Code\Asset\NativeScriptAsset.h" />
     <ClInclude Include="Code\Asset\PrefabAsset.h" />

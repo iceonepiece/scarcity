@@ -15,6 +15,7 @@ public:
 	virtual void Initialize() override;
 	virtual void Destroy() override;
 	
+	virtual AudioSource* CreateAudioSource() override;
 	virtual AudioClip* LoadAudioClip(const std::filesystem::path& filePath) override;
 
 	virtual bool LoadSound(const std::string& name, const std::string& filePath) override;

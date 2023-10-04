@@ -91,7 +91,6 @@ public:
 
 	void SetSelectedAsset(Asset* asset, const std::string& note);
 	void SetSelectedPath(const std::filesystem::path& path, const std::string& note = "");
-	void LoadAsset(const std::filesystem::path& path);
 
 	void SetPickedEntity(entt::entity picked);
 	void UnselectObject();
