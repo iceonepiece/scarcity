@@ -8,7 +8,7 @@
 class AssetManager
 {
 public:
-	Asset* GetAsset(const std::filesystem::path& path);
+	Asset* GetAsset(const std::filesystem::path& path, bool loadIfNotExist = false);
 	Asset* LoadAsset(const std::filesystem::path& path);
 	bool AssetExists(const std::filesystem::path& path);
 private:

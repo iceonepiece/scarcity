@@ -41,11 +41,14 @@ bool AssetManager::AssetExists(const std::filesystem::path& path)
 	return m_assetMap.find(path.string()) != m_assetMap.end();
 }
 
-Asset* AssetManager::GetAsset(const std::filesystem::path& path)
+Asset* AssetManager::GetAsset(const std::filesystem::path& path, bool loadIfNotExist)
 {
     std::cout << "AssetManager::GetAsset: " << path << std::endl;
     if (AssetExists(path))
         return m_assetMap[path.string()].get();
+
+    if (loadIfNotExist)
+        return LoadAsset(path);
 
     return nullptr;
 }
