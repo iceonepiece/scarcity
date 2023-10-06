@@ -13,9 +13,12 @@ Scene* SceneManager::Copy(Scene& sourceScene)
     srcRegistry.each([&](auto srcEntity) {
         auto destEntity = destRegistry.create();
 
+        IDComponent& id = srcRegistry.get<IDComponent>(srcEntity);
+        newScene->m_manager.m_uniqueIDToEntity.insert({ id.ID, destEntity });
+
         std::apply([&](auto... componentTypes) {
             (CopyComponent<decltype(componentTypes)>(srcRegistry, destRegistry, srcEntity, destEntity), ...);
-            }, ComponentList{});
+            }, CopyToSceneComponents{});
         });
 
     return newScene;
@@ -29,6 +32,24 @@ std::unique_ptr<Scene> SceneManager::LoadScene(const std::filesystem::path& file
 		return scene;
 
 	return nullptr;
+}
+
+void SceneManager::ResolveUniqueIDs(Scene& scene)
+{
+    EntityManager& manager = scene.m_manager;
+
+    auto cameraView = manager.m_registry.view<CameraComponent>();
+
+    for (auto [entity, camera] : cameraView.each())
+    {
+        uint64_t id = camera.targetID;
+        entt::entity target = entt::null;
+
+        if (manager.m_uniqueIDToEntity.find(id) != manager.m_uniqueIDToEntity.end())
+            target = manager.m_uniqueIDToEntity[id];
+
+        camera.targetEntity = Entity{ &manager, target };
+    }
 }
 
 std::unique_ptr<Scene> SceneManager::CreateDefaultScene(const std::filesystem::path& directory)

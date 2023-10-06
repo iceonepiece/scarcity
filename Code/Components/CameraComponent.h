@@ -1,6 +1,7 @@
 #pragma once
 #include <nlohmann/json.hpp>
 #include <imgui/imgui.h>
+#include "Core/Entity.h"
 
 using json = nlohmann::json;
 
@@ -18,6 +19,9 @@ struct CameraComponent
 	float size = 1.0f;
 	float near = 0.0f;
 	float far = 1000.0f;
+
+	UniqueID targetID;
+	Entity targetEntity;
 };
 
 static void DoSerialize(const CameraComponent& camera, json& entityJson)
@@ -26,6 +30,7 @@ static void DoSerialize(const CameraComponent& camera, json& entityJson)
 	entityJson["Camera"]["size"] = camera.size;
 	entityJson["Camera"]["near"] = camera.near;
 	entityJson["Camera"]["far"] = camera.far;
+	entityJson["Camera"]["targetID"] = (uint64_t)camera.targetID;
 }
 
 static void DoDeserialize(CameraComponent& camera, json& cameraJson)
@@ -34,11 +39,7 @@ static void DoDeserialize(CameraComponent& camera, json& cameraJson)
 	camera.size = cameraJson["size"].get<float>();
 	camera.near = cameraJson["near"].get<float>();
 	camera.far = cameraJson["far"].get<float>();
-}
 
-static void RenderImGui(CameraComponent& camera)
-{
-	ImGui::InputFloat("Size", &camera.size);
-	ImGui::InputFloat("Near", &camera.near);
-	ImGui::InputFloat("Far", &camera.far);
+	if (cameraJson["targetID"].is_number_unsigned())
+		camera.targetID = cameraJson["targetID"].get<uint64_t>();
 }

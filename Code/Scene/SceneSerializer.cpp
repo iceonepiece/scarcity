@@ -52,7 +52,9 @@ bool SceneSerializer::Serialize(Scene& scene, std::filesystem::path filePath)
 
 		registry.each([&](entt::entity entity) {
 			json entityJson = {};
-			entityJson["id"] = entity;
+
+			IDComponent& id = registry.get<IDComponent>(entity);
+			entityJson["ID"] = (uint64_t)id.ID;
 
 			std::apply([&](auto... componentTypes) {
 				(serializer.Serialize<decltype(componentTypes)>(entityJson, entity), ...);
@@ -95,6 +97,13 @@ bool SceneSerializer::Deserialize(Scene& scene, std::filesystem::path filepath)
 		for (auto& entityJson : entitiesJson)
 		{
 			Entity entity = manager.CreateEntity();
+
+			if (entityJson["ID"].is_null())
+				entity.AddComponent<IDComponent>();
+			else
+				entity.AddComponent<IDComponent>(entityJson["ID"].get<uint64_t>());
+
+			manager.m_uniqueIDToEntity.insert({ entity.GetID(), entity.GetEntity() });
 
 			std::apply([&](auto... componentTypes) {
 				(serializer.Deserialize<decltype(componentTypes)>(entityJson, entity), ...);

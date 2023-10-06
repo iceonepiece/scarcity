@@ -6,6 +6,7 @@
 #include "ImGuiBaseComponent.h"
 #include "ImGuiBoxCollider2DComponent.h"
 #include "ImGuiButtonComponent.h"
+#include "ImGuiCameraComponent.h"
 #include "ImGuiSpriteRendererComponent.h"
 #include "ImGuiSpriteAnimatorComponent.h"
 #include "ImGuiTransformComponent.h"

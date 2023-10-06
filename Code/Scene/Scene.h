@@ -59,8 +59,6 @@ public:
 	virtual void Enter();
 	virtual void Exit();
 
-	static std::unique_ptr<Scene> Copy(Scene& sourceScene);
-
 	void SetApplication(Application* app) { m_app = app; }
 	Application* GetApplication() { return m_app; }
 

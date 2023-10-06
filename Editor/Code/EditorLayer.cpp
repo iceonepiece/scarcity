@@ -161,6 +161,8 @@ bool EditorLayer::OpenScene(std::filesystem::path path)
         success = false;
     }
 
+    SceneManager::ResolveUniqueIDs(*m_activeScene);
+
     m_activeScene->SetApplication(&m_app);
     m_activeScene->Initialize();
 

@@ -64,24 +64,6 @@ void Scene::DestroyEntity(entt::entity entity)
     m_manager.m_registry.destroy(entity);
 }
 
-std::unique_ptr<Scene> Scene::Copy(Scene& sourceScene)
-{
-    std::unique_ptr<Scene> newScene = std::make_unique<Scene>();
-
-    entt::registry& srcRegistry = sourceScene.m_manager.m_registry;
-    entt::registry& destRegistry = newScene->m_manager.m_registry;
-
-    srcRegistry.each([&](auto srcEntity) {
-        auto destEntity = destRegistry.create();
-
-        std::apply([&](auto... componentTypes) {
-            (CopyComponent<decltype(componentTypes)>(srcRegistry, destRegistry, srcEntity, destEntity), ...);
-        }, ComponentList{});
-    });
-
-    return newScene;
-}
-
 void Scene::Start()
 {
     StartPhysics();
@@ -102,6 +84,21 @@ void Scene::Start()
     for (auto [entity, audioSource] : audioView.each())
     {
         audioSource.audioSource = m_app->GetAudio().CreateAudioSource();
+    }
+
+    auto cameraView = m_manager.m_registry.view<CameraComponent>();
+
+    for (auto [entity, camera] : cameraView.each())
+    {
+        uint64_t id = camera.targetID;
+        entt::entity target = entt::null;
+
+        if (m_manager.m_uniqueIDToEntity.find(id) != m_manager.m_uniqueIDToEntity.end())
+        {
+            target = m_manager.m_uniqueIDToEntity[id];
+        }
+
+        camera.targetEntity = Entity{ &m_manager, target };
     }
 }
 

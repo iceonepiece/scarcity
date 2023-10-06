@@ -30,13 +30,19 @@ void ImGuiHierarchy::RenderEntity(EntityManager& manager, entt::entity entity)
 
     if (ImGui::BeginDragDropSource())
     {
-        ImGui::SetDragDropPayload("HIERARCHY_ENTITY", &entity, sizeof(entt::entity));
+        Entity sourceEntity{ &manager, entity };
+        ImGui::SetDragDropPayload("HIERARCHY_ENTITY", &sourceEntity, sizeof(Entity));
         ImGui::Text(base.name.c_str());
         ImGui::EndDragDropSource();
     }
 
-    if (ImGui::IsItemClicked())
+    if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Left))
     {
+        if (IDComponent* id = manager.m_registry.try_get<IDComponent>(entity))
+        {
+            std::cout << "ID Component: " << id->ID << std::endl;
+        }
+
         m_editor.SetPickedEntity(entity);
     }
 

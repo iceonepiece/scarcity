@@ -295,9 +295,10 @@ void ImGuiAssetPanel::Render()
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("HIERARCHY_ENTITY"))
 		{
-			entt::entity payload_entity = *(entt::entity*)payload->Data;
-			std::cout << "Drag Drop: " << (int)payload_entity << std::endl;
-			m_editor.CreatePrefab(payload_entity, m_currentDirectory);
+			//entt::entity payload_entity = *(entt::entity*)payload->Data;
+			Entity payloadEntity = *(Entity*)payload->Data;
+			std::cout << "Drag Drop: " << (int)payloadEntity.GetEntity() << std::endl;
+			m_editor.CreatePrefab(payloadEntity.GetEntity(), m_currentDirectory);
 		}
 		ImGui::EndDragDropTarget();
 	}

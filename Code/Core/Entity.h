@@ -4,6 +4,9 @@
 #include <entt/entt.hpp>
 #include "EntityManager.h"
 #include "Components/Relationship.h"
+#include "Components/IDComponent.h"
+#include "Components/BaseComponent.h"
+#include "Core/UniqueID.h"
 
 class Entity;
 
@@ -19,6 +22,11 @@ public:
 		,m_id(id)
 	{
 
+	}
+
+	bool IsValid()
+	{
+		return m_manager != nullptr && m_id != entt::null;
 	}
 
 	template<typename T, typename... Args>
@@ -46,6 +54,16 @@ public:
 				callback(child);
 			}
 		}
+	}
+
+	std::string GetName()
+	{
+		return GetComponent<BaseComponent>()->name;
+	}
+
+	UniqueID GetID()
+	{
+		return GetComponent<IDComponent>()->ID;
 	}
 
 	entt::entity GetEntity() { return m_id; }

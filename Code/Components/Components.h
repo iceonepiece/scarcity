@@ -10,6 +10,7 @@
 #include "CircleCollider2DComponent.h"
 #include "Collider2DComponent.h"
 #include "GroundDetectionComponent.h"
+#include "IDComponent.h"
 #include "MockComponent.h"
 #include "NativeScriptComponent.h"
 #include "PlayerComponent.h"
@@ -20,6 +21,23 @@
 #include "TimerComponent.h"
 #include "TransformComponent.h"
 #include "UIComponents.h"
+
+using CopyToSceneComponents = std::tuple<
+	IDComponent,
+	BaseComponent,
+	TransformComponent,
+	CanvasComponent,
+	SpriteAnimatorComponent,
+	SpriteRendererComponent,
+	BoxCollider2DComponent,
+	CircleCollider2DComponent,
+	CameraComponent,
+	GroundDetectionComponent,
+	NativeScriptComponent,
+	Rigidbody2DComponent,
+	AudioSourceComponent,
+	ButtonComponent
+>;
 
 using ComponentList = std::tuple<
 	BaseComponent,

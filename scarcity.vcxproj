@@ -304,7 +304,7 @@
     <ClCompile Include="Code\Core\Application.cpp" />
     <ClCompile Include="Code\Core\GameState.cpp" />
     <ClCompile Include="Code\Core\ResourceManager.cpp" />
-    <ClCompile Include="Code\Core\UUID.cpp" />
+    <ClCompile Include="Code\Core\UniqueID.cpp" />
     <ClCompile Include="Code\Core\Window.cpp" />
     <ClCompile Include="Code\File\FileSystem.cpp" />
     <ClCompile Include="Code\FSM\FSMState.cpp" />
@@ -403,7 +403,7 @@
     <ClInclude Include="Code\Components\TransformComponent.h" />
     <ClInclude Include="Code\Core\Application.h" />
     <ClInclude Include="Code\Core\Common.h" />
-    <ClInclude Include="Code\Core\UUID.h" />
+    <ClInclude Include="Code\Core\UniqueID.h" />
     <ClInclude Include="Code\File\FileSystem.h" />
     <ClInclude Include="Code\File\MetaSerializer.h" />
     <ClInclude Include="Code\Game\Character.h" />

@@ -2,7 +2,8 @@
 
 #include <string>
 #include <nlohmann/json.hpp>
-#include "Core/UUID.h"
+#include "Core/UniqueID.h"
+#include <cstdint>
 
 using json = nlohmann::json;
 
@@ -10,7 +11,7 @@ struct IDComponent
 {
 	static std::string Name() { return "ID"; }
 
-	UUID ID;
+	UniqueID ID;
 };
 
 static void DoSerialize(const IDComponent& id, json& entityJson)
@@ -18,7 +19,7 @@ static void DoSerialize(const IDComponent& id, json& entityJson)
 
 }
 
-static void DoDeserialize(IDComponent& id, json& baseJson)
+static void DoDeserialize(IDComponent& id, json& idJson)
 {
 
 }

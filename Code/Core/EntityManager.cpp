@@ -79,6 +79,7 @@ void EntityManager::AddChild(entt::entity parent, Entity& child)
 Entity EntityManager::CreateEmptyEntity(entt::entity parent)
 {
     auto entity = CreateEntity();
+    entity.AddComponent<IDComponent>();
     entity.AddComponent<BaseComponent>("Empty");
     entity.AddComponent<TransformComponent>();
 
@@ -91,6 +92,7 @@ Entity EntityManager::CreateEmptyEntity(entt::entity parent)
 Entity EntityManager::CreateCanvasEntity(entt::entity parent)
 {
     auto entity = CreateEntity();
+    entity.AddComponent<IDComponent>();
     entity.AddComponent<BaseComponent>("Canvas");
     entity.AddComponent<TransformComponent>();
     entity.AddComponent<CanvasComponent>();

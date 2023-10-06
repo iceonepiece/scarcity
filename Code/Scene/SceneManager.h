@@ -18,5 +18,6 @@ public:
 
 	static std::unique_ptr<Scene> LoadScene(const std::filesystem::path& filePath);
 	static std::unique_ptr<Scene> CreateDefaultScene(const std::filesystem::path& directory);
+	static void ResolveUniqueIDs(Scene& scene);
 	static Scene* Copy(Scene& sourceScene);
 };

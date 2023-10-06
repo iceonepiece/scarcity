@@ -221,5 +221,8 @@
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiAudioSourceComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiCameraComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
