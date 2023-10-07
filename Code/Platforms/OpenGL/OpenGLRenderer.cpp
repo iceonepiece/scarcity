@@ -5,6 +5,7 @@
 #include "OpenGLRenderer.h"
 #include "OpenGLTexture.h"
 #include "Graphics/RendererAPI.h"
+#include "UIs/UIText.h"
 
 void OpenGLRenderer::Initialize()
 {
@@ -83,6 +84,8 @@ void OpenGLRenderer::Initialize()
     m_spriteShader.Compile("Shaders/texture.vert", "Shaders/texture.frag");
     m_uiShader.Compile("Shaders/ui.vert", "Shaders/ui.frag");
     m_circleShader.Compile("Shaders/circle.vert", "Shaders/circle.frag");
+
+    m_fontSystem.Init();
 }
 
 void OpenGLRenderer::Draw(Sprite& sprite, const glm::mat4& modelMatrix)
@@ -428,4 +431,10 @@ void OpenGLRenderer::DrawQuadUI(const glm::vec2& position, const glm::vec2& scal
 
     glBindVertexArray(m_quadVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+
+void OpenGLRenderer::DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, UIAlignment alignment)
+{
+    UIText uiText(position, text, scale, color, alignment);
+    m_fontSystem.RenderText(&uiText);
 }

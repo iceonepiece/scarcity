@@ -29,6 +29,7 @@ public:
 	virtual void DrawRect(const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }, float thickness = 1.0f) = 0;
 	virtual void DrawCircle(const glm::vec2& position, float radius) = 0;
 	virtual void DrawCircle2D(const Circle2D& circle, float thickness = 1.0f) = 0;
+	virtual void DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, UIAlignment alignment = UIAlignment::NONE) = 0;
 
 	inline void SetScreenSize(int width, int height)
 	{

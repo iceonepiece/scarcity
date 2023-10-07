@@ -24,8 +24,22 @@ static void DoDeserialize(CanvasComponent& canvas, json& cameraJson)
 
 struct TextComponent
 {
+	static std::string Name() { return "Text"; }
 
+	std::string text;
+	float size;
 };
+
+static void DoSerialize(const TextComponent& text, json& entityJson)
+{
+
+}
+
+static void DoDeserialize(TextComponent& text, json& textJson)
+{
+
+}
+
 
 struct ImageComponent
 {

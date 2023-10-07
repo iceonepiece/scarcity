@@ -184,6 +184,7 @@
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiRectTransformComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteAnimatorComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteRendererComponent.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiTextComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiTransformComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiEntityProperties.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiHierarchy.h" />

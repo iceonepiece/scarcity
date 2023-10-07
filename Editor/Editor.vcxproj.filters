@@ -224,5 +224,8 @@
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiCameraComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiTextComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

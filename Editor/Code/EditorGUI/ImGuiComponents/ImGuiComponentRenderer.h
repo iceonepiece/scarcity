@@ -14,6 +14,7 @@
 #include "ImGuiGroundDetectionComponent.h"
 #include "ImGuiCircleCollider2DComponent.h"
 #include "ImGuiRectTransformComponent.h"
+#include "ImGuiTextComponent.h"
 
 class ImGuiComponentRenderer
 {

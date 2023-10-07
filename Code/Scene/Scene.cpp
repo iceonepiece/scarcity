@@ -500,10 +500,16 @@ void Scene::RenderEditor()
 
     glDisable(GL_BLEND);
 
-    auto canvas = m_manager.m_registry.view<TransformComponent, CanvasComponent, ButtonComponent>();
-    for (auto [entity, transform, canvas, button] : canvas.each())
+    auto buttonView = m_manager.m_registry.view<TransformComponent, CanvasComponent, ButtonComponent>();
+    for (auto [entity, transform, canvas, button] : buttonView.each())
     {
         renderer.DrawQuad2D(transform.position, { canvas.width, canvas.height }, transform.rotation.z);
+    }
+
+    auto textView = m_manager.m_registry.view<TransformComponent, CanvasComponent, TextComponent>();
+    for (auto [entity, transform, canvas, text] : textView.each())
+    {
+        renderer.DrawText(text.text, glm::vec2{canvas.x, canvas.y}, text.size, glm::vec4 {1.0});
     }
 
     RenderCollisionComponents();

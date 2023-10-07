@@ -24,6 +24,7 @@
 
 using CopyToSceneComponents = std::tuple<
 	IDComponent,
+
 	BaseComponent,
 	TransformComponent,
 	CanvasComponent,
@@ -36,7 +37,9 @@ using CopyToSceneComponents = std::tuple<
 	NativeScriptComponent,
 	Rigidbody2DComponent,
 	AudioSourceComponent,
-	ButtonComponent
+
+	ButtonComponent,
+	TextComponent
 >;
 
 using ComponentList = std::tuple<
@@ -52,6 +55,7 @@ using ComponentList = std::tuple<
 	NativeScriptComponent,
 	Rigidbody2DComponent,
 	AudioSourceComponent,
-	ButtonComponent
 
+	ButtonComponent,
+	TextComponent
 >;
