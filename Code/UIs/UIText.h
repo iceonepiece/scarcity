@@ -10,7 +10,7 @@
 class UIText : public UIComponent
 {
 public:
-	UIText(const glm::vec2& position, const std::string& text, float scale, const glm::vec3& color, UIAlignment alignment = UIAlignment::NONE)
+	UIText(const glm::vec2& position, const std::string& text, float scale, const glm::vec4& color, UIAlignment alignment = UIAlignment::NONE)
 		: UIComponent(position)
 		, text(text)
 		, scale(scale)
@@ -36,5 +36,5 @@ public:
 
 	std::string text;
 	float scale;
-	glm::vec3 color;
+	glm::vec4 color;
 };

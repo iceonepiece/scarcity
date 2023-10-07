@@ -6,7 +6,7 @@
 class Shader
 {
 public:
-
+	virtual ~Shader() = default;
 	virtual void Compile(const std::string& vertexSource, const std::string& fragmentSource) = 0;
 	virtual void Use() = 0;
 

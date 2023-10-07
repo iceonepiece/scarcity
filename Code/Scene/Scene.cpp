@@ -146,6 +146,24 @@ void Scene::StartNativeScripts(NativeScriptEngine& scriptEngine)
     }
 }
 
+void Scene::RenderTexts()
+{
+    Renderer& renderer = Application::Get().GetRenderer();
+
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    auto textView = m_manager.m_registry.view<TransformComponent, CanvasComponent, TextComponent>();
+    for (auto [entity, transform, canvas, text] : textView.each())
+    {
+        renderer.DrawText(text.text, canvas.position, text.size, text.color);
+    }
+
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_BLEND);
+}
+
 void Scene::RenderCollisionComponents()
 {
     Renderer& renderer = Application::Get().GetRenderer();
@@ -463,6 +481,7 @@ void Scene::Render()
 
     RenderUI();
     RenderCollisionComponents();
+    RenderTexts();
 }
 
 void Scene::RenderEditor()
@@ -503,16 +522,11 @@ void Scene::RenderEditor()
     auto buttonView = m_manager.m_registry.view<TransformComponent, CanvasComponent, ButtonComponent>();
     for (auto [entity, transform, canvas, button] : buttonView.each())
     {
-        renderer.DrawQuad2D(transform.position, { canvas.width, canvas.height }, transform.rotation.z);
-    }
-
-    auto textView = m_manager.m_registry.view<TransformComponent, CanvasComponent, TextComponent>();
-    for (auto [entity, transform, canvas, text] : textView.each())
-    {
-        renderer.DrawText(text.text, glm::vec2{canvas.x, canvas.y}, text.size, glm::vec4 {1.0});
+        renderer.DrawQuad2D(transform.position, canvas.size, transform.rotation.z);
     }
 
     RenderCollisionComponents();
+    RenderTexts();
 }
 
 void Scene::RenderUI()
@@ -523,7 +537,7 @@ void Scene::RenderUI()
     for (auto [entity, transform, canvas, button] : canvas.each())
     {
         glm::vec4 color{ 1 };
-        renderer.DrawQuadUI(transform.position, { canvas.width, canvas.height }, color, UIAlignment::CENTER);
+        renderer.DrawQuadUI(transform.position, canvas.size, color, UIAlignment::CENTER);
     }
 }
 

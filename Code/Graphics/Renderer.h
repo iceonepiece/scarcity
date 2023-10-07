@@ -16,6 +16,8 @@ class Renderer
 public:
 	static std::unique_ptr<Renderer> Create();
 
+	virtual ~Renderer() = default;
+
 	virtual void Initialize() = 0;
 	virtual void Draw(Sprite& sprite, const glm::mat4& modelMatrix) = 0;
 	virtual void DrawSprite(Sprite& sprite, const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }) = 0;

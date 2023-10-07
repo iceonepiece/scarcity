@@ -55,6 +55,7 @@ public:
 	void StopPhysics();
 	void StartNativeScripts(NativeScriptEngine& scriptEngine);
 	void RenderCollisionComponents();
+	void RenderTexts();
 
 	virtual void Enter();
 	virtual void Exit();

@@ -28,7 +28,10 @@ public:
 
     void RenderText(UIText *uiText);
 
+private:
+    const uint8_t FONT_PIXEL_HEIGHT = 128;
     std::map<GLchar, Character> Characters;
     unsigned int VAO, VBO;
     OpenGLShader shader;
+
 };

@@ -30,7 +30,7 @@ int OpenGLFontSystem::Init()
     }
     else {
         // set size to load glyphs as
-        FT_Set_Pixel_Sizes(face, 0, 48);
+        FT_Set_Pixel_Sizes(face, 0, FONT_PIXEL_HEIGHT);
 
         // disable byte-alignment restriction
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -96,12 +96,13 @@ void OpenGLFontSystem::RenderText(UIText *uiText)
 {
     // activate corresponding render state	
     shader.Use();
-    shader.SetVector3f("textColor", uiText->color);
+    shader.SetVector4f("textColor", uiText->color);
 
+    WindowData windowData = Application::Get().GetWindow().GetWindowData();
 
-    glm::vec2 screenSize(1280, 720);
-    //glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(screenSize.x), 0.0f, static_cast<float>(screenSize.y));
-    //shader.SetMatrix4("projection", projection);
+    glm::vec2 screenSize(windowData.width, windowData.height);
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(screenSize.x), 0.0f, static_cast<float>(screenSize.y));
+    shader.SetMatrix4("projection", projection);
 
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
@@ -112,7 +113,7 @@ void OpenGLFontSystem::RenderText(UIText *uiText)
     //float screenSizePercentage = Renderer::GetScreenSizePercentage();
     float screenSizePercentage = 1.0f;
 
-    float realScale = uiText->scale * screenSizePercentage;
+    float realScale = uiText->scale * screenSizePercentage / (float)FONT_PIXEL_HEIGHT;
 
     float xOffset = 0;
 

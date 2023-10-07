@@ -6,7 +6,7 @@ UIListItem::UIListItem(glm::vec2 position, std::string text, glm::vec2 padding)
 	: UIComponent(position)
 	, padding(padding)
 {
-	uiText = new UIText(position, text, 0.8f, glm::vec3(1.0, 1.0, 1.0));
+	uiText = new UIText(position, text, 0.8f, glm::vec4(1.0));
 	uiText->scene = scene;
 }
 
