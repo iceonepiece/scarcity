@@ -70,11 +70,13 @@ std::unique_ptr<Scene> SceneManager::CreateDefaultScene(const std::filesystem::p
         //renderer.SetCamera(scene.m_camera.get());
 
         Entity camera = scene.m_manager.CreateEntity();
+        camera.AddComponent<IDComponent>();
         camera.AddComponent<BaseComponent>("Main Camera");
         camera.AddComponent<TransformComponent>(glm::vec3{ 0.0f, 0.0f, -1.0f }, glm::vec3{ 0.0f }, glm::vec3{ 1.0f });
         camera.AddComponent<CameraComponent>();
 
         Entity rect = scene.m_manager.CreateEntity();
+        rect.AddComponent<IDComponent>();
         rect.AddComponent<BaseComponent>("Rect");
         rect.AddComponent<TransformComponent>(glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 0.0f }, glm::vec3{ 1.0f, 1.0f, 1.0f });
         rect.AddComponent<SpriteRendererComponent>(Shape_Square);

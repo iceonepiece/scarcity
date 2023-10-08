@@ -11,8 +11,7 @@ std::shared_ptr<Project> Project::Load(const std::filesystem::path& path)
 {
 	std::shared_ptr<Project> project = std::make_shared<Project>();
 
-	ProjectSerializer serializer(*project.get());
-	if (serializer.Deserialize(path))
+	if (ProjectSerializer::Deserialize(*project, path))
 	{
 		project->m_directory = path.parent_path();
 		s_activeProject = project;

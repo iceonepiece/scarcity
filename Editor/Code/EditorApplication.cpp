@@ -68,11 +68,13 @@ bool EditorApplication::NewProject(const std::string& name, std::filesystem::pat
         defaultScene->SetApplication(this);
         defaultScene->Initialize();
 
-        std::filesystem::path scenePath = directory / "Scenes" / (defaultScene->m_name + SCENE_FILE_EXTENSION);
+        std::filesystem::path scenePath = "Scenes";
+        scenePath /= (defaultScene->m_name + SCENE_FILE_EXTENSION);
+
         project.SetStartScene(scenePath);
 
         ProjectSerializer::Serialize(project, directory / (name + PROJECT_FILE_EXTENSION));
-        SceneSerializer::Serialize(*defaultScene, scenePath);
+        SceneSerializer::Serialize(*defaultScene, directory / scenePath);
 
         return true;
     }

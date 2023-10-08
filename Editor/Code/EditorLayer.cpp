@@ -637,6 +637,8 @@ bool EditorLayer::SaveScene()
         return SaveSceneAs();
     }
 
+    m_activeProject->SetStartScene(m_activeScene->m_path);
+
     return true;
 }
 
