@@ -99,7 +99,7 @@ public:
 	void DeleteEntity(entt::entity entity);
 
 	bool NewScene();
-	bool OpenScene(std::filesystem::path path);
+	bool OpenScene(std::filesystem::path absolutePath);
 	bool SaveScene();
 	bool SaveSceneAs();
 

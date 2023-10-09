@@ -25,7 +25,6 @@ Scene::Scene(const std::string& name, const std::filesystem::path& path)
     m_systems.push_back(std::make_unique<AnimationSystem>(this));
 }
 
-
 void Scene::OnEvent(Event* e)
 {
 
@@ -314,7 +313,9 @@ void Scene::StopPhysics()
 
 bool Scene::HasSaved()
 {
-    return FileSystem::FileExists(m_path);
+    std::filesystem::path absolutePath = m_project->GetAbsolutePath() / m_path;
+    std::cout << "Scene HasSave(): " << absolutePath << std::endl;
+    return FileSystem::FileExists(absolutePath);
 }
 
 void Scene::Update(float deltaTime)

@@ -22,6 +22,7 @@
 #include "Scene/SceneSerializer.h"
 #include "Scene/SceneManager.h"
 #include "Asset/AssetManager.h"
+#include "Project/ProjectSerializer.h"
 
 EditorLayer* EditorLayer::s_instance = nullptr;
 
@@ -68,7 +69,7 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     m_imGuiWindowMap[ImGuiWindowType::SelectSprite] = std::make_unique<ImGuiSelectSpriteWindow>(*this, m_activeProject->GetDirectory());
     m_imGuiWindowMap[ImGuiWindowType::SelectAnimatorController] = std::make_unique<ImGuiSelectAnimatorControllerWindow>(*this, m_activeProject->GetDirectory());
 
-    std::cout << "Start Scene: " << m_activeProject->GetStartScene() << std::endl;
+    std::cout << "Start Scene: " << m_activeProject->GetStartSceneAbsolutePath() << std::endl;
     OpenScene(m_activeProject->GetStartScene());
 }
 
@@ -148,12 +149,12 @@ void EditorLayer::Initialize()
     //m_imgui = std::make_unique<ImGuiMain>(*this);
 }
 
-bool EditorLayer::OpenScene(std::filesystem::path path)
+bool EditorLayer::OpenScene(std::filesystem::path absolutePath)
 {
-    std::cout << "OpenScene: " << path << std::endl;
+    std::cout << "OpenScene: " << absolutePath << std::endl;
     bool success = true;
 
-    m_activeScene = SceneManager::LoadScene(path);
+    m_activeScene = m_activeProject->LoadScene(absolutePath);
 
     if (m_activeScene == nullptr)
     {
@@ -622,6 +623,13 @@ void EditorLayer::OnSceneUpdate()
     std::cout << "OnSceneUpdate: " << m_activeScene->m_name << std::endl;
     std::string windowTitle = m_activeProject->GetName() + " - " + m_activeScene->m_name + " - BossFight Engine";
     m_app.GetWindow().SetTitle(windowTitle);
+
+    std::cout << "m_activeScene->m_path: " << m_activeScene->m_path << std::endl;
+    m_activeProject->SetStartScene(m_activeScene->m_path);
+
+    std::cout << "m_activeProject->GetDirectory(): " << m_activeProject->GetDirectory() << std::endl;
+    ProjectSerializer::Serialize(*m_activeProject, m_activeProject->GetDirectory() / (m_activeProject->GetName() + PROJECT_FILE_EXTENSION));
+
 }
 
 bool EditorLayer::SaveScene()

@@ -3,6 +3,32 @@
 #include "Asset/TextureAsset.h"
 #include "Asset/AudioAsset.h"
 
+std::filesystem::path FileSystem::GetRelativePath(const std::filesystem::path& basePath, const std::filesystem::path& filePath)
+{
+	if (basePath.root_name() != filePath.root_name())
+		return filePath;
+
+	auto baseIter = basePath.begin();
+	auto fileIter = filePath.begin();
+
+	while (baseIter != basePath.end() && fileIter != filePath.end() && *baseIter == *fileIter)
+	{
+		++baseIter;
+		++fileIter;
+	}
+
+	std::filesystem::path relativePath;
+
+	for (; baseIter != basePath.end(); ++baseIter)
+		relativePath /= "..";
+
+	for (; fileIter != filePath.end(); ++fileIter)
+		relativePath /= *fileIter;
+
+	return relativePath;
+}
+
+
 bool FileSystem::CopyFile_(std::filesystem::path sourcePath, std::filesystem::path destPath)
 {
 	std::ifstream source(sourcePath, std::ios::binary);

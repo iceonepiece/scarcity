@@ -31,7 +31,6 @@ public:
 	{
 		for (auto& sprite : spriteAssets)
 		{
-			std::cout << sprite.GetSprite().GetName() << " Added\n";
 			m_spriteAssetMap.insert({ sprite.GetSprite().GetName(), &sprite });
 		}
 	}

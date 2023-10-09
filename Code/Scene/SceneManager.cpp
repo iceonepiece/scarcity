@@ -57,6 +57,7 @@ std::unique_ptr<Scene> SceneManager::CreateDefaultScene(const std::filesystem::p
     std::unique_ptr<Scene> defaultScene = std::make_unique<Scene>();
     //defaultScene->m_path = directory / (defaultScene->m_name + ".scene.json");
     defaultScene->m_location = directory;
+    defaultScene->m_path = directory.parent_path() / defaultScene->m_name;
 
     defaultScene->SetInitializeFunction([](Scene& scene)
     {

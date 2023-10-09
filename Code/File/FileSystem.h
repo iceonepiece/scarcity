@@ -11,6 +11,8 @@ using HandleFileCallback = std::function<void(std::fstream&)>;
 class FileSystem
 {
 public:
+	static std::filesystem::path GetRelativePath(const std::filesystem::path& basePath, const std::filesystem::path& filePath);
+
 	static bool CopyFile_(std::filesystem::path sourcePath, std::filesystem::path destPath);
 	static bool RemoveFile(std::filesystem::path path);
 	static bool FileExists(std::filesystem::path filePath);

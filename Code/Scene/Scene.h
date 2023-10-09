@@ -14,6 +14,7 @@
 #include "Core/GameState.h"
 #include "Components/TransformComponent.h"
 #include "Components/Rigidbody2DComponent.h"
+#include "Project/Project.h"
 
 #include "Events/Event.h"
 
@@ -38,6 +39,7 @@ public:
 	virtual void Render();
 	virtual void RenderEditor();
 
+	inline void SetProject(Project* project) { m_project = project; }
 	void SetCamera(Camera* camera);
 	
 	bool HasSaved();
@@ -129,4 +131,6 @@ public:
 	friend class SceneSerializer;
 
 	InitializeFunction m_initializeFunction;
+
+	Project* m_project;
 };

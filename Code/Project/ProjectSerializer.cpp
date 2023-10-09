@@ -44,8 +44,9 @@ bool ProjectSerializer::Deserialize(Project& project, const std::filesystem::pat
 		json projectJson = json::parse(deserialzed);
 
 		project.m_name = projectJson["name"];
+		project.m_absolutePath = filepath.parent_path();
 		project.m_directory = filepath.parent_path();
-		project.m_startScene = project.m_directory / std::string(projectJson["startScene"]);
+		project.m_startScene = projectJson["startScene"].get<std::string>();
 	}
 	else
 	{

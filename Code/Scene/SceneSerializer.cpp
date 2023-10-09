@@ -79,13 +79,17 @@ bool SceneSerializer::Serialize(Scene& scene, std::filesystem::path filePath)
 
 bool SceneSerializer::Deserialize(Scene& scene, std::filesystem::path filepath)
 {
-	std::ifstream sceneFile(filepath);
+	std::filesystem::path projectAbsolutePath = scene.m_project ? scene.m_project->GetAbsolutePath() : "";
+
+	std::ifstream sceneFile(projectAbsolutePath / filepath);
 	
 	if (sceneFile.is_open())
 	{
 		scene.m_name = filepath.stem().string();
-		scene.m_location = filepath.parent_path();
-		scene.m_path = filepath;
+		scene.m_location = projectAbsolutePath / filepath.parent_path();
+		scene.m_path = FileSystem::GetRelativePath(projectAbsolutePath, filepath);
+
+		std::cout << "scene.m_path: " << scene.m_path << std::endl;
 
 		EntityManager& manager = scene.GetEntityManager();
 		ComponentSerializer serializer(manager.m_registry);

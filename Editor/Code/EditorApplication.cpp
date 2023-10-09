@@ -85,6 +85,7 @@ bool EditorApplication::NewProject(const std::string& name, std::filesystem::pat
 void EditorApplication::OpenProject(std::filesystem::path path)
 {
     std::cout << "Open Project: " << path << std::endl;
+    std::cout << "Relative: " << path.parent_path().filename() << std::endl;
    
     std::unique_ptr<Project> project = std::make_unique<Project>();
 
