@@ -329,7 +329,6 @@
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLWindow.cpp" />
     <ClCompile Include="Code\Core\Timer.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLRenderer.cpp" />
-    <ClCompile Include="Code\Graphics\RendererAPI.cpp" />
     <ClCompile Include="Code\Input\Input.cpp" />
     <ClCompile Include="Code\Core\ParticleSystem.cpp" />
     <ClCompile Include="Code\Core\Random.cpp" />

@@ -41,6 +41,8 @@ entt::entity Scene::DuplicateEntity(entt::entity entity)
     entt::registry& registry = m_manager.m_registry;
     auto newEntity = registry.create();
 
+    registry.emplace<IDComponent>(newEntity);
+
     std::apply([&](auto... componentTypes) {
         (DuplicateComponent<decltype(componentTypes)>(registry, entity, newEntity), ...);
     }, ComponentList{});
@@ -311,11 +313,14 @@ void Scene::StopPhysics()
     m_physics.reset();
 }
 
+std::filesystem::path Scene::GetAbsolutePath()
+{
+    return m_project->GetAbsolutePath() / m_path;
+}
+
 bool Scene::HasSaved()
 {
-    std::filesystem::path absolutePath = m_project->GetAbsolutePath() / m_path;
-    std::cout << "Scene HasSave(): " << absolutePath << std::endl;
-    return FileSystem::FileExists(absolutePath);
+    return FileSystem::FileExists(GetAbsolutePath());
 }
 
 void Scene::Update(float deltaTime)

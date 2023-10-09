@@ -637,7 +637,7 @@ bool EditorLayer::SaveScene()
     if (m_activeScene->HasSaved())
     {
         std::cout << "Saving the Scene..." << std::endl;
-        SceneSerializer::Serialize(*m_activeScene, m_activeScene->m_path);
+        SceneSerializer::Serialize(*m_activeScene, m_activeScene->GetAbsolutePath());
     }
     else
     {

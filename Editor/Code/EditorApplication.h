@@ -21,10 +21,6 @@ public:
 	void OpenProject(std::filesystem::path path);
 	void SaveProject();
 
-	void NewScene(const std::string& name, std::filesystem::path directory);
-	void OpenScene(std::filesystem::path path);
-	void SaveScene();
-
 private:
 
 };

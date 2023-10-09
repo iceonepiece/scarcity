@@ -102,18 +102,3 @@ void EditorApplication::SaveProject()
 {
     
 }
-
-void EditorApplication::NewScene(const std::string& name, std::filesystem::path directory)
-{
-
-}
-
-void EditorApplication::OpenScene(std::filesystem::path path)
-{
-
-}
-
-void EditorApplication::SaveScene()
-{
-
-}

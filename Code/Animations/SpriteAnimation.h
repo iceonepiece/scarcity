@@ -2,7 +2,6 @@
 
 #include <vector>
 #include <glm/glm.hpp>
-#include "Graphics/Texture.h"
 #include "Animations/Sprite.h"
 
 /*
