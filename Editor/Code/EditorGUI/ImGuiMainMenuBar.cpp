@@ -10,11 +10,7 @@ ImGuiMainMenuBar::ImGuiMainMenuBar(EditorLayer& editor)
 
 void ImGuiMainMenuBar::Render()
 {
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 10)); // Increase vertical padding
-    //ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 10));  // Increase vertical spacing
-    //ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 10)); // Increase vertical padding of the main menu bar
-    
-    ImGui::BeginMainMenuBar();
+    ImGui::BeginMenuBar();
 
     if (ImGui::BeginMenu("File"))
     {
@@ -61,7 +57,5 @@ void ImGuiMainMenuBar::Render()
     ImGui::SetCursorPosX(ImGui::GetWindowSize().x - 120);
     ImGui::Text(fpsText.str().c_str());
 
-    ImGui::EndMainMenuBar();
-    
-    ImGui::PopStyleVar();
+    ImGui::EndMenuBar();
 }
