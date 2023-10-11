@@ -442,6 +442,13 @@ void EditorLayer::Update(float deltaTime)
         m_fileHandler.OnFileEvent(e);
     m_fileEvents.clear();
 
+    auto windowData = m_app.GetWindow().GetWindowData();
+    renderer.RescaleFramebuffer(windowData.width, windowData.height);
+
+    renderer.BindFramebuffer();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
     if (m_scenePlaying)
     {
         if (Scene* playingScene = m_gameLayer.GetCurrentScene())
@@ -467,6 +474,8 @@ void EditorLayer::Update(float deltaTime)
             }
         }
     }
+
+    renderer.UnbindFramebuffer();
 }
 
 
@@ -521,6 +530,21 @@ void EditorLayer::RenderImGui()
     }
 
     style.WindowMinSize.x = minWinSizeX;
+
+    ImGui::Begin("Viewport");
+    auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
+    auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+    auto viewportOffset = ImGui::GetWindowPos();
+
+    ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+    glm::vec2 m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+
+    uint64_t textureID = m_app.GetRenderer().GetFramebufferTextureID();
+    ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+
+    ImGui::End();
+
 
     if (!m_scenePlaying)
     {

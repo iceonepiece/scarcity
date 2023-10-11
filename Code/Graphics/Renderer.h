@@ -33,6 +33,14 @@ public:
 	virtual void DrawCircle2D(const Circle2D& circle, float thickness = 1.0f) = 0;
 	virtual void DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, UIAlignment alignment = UIAlignment::NONE) = 0;
 
+
+	virtual void CreateFramebuffer() = 0;
+	virtual void BindFramebuffer() = 0;
+	virtual void UnbindFramebuffer() = 0;
+	virtual void RescaleFramebuffer(float width, float height) = 0;
+
+	virtual unsigned int GetFramebufferTextureID() = 0;
+
 	inline void SetScreenSize(int width, int height)
 	{
 		m_screenSize = { width, height };

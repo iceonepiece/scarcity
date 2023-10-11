@@ -23,6 +23,13 @@ public:
 	virtual void DrawCircle2D(const Circle2D& circle, float thickness = 1.0f) override;
 	virtual void DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, UIAlignment alignment = UIAlignment::NONE) override;
 
+	virtual void CreateFramebuffer() override;
+	virtual void BindFramebuffer() override;
+	virtual void UnbindFramebuffer() override;
+	virtual void RescaleFramebuffer(float width, float height) override;
+	virtual unsigned int GetFramebufferTextureID() override { return m_framebufferTextureID; }
+
+	GLuint m_framebufferTextureID;
 
 private:
 	OpenGLShader m_basicShader;
@@ -36,6 +43,12 @@ private:
 	GLuint m_lineVBO;
 	GLuint m_circleVAO;
 	GLuint m_circleVBO;
+
+	unsigned int m_framebufferWidth;
+	unsigned int m_framebufferHeight;
+
+	GLuint m_FBO;
+	GLuint m_RBO;
 
 	OpenGLFontSystem m_fontSystem;
 };
