@@ -438,7 +438,7 @@ void OpenGLRenderer::DrawQuadUI(const glm::vec2& position, const glm::vec2& scal
 void OpenGLRenderer::DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, UIAlignment alignment)
 {
     UIText uiText(position, text, scale, color, alignment);
-    m_fontSystem.RenderText(&uiText);
+    m_fontSystem.RenderText(&uiText, m_screenSize);
 }
 
 void OpenGLRenderer::CreateFramebuffer()

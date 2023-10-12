@@ -92,7 +92,7 @@ int OpenGLFontSystem::Init()
     return 0;
 }
 
-void OpenGLFontSystem::RenderText(UIText *uiText)
+void OpenGLFontSystem::RenderText(UIText *uiText, const glm::vec2& viewportSize)
 {
     // activate corresponding render state	
     shader.Use();
@@ -100,7 +100,7 @@ void OpenGLFontSystem::RenderText(UIText *uiText)
 
     WindowData windowData = Application::Get().GetWindow().GetWindowData();
 
-    glm::vec2 screenSize(windowData.width, windowData.height);
+    glm::vec2 screenSize(viewportSize.x, viewportSize.y);
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(screenSize.x), 0.0f, static_cast<float>(screenSize.y));
     shader.SetMatrix4("projection", projection);
 

@@ -26,7 +26,7 @@ class OpenGLFontSystem
 public:
 	int Init();
 
-    void RenderText(UIText *uiText);
+    void RenderText(UIText *uiText, const glm::vec2& viewportSize);
 
 private:
     const uint8_t FONT_PIXEL_HEIGHT = 128;

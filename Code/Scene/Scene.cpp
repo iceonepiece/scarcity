@@ -150,6 +150,7 @@ void Scene::StartNativeScripts(NativeScriptEngine& scriptEngine)
 void Scene::RenderTexts()
 {
     Renderer& renderer = Application::Get().GetRenderer();
+    renderer.SetScreenSize(m_viewportWidth, m_viewportHeight);
 
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
@@ -485,7 +486,7 @@ void Scene::Render()
         system->Render();
 
     RenderUI();
-    RenderCollisionComponents();
+    //RenderCollisionComponents();
     RenderTexts();
 }
 
