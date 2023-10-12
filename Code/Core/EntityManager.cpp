@@ -59,6 +59,9 @@ void EntityManager::RemoveChild(entt::entity parent, entt::entity child)
             children->entities[children->size - 1] = entt::null;
             children->size--;
         }
+
+        if (children->size == 0)
+            m_registry.remove<ChildrenComponent>(parent);
     }
 }
 
