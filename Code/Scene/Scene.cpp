@@ -415,30 +415,29 @@ void Scene::Exit()
 
 }
 
-void Scene::SetCamera(Camera* camera)
+void Scene::SetViewportSize(unsigned int width, unsigned int height)
+{
+    Renderer& renderer = m_app->GetRenderer();
+
+    auto view = m_manager.m_registry.view<TransformComponent, CameraComponent>();
+    for (auto [entity, transform, camera] : view.each())
+    {
+        float ratio = width / (float)height;
+        float width = camera.size * ratio;
+
+        renderer.SetViewMatrix(glm::inverse(glm::translate(glm::mat4(1.0f), transform.position)));
+        renderer.SetProjectionMatrix(glm::ortho(-width, width, -camera.size, camera.size));
+    }
+}
+
+void Scene::SetCamera(Camera& camera)
 {
     Application& app = Application::Get();
     Renderer& renderer = app.GetRenderer();
 
-    if (camera != nullptr)
-    {
-        renderer.SetViewMatrix(camera->GetViewMatrix());
-        renderer.SetProjectionMatrix(camera->GetProjectionMatrix());
-        renderer.SetCamera(camera);
-    }
-    else
-    {
-        auto view = m_manager.m_registry.view<TransformComponent, CameraComponent>();
-        for (auto [entity, transform, camera] : view.each())
-        {
-            WindowData window = app.GetWindow().GetWindowData();
-            float ratio = window.width / (float)window.height;
-            float width = camera.size * ratio;
-
-            renderer.SetViewMatrix(glm::inverse(glm::translate(glm::mat4(1.0f), transform.position)));
-            renderer.SetProjectionMatrix(glm::ortho(-width, width, -camera.size, camera.size));
-        }
-    }
+    renderer.SetViewMatrix(camera.GetViewMatrix());
+    renderer.SetProjectionMatrix(camera.GetProjectionMatrix());
+    renderer.SetCamera(&camera);
 }
 
 void Scene::Render()

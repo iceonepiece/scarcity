@@ -76,7 +76,6 @@ void Application::Run()
 
 		m_window->ProcessInput();
 		m_input->Poll();
-		m_window->PreRender();
 
 		for (auto& layer : m_layers)
 			layer->Update(Timer::GetDeltaTime());

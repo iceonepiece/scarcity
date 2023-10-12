@@ -8,6 +8,9 @@ ImGuiManager::ImGuiManager(Application& app)
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+
 	float baseFontSize = 18.0f;
 	//float iconFontSize = baseFontSize * 2.0f / 3.0f;
 	float iconFontSize = baseFontSize * 1.0f;

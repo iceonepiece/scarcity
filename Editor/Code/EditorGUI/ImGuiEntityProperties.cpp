@@ -22,7 +22,7 @@ ImGuiEntityProperties::ImGuiEntityProperties(EditorLayer& editor)
     : m_editor(editor)
 {}
 
-void RenderInputVec3(const std::string& name, glm::vec3& values, int width = 100)
+void RenderInputVec3(const std::string& name, glm::vec3& values, int width = 80)
 {
     std::string xValue = "##X" + name;
     std::string yValue = "##Y" + name;
@@ -46,6 +46,8 @@ void RenderInputVec3(const std::string& name, glm::vec3& values, int width = 100
 
 void ImGuiEntityProperties::Render()
 {
+    ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, 4.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 4.0f));
     ImGui::Begin("Properties", NULL, ImGuiWindowFlags_NoCollapse);
 
     if (ImGui::IsWindowAppearing())
@@ -96,4 +98,5 @@ void ImGuiEntityProperties::Render()
     }
 
     ImGui::End();
+    ImGui::PopStyleVar(2);
 }

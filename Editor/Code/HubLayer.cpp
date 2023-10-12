@@ -20,7 +20,8 @@ void HubLayer::Shutdown()
 
 void HubLayer::Update(float deltaTime)
 {
-
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void HubLayer::OnEvent(Event& event)

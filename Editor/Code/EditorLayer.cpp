@@ -191,7 +191,8 @@ void EditorLayer::CreatePrefab(entt::entity entity, const std::filesystem::path&
 
 void EditorLayer::CalculateWorldCursorPosition()
 {
-    glm::vec2 ndcPosition = Math::ConvertToNDC(m_cursorPosition, m_camera->GetScreenSize());
+    //std::cout << "m_cursorPosition: " << m_cursorPosition.x << " , " << m_cursorPosition.y << std::endl;
+    glm::vec2 ndcPosition = Math::ConvertToNDC(m_viewportCursorPosition, m_camera->GetScreenSize());
     glm::mat4 ivProjection = glm::inverse(m_camera->GetProjectionMatrix());
     glm::mat4 ivView = glm::inverse(m_camera->GetViewMatrix());
     m_worldCursorPosition = Math::ConvertToWorldSpace(ndcPosition, ivProjection, ivView);
@@ -442,19 +443,22 @@ void EditorLayer::Update(float deltaTime)
         m_fileHandler.OnFileEvent(e);
     m_fileEvents.clear();
 
-    auto windowData = m_app.GetWindow().GetWindowData();
-    renderer.RescaleFramebuffer(windowData.width, windowData.height);
+    if (m_viewportSize.x > 0.0f && m_viewportSize.y > 0.0f)
+    {
+        renderer.RescaleFramebuffer(m_viewportSize.x, m_viewportSize.y);
+        m_camera->SetScreenSize(m_viewportSize);
+    }
 
     renderer.BindFramebuffer();
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
     if (m_scenePlaying)
     {
         if (Scene* playingScene = m_gameLayer.GetCurrentScene())
         {
             playingScene->Update(deltaTime);
-            playingScene->SetCamera(nullptr);
+            playingScene->SetViewportSize(m_viewportSize.x, m_viewportSize.y);
             playingScene->Render();
         }
     }
@@ -464,7 +468,7 @@ void EditorLayer::Update(float deltaTime)
 
         if (m_activeScene != nullptr)
         {
-            m_activeScene->SetCamera(m_camera.get());
+            m_activeScene->SetCamera(*m_camera);
             m_activeScene->RenderEditor();
 
             if (m_currentMode != EditorMode::ViewMode && m_selectedObject.type == EditorObjectType::Entity)
@@ -531,20 +535,24 @@ void EditorLayer::RenderImGui()
 
     style.WindowMinSize.x = minWinSizeX;
 
-    ImGui::Begin("Viewport");
-    auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
-    auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
-    auto viewportOffset = ImGui::GetWindowPos();
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
+    ImGui::Begin("Scene");
 
     ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-    glm::vec2 m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+    m_viewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+
+    m_viewportFocused = ImGui::IsWindowFocused();
+    m_viewportHovered = ImGui::IsWindowHovered();
+
+    ImVec2 mousePos = ImGui::GetMousePos();
+    ImVec2 cursorScreenPos = ImGui::GetCursorScreenPos();
+    m_viewportCursorPosition = { mousePos.x - cursorScreenPos.x, mousePos.y - cursorScreenPos.y };
 
     uint64_t textureID = m_app.GetRenderer().GetFramebufferTextureID();
-    ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-
+    ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_viewportSize.x, m_viewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
     ImGui::End();
-
+    ImGui::PopStyleVar();
 
     if (!m_scenePlaying)
     {
@@ -609,7 +617,7 @@ void EditorLayer::OnEvent(Event& event)
 
     ImGuiIO& io = ImGui::GetIO();
 
-    if (io.WantCaptureMouse &&
+    if (!m_viewportHovered && io.WantCaptureMouse &&
         (
             evenType == EventType::MouseButtonPressed ||
             evenType == EventType::MouseButtonReleased ||

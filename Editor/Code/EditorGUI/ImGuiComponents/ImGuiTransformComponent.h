@@ -5,7 +5,7 @@
 
 static void RenderImGui(TransformComponent& transform)
 {
-    ImGuiUtils::RenderInputVec3("Position", transform.position);
-    ImGuiUtils::RenderInputVec3("Rotation", transform.rotation);
-    ImGuiUtils::RenderInputVec3("Scale", transform.scale);
+    ImGuiUtils::RenderInputVec3("Position", transform.position, 90);
+    ImGuiUtils::RenderInputVec3("Rotation", transform.rotation, 90);
+    ImGuiUtils::RenderInputVec3("Scale", transform.scale, 90);
 }

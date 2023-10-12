@@ -146,6 +146,10 @@ private:
 	void OnFileEvent(const FileEvent& event);
 
 private:
+	glm::vec2 m_viewportSize = { 0.0f, 0.0f };
+	bool m_viewportFocused = false;
+	bool m_viewportHovered = false;
+
 	GizmoStatus m_gizmoStatus;
 	std::vector<std::unique_ptr<EditorCommand>> m_editorCommands;
 	int m_currentCommandIndex = -1;
@@ -185,6 +189,7 @@ private:
 
 	glm::vec2 m_cursorPosition;
 	glm::vec2 m_worldCursorPosition;
+	glm::vec2 m_viewportCursorPosition;
 
 	ImGuiMainMenuBar m_mainMenuBar;
 	ImGuiEntityProperties m_entityProperties;

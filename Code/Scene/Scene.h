@@ -42,7 +42,9 @@ public:
 	std::filesystem::path GetAbsolutePath();
 
 	inline void SetProject(Project* project) { m_project = project; }
-	void SetCamera(Camera* camera);
+	void SetViewportSize(unsigned int width, unsigned int height);
+	void SetCamera(Camera& camera);
+
 	
 	bool HasSaved();
 
@@ -110,6 +112,9 @@ public:
 	EntityManager& GetEntityManager();
 
 	std::vector<SpawnCommand> m_spawnCommands;
+
+	unsigned int m_viewportWidth;
+	unsigned int m_viewportHeight;
 
 	std::string m_name;
 	std::filesystem::path m_path;
