@@ -36,6 +36,7 @@ OpenGLWindow::OpenGLWindow(Application* app, std::string title, int width, int h
     }
 
     glfwSetWindowUserPointer(m_glfwWindow, m_app);
+    glfwSwapInterval(1);
 
     glfwSetWindowSizeCallback(m_glfwWindow, [](GLFWwindow* window, int width, int height)
     {

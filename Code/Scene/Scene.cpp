@@ -326,9 +326,9 @@ bool Scene::HasSaved()
 
 void Scene::Update(float deltaTime)
 {
-    auto scriptable = m_manager.m_registry.view<NativeScriptComponent>();
+    auto nativeScriptUpdateView = m_manager.m_registry.view<NativeScriptComponent>();
 
-    for (auto [entity, nativeScript] : scriptable.each())
+    for (auto [entity, nativeScript] : nativeScriptUpdateView.each())
     {
         if (nativeScript.instance != nullptr)
             nativeScript.instance->Update(deltaTime);
@@ -339,8 +339,6 @@ void Scene::Update(float deltaTime)
 
     if (m_physics != nullptr && physicsActive)
     {
-        //m_physics->Update(deltaTime);
-
         const int32_t velocityIterations = 6;
         const int32_t positionIterations = 2;
         m_physics->Step(deltaTime, velocityIterations, positionIterations);
@@ -398,6 +396,14 @@ void Scene::Update(float deltaTime)
 
         if (timer.timer >= timer.lifeTime)
             DestroyEntity(entity);
+    }
+
+    auto nativeScriptLateUpdateView = m_manager.m_registry.view<NativeScriptComponent>();
+
+    for (auto [entity, nativeScript] : nativeScriptLateUpdateView.each())
+    {
+        if (nativeScript.instance != nullptr)
+            nativeScript.instance->LateUpdate(deltaTime);
     }
 }
 
@@ -486,7 +492,7 @@ void Scene::Render()
         system->Render();
 
     RenderUI();
-    //RenderCollisionComponents();
+    RenderCollisionComponents();
     RenderTexts();
 }
 

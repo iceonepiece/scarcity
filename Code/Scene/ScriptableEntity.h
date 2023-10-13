@@ -44,6 +44,7 @@ public:
 	virtual void Start() {}
 	virtual void Destroy() {}
 	virtual void Update(float dt) {}
+	virtual void LateUpdate(float dt) {}
 
 protected:
 	Application* m_app;

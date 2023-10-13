@@ -34,7 +34,6 @@ static void RenderImGui(SpriteRendererComponent& spriteRenderer)
 	ImGui::Text(("Sprite: " + spriteRenderer.spriteName).c_str());
 	ImGui::PopItemWidth();
 
-	/*
 	if (ImGui::BeginPopupModal("Select Sprite"))
 	{
 		ImGuiSelectSpriteWindow* window = dynamic_cast<ImGuiSelectSpriteWindow*>(EditorLayer::GetImGuiWindow(ImGuiWindowType::SelectSprite));
@@ -52,8 +51,6 @@ static void RenderImGui(SpriteRendererComponent& spriteRenderer)
 				spriteRenderer.spriteName = sprite->GetName();
 			}
 
-			//EditorLayer::GetAsset(selectedPath);
-
 			ImGui::CloseCurrentPopup();
 		}
 
@@ -65,13 +62,4 @@ static void RenderImGui(SpriteRendererComponent& spriteRenderer)
 
 		ImGui::EndPopup();
 	}
-
-	*/
-	/*
-	ImGui::InputText("Sprite Name", &spriteRenderer.spriteName); ImGui::SameLine();
-	if (ImGui::Button("Load Sprite"))
-	{
-		spriteRenderer.sprite = ResourceAPI::GetResourceManager()->GetSprite(spriteRenderer.spriteName);
-	}
-	*/
 }
