@@ -53,12 +53,6 @@ void Application::PopLayer()
 
 void Application::OnEvent(Event& event)
 {
-	if (event.GetType() == EventType::WindowClose)
-	{
-		m_running = false;
-		return;
-	}
-
 	for (auto it = m_layers.rbegin(); it != m_layers.rend(); ++it)
 	{
 		if (event.handled)
@@ -89,5 +83,11 @@ void Application::Run()
 
 		m_window->Render();
 	}
+}
+
+void Application::Close()
+{
+	m_running = false;
+	return;
 }
 

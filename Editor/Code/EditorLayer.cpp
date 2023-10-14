@@ -615,7 +615,12 @@ void EditorLayer::OnMouseScrolled(MouseScrolledEvent& event)
 void EditorLayer::OnEvent(Event& event)
 {
     if (event.GetType() == EventType::WindowClose)
-        m_app.OnEvent(event);
+    {
+        if (m_scenePlaying)
+            StopScene();
+
+        m_app.Close();
+    }
 
     EventType evenType = event.GetType();
 

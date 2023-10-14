@@ -38,6 +38,7 @@ public:
 
 	virtual void Initialize() = 0;
 	void Run();
+	void Close();
 
 	virtual void OnEvent(Event& e);
 
