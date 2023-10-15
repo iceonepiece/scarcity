@@ -531,12 +531,15 @@ void Scene::RenderEditor()
 
     glDisable(GL_BLEND);
 
+    /*
     auto buttonView = m_manager.m_registry.view<TransformComponent, CanvasComponent, ButtonComponent>();
     for (auto [entity, transform, canvas, button] : buttonView.each())
     {
         renderer.DrawQuad2D(transform.position, canvas.size, transform.rotation.z);
     }
+    */
 
+    RenderUI();
     RenderCollisionComponents();
     RenderTexts();
 }
@@ -544,12 +547,20 @@ void Scene::RenderEditor()
 void Scene::RenderUI()
 {
     Renderer& renderer = Application::Get().GetRenderer();
+    renderer.SetScreenSize(m_viewportWidth, m_viewportHeight);
 
+    /*
+    auto buttonView = m_manager.m_registry.view<TransformComponent, CanvasComponent, ButtonComponent>();
+    for (auto [entity, transform, canvas, button] : buttonView.each())
+    {
+        renderer.DrawQuad2D(transform.position, canvas.size, transform.rotation.z);
+    }
+    */
+    
     auto canvas = m_manager.m_registry.view<TransformComponent, CanvasComponent, ButtonComponent>();
     for (auto [entity, transform, canvas, button] : canvas.each())
     {
-        glm::vec4 color{ 1 };
-        renderer.DrawQuadUI(transform.position, canvas.size, color, UIAlignment::CENTER);
+        renderer.DrawQuadUI(transform.position, canvas.size, button.color, UIAlignment::CENTER);
     }
 }
 
