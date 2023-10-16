@@ -504,6 +504,7 @@
     <ClInclude Include="Code\UIs\UIComponent.h" />
     <ClInclude Include="Code\UIs\UIList.h" />
     <ClInclude Include="Code\UIs\UIListItem.h" />
+    <ClInclude Include="Code\UIs\UIManager.h" />
     <ClInclude Include="Code\UIs\UIText.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="Code\Utils\FileDialog.h" />

@@ -11,6 +11,7 @@
 #include "Physics/NullFixtureData.h"
 #include "Physics/EntityFixtureData.h"
 #include "Audio/Audio.h"
+#include "UIs/UIManager.h"
 
 Scene::Scene(const std::string& name, const std::filesystem::path& path)
     : m_name(name)
@@ -337,6 +338,18 @@ void Scene::Update(float deltaTime)
     for (auto& system : m_systems)
         system->Update(deltaTime);
 
+    auto canvasUpdateView = m_manager.m_registry.view<CanvasComponent>();
+
+    NewInput& input = m_app->GetInput();
+
+    for (auto [entity, canvas] : canvasUpdateView.each())
+    {
+        if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
+        {
+            UIManager::ProcessButton(*button, input);
+        }
+    }
+
     if (m_physics != nullptr && physicsActive)
     {
         const int32_t velocityIterations = 6;
@@ -531,14 +544,6 @@ void Scene::RenderEditor()
 
     glDisable(GL_BLEND);
 
-    /*
-    auto buttonView = m_manager.m_registry.view<TransformComponent, CanvasComponent, ButtonComponent>();
-    for (auto [entity, transform, canvas, button] : buttonView.each())
-    {
-        renderer.DrawQuad2D(transform.position, canvas.size, transform.rotation.z);
-    }
-    */
-
     RenderUI();
     RenderCollisionComponents();
     RenderTexts();
@@ -549,18 +554,10 @@ void Scene::RenderUI()
     Renderer& renderer = Application::Get().GetRenderer();
     renderer.SetScreenSize(m_viewportWidth, m_viewportHeight);
 
-    /*
-    auto buttonView = m_manager.m_registry.view<TransformComponent, CanvasComponent, ButtonComponent>();
-    for (auto [entity, transform, canvas, button] : buttonView.each())
-    {
-        renderer.DrawQuad2D(transform.position, canvas.size, transform.rotation.z);
-    }
-    */
-    
     auto canvas = m_manager.m_registry.view<TransformComponent, CanvasComponent, ButtonComponent>();
     for (auto [entity, transform, canvas, button] : canvas.each())
     {
-        renderer.DrawQuadUI(transform.position, canvas.size, button.color, UIAlignment::CENTER);
+        renderer.DrawQuadUI(canvas.position, canvas.size, button.color, UIAlignment::NONE);
     }
 }
 
