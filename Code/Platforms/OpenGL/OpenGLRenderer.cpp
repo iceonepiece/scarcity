@@ -420,20 +420,18 @@ void OpenGLRenderer::DrawQuadUI(const glm::vec2& position, const glm::vec2& scal
         y = m_screenSize.y / 2;
     }
 
-    glm::vec2 realScale = scale * m_camera->GetScreenSizePercentage();
+    //glm::vec2 realScale = scale * m_camera->GetScreenSizePercentage();
+
+    glm::vec2 realScale = scale;
 
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(x, y, 0.0f));
+    model = glm::translate(model, glm::vec3(x, m_screenSize.y - y, 0.0f));
     model = glm::scale(model, glm::vec3(realScale.x, realScale.y, 0.0f));
 
+    glm::mat4 projection = glm::ortho(0.0f, m_screenSize.x, 0.0f, m_screenSize.y);
+
     m_uiShader.SetMatrix4("model", model);
-    //m_uiShader.SetMatrix4("projection", m_camera->GetProjectionMatrix(CameraType::Orthographic));
-    //m_uiShader.SetMatrix4("projection", m_projectionMatrix);
-
-    
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_screenSize.x), 0.0f, static_cast<float>(m_screenSize.y));
     m_uiShader.SetMatrix4("projection", projection);
-
     m_uiShader.SetVector4f("color", color);
 
     glBindVertexArray(m_quadVAO);
