@@ -346,6 +346,7 @@
     <ClCompile Include="Code\UIs\UIList.cpp" />
     <ClCompile Include="Code\UIs\UIListItem.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLTexture.cpp" />
+    <ClCompile Include="Code\UI\UIControl.cpp" />
     <ClCompile Include="Code\Utils\FileDialog.cpp" />
     <ClCompile Include="External\Include\angelscript\scriptarray\scriptarray.cpp" />
     <ClCompile Include="External\Include\angelscript\scriptstdstring\scriptstdstring.cpp" />
@@ -504,9 +505,12 @@
     <ClInclude Include="Code\UIs\UIComponent.h" />
     <ClInclude Include="Code\UIs\UIList.h" />
     <ClInclude Include="Code\UIs\UIListItem.h" />
-    <ClInclude Include="Code\UIs\UIManager.h" />
+    <ClInclude Include="Code\UI\UIManager.h" />
     <ClInclude Include="Code\UIs\UIText.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLTexture.h" />
+    <ClInclude Include="Code\UI\EventHandler.h" />
+    <ClInclude Include="Code\UI\UIButton.h" />
+    <ClInclude Include="Code\UI\UIControl.h" />
     <ClInclude Include="Code\Utils\FileDialog.h" />
     <ClInclude Include="External\Include\AL\al.h" />
     <ClInclude Include="External\Include\AL\alc.h" />
