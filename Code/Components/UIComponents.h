@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "UI/UIButton.h"
 
 struct CanvasComponent
 {
@@ -79,6 +80,8 @@ struct ButtonComponent
 
 	std::string text;
 	glm::vec4 color{ 1.0f };
+
+	UIButton instance;
 };
 
 static void DoSerialize(const ButtonComponent& button, json& entityJson)

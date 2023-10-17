@@ -39,6 +39,8 @@ public:
 	virtual void Render();
 	virtual void RenderEditor();
 
+	void UpdateUI();
+
 	std::filesystem::path GetAbsolutePath();
 
 	inline void SetProject(Project* project) { m_project = project; }

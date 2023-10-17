@@ -5,6 +5,11 @@
 class Math
 {
 public:
+    static bool Contains(const glm::vec2& position, const glm::vec2& size, const glm::vec2& point)
+    {
+        return false;
+    }
+
     static glm::vec2 ConvertToNDC(const glm::vec2& screenPos, const glm::vec2& screenSize)
     {
         float normalizedX = screenPos.x / screenSize.x;

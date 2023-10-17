@@ -83,3 +83,14 @@ bool NewInput::GetMouseButtonUp(MouseCode code)
 
     return false;
 }
+
+void NewInput::SetCursorPosition(float x, float y)
+{
+    m_cursorPosition.x = x;
+    m_cursorPosition.y = y;
+}
+
+glm::vec2 NewInput::GetCursorPosition() const
+{
+    return m_cursorPosition;
+}

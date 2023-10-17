@@ -11,7 +11,7 @@
 #include "Physics/NullFixtureData.h"
 #include "Physics/EntityFixtureData.h"
 #include "Audio/Audio.h"
-#include "UIs/UIManager.h"
+#include "UI/UIManager.h"
 
 Scene::Scene(const std::string& name, const std::filesystem::path& path)
     : m_name(name)
@@ -102,6 +102,19 @@ void Scene::Start()
 
         camera.targetEntity = Entity{ &m_manager, target };
     }
+
+    /**
+    auto canvasView = m_manager.m_registry.view<CanvasComponent>();
+    for (auto [entity, canvas] : canvasView.each())
+    {
+        if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
+        {
+            button->instance.SetPosition(canvas.position);
+            button->instance.SetSize(canvas.size);
+            button->instance.SetBackgroundColor(button->color);
+        }
+    }
+    */
 }
 
 void Scene::Stop()
@@ -338,17 +351,7 @@ void Scene::Update(float deltaTime)
     for (auto& system : m_systems)
         system->Update(deltaTime);
 
-    auto canvasUpdateView = m_manager.m_registry.view<CanvasComponent>();
-
     NewInput& input = m_app->GetInput();
-
-    for (auto [entity, canvas] : canvasUpdateView.each())
-    {
-        if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
-        {
-            UIManager::ProcessButton(*button, input);
-        }
-    }
 
     if (m_physics != nullptr && physicsActive)
     {
@@ -433,6 +436,20 @@ void Scene::Enter()
 void Scene::Exit()
 {
 
+}
+
+void Scene::UpdateUI()
+{
+    auto canvasView = m_manager.m_registry.view<CanvasComponent>();
+    for (auto [entity, canvas] : canvasView.each())
+    {
+        if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
+        {
+            button->instance.SetPosition(canvas.position);
+            button->instance.SetSize(canvas.size);
+            button->instance.SetBackgroundColor(button->color);
+        }
+    }
 }
 
 void Scene::SetViewportSize(unsigned int width, unsigned int height)
@@ -554,10 +571,21 @@ void Scene::RenderUI()
     Renderer& renderer = Application::Get().GetRenderer();
     renderer.SetScreenSize(m_viewportWidth, m_viewportHeight);
 
+    /*
     auto canvas = m_manager.m_registry.view<TransformComponent, CanvasComponent, ButtonComponent>();
     for (auto [entity, transform, canvas, button] : canvas.each())
     {
         renderer.DrawQuadUI(canvas.position, canvas.size, button.color, UIAlignment::NONE);
+    }
+    */
+
+    auto canvasView = m_manager.m_registry.view<CanvasComponent>();
+    for (auto [entity, canvas] : canvasView.each())
+    {
+        if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
+        {
+            button->instance.Draw(renderer);
+        }
     }
 }
 
