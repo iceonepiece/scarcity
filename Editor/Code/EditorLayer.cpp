@@ -457,7 +457,7 @@ void EditorLayer::Update(float deltaTime)
     {
         if (Scene* playingScene = m_gameLayer.GetCurrentScene())
         {
-            playingScene->UpdateUI();
+            playingScene->UpdateUI(deltaTime);
             playingScene->Update(deltaTime);
             playingScene->SetViewportSize(m_viewportSize.x, m_viewportSize.y);
             playingScene->m_viewportWidth = m_viewportSize.x;
@@ -471,7 +471,7 @@ void EditorLayer::Update(float deltaTime)
 
         if (m_activeScene != nullptr)
         {
-            m_activeScene->UpdateUI();
+            m_activeScene->UpdateUI(deltaTime);
             m_activeScene->SetCamera(*m_camera);
             m_activeScene->m_viewportWidth = m_viewportSize.x;
             m_activeScene->m_viewportHeight = m_viewportSize.y;
@@ -553,6 +553,8 @@ void EditorLayer::RenderImGui()
     ImVec2 mousePos = ImGui::GetMousePos();
     ImVec2 cursorScreenPos = ImGui::GetCursorScreenPos();
     m_viewportCursorPosition = { mousePos.x - cursorScreenPos.x, mousePos.y - cursorScreenPos.y };
+    auto& input = m_app.GetInput();
+    input.SetCursorPosition(m_viewportCursorPosition.x, m_viewportCursorPosition.y);
 
     uint64_t textureID = m_app.GetRenderer().GetFramebufferTextureID();
     ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_viewportSize.x, m_viewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });

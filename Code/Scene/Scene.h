@@ -39,7 +39,7 @@ public:
 	virtual void Render();
 	virtual void RenderEditor();
 
-	void UpdateUI();
+	void UpdateUI(float deltaTime);
 
 	std::filesystem::path GetAbsolutePath();
 

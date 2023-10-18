@@ -21,6 +21,18 @@ public:
 		m_position = position;
 		m_size = size;
 		m_backgroundColor = color;
+
+		m_onMouseEnter += [&](void*, const UIControl& control)
+		{
+				std::cout << "Button OnMouseEnter()\n";
+			m_backgroundColor = color * 1.5f;
+		};
+
+		m_onMouseLeave += [&](void*, const UIControl& control)
+		{
+				std::cout << "Button OnMouseEnter()\n";
+			m_backgroundColor = color;
+		};
 	}
 
 	EventHandler<const UIButton&>& OnPressed()

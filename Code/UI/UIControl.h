@@ -48,8 +48,8 @@ protected:
 
 	bool m_visible;
 	bool m_enabled;
-	bool m_focused;
-	bool m_mouseOver;
+	bool m_focused = false;
+	bool m_mouseOver = false;
 
 	glm::vec2 m_viewportSize;
 

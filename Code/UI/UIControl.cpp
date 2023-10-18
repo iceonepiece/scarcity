@@ -7,12 +7,14 @@ bool UIControl::HandleInput(float deltaTime, NewInput& input)
 	{
 		if (!m_mouseOver)
 		{
+			std::cout << "MouseEnter\n";
 			m_onMouseEnter.Invoke(this, *this);
 			m_mouseOver = true;
 		}
 
 		if (!m_focused && input.GetMouseButtonDown(Mouse::ButtonLeft))
 		{
+			std::cout << "FocusReceived\n";
 			m_onFocusReceived.Invoke(this, *this);
 			m_focused = true;
 			return true;
@@ -22,6 +24,7 @@ bool UIControl::HandleInput(float deltaTime, NewInput& input)
 	{
 		if (m_mouseOver)
 		{
+			std::cout << "MouseLeave\n";
 			m_onMouseLeave.Invoke(this, *this);
 			m_mouseOver = false;
 		}

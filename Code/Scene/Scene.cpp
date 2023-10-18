@@ -348,10 +348,19 @@ void Scene::Update(float deltaTime)
             nativeScript.instance->Update(deltaTime);
     }
 
+    NewInput& input = m_app->GetInput();
+
+    auto canvasHandleInputView = m_manager.m_registry.view<CanvasComponent>();
+    for (auto [entity, canvas] : canvasHandleInputView.each())
+    {
+        if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
+        {
+            button->instance.HandleInput(deltaTime, input);
+        }
+    }
+
     for (auto& system : m_systems)
         system->Update(deltaTime);
-
-    NewInput& input = m_app->GetInput();
 
     if (m_physics != nullptr && physicsActive)
     {
@@ -438,10 +447,10 @@ void Scene::Exit()
 
 }
 
-void Scene::UpdateUI()
+void Scene::UpdateUI(float deltaTime)
 {
-    auto canvasView = m_manager.m_registry.view<CanvasComponent>();
-    for (auto [entity, canvas] : canvasView.each())
+    auto canvasUpdateView = m_manager.m_registry.view<CanvasComponent>();
+    for (auto [entity, canvas] : canvasUpdateView.each())
     {
         if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
         {
