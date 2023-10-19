@@ -457,11 +457,10 @@ void EditorLayer::Update(float deltaTime)
     {
         if (Scene* playingScene = m_gameLayer.GetCurrentScene())
         {
-            playingScene->UpdateUI(deltaTime);
+            //playingScene->UpdateUI(deltaTime);
             playingScene->Update(deltaTime);
             playingScene->SetViewportSize(m_viewportSize.x, m_viewportSize.y);
-            playingScene->m_viewportWidth = m_viewportSize.x;
-            playingScene->m_viewportHeight = m_viewportSize.y;
+            playingScene->OnViewportResize();
             playingScene->Render();
         }
     }
@@ -471,10 +470,9 @@ void EditorLayer::Update(float deltaTime)
 
         if (m_activeScene != nullptr)
         {
-            m_activeScene->UpdateUI(deltaTime);
+            //m_activeScene->UpdateUI(deltaTime);
             m_activeScene->SetCamera(*m_camera);
-            m_activeScene->m_viewportWidth = m_viewportSize.x;
-            m_activeScene->m_viewportHeight = m_viewportSize.y;
+            m_activeScene->SetViewportSize(m_viewportSize.x, m_viewportSize.y);
             m_activeScene->RenderEditor();
 
             if (m_currentMode != EditorMode::ViewMode && m_selectedObject.type == EditorObjectType::Entity)

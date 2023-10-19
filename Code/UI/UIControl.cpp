@@ -3,7 +3,7 @@
 
 bool UIControl::HandleInput(float deltaTime, NewInput& input)
 {
-	if (Math::Contains(m_position, m_size, input.GetCursorPosition()))
+	if (Math::Contains(m_canvas->position, m_canvas->size, input.GetCursorPosition()))
 	{
 		if (!m_mouseOver)
 		{

@@ -46,7 +46,7 @@ public:
 	inline void SetProject(Project* project) { m_project = project; }
 	void SetViewportSize(unsigned int width, unsigned int height);
 	void SetCamera(Camera& camera);
-
+	void OnViewportResize();
 	
 	bool HasSaved();
 

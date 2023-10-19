@@ -321,6 +321,7 @@
     <ClCompile Include="Code\Core\LevelManager.cpp" />
     <ClCompile Include="Code\Input\NewInput.cpp" />
     <ClCompile Include="Code\Lua\LuaEngine.cpp" />
+    <ClCompile Include="Code\Math\Math.cpp" />
     <ClCompile Include="Code\NativeScript\NativeScriptEngine.cpp" />
     <ClCompile Include="Code\pch.cpp" />
     <ClCompile Include="Code\Physics\GroundDetectionFixtureData.cpp" />
@@ -346,6 +347,7 @@
     <ClCompile Include="Code\UIs\UIList.cpp" />
     <ClCompile Include="Code\UIs\UIListItem.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLTexture.cpp" />
+    <ClCompile Include="Code\UI\UIButton.cpp" />
     <ClCompile Include="Code\UI\UIControl.cpp" />
     <ClCompile Include="Code\Utils\FileDialog.cpp" />
     <ClCompile Include="External\Include\angelscript\scriptarray\scriptarray.cpp" />
@@ -387,6 +389,7 @@
     <ClInclude Include="Code\Components\CameraComponent.h" />
     <ClInclude Include="Code\Components\GroundDetectionComponent.h" />
     <ClInclude Include="Code\Components\ComponentSerializer.h" />
+    <ClInclude Include="Code\Components\ButtonComponent.h" />
     <ClInclude Include="Code\Components\IDComponent.h" />
     <ClInclude Include="Code\Components\MockComponent.h" />
     <ClInclude Include="Code\Components\NativeScriptComponent.h" />

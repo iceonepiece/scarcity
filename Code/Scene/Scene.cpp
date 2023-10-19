@@ -449,6 +449,7 @@ void Scene::Exit()
 
 void Scene::UpdateUI(float deltaTime)
 {
+    /*
     auto canvasUpdateView = m_manager.m_registry.view<CanvasComponent>();
     for (auto [entity, canvas] : canvasUpdateView.each())
     {
@@ -459,16 +460,23 @@ void Scene::UpdateUI(float deltaTime)
             button->instance.SetBackgroundColor(button->color);
         }
     }
+    */
 }
 
 void Scene::SetViewportSize(unsigned int width, unsigned int height)
+{
+    m_viewportWidth = width;
+    m_viewportHeight = height;
+}
+
+void Scene::OnViewportResize()
 {
     Renderer& renderer = m_app->GetRenderer();
 
     auto view = m_manager.m_registry.view<TransformComponent, CameraComponent>();
     for (auto [entity, transform, camera] : view.each())
     {
-        float ratio = width / (float)height;
+        float ratio = m_viewportWidth / (float)m_viewportHeight;
         float width = camera.size * ratio;
 
         renderer.SetViewMatrix(glm::inverse(glm::translate(glm::mat4(1.0f), transform.position)));

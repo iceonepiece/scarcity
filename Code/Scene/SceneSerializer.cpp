@@ -114,18 +114,16 @@ bool SceneSerializer::Deserialize(Scene& scene, std::filesystem::path filepath)
 			}, ComponentList{});
 		}
 
-		/*
+
 		auto canvasView = manager.m_registry.view<CanvasComponent>();
 		for (auto [entity, canvas] : canvasView.each())
 		{
 			if (ButtonComponent* button = manager.m_registry.try_get<ButtonComponent>(entity))
 			{
-				button->instance.SetPosition(canvas.position);
-				button->instance.SetSize(canvas.size);
+				button->instance.SetCanvas(&canvas);
 				button->instance.SetBackgroundColor(button->color);
 			}
 		}
-		*/
 	}
 	else
 	{

@@ -15,13 +15,33 @@ public:
 	void Render();
 
 	template <typename T>
-	void RenderAddComponent(entt::registry& registry, entt::entity entity)
+	bool RenderAddComponent(entt::registry& registry, entt::entity entity)
 	{
 		if (ImGui::Selectable(T::Name().c_str()))
 		{
 			if (registry.try_get<T>(entity) == nullptr)
+			{
 				registry.emplace<T>(entity);
+				return true;
+			}
 		}
+
+		return false;
+	}
+
+	template <typename T>
+	bool RenderAddUIComponent(entt::registry& registry, entt::entity entity)
+	{
+		if (RenderAddComponent<T>(registry, entity))
+		{
+			if (CanvasComponent* canvas = registry.try_get<CanvasComponent>(entity))
+			{
+				AdjustCanvas(registry.get<T>(entity), canvas);
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 private:

@@ -13,14 +13,14 @@ public:
 		StateCount
 	};
 
-	UIButton() = default;
-
+	UIButton();
+	/*
 	UIButton(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
 		: m_state(Default)
 	{
-		m_position = position;
-		m_size = size;
-		m_backgroundColor = color;
+		//m_canvas.position = position;
+		//m_canvas.size = size;
+		//m_backgroundColor = color;
 
 		m_onMouseEnter += [&](void*, const UIControl& control)
 		{
@@ -34,6 +34,7 @@ public:
 			m_backgroundColor = color;
 		};
 	}
+	*/
 
 	EventHandler<const UIButton&>& OnPressed()
 	{
@@ -47,7 +48,7 @@ public:
 
 	virtual void Draw(Renderer& renderer) override
 	{
-		renderer.DrawQuadUI(m_position, m_size, m_backgroundColor, UIAlignment::NONE);
+		renderer.DrawQuadUI(m_canvas->position, m_canvas->size, m_backgroundColor, UIAlignment::NONE);
 	}
 
 	virtual bool HandleInput(float deltaTime, NewInput& input) override

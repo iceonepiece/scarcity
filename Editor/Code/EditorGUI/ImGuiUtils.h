@@ -7,7 +7,7 @@
 class ImGuiUtils
 {
 public:
-    static void RenderInputVec3(const std::string& name, glm::vec3& values, int width = 100)
+    static void RenderInputVec3(const std::string& name, glm::vec3& values, float width = 100.0f)
     {
         std::string xValue = "##X" + name;
         std::string yValue = "##Y" + name;
