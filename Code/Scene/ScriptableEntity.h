@@ -20,6 +20,8 @@ public:
 		return new ScriptableEntity;
 	}
 
+	virtual void ExportFunctions() {}
+
 	template <typename T>
 	std::unique_ptr<T> Clone() const
 	{
