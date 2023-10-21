@@ -308,7 +308,7 @@
     <ClCompile Include="Code\Core\Window.cpp" />
     <ClCompile Include="Code\File\FileSystem.cpp" />
     <ClCompile Include="Code\FSM\FSMState.cpp" />
-    <ClCompile Include="Code\Game\Character.cpp" />
+    <ClCompile Include="Code\Graphics\Renderer.cpp" />
     <ClCompile Include="Code\ImGui\ImGuiManager.cpp" />
     <ClCompile Include="Code\Core\Layer.cpp" />
     <ClCompile Include="Code\Core\ResourceAPI.cpp" />
@@ -318,7 +318,6 @@
     <ClCompile Include="Code\Core\System.cpp" />
     <ClCompile Include="Code\Events\MouseEvent.cpp" />
     <ClCompile Include="Code\Events\WindowEvent.cpp" />
-    <ClCompile Include="Code\Core\LevelManager.cpp" />
     <ClCompile Include="Code\Input\NewInput.cpp" />
     <ClCompile Include="Code\Lua\LuaEngine.cpp" />
     <ClCompile Include="Code\NativeScript\NativeScriptEngine.cpp" />
@@ -336,8 +335,6 @@
     <ClCompile Include="Code\Scene\Scene.cpp" />
     <ClCompile Include="Code\Core\ScriptManager.cpp" />
     <ClCompile Include="Code\Physics\Physics.cpp" />
-    <ClCompile Include="Code\Graphics\FontSystem.cpp" />
-    <ClCompile Include="Code\Graphics\Renderer.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="Code\Scene\SceneManager.cpp" />
     <ClCompile Include="Code\Scene\SceneSerializer.cpp" />
@@ -369,7 +366,6 @@
     <ClInclude Include="Code\Animations\AnimatorController.h" />
     <ClInclude Include="Code\Animations\AnimatorState.h" />
     <ClInclude Include="Code\Animations\AnimatorTransition.h" />
-    <ClInclude Include="Code\APIs\InputAPI.h" />
     <ClInclude Include="Code\Asset\AnimatorControllerAsset.h" />
     <ClInclude Include="Code\Asset\AssetManager.h" />
     <ClInclude Include="Code\Asset\AudioAsset.h" />
@@ -405,7 +401,6 @@
     <ClInclude Include="Code\Core\UniqueID.h" />
     <ClInclude Include="Code\File\FileSystem.h" />
     <ClInclude Include="Code\File\MetaSerializer.h" />
-    <ClInclude Include="Code\Game\Character.h" />
     <ClInclude Include="Code\ImGui\ImGuiManager.h" />
     <ClInclude Include="Code\Core\Input.h" />
     <ClInclude Include="Code\Core\Layer.h" />
@@ -414,9 +409,6 @@
     <ClInclude Include="Code\Core\ServiceLocator.h" />
     <ClInclude Include="Code\Events\KeyEvent.h" />
     <ClInclude Include="Code\Events\WindowEvent.h" />
-    <ClInclude Include="Code\Game\MyLevel.h" />
-    <ClInclude Include="Code\Game\Player.h" />
-    <ClInclude Include="Code\Graphics\GraphicsData.h" />
     <ClInclude Include="Code\Graphics\Shader.h" />
     <ClInclude Include="Code\Graphics\Texture.h" />
     <ClInclude Include="Code\Input\NewInput.h" />
@@ -451,7 +443,6 @@
     <ClInclude Include="Code\Core\Timer.h" />
     <ClInclude Include="Code\Core\Window.h" />
     <ClInclude Include="Code\Core\GameState.h" />
-    <ClInclude Include="Code\Core\LevelManager.h" />
     <ClInclude Include="Code\Events\Event.h" />
     <ClInclude Include="Code\Events\MouseEvent.h" />
     <ClInclude Include="Code\FSM\AnimationDoneTransition.h" />
@@ -466,9 +457,6 @@
     <ClInclude Include="Code\Scene\Scene.h" />
     <ClInclude Include="Code\Core\ScriptManager.h" />
     <ClInclude Include="Code\Core\System.h" />
-    <ClInclude Include="Code\Game\MenuState.h" />
-    <ClInclude Include="Code\Game\PausedState.h" />
-    <ClInclude Include="Code\Game\RunningState.h" />
     <ClInclude Include="Code\Input\KeyCodes.h" />
     <ClInclude Include="Code\Input\MouseCodes.h" />
     <ClInclude Include="Code\Physics\ContactListener.h" />
@@ -477,17 +465,9 @@
     <ClInclude Include="Code\Physics\Physics.h" />
     <ClInclude Include="Code\Physics\PlayerFixtureData.h" />
     <ClInclude Include="Code\Prefabs\Projectile.h" />
-    <ClInclude Include="Code\Graphics\FontSystem.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLRenderer.h" />
     <ClInclude Include="Code\Graphics\Renderer.h" />
-    <ClInclude Include="Code\Graphics\RendererAPI.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLShader.h" />
-    <ClInclude Include="Code\Scenes\IntroScene.h" />
-    <ClInclude Include="Code\Scenes\Level1.h" />
-    <ClInclude Include="Code\Scenes\LevelEditorScene.h" />
-    <ClInclude Include="Code\Scenes\LevelScene.h" />
-    <ClInclude Include="Code\Scenes\LuaScene.h" />
-    <ClInclude Include="Code\Scenes\MenuScene.h" />
     <ClInclude Include="Code\Scene\SceneManager.h" />
     <ClInclude Include="Code\Scene\SceneSerializer.h" />
     <ClInclude Include="Code\Scene\ScriptableEntity.h" />

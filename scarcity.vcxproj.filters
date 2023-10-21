@@ -486,12 +486,6 @@
     <ClCompile Include="Code\FSM\FiniteStateMachine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Graphics\FontSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Graphics\Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -505,9 +499,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLTexture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Core\LevelManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Core\Timer.cpp">
@@ -636,9 +627,6 @@
     <ClCompile Include="Code\Animations\AnimatorTransition.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Game\Character.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Core\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -670,6 +658,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Asset\AssetManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Graphics\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -728,15 +719,6 @@
     <ClInclude Include="code\systems\PlayerSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Scenes\Level1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Scenes\LevelScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Graphics\FontSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Code\Graphics\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -758,12 +740,6 @@
     <ClInclude Include="Code\Physics\PlayerFixtureData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Game\PausedState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Game\RunningState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Code\Components\AIComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -782,25 +758,13 @@
     <ClInclude Include="Code\Core\ScriptManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Scenes\MenuScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Game\MenuState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Code\Input\KeyCodes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Scenes\IntroScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\UIs\UIContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Core\LevelManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Components\CircleCollider2DComponent.h">
@@ -852,9 +816,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Scenes\LevelEditorScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="External\Include\stb_image.h">
@@ -2072,13 +2033,7 @@
     <ClInclude Include="External\Include\freetype\tttags.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Graphics\RendererAPI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Code\FSM\AnimationDoneTransition.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Scenes\LuaScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Systems\AnimationSystem.h">
@@ -2090,9 +2045,6 @@
     <ClInclude Include="Code\Physics\NullFixtureData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Game\Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Code\Core\Scriptable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -2100,9 +2052,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Components\ScriptableComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Game\MyLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Animations\Animation2D.h">
@@ -2147,9 +2096,6 @@
     <ClInclude Include="Code\Core\Common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Graphics\GraphicsData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Code\Graphics\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -2160,9 +2106,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Events\WindowEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\APIs\InputAPI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Core\Input.h">
@@ -2295,9 +2238,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Animations\AnimatorTransition.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Game\Character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="External\Include\ImGuiNodeEditor\crude_json.h">

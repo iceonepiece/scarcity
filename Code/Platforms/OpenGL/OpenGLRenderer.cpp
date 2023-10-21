@@ -4,7 +4,6 @@
 
 #include "OpenGLRenderer.h"
 #include "OpenGLTexture.h"
-#include "Graphics/RendererAPI.h"
 #include "UIs/UIText.h"
 
 void OpenGLRenderer::Initialize()
