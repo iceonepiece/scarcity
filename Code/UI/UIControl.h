@@ -6,6 +6,7 @@
 #include "Math/Math.h"
 #include "Graphics/Renderer.h"
 #include "Components/UIComponents.h"
+#include "Scene/ScriptableEntity.h"
 
 class UIControl
 {
@@ -38,6 +39,14 @@ public:
 		m_backgroundColor = color;
 	}
 
+	void SetScriptableEntity(ScriptableEntity* scriptable)
+	{
+		m_scriptable = scriptable;
+
+		if (m_scriptable != nullptr)
+			m_scriptable->ExportFunctions();
+	}
+
 	void Update(float deltaTime)
 	{
 		//m_backgroundColor.a = m_alpha;
@@ -54,6 +63,7 @@ public:
 
 public:
 	inline static CanvasComponent defaultCanvas;
+	ScriptableEntity* m_scriptable = nullptr;
 
 protected:
 	//glm::vec2 m_position;

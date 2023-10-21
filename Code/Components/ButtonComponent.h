@@ -13,6 +13,9 @@ struct ButtonComponent
 
 	//UIButton* instance = nullptr;
 	UIButton instance;
+
+	UniqueID targetID;
+	Entity targetEntity;
 };
 
 static void AdjustCanvas(ButtonComponent& button, CanvasComponent* canvas)

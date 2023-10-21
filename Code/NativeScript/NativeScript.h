@@ -47,8 +47,9 @@ extern "C" {
         s_functions[name] = fn; \
     } \
     \
-    void CallFunction(const std::string& name) { \
-        auto it = s_functions.find(name); \
+    virtual void CallFunction(const std::string& name) { \
+        std::string callerName = #className; \
+        auto it = s_functions.find(callerName + "::" + name); \
         if (it != s_functions.end()) { \
             (this->*(it->second))(); \
         } \
@@ -56,3 +57,5 @@ extern "C" {
             std::cout << "Function not found!" << std::endl; \
         } \
     }
+
+#define EXPORT_FUNCTION(name) AddFunction(#name, &name)

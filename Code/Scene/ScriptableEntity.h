@@ -20,6 +20,7 @@ public:
 		return new ScriptableEntity;
 	}
 
+	virtual void CallFunction(const std::string& name) {}
 	virtual void ExportFunctions() {}
 
 	template <typename T>

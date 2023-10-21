@@ -56,6 +56,11 @@ public:
 		return UIControl::HandleInput(deltaTime, input);
 	}
 
+	void SetOnMouseEnter(std::function<void(void*, UIControl&)> fn)
+	{
+		m_onMouseEnter += fn;
+	}
+
 
 protected:
 	State m_state;

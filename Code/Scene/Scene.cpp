@@ -103,18 +103,44 @@ void Scene::Start()
         camera.targetEntity = Entity{ &m_manager, target };
     }
 
-    /**
     auto canvasView = m_manager.m_registry.view<CanvasComponent>();
     for (auto [entity, canvas] : canvasView.each())
     {
         if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
         {
+            /*
             button->instance.SetPosition(canvas.position);
             button->instance.SetSize(canvas.size);
             button->instance.SetBackgroundColor(button->color);
+            */
+
+            uint64_t id = button->targetID;
+            entt::entity target = entt::null;
+
+            if (m_manager.m_uniqueIDToEntity.find(id) != m_manager.m_uniqueIDToEntity.end())
+            {
+                target = m_manager.m_uniqueIDToEntity[id];
+            }
+
+            button->targetEntity = Entity{ &m_manager, target };
+
+            if (NativeScriptComponent* nativeScript = button->targetEntity.GetComponent<NativeScriptComponent>())
+            {
+                if (ScriptableEntity* scriptable = nativeScript->instance)
+                {
+                    scriptable->ExportFunctions();
+                    std::string functionName = button->text;
+
+                    auto onMouseEnterHandler = [functionName, scriptable](void* context, UIControl& control)
+                    {
+                        scriptable->CallFunction(functionName);
+                    };
+
+                    button->instance.SetOnMouseEnter(onMouseEnterHandler);
+                }
+            }
         }
     }
-    */
 }
 
 void Scene::Stop()
