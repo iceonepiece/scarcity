@@ -50,6 +50,19 @@ void SceneManager::ResolveUniqueIDs(Scene& scene)
 
         camera.targetEntity = Entity{ &manager, target };
     }
+
+    auto buttonView = manager.m_registry.view<ButtonComponent>();
+
+    for (auto [entity, button] : buttonView.each())
+    {
+        uint64_t id = button.targetID;
+        entt::entity target = entt::null;
+
+        if (manager.m_uniqueIDToEntity.find(id) != manager.m_uniqueIDToEntity.end())
+            target = manager.m_uniqueIDToEntity[id];
+
+        button.targetEntity = Entity{ &manager, target };
+    }
 }
 
 std::unique_ptr<Scene> SceneManager::CreateDefaultScene(const std::filesystem::path& directory)

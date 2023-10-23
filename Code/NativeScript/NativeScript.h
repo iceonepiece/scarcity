@@ -48,14 +48,17 @@ extern "C" {
     } \
     \
     virtual void CallFunction(const std::string& name) { \
-        std::string callerName = #className; \
-        auto it = s_functions.find(callerName + "::" + name); \
-        if (it != s_functions.end()) { \
+        auto it = s_functions.find(name); \
+        if (it != s_functions.end()) \
             (this->*(it->second))(); \
-        } \
-        else { \
+        else \
             std::cout << "Function not found!" << std::endl; \
-        } \
+    } \
+    virtual std::vector<std::string> GetFunctionNames() { \
+        std::vector<std::string> keys; \
+        for (const auto& pair : s_functions) \
+            keys.push_back(pair.first); \
+        return keys; \
     }
 
 #define EXPORT_FUNCTION(name) AddFunction(#name, &name)

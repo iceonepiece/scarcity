@@ -129,7 +129,7 @@ void Scene::Start()
                 if (ScriptableEntity* scriptable = nativeScript->instance)
                 {
                     scriptable->ExportFunctions();
-                    std::string functionName = button->text;
+                    std::string functionName = button->functionName;
 
                     auto onMouseEnterHandler = [functionName, scriptable](void* context, UIControl& control)
                     {

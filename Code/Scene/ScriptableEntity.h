@@ -49,6 +49,11 @@ public:
 	virtual void Update(float dt) {}
 	virtual void LateUpdate(float dt) {}
 
+	virtual std::vector<std::string> GetFunctionNames()
+	{
+		return std::vector<std::string>();
+	}
+
 protected:
 	Application* m_app;
 	Entity m_entity;

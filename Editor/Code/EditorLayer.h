@@ -169,7 +169,6 @@ private:
 
 	EditorObject m_selectedObject;
 
-	NativeScriptEngine m_nativeScriptEngine;
 	std::vector<std::string> m_nativeClassNames;
 
 	std::unique_ptr<Project> m_activeProject;

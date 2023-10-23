@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include <string>
+#include <vector>
 #include "UI/UIButton.h"
 
 struct ButtonComponent
@@ -16,6 +17,9 @@ struct ButtonComponent
 
 	UniqueID targetID;
 	Entity targetEntity;
+
+	std::string functionName;
+	std::vector<std::string> functionNames;
 };
 
 static void AdjustCanvas(ButtonComponent& button, CanvasComponent* canvas)
@@ -33,6 +37,9 @@ static void DoSerialize(const ButtonComponent& button, json& entityJson)
 	colorJson.push_back(button.color.b);
 	colorJson.push_back(button.color.a);
 	entityJson[ButtonComponent::Name()]["color"] = colorJson;
+
+	entityJson[ButtonComponent::Name()]["targetID"] = (uint64_t)button.targetID;
+	entityJson[ButtonComponent::Name()]["functionName"] = button.functionName;
 }
 
 static void DoDeserialize(ButtonComponent& button, json& buttonJson)
@@ -42,4 +49,10 @@ static void DoDeserialize(ButtonComponent& button, json& buttonJson)
 	auto& colorJson = buttonJson["color"];
 	glm::vec4 color{ colorJson[0].get<float>(), colorJson[1].get<float>(), colorJson[2].get<float>(), colorJson[3].get<float>() };
 	button.color = color;
+
+	if (buttonJson["targetID"].is_number_unsigned())
+		button.targetID = buttonJson["targetID"].get<uint64_t>();
+
+	if (buttonJson["functionName"].is_string())
+		button.functionName = buttonJson["functionName"].get<std::string>();
 }

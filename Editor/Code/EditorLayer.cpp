@@ -421,7 +421,6 @@ bool EditorLayer::CheckPicking2D()
 void EditorLayer::Shutdown()
 {
 	std::cout << "EditorLayer Shutdown()\n\n";
-    m_nativeScriptEngine.ShutdownScriptableEntities();
 }
 
 TransformComponent* EditorLayer::GetEntityTransform()
@@ -584,7 +583,7 @@ void EditorLayer::PlayScene()
     {
         Scene* playingScene = SceneManager::Copy(*m_activeScene);
         playingScene->SetApplication(&m_app);
-        playingScene->StartNativeScripts(m_nativeScriptEngine);
+        playingScene->StartNativeScripts(m_app.GetNativeScriptEngine());
         playingScene->Start();
 
         m_gameLayer.AddScene(m_activeScene->m_name, playingScene);
@@ -793,12 +792,14 @@ void EditorLayer::ReloadNativeScripts()
         }
     }
 
-    m_nativeScriptEngine.SetClassNames(scriptClassNames);
+    NativeScriptEngine& nativeScriptEngine = m_app.GetNativeScriptEngine();
 
-    if (m_nativeScriptEngine.LoadNativeScripts(projectPath / "bin" / "Debug" / "Native-Script.dll", m_nativeClassNames))
+    nativeScriptEngine.SetClassNames(scriptClassNames);
+
+    if (nativeScriptEngine.LoadNativeScripts(projectPath / "bin" / "Debug" / "Native-Script.dll", m_nativeClassNames))
     {
         std::cout << "Success: Load native scripts\n";
-        m_nativeScriptEngine.InitializeScriptableEntities();
+        nativeScriptEngine.InitializeScriptableEntities();
     }
     else
     {

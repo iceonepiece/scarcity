@@ -4,6 +4,7 @@
 #include "ImGui/ImGuiManager.h"
 #include "Input/NewInput.h"
 #include "Graphics/Renderer.h"
+#include "NativeScript/NativeScriptEngine.h"
 #include "Lua/LuaEngine.h"
 #include "Audio/Audio.h"
 
@@ -18,6 +19,7 @@ Application::Application(const ApplicationConfigs& configs)
 	m_renderer = Renderer::Create();
 	m_renderer->Initialize();
 
+	m_nativeScriptEngine = std::make_unique<NativeScriptEngine>();
 	m_luaEngine = std::make_unique<LuaEngine>();
 
 	m_audio = Audio::Create();
@@ -31,6 +33,7 @@ Application::~Application()
 	for (auto& layer : m_layers)
 		layer->Shutdown();
 
+	m_nativeScriptEngine->ShutdownScriptableEntities();
 	m_audio->Destroy();
 }
 
