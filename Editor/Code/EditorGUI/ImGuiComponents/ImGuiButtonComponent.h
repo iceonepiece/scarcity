@@ -13,7 +13,6 @@ static void RenderImGui(ButtonComponent& button)
 	if (ImGui::ColorEdit4("Color", color))
 	{
 		button.color = { color[0], color[1], color[2], color[3] };
-		button.instance.SetBackgroundColor(button.color);
 	}
 
 	std::string entityName = "";

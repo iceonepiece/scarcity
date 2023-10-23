@@ -411,22 +411,9 @@ void OpenGLRenderer::DrawQuadUI(const glm::vec2& position, const glm::vec2& scal
 {
     m_uiShader.Use();
 
-    float x = position.x;
-    float y = position.y;
-
-    if (alignment == UIAlignment::CENTER)
-    {
-        x = m_screenSize.x / 2;
-        y = m_screenSize.y / 2;
-    }
-
-    //glm::vec2 realScale = scale * m_camera->GetScreenSizePercentage();
-
-    glm::vec2 realScale = scale;
-
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(x, m_screenSize.y - y, 0.0f));
-    model = glm::scale(model, glm::vec3(realScale.x, realScale.y, 0.0f));
+    model = glm::translate(model, glm::vec3(position.x, m_screenSize.y - position.y, 0.0f));
+    model = glm::scale(model, glm::vec3(scale.x, scale.y, 0.0f));
 
     glm::mat4 projection = glm::ortho(0.0f, m_screenSize.x, 0.0f, m_screenSize.y);
 

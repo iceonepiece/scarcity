@@ -1,6 +1,24 @@
 #pragma once
 
 #include <string>
+#include <nlohmann/json.hpp>
+#include <glm/glm.hpp>
+
+using json = nlohmann::json;
+
+enum VerticalAlignment
+{
+	Top,
+	Middle,
+	Bottom
+};
+
+enum HorizontalAlignment
+{
+	Left,
+	Center,
+	Right
+};
 
 struct CanvasComponent
 {
@@ -8,6 +26,9 @@ struct CanvasComponent
 
 	glm::vec2 position { 0.0f, 0.0f };
 	glm::vec2 size { 1.0f, 1.0f };
+
+	VerticalAlignment verticalAlignment = Middle;
+	HorizontalAlignment horizontalAligment = Center;
 };
 
 static void DoSerialize(const CanvasComponent& canvas, json& entityJson)

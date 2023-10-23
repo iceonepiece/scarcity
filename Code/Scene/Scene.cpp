@@ -108,12 +108,6 @@ void Scene::Start()
     {
         if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
         {
-            /*
-            button->instance.SetPosition(canvas.position);
-            button->instance.SetSize(canvas.size);
-            button->instance.SetBackgroundColor(button->color);
-            */
-
             uint64_t id = button->targetID;
             entt::entity target = entt::null;
 
@@ -131,12 +125,10 @@ void Scene::Start()
                     scriptable->ExportFunctions();
                     std::string functionName = button->functionName;
 
-                    auto onMouseEnterHandler = [functionName, scriptable](void* context, UIControl& control)
+                    button->mousePressedHandler += [functionName, scriptable](void* context, UIComponent& uiComponent)
                     {
                         scriptable->CallFunction(functionName);
                     };
-
-                    button->instance.SetOnMouseEnter(onMouseEnterHandler);
                 }
             }
         }
@@ -374,6 +366,28 @@ void Scene::Update(float deltaTime)
             nativeScript.instance->Update(deltaTime);
     }
 
+    auto canvasAdjustView = m_manager.m_registry.view<TransformComponent, CanvasComponent>();
+    for (auto [entity, transform, canvas] : canvasAdjustView.each())
+    {
+        float x = transform.position.x;
+        float y = transform.position.y;
+
+        switch (canvas.horizontalAligment)
+        {
+            case Center: x += m_viewportWidth / 2.0f; break;
+            case Right: x += m_viewportWidth; break;
+        }
+
+        switch (canvas.verticalAlignment)
+        {
+            case Middle: y += m_viewportHeight / 2.0f; break;
+            case Bottom: y += m_viewportHeight; break;
+        }
+
+        canvas.position.x = x;
+        canvas.position.y = y;
+    }
+
     NewInput& input = m_app->GetInput();
 
     auto canvasHandleInputView = m_manager.m_registry.view<CanvasComponent>();
@@ -381,7 +395,7 @@ void Scene::Update(float deltaTime)
     {
         if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
         {
-            button->instance.HandleInput(deltaTime, input);
+            UIManager::HandleInput(canvas, *button, input);
         }
     }
 
@@ -622,12 +636,12 @@ void Scene::RenderUI()
     }
     */
 
-    auto canvasView = m_manager.m_registry.view<CanvasComponent>();
-    for (auto [entity, canvas] : canvasView.each())
+    auto canvasView = m_manager.m_registry.view<TransformComponent, CanvasComponent>();
+    for (auto [entity, transform, canvas] : canvasView.each())
     {
         if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
         {
-            button->instance.Draw(renderer);
+            renderer.DrawQuadUI(canvas.position, canvas.size, button->color, UIAlignment::NONE);
         }
     }
 }

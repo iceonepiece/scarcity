@@ -349,6 +349,7 @@
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLTexture.cpp" />
     <ClCompile Include="Code\UI\UIButton.cpp" />
     <ClCompile Include="Code\UI\UIControl.cpp" />
+    <ClCompile Include="Code\UI\UIManager.cpp" />
     <ClCompile Include="Code\Utils\FileDialog.cpp" />
     <ClCompile Include="External\Include\angelscript\scriptarray\scriptarray.cpp" />
     <ClCompile Include="External\Include\angelscript\scriptstdstring\scriptstdstring.cpp" />
@@ -397,6 +398,7 @@
     <ClInclude Include="Code\Components\Rigidbody2DComponent.h" />
     <ClInclude Include="Code\Components\SpriteRendererComponent.h" />
     <ClInclude Include="Code\Components\TimerComponent.h" />
+    <ClInclude Include="Code\Components\UIComponent.h" />
     <ClInclude Include="Code\Components\UIComponents.h" />
     <ClInclude Include="Code\Constants\GameEngine.h" />
     <ClInclude Include="Code\Core\Camera.h" />

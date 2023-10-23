@@ -3,23 +3,38 @@
 #include <glm/glm.hpp>
 #include <string>
 #include <vector>
-#include "UI/UIButton.h"
+#include "Components/UIComponent.h"
+#include "Core/UniqueID.h"
+#include "Core/Entity.h"
+#include "UI/EventHandler.h"
 
-struct ButtonComponent
+struct ButtonComponent : public UIComponent
 {
 	static std::string Name() { return "Button"; }
 
 	std::string text;
-	glm::vec4 color{ 1.0f };
 
-	//UIButton* instance = nullptr;
-	UIButton instance;
+	EventHandler<UIComponent&> mousePressedHandler;
+	EventHandler<UIComponent&> mouseReleasedHandler;
 
 	UniqueID targetID;
 	Entity targetEntity;
 
 	std::string functionName;
 	std::vector<std::string> functionNames;
+
+	ButtonComponent()
+	{
+		mouseEnterHandler += [&](void*, UIComponent& component)
+		{
+			component.color *= 1.25f;
+		};
+
+		mouseLeaveHandler += [&](void*, UIComponent& component)
+		{
+			component.color /= 1.25f;
+		};
+	}
 };
 
 static void AdjustCanvas(ButtonComponent& button, CanvasComponent* canvas)
