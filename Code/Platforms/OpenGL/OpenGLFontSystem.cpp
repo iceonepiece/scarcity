@@ -1,5 +1,4 @@
 #include "OpenGLFontSystem.h"
-#include "UIs/UIText.h"
 #include "OpenGLRenderer.h"
 
 int OpenGLFontSystem::Init()
@@ -92,13 +91,11 @@ int OpenGLFontSystem::Init()
     return 0;
 }
 
-void OpenGLFontSystem::RenderText(UIText *uiText, const glm::vec2& viewportSize)
+void OpenGLFontSystem::RenderText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, const glm::vec2& viewportSize)
 {
     // activate corresponding render state	
     shader.Use();
-    shader.SetVector4f("textColor", uiText->color);
-
-    WindowData windowData = Application::Get().GetWindow().GetWindowData();
+    shader.SetVector4f("textColor", color);
 
     glm::vec2 screenSize(viewportSize.x, viewportSize.y);
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(screenSize.x), 0.0f, static_cast<float>(screenSize.y));
@@ -107,16 +104,17 @@ void OpenGLFontSystem::RenderText(UIText *uiText, const glm::vec2& viewportSize)
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
 
-    float x = uiText->position.x;
-    float y = uiText->position.y;
+    float x = position.x;
+    float y = position.y;
 
     //float screenSizePercentage = Renderer::GetScreenSizePercentage();
     float screenSizePercentage = 1.0f;
 
-    float realScale = uiText->scale * screenSizePercentage / (float)FONT_PIXEL_HEIGHT;
+    float realScale = scale * screenSizePercentage / (float)FONT_PIXEL_HEIGHT;
 
     float xOffset = 0;
 
+    /*
     if (uiText->alignment == UIAlignment::CENTER)
     {
         x = screenSize.x / 2;
@@ -137,10 +135,11 @@ void OpenGLFontSystem::RenderText(UIText *uiText, const glm::vec2& viewportSize)
         }
         xOffset = (rightX - leftX) / 2;
     }
+    */
 
     // iterate through all characters
     std::string::const_iterator c;
-    for (c = uiText->text.begin(); c != uiText->text.end(); c++)
+    for (c = text.begin(); c != text.end(); c++)
     {
         Character ch = Characters[*c];
 

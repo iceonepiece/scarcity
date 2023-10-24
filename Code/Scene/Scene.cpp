@@ -19,7 +19,6 @@ Scene::Scene(const std::string& name, const std::filesystem::path& path)
 	, m_camera(
         new Camera2D({ 0.0f, 0.0f, -14.0f }, { 0.5f, 0.25f }, { 1280, 720 })
     )
-    , m_ui(this)
 {
     m_systems.push_back(std::make_unique<ScriptableSystem>(this));
     m_systems.push_back(std::make_unique<RenderSystem>(this));
@@ -641,7 +640,7 @@ void Scene::RenderUI()
     {
         if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
         {
-            renderer.DrawQuadUI(canvas.position, canvas.size, button->color, UIAlignment::NONE);
+            renderer.DrawQuadUI(canvas.position, canvas.size, button->color);
         }
     }
 }

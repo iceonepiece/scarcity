@@ -4,7 +4,6 @@
 
 #include "OpenGLRenderer.h"
 #include "OpenGLTexture.h"
-#include "UIs/UIText.h"
 
 void OpenGLRenderer::Initialize()
 {
@@ -406,7 +405,7 @@ void OpenGLRenderer::DrawCircle2D(const Circle2D& circle, float thickness)
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
-void OpenGLRenderer::DrawQuadUI(const glm::vec2& position, const glm::vec2& scale, const glm::vec4& color, UIAlignment alignment)
+void OpenGLRenderer::DrawQuadUI(const glm::vec2& position, const glm::vec2& scale, const glm::vec4& color)
 {
     m_uiShader.Use();
 
@@ -424,10 +423,9 @@ void OpenGLRenderer::DrawQuadUI(const glm::vec2& position, const glm::vec2& scal
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void OpenGLRenderer::DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, UIAlignment alignment)
+void OpenGLRenderer::DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color)
 {
-    UIText uiText(position, text, scale, color, alignment);
-    m_fontSystem.RenderText(&uiText, m_screenSize);
+    m_fontSystem.RenderText(text, position, scale, color, m_screenSize);
 }
 
 void OpenGLRenderer::CreateFramebuffer()

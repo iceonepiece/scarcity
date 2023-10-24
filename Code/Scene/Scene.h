@@ -8,7 +8,6 @@
 #include "Core/Camera.h"
 #include "Physics/Physics.h"
 #include "Input/Input.h"
-#include "UIs/UI.h"
 #include "Events/Event.h"
 #include "Core/System.h"
 #include "Core/GameState.h"
@@ -135,7 +134,6 @@ public:
 	std::unique_ptr<b2ContactListener> m_contactListener;
 
 	EntityManager m_manager;
-	UI m_ui;
 
 	friend class SceneSerializer;
 

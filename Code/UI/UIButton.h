@@ -48,7 +48,7 @@ public:
 
 	virtual void Draw(Renderer& renderer) override
 	{
-		renderer.DrawQuadUI(m_canvas->position, m_canvas->size, m_backgroundColor, UIAlignment::NONE);
+		renderer.DrawQuadUI(m_canvas->position, m_canvas->size, m_backgroundColor);
 	}
 
 	virtual bool HandleInput(float deltaTime, NewInput& input) override

@@ -11,6 +11,7 @@
 #include FT_FREETYPE_H
 
 #include "Platforms/OpenGL/OpenGLShader.h"
+#include "Components/UIComponents.h"
 
 class UIText;
 
@@ -26,7 +27,7 @@ class OpenGLFontSystem
 public:
 	int Init();
 
-    void RenderText(UIText *uiText, const glm::vec2& viewportSize);
+    void RenderText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, const glm::vec2& viewportSize);
 
 private:
     const uint8_t FONT_PIXEL_HEIGHT = 128;

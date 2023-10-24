@@ -340,9 +340,6 @@
     <ClCompile Include="Code\Scene\SceneManager.cpp" />
     <ClCompile Include="Code\Scene\SceneSerializer.cpp" />
     <ClCompile Include="Code\Scene\ScriptableEntity.cpp" />
-    <ClCompile Include="Code\UIs\UI.cpp" />
-    <ClCompile Include="Code\UIs\UIList.cpp" />
-    <ClCompile Include="Code\UIs\UIListItem.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLTexture.cpp" />
     <ClCompile Include="Code\UI\UIButton.cpp" />
     <ClCompile Include="Code\UI\UIControl.cpp" />
@@ -485,13 +482,7 @@
     <ClInclude Include="Code\Systems\RenderSystem.h" />
     <ClInclude Include="Code\Systems\Rigidbody2DSystem.h" />
     <ClInclude Include="Code\Systems\ScriptableSystem.h" />
-    <ClInclude Include="Code\UIs\UIContainer.h" />
-    <ClInclude Include="Code\UIs\UI.h" />
-    <ClInclude Include="Code\UIs\UIComponent.h" />
-    <ClInclude Include="Code\UIs\UIList.h" />
-    <ClInclude Include="Code\UIs\UIListItem.h" />
     <ClInclude Include="Code\UI\UIManager.h" />
-    <ClInclude Include="Code\UIs\UIText.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="Code\UI\EventHandler.h" />
     <ClInclude Include="Code\UI\UIButton.h" />
