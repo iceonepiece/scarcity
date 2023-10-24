@@ -31,6 +31,9 @@ public:
 	virtual void DrawCircle2D(const Circle2D& circle, float thickness = 1.0f) = 0;
 	virtual void DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color) = 0;
 
+	virtual void Clear(const glm::vec4& color) = 0;
+	virtual void PreRender(bool font = false) = 0;
+	virtual void PostRender(bool font = false) = 0;
 
 	virtual void CreateFramebuffer() = 0;
 	virtual void BindFramebuffer() = 0;

@@ -1,6 +1,5 @@
 #include "ImGuiSelectAnimatorControllerWindow.h"
-#include "Core/ResourceAPI.h"
-#include "Core/ResourceManager.h"
+#include "Core/Application.h"
 
 ImGuiSelectAnimatorControllerWindow::ImGuiSelectAnimatorControllerWindow(EditorLayer& editor, const std::filesystem::path& path)
 	: ImGuiWindow(editor)

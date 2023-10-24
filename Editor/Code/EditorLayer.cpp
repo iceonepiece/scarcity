@@ -8,7 +8,6 @@
 #include "Utils/FileDialog.h"
 #include <iostream>
 #include "Input/Input.h"
-#include "Core/ResourceAPI.h"
 #include "Lua/LuaEngine.h"
 #include "File/FileSystem.h"
 #include "File/MetaSerializer.h"
@@ -392,8 +391,7 @@ void EditorLayer::Update(float deltaTime)
     }
 
     renderer.BindFramebuffer();
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    renderer.Clear({ 0.2f, 0.2f, 0.2f, 1.0f });
 
     if (m_scenePlaying)
     {

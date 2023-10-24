@@ -10,7 +10,6 @@
 #include "Input/Input.h"
 #include "Events/Event.h"
 #include "Core/System.h"
-#include "Core/GameState.h"
 #include "Components/TransformComponent.h"
 #include "Components/Rigidbody2DComponent.h"
 #include "Project/Project.h"
@@ -108,8 +107,6 @@ public:
 		T(entity, this, std::forward<Args>(args)...);
 	}
 
-	void ChangeGameState(std::string gameStateName);
-
 	EntityManager& GetEntityManager();
 
 	std::vector<SpawnCommand> m_spawnCommands;
@@ -120,8 +117,6 @@ public:
 	std::string m_name;
 	std::filesystem::path m_path;
 	std::filesystem::path m_location;
-	std::unordered_map<std::string, std::unique_ptr<GameState>> m_gameStates;
-	std::string m_currentGameStateName;
 
 	bool physicsActive = true;
 	bool particleActive = true;

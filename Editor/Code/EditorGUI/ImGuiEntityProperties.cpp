@@ -5,7 +5,6 @@
 #include "../EditorLayer.h"
 #include "imgui/imgui_stdlib.h"
 #include <string>
-#include "Core/ResourceAPI.h"
 
 std::string EditorComponentNames[] = {
     "Box Collider 2D",

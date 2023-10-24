@@ -4,7 +4,6 @@
 #include <string>
 #include "Platforms/OpenGL/OpenGLTexture.h"
 #include "../EditorLayer.h"
-#include "Core/ResourceAPI.h"
 
 ImGuiAssetPanel::ImGuiAssetPanel(EditorLayer& editor)
 	: m_editor(editor)

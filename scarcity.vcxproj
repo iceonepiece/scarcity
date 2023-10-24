@@ -302,7 +302,6 @@
     <ClCompile Include="Code\Audio\OpenAL\OpenALAudio.cpp" />
     <ClCompile Include="Code\Audio\OpenAL\OpenALAudioSource.cpp" />
     <ClCompile Include="Code\Core\Application.cpp" />
-    <ClCompile Include="Code\Core\GameState.cpp" />
     <ClCompile Include="Code\Core\UniqueID.cpp" />
     <ClCompile Include="Code\Core\Window.cpp" />
     <ClCompile Include="Code\File\FileSystem.cpp" />
@@ -332,7 +331,6 @@
     <ClCompile Include="Code\Core\Random.cpp" />
     <ClCompile Include="Code\Project\Project.cpp" />
     <ClCompile Include="Code\Scene\Scene.cpp" />
-    <ClCompile Include="Code\Core\ScriptManager.cpp" />
     <ClCompile Include="Code\Physics\Physics.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="Code\Scene\SceneManager.cpp" />
@@ -394,7 +392,6 @@
     <ClInclude Include="Code\Graphics\Camera.h" />
     <ClInclude Include="Code\Animations\Animation2D.h" />
     <ClInclude Include="Code\Components\Components.h" />
-    <ClInclude Include="Code\Components\ScriptableComponent.h" />
     <ClInclude Include="Code\Components\TransformComponent.h" />
     <ClInclude Include="Code\Core\Application.h" />
     <ClInclude Include="Code\Core\Common.h" />
@@ -404,8 +401,6 @@
     <ClInclude Include="Code\ImGui\ImGuiManager.h" />
     <ClInclude Include="Code\Core\Input.h" />
     <ClInclude Include="Code\Core\Layer.h" />
-    <ClInclude Include="Code\Core\Scriptable.h" />
-    <ClInclude Include="Code\Core\ServiceLocator.h" />
     <ClInclude Include="Code\Events\KeyEvent.h" />
     <ClInclude Include="Code\Events\WindowEvent.h" />
     <ClInclude Include="Code\Graphics\Shader.h" />
@@ -433,7 +428,6 @@
     <ClInclude Include="Code\Components\CircleCollider2DComponent.h" />
     <ClInclude Include="code\components\Collider2DComponent.h" />
     <ClInclude Include="code\components\PlayerComponent.h" />
-    <ClInclude Include="Code\Components\ScriptComponent.h" />
     <ClInclude Include="Code\Components\SpriteAnimatorComponent.h" />
     <ClInclude Include="Code\Graphics\Camera2D.h" />
     <ClInclude Include="Code\Core\Entity.h" />
@@ -442,7 +436,6 @@
     <ClInclude Include="Code\Animations\SpriteAnimation.h" />
     <ClInclude Include="Code\Core\Timer.h" />
     <ClInclude Include="Code\Core\Window.h" />
-    <ClInclude Include="Code\Core\GameState.h" />
     <ClInclude Include="Code\Events\Event.h" />
     <ClInclude Include="Code\Events\MouseEvent.h" />
     <ClInclude Include="Code\FSM\AnimationDoneTransition.h" />
@@ -453,7 +446,6 @@
     <ClInclude Include="Code\Asset\TextureAsset.h" />
     <ClInclude Include="Code\Asset\Asset.h" />
     <ClInclude Include="Code\Scene\Scene.h" />
-    <ClInclude Include="Code\Core\ScriptManager.h" />
     <ClInclude Include="Code\Core\System.h" />
     <ClInclude Include="Code\Input\KeyCodes.h" />
     <ClInclude Include="Code\Input\MouseCodes.h" />
@@ -470,13 +462,6 @@
     <ClInclude Include="Code\Scene\SceneSerializer.h" />
     <ClInclude Include="Code\Scene\ScriptableEntity.h" />
     <ClInclude Include="Code\Shapes\Shape2D.h" />
-    <ClInclude Include="Code\Systems\CameraSystem.h" />
-    <ClInclude Include="Code\Systems\Collider2DSystem.h" />
-    <ClInclude Include="code\systems\PlayerSystem.h" />
-    <ClInclude Include="Code\Systems\AnimationSystem.h" />
-    <ClInclude Include="Code\Systems\RenderSystem.h" />
-    <ClInclude Include="Code\Systems\Rigidbody2DSystem.h" />
-    <ClInclude Include="Code\Systems\ScriptableSystem.h" />
     <ClInclude Include="Code\UI\UIManager.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="Code\UI\EventHandler.h" />

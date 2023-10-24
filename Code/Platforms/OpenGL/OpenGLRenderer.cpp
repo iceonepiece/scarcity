@@ -428,6 +428,29 @@ void OpenGLRenderer::DrawText(const std::string& text, const glm::vec2& position
     m_fontSystem.RenderText(text, position, scale, color, m_screenSize);
 }
 
+void OpenGLRenderer::Clear(const glm::vec4& color)
+{
+    glClearColor(color.r, color.g, color.b, color.a);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void OpenGLRenderer::PreRender(bool font)
+{
+    if (font)
+        glEnable(GL_CULL_FACE);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+void OpenGLRenderer::PostRender(bool font)
+{
+    if (font)
+        glDisable(GL_CULL_FACE);
+
+    glDisable(GL_BLEND);
+}
+
 void OpenGLRenderer::CreateFramebuffer()
 {
     glGenFramebuffers(1, &m_FBO);

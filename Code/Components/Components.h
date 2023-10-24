@@ -15,7 +15,6 @@
 #include "NativeScriptComponent.h"
 #include "PlayerComponent.h"
 #include "Rigidbody2DComponent.h"
-#include "ScriptableComponent.h"
 #include "SpriteAnimatorComponent.h"
 #include "SpriteRendererComponent.h"
 #include "TimerComponent.h"

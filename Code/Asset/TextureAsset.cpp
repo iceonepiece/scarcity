@@ -1,5 +1,4 @@
 #include "TextureAsset.h"
-#include "Core/ResourceAPI.h"
 #include "File/MetaSerializer.h"
 
 TextureAsset::TextureAsset(const std::filesystem::path& path, Texture* texture)

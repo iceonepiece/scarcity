@@ -1,13 +1,10 @@
 #include "Scene.h"
-#include "Systems/ScriptableSystem.h"
-#include "Systems/RenderSystem.h"
 #include "Graphics/Renderer.h"
 #include "Graphics/Camera2D.h"
 #include "Components/Components.h"
 #include "File/FileSystem.h"
 #include "NativeScript/NativeScriptEngine.h"
 #include "Animations/AnimationSerializer.h"
-#include "Systems/AnimationSystem.h"
 #include "Physics/NullFixtureData.h"
 #include "Physics/EntityFixtureData.h"
 #include "Audio/Audio.h"
@@ -20,9 +17,6 @@ Scene::Scene(const std::string& name, const std::filesystem::path& path)
         new Camera2D({ 0.0f, 0.0f, -14.0f }, { 0.5f, 0.25f }, { 1280, 720 })
     )
 {
-    m_systems.push_back(std::make_unique<ScriptableSystem>(this));
-    m_systems.push_back(std::make_unique<RenderSystem>(this));
-    m_systems.push_back(std::make_unique<AnimationSystem>(this));
 }
 
 void Scene::OnEvent(Event* e)
@@ -77,7 +71,6 @@ void Scene::Start()
     {
         Entity myEntity{ &m_manager, entity };
 
-        //AnimatorController* baseAnimator = ResourceAPI::GetResourceManager()->GetAnimatorController(animator.controllerName);
         AnimatorController* baseAnimator = m_app->GetAssetManager().GetAnimatorController(animator.controllerName);
         animator.controller = baseAnimator != nullptr ? new AnimatorController(*baseAnimator) : nullptr;
     }
@@ -184,10 +177,7 @@ void Scene::RenderTexts()
 {
     Renderer& renderer = Application::Get().GetRenderer();
     renderer.SetScreenSize(m_viewportWidth, m_viewportHeight);
-
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    renderer.PreRender(true);
 
     auto textView = m_manager.m_registry.view<TransformComponent, CanvasComponent, TextComponent>();
     for (auto [entity, transform, canvas, text] : textView.each())
@@ -195,8 +185,7 @@ void Scene::RenderTexts()
         renderer.DrawText(text.text, canvas.position, text.size, text.color);
     }
 
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_BLEND);
+    renderer.PostRender(true);
 }
 
 void Scene::RenderCollisionComponents()
@@ -475,11 +464,6 @@ void Scene::Update(float deltaTime)
 
 void Scene::Enter()
 {
-    auto view = m_manager.m_registry.view<ScriptableComponent>();
-
-    for (auto [entity, scriptable] : view.each())
-        scriptable.scriptable->Start();
-
    Application::Get().GetRenderer().SetCamera(m_camera.get());
 }
 
@@ -538,9 +522,7 @@ void Scene::SetCamera(Camera& camera)
 void Scene::Render()
 {
     Renderer& renderer = Application::Get().GetRenderer();
-
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    renderer.PreRender();
 
     auto transforms = m_manager.m_registry.view<TransformComponent, SpriteRendererComponent>();
 
@@ -574,7 +556,7 @@ void Scene::Render()
             renderer.DrawSprite(*(sprite.sprite), transform.position, transform.scale, transform.rotation.z);
     }
 
-    glDisable(GL_BLEND);
+    renderer.PostRender();
 
     for (auto& system : m_systems)
         system->Render();
@@ -587,9 +569,7 @@ void Scene::Render()
 void Scene::RenderEditor()
 {
     Renderer& renderer = Application::Get().GetRenderer();
-
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    renderer.PreRender();
 
     auto transforms = m_manager.m_registry.view<TransformComponent, SpriteRendererComponent>();
 
@@ -617,7 +597,7 @@ void Scene::RenderEditor()
         }
     }
 
-    glDisable(GL_BLEND);
+    renderer.PostRender();
 
     RenderUI();
     RenderCollisionComponents();
@@ -650,19 +630,4 @@ void Scene::RenderUI()
 EntityManager& Scene::GetEntityManager()
 {
     return m_manager;
-}
-
-void Scene::ChangeGameState(std::string gameStateName)
-{
-    std::cout << "Change from " << m_currentGameStateName << " to " << gameStateName << std::endl;
-
-
-    if (m_gameStates[m_currentGameStateName] != nullptr)
-        m_gameStates[m_currentGameStateName]->OnExit();
-
-    m_currentGameStateName = gameStateName;
-
-    if (m_gameStates[m_currentGameStateName] != nullptr)
-        m_gameStates[m_currentGameStateName]->OnEnter();
-
 }

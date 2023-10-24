@@ -50,6 +50,8 @@ public:
         soundData.clear(); // erase the sound in RAM
 
         UpdateDuration();
+
+        return true;
 	}
 
     void UpdateDuration()
