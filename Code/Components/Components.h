@@ -21,6 +21,7 @@
 #include "TimerComponent.h"
 #include "TransformComponent.h"
 #include "UIComponents.h"
+#include "ButtonComponent.h"
 
 using CopyToSceneComponents = std::tuple<
 	IDComponent,
@@ -56,6 +57,26 @@ using ComponentList = std::tuple<
 	Rigidbody2DComponent,
 	AudioSourceComponent,
 
+	ButtonComponent,
+	TextComponent
+>;
+
+using ToAddComponents = std::tuple<
+	BaseComponent,
+	TransformComponent,
+	CanvasComponent,
+	SpriteAnimatorComponent,
+	SpriteRendererComponent,
+	BoxCollider2DComponent,
+	CircleCollider2DComponent,
+	CameraComponent,
+	GroundDetectionComponent,
+	NativeScriptComponent,
+	Rigidbody2DComponent,
+	AudioSourceComponent
+>;
+
+using ToAddUIComponents = std::tuple<
 	ButtonComponent,
 	TextComponent
 >;

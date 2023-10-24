@@ -11,6 +11,7 @@
 #include "Physics/NullFixtureData.h"
 #include "Physics/EntityFixtureData.h"
 #include "Audio/Audio.h"
+#include "UI/UIManager.h"
 
 Scene::Scene(const std::string& name, const std::filesystem::path& path)
     : m_name(name)
@@ -100,6 +101,37 @@ void Scene::Start()
         }
 
         camera.targetEntity = Entity{ &m_manager, target };
+    }
+
+    auto canvasView = m_manager.m_registry.view<CanvasComponent>();
+    for (auto [entity, canvas] : canvasView.each())
+    {
+        if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
+        {
+            uint64_t id = button->targetID;
+            entt::entity target = entt::null;
+
+            if (m_manager.m_uniqueIDToEntity.find(id) != m_manager.m_uniqueIDToEntity.end())
+            {
+                target = m_manager.m_uniqueIDToEntity[id];
+            }
+
+            button->targetEntity = Entity{ &m_manager, target };
+
+            if (NativeScriptComponent* nativeScript = button->targetEntity.GetComponent<NativeScriptComponent>())
+            {
+                if (ScriptableEntity* scriptable = nativeScript->instance)
+                {
+                    scriptable->ExportFunctions();
+                    std::string functionName = button->functionName;
+
+                    button->mousePressedHandler += [functionName, scriptable](void* context, UIComponent& uiComponent)
+                    {
+                        scriptable->CallFunction(functionName);
+                    };
+                }
+            }
+        }
     }
 }
 
@@ -334,6 +366,39 @@ void Scene::Update(float deltaTime)
             nativeScript.instance->Update(deltaTime);
     }
 
+    auto canvasAdjustView = m_manager.m_registry.view<TransformComponent, CanvasComponent>();
+    for (auto [entity, transform, canvas] : canvasAdjustView.each())
+    {
+        float x = transform.position.x;
+        float y = transform.position.y;
+
+        switch (canvas.horizontalAligment)
+        {
+            case Center: x += m_viewportWidth / 2.0f; break;
+            case Right: x += m_viewportWidth; break;
+        }
+
+        switch (canvas.verticalAlignment)
+        {
+            case Middle: y += m_viewportHeight / 2.0f; break;
+            case Bottom: y += m_viewportHeight; break;
+        }
+
+        canvas.position.x = x;
+        canvas.position.y = y;
+    }
+
+    NewInput& input = m_app->GetInput();
+
+    auto canvasHandleInputView = m_manager.m_registry.view<CanvasComponent>();
+    for (auto [entity, canvas] : canvasHandleInputView.each())
+    {
+        if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
+        {
+            UIManager::HandleInput(canvas, *button, input);
+        }
+    }
+
     for (auto& system : m_systems)
         system->Update(deltaTime);
 
@@ -422,14 +487,36 @@ void Scene::Exit()
 
 }
 
+void Scene::UpdateUI(float deltaTime)
+{
+    /*
+    auto canvasUpdateView = m_manager.m_registry.view<CanvasComponent>();
+    for (auto [entity, canvas] : canvasUpdateView.each())
+    {
+        if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
+        {
+            button->instance.SetPosition(canvas.position);
+            button->instance.SetSize(canvas.size);
+            button->instance.SetBackgroundColor(button->color);
+        }
+    }
+    */
+}
+
 void Scene::SetViewportSize(unsigned int width, unsigned int height)
+{
+    m_viewportWidth = width;
+    m_viewportHeight = height;
+}
+
+void Scene::OnViewportResize()
 {
     Renderer& renderer = m_app->GetRenderer();
 
     auto view = m_manager.m_registry.view<TransformComponent, CameraComponent>();
     for (auto [entity, transform, camera] : view.each())
     {
-        float ratio = width / (float)height;
+        float ratio = m_viewportWidth / (float)m_viewportHeight;
         float width = camera.size * ratio;
 
         renderer.SetViewMatrix(glm::inverse(glm::translate(glm::mat4(1.0f), transform.position)));
@@ -531,14 +618,6 @@ void Scene::RenderEditor()
 
     glDisable(GL_BLEND);
 
-    /*
-    auto buttonView = m_manager.m_registry.view<TransformComponent, CanvasComponent, ButtonComponent>();
-    for (auto [entity, transform, canvas, button] : buttonView.each())
-    {
-        renderer.DrawQuad2D(transform.position, canvas.size, transform.rotation.z);
-    }
-    */
-
     RenderUI();
     RenderCollisionComponents();
     RenderTexts();
@@ -550,17 +629,20 @@ void Scene::RenderUI()
     renderer.SetScreenSize(m_viewportWidth, m_viewportHeight);
 
     /*
-    auto buttonView = m_manager.m_registry.view<TransformComponent, CanvasComponent, ButtonComponent>();
-    for (auto [entity, transform, canvas, button] : buttonView.each())
-    {
-        renderer.DrawQuad2D(transform.position, canvas.size, transform.rotation.z);
-    }
-    */
-    
     auto canvas = m_manager.m_registry.view<TransformComponent, CanvasComponent, ButtonComponent>();
     for (auto [entity, transform, canvas, button] : canvas.each())
     {
-        renderer.DrawQuadUI(transform.position, canvas.size, button.color, UIAlignment::CENTER);
+        renderer.DrawQuadUI(canvas.position, canvas.size, button.color, UIAlignment::NONE);
+    }
+    */
+
+    auto canvasView = m_manager.m_registry.view<TransformComponent, CanvasComponent>();
+    for (auto [entity, transform, canvas] : canvasView.each())
+    {
+        if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
+        {
+            renderer.DrawQuadUI(canvas.position, canvas.size, button->color, UIAlignment::NONE);
+        }
     }
 }
 

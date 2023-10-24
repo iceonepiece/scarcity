@@ -1,5 +1,6 @@
 #include "Camera2D.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include "Math/Math.h"
 
 Camera2D::Camera2D(glm::vec3 position, glm::vec2 boxSize, glm::vec2 screenSize)
     : Camera(position, screenSize)
@@ -57,6 +58,14 @@ glm::mat4 Camera2D::GetProjectionMatrix(CameraType type) const
         return glm::ortho(-width / m_zoom, width / m_zoom, -m_orthographicSize / m_zoom, m_orthographicSize / m_zoom);
 
     return glm::mat4(1.0f);
+}
+
+glm::vec4 Camera2D::ScreenToWorldPosition(const glm::vec2& screenPosition) const
+{
+    glm::vec2 ndcPosition = Math::ConvertToNDC(screenPosition, m_screenSize);
+    glm::vec4 ndc{ ndcPosition.x, ndcPosition.y, 0.0f, 1.0f };
+
+    return glm::inverse(GetProjectionMatrix() * GetViewMatrix()) * ndc;
 }
 
 void Camera2D::SetBody(b2Body* body)

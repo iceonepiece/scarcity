@@ -22,28 +22,6 @@ ImGuiEntityProperties::ImGuiEntityProperties(EditorLayer& editor)
     : m_editor(editor)
 {}
 
-void RenderInputVec3(const std::string& name, glm::vec3& values, int width = 80)
-{
-    std::string xValue = "##X" + name;
-    std::string yValue = "##Y" + name;
-    std::string zValue = "##Z" + name;
-
-    ImGui::PushItemWidth(width);
-
-    ImGui::Text(name.c_str()); ImGui::SameLine();
-
-    ImGui::Text("X"); ImGui::SameLine();
-    ImGui::InputFloat(xValue.c_str(), &values.x); ImGui::SameLine();
-
-    ImGui::Text("Y"); ImGui::SameLine();
-    ImGui::InputFloat(yValue.c_str(), &values.y); ImGui::SameLine();
-
-    ImGui::Text("Z"); ImGui::SameLine();
-    ImGui::InputFloat(zValue.c_str(), &values.z);
-
-    ImGui::PopItemWidth();
-}
-
 void ImGuiEntityProperties::Render()
 {
     ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, 4.0f);
@@ -89,7 +67,13 @@ void ImGuiEntityProperties::Render()
 
             std::apply([&](auto... componentTypes) {
                 (RenderAddComponent<decltype(componentTypes)>(registry, entity), ...);
-            }, ComponentList{});
+            }, ToAddComponents{});
+
+            ImGui::Separator();
+
+            std::apply([&](auto... componentTypes) {
+                (RenderAddUIComponent<decltype(componentTypes)>(registry, entity), ...);
+            }, ToAddUIComponents{});
 
             ImGui::EndPopup();
         }

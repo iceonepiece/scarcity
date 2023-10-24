@@ -39,12 +39,14 @@ public:
 	virtual void Render();
 	virtual void RenderEditor();
 
+	void UpdateUI(float deltaTime);
+
 	std::filesystem::path GetAbsolutePath();
 
 	inline void SetProject(Project* project) { m_project = project; }
 	void SetViewportSize(unsigned int width, unsigned int height);
 	void SetCamera(Camera& camera);
-
+	void OnViewportResize();
 	
 	bool HasSaved();
 

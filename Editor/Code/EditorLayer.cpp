@@ -1,7 +1,5 @@
 #include "EditorLayer.h"
-#include "Platforms/OpenGL/OpenGLWindow.h"
 #include "Core/Camera2D.h"
-#include "Math/Math.h"
 #include "Gizmos/ViewGizmo.h"
 #include "Gizmos/TranslateGizmo.h"
 #include "Gizmos/RotateGizmo.h"
@@ -12,13 +10,10 @@
 #include "Input/NewInput.h"
 #include "Core/ResourceAPI.h"
 #include "Lua/LuaEngine.h"
-#include "Platforms/OpenGL/OpenGLResourceManager.h"
-#include "Platforms/OpenGL/OpenGLTexture.h"
 #include "File/FileSystem.h"
 #include "File/MetaSerializer.h"
 #include "EditorGUI/Windows/ImGuiSelectSpriteWindow.h"
 #include "EditorGUI/Windows/ImGuiSelectAnimatorControllerWindow.h"
-#include "Components/ComponentSerializer.h"
 #include "Scene/SceneSerializer.h"
 #include "Scene/SceneManager.h"
 #include "Asset/AssetManager.h"
@@ -35,12 +30,7 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     , m_assetPanel(*this)
     , m_gameLayer(app)
 {
-    std::cout << "EditorLayer Constructor()\n\n";
-
     s_instance = this;
-
-    LuaEngine& luaEngine = m_app.GetLuaEngine();
-
 
     m_fileWatcher = std::make_unique<filewatch::FileWatch<std::string>>(
         (m_activeProject->GetDirectory()).string(),
@@ -52,24 +42,17 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
         }
     );
 
-    std::filesystem::path path = m_activeProject->GetDirectory() / (m_activeProject->GetName() + ".lua");
+    std::filesystem::path luaFilePath = m_activeProject->GetDirectory() / (m_activeProject->GetName() + ".lua");
 
-    if (FileSystem::FileExists(path))
-        luaEngine.ReadScript(path.string());
+    if (FileSystem::FileExists(luaFilePath))
+        m_app.GetLuaEngine().ReadScript(luaFilePath.string());
 
     ResourceManager* resourceManager = ResourceAPI::GetResourceManager();
     resourceManager->InitializeAssets(m_activeProject->GetDirectory());
 
-    /*
-    m_activeScene = std::make_unique<Scene>();
-    m_activeScene->SetApplication((Application*)&m_app);
-    m_activeScene->Initialize();
-    */
-
     m_imGuiWindowMap[ImGuiWindowType::SelectSprite] = std::make_unique<ImGuiSelectSpriteWindow>(*this, m_activeProject->GetDirectory());
     m_imGuiWindowMap[ImGuiWindowType::SelectAnimatorController] = std::make_unique<ImGuiSelectAnimatorControllerWindow>(*this, m_activeProject->GetDirectory());
 
-    std::cout << "Start Scene: " << m_activeProject->GetStartSceneAbsolutePath() << std::endl;
     OpenScene(m_activeProject->GetStartScene());
 
     ImGuiIO& io = ImGui::GetIO();
@@ -120,36 +103,7 @@ void EditorLayer::Initialize()
     m_camera->SetCameraType(CameraType::Orthographic);
     
     if (m_activeProject != nullptr)
-    {
         m_assetPanel.SetProjectDirectory(m_activeProject->GetDirectory());
-    }
-
-    /*
-    m_activeScene = std::make_unique<Scene>();
-    m_activeScene->SetInitializeFunction([](Scene& scene)
-    {
-        scene.m_camera = std::make_unique<Camera2D>(
-            glm::vec3 { 0.0f, 0.0f, -1.0f },
-            glm::vec2 { 1.0f, 1.0f },
-            glm::vec2 { 1280, 720 }
-        );
-
-        Renderer& renderer = scene.m_app->GetRenderer();
-        renderer.SetCamera(scene.m_camera.get());
-
-        Entity camera = scene.m_manager.CreateEntity();
-        camera.AddComponent<BaseComponent>("Main Camera");
-        camera.AddComponent<TransformComponent>(glm::vec3 { 0.0f, 0.0f, -1.0f }, glm::vec3 {0.0f}, glm::vec3 {1.0f});
-        camera.AddComponent<CameraComponent>();
-
-        Entity rect = scene.m_manager.CreateEntity();
-        rect.AddComponent<BaseComponent>("Rect");
-        rect.AddComponent<TransformComponent>(glm::vec3 {0.0f, 0.0f, 0.0f}, glm::vec3 {0.0f}, glm::vec3 {1.0f, 1.0f, 1.0f});
-        rect.AddComponent<SpriteRendererComponent>(Shape_Square);
-    });
-    */
-
-    //m_imgui = std::make_unique<ImGuiMain>(*this);
 }
 
 bool EditorLayer::OpenScene(std::filesystem::path absolutePath)
@@ -187,15 +141,6 @@ void EditorLayer::CreatePrefab(entt::entity entity, const std::filesystem::path&
     {
         SceneSerializer::SerializeEntity(*m_activeScene, entity, path);
     }
-}
-
-void EditorLayer::CalculateWorldCursorPosition()
-{
-    //std::cout << "m_cursorPosition: " << m_cursorPosition.x << " , " << m_cursorPosition.y << std::endl;
-    glm::vec2 ndcPosition = Math::ConvertToNDC(m_viewportCursorPosition, m_camera->GetScreenSize());
-    glm::mat4 ivProjection = glm::inverse(m_camera->GetProjectionMatrix());
-    glm::mat4 ivView = glm::inverse(m_camera->GetViewMatrix());
-    m_worldCursorPosition = Math::ConvertToWorldSpace(ndcPosition, ivProjection, ivView);
 }
 
 void EditorLayer::SetPickedEntity(entt::entity picked)
@@ -248,7 +193,7 @@ void EditorLayer::OnMouseMoved(MouseMovedEvent& event)
     m_cursorPosition.x = event.GetX();
     m_cursorPosition.y = event.GetY();
 
-    CalculateWorldCursorPosition();
+    m_worldCursorPosition = m_camera->ScreenToWorldPosition(m_viewportCursorPosition);
 
     if (m_mouseActive)
     {
@@ -373,8 +318,7 @@ void EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& event)
     if (event.GetMouseButton() == Mouse::ButtonLeft)
     {
         m_mouseActive = true;
-
-        CalculateWorldCursorPosition();
+        m_worldCursorPosition = m_camera->ScreenToWorldPosition(m_viewportCursorPosition);
 
         if (!m_gizmos[m_currentMode]->OnPicking2D(m_worldCursorPosition))
         {
@@ -421,7 +365,6 @@ bool EditorLayer::CheckPicking2D()
 void EditorLayer::Shutdown()
 {
 	std::cout << "EditorLayer Shutdown()\n\n";
-    m_nativeScriptEngine.ShutdownScriptableEntities();
 }
 
 TransformComponent* EditorLayer::GetEntityTransform()
@@ -457,10 +400,10 @@ void EditorLayer::Update(float deltaTime)
     {
         if (Scene* playingScene = m_gameLayer.GetCurrentScene())
         {
+            //playingScene->UpdateUI(deltaTime);
             playingScene->Update(deltaTime);
             playingScene->SetViewportSize(m_viewportSize.x, m_viewportSize.y);
-            playingScene->m_viewportWidth = m_viewportSize.x;
-            playingScene->m_viewportHeight = m_viewportSize.y;
+            playingScene->OnViewportResize();
             playingScene->Render();
         }
     }
@@ -470,9 +413,9 @@ void EditorLayer::Update(float deltaTime)
 
         if (m_activeScene != nullptr)
         {
+            //m_activeScene->UpdateUI(deltaTime);
             m_activeScene->SetCamera(*m_camera);
-            m_activeScene->m_viewportWidth = m_viewportSize.x;
-            m_activeScene->m_viewportHeight = m_viewportSize.y;
+            m_activeScene->SetViewportSize(m_viewportSize.x, m_viewportSize.y);
             m_activeScene->RenderEditor();
 
             if (m_currentMode != EditorMode::ViewMode && m_selectedObject.type == EditorObjectType::Entity)
@@ -551,6 +494,8 @@ void EditorLayer::RenderImGui()
     ImVec2 mousePos = ImGui::GetMousePos();
     ImVec2 cursorScreenPos = ImGui::GetCursorScreenPos();
     m_viewportCursorPosition = { mousePos.x - cursorScreenPos.x, mousePos.y - cursorScreenPos.y };
+    auto& input = m_app.GetInput();
+    input.SetCursorPosition(m_viewportCursorPosition.x, m_viewportCursorPosition.y);
 
     uint64_t textureID = m_app.GetRenderer().GetFramebufferTextureID();
     ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_viewportSize.x, m_viewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
@@ -582,7 +527,7 @@ void EditorLayer::PlayScene()
     {
         Scene* playingScene = SceneManager::Copy(*m_activeScene);
         playingScene->SetApplication(&m_app);
-        playingScene->StartNativeScripts(m_nativeScriptEngine);
+        playingScene->StartNativeScripts(m_app.GetNativeScriptEngine());
         playingScene->Start();
 
         m_gameLayer.AddScene(m_activeScene->m_name, playingScene);
@@ -789,12 +734,14 @@ void EditorLayer::ReloadNativeScripts()
         }
     }
 
-    m_nativeScriptEngine.SetClassNames(scriptClassNames);
+    NativeScriptEngine& nativeScriptEngine = m_app.GetNativeScriptEngine();
 
-    if (m_nativeScriptEngine.LoadNativeScripts(projectPath / "bin" / "Debug" / "Native-Script.dll", m_nativeClassNames))
+    nativeScriptEngine.SetClassNames(scriptClassNames);
+
+    if (nativeScriptEngine.LoadNativeScripts(projectPath / "bin" / "Debug" / "Native-Script.dll", m_nativeClassNames))
     {
         std::cout << "Success: Load native scripts\n";
-        m_nativeScriptEngine.InitializeScriptableEntities();
+        nativeScriptEngine.InitializeScriptableEntities();
     }
     else
     {

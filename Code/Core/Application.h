@@ -13,6 +13,7 @@
 #include "Core/EntityManager.h"
 #include "Asset/AssetManager.h"
 
+class NativeScriptEngine;
 class LuaEngine;
 class ImGuiManager;
 class Layer;
@@ -59,6 +60,7 @@ public:
 	virtual void OnMouseScroll(float x, float y) {}
 
 	virtual void ChangeScene(std::string name) {}
+	inline NativeScriptEngine& GetNativeScriptEngine() { return *m_nativeScriptEngine; }
 	inline LuaEngine& GetLuaEngine() { return *m_luaEngine; }
 	inline Renderer& GetRenderer() { return *m_renderer; }
 	inline Window& GetWindow() { return *m_window; }
@@ -81,6 +83,7 @@ protected:
 	std::unique_ptr<Window> m_window;
 	std::unique_ptr<Renderer> m_renderer;
 	std::unique_ptr<ImGuiManager> m_imguiManager;
+	std::unique_ptr<NativeScriptEngine> m_nativeScriptEngine;
 	std::unique_ptr<LuaEngine> m_luaEngine;
 	std::unique_ptr<NewInput> m_input;
 	std::unique_ptr<Audio> m_audio;

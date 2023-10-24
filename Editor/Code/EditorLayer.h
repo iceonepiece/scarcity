@@ -120,7 +120,6 @@ public:
 	Camera& GetCamera() { return *m_camera; }
 
 	bool CheckPicking2D();
-	void CalculateWorldCursorPosition();
 
 	inline EditorObject& GetSelectedObject() { return m_selectedObject; }
 	inline Asset* GetSelectedAsset() { return m_selectedObject.asset; }
@@ -169,7 +168,6 @@ private:
 
 	EditorObject m_selectedObject;
 
-	NativeScriptEngine m_nativeScriptEngine;
 	std::vector<std::string> m_nativeClassNames;
 
 	std::unique_ptr<Project> m_activeProject;

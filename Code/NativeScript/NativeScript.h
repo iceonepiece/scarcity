@@ -39,4 +39,26 @@ extern "C" {
 #define EXPORT_CLASS(className) \
     virtual ScriptableEntity* Copy() { \
         return new className; \
+    } \
+    \
+    inline static std::unordered_map<std::string, void (className::*)()> s_functions; \
+    \
+    void AddFunction(const std::string& name, void (className::* fn)()) { \
+        s_functions[name] = fn; \
+    } \
+    \
+    virtual void CallFunction(const std::string& name) { \
+        auto it = s_functions.find(name); \
+        if (it != s_functions.end()) \
+            (this->*(it->second))(); \
+        else \
+            std::cout << "Function not found!" << std::endl; \
+    } \
+    virtual std::vector<std::string> GetFunctionNames() { \
+        std::vector<std::string> keys; \
+        for (const auto& pair : s_functions) \
+            keys.push_back(pair.first); \
+        return keys; \
     }
+
+#define EXPORT_FUNCTION(name) AddFunction(#name, &name)

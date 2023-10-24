@@ -20,6 +20,9 @@ public:
 		return new ScriptableEntity;
 	}
 
+	virtual void CallFunction(const std::string& name) {}
+	virtual void ExportFunctions() {}
+
 	template <typename T>
 	std::unique_ptr<T> Clone() const
 	{
@@ -45,6 +48,11 @@ public:
 	virtual void Destroy() {}
 	virtual void Update(float dt) {}
 	virtual void LateUpdate(float dt) {}
+
+	virtual std::vector<std::string> GetFunctionNames()
+	{
+		return std::vector<std::string>();
+	}
 
 protected:
 	Application* m_app;
