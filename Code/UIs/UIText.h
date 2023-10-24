@@ -5,8 +5,6 @@
 #include <glm/glm.hpp>
 #include "UIComponent.h"
 
-#include "../Graphics/FontSystem.h"
-
 class UIText : public UIComponent
 {
 public:

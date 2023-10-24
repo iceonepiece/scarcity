@@ -574,8 +574,6 @@ void EditorLayer::OnEvent(Event& event)
     if (!m_viewportHovered && io.WantCaptureMouse &&
         (
             evenType == EventType::MouseButtonPressed ||
-            evenType == EventType::MouseButtonReleased ||
-            evenType == EventType::MouseMoved ||
             evenType == EventType::MouseScrolled
         )
     )

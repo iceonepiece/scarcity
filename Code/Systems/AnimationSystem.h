@@ -3,7 +3,6 @@
 #include "../Core/System.h"
 #include "../Components/SpriteAnimatorComponent.h"
 #include "../Components/Collider2DComponent.h"
-#include "../Graphics/RendererAPI.h"
 #include "../Animations/AnimationState.h"
 
 class AnimationSystem : public System

@@ -2,7 +2,6 @@
 
 #include <box2d/box2d.h>
 
-#include "GraphicsData.h"
 #include "Shader.h"
 #include "Core/Camera.h"
 #include "UIs/UI.h"

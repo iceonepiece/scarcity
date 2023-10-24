@@ -1,7 +1,6 @@
 #include <iostream>
 #include "OpenGLWindow.h"
 #include "Graphics/Renderer.h"
-#include "Graphics/RendererAPI.h"
 #include "Input/Input.h"
 #include "Events/Event.h"
 #include "Events/KeyEvent.h"
