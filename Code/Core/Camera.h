@@ -14,6 +14,8 @@ class Camera
 {
 public:
 	Camera() = default;
+	virtual ~Camera() = default;
+
 	Camera(const glm::vec3& position, const glm::vec2& screenSize)
 		: m_position(position)
 		, m_screenSize(screenSize)
