@@ -120,7 +120,6 @@ public:
 	Camera& GetCamera() { return *m_camera; }
 
 	bool CheckPicking2D();
-	void CalculateWorldCursorPosition();
 
 	inline EditorObject& GetSelectedObject() { return m_selectedObject; }
 	inline Asset* GetSelectedAsset() { return m_selectedObject.asset; }

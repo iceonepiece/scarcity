@@ -9,7 +9,6 @@
 #include "ImGuiComponent.h"
 #include "Events/Event.h"
 #include "Core/EntityManager.h"
-#include "EditorCamera.h"
 
 class ImGuiLayer
 {
@@ -30,6 +29,4 @@ public:
 protected:
 	std::vector<ImGuiComponent*> m_components;
 	EntityManager m_manager;
-
-	EditorCamera m_editorCamera;
 };

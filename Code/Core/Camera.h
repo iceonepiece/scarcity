@@ -36,6 +36,7 @@ public:
 	virtual glm::mat4 GetViewMatrix() const = 0;
 	virtual glm::mat4 GetProjectionMatrix() const = 0;
 	virtual glm::mat4 GetProjectionMatrix(CameraType type) const = 0;
+	virtual glm::vec4 ScreenToWorldPosition(const glm::vec2& screenPosition) const = 0;
 	
 	inline float GetScreenSizePercentage() { return m_screenSize.x / m_defaultScreenSize.x; }
 	
