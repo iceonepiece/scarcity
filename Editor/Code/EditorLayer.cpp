@@ -191,11 +191,10 @@ void EditorLayer::CreatePrefab(entt::entity entity, const std::filesystem::path&
 
 void EditorLayer::CalculateWorldCursorPosition()
 {
-    //std::cout << "m_cursorPosition: " << m_cursorPosition.x << " , " << m_cursorPosition.y << std::endl;
     glm::vec2 ndcPosition = Math::ConvertToNDC(m_viewportCursorPosition, m_camera->GetScreenSize());
-    glm::mat4 ivProjection = glm::inverse(m_camera->GetProjectionMatrix());
-    glm::mat4 ivView = glm::inverse(m_camera->GetViewMatrix());
-    m_worldCursorPosition = Math::ConvertToWorldSpace(ndcPosition, ivProjection, ivView);
+    glm::vec4 ndc{ ndcPosition.x, ndcPosition.y, 0.0f, 1.0f };
+    glm::vec4 world = glm::inverse(m_camera->GetProjectionMatrix() * m_camera->GetViewMatrix()) * ndc;
+    m_worldCursorPosition = world;
 }
 
 void EditorLayer::SetPickedEntity(entt::entity picked)
