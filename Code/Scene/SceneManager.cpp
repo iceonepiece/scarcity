@@ -1,7 +1,7 @@
 #include "SceneManager.h"
 #include "Scene/SceneSerializer.h"
 #include "Components/Components.h"
-#include "Core/Camera2D.h"
+#include "Graphics/Camera2D.h"
 
 Scene* SceneManager::Copy(Scene& sourceScene)
 {

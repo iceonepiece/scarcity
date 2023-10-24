@@ -8,6 +8,8 @@ std::vector<KeyCode> DEFAULT_KEY_CODES = {
     Key::Right,
     Key::Up,
     Key::Down,
+    Key::LeftControl,
+    Key::RightControl,
 	Key::A,
     Key::B,
     Key::C,
@@ -43,7 +45,7 @@ std::vector<MouseCode> DEFAULT_MOUSE_CODES = {
 };
 
 GLFWInput::GLFWInput(GLFWwindow& window)
-    : NewInput(DEFAULT_KEY_CODES, DEFAULT_MOUSE_CODES)
+    : Input(DEFAULT_KEY_CODES, DEFAULT_MOUSE_CODES)
 	, m_window(window)
 {
 }

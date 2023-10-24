@@ -1,10 +1,10 @@
 #pragma once
 
 #include <vector>
-#include "Input/NewInput.h"
+#include "Input/Input.h"
 #include "GLFW/glfw3.h"
 
-class GLFWInput : public NewInput
+class GLFWInput : public Input
 {
 public:
 	GLFWInput(GLFWwindow& window);

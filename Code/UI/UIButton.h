@@ -51,7 +51,7 @@ public:
 		renderer.DrawQuadUI(m_canvas->position, m_canvas->size, m_backgroundColor);
 	}
 
-	virtual bool HandleInput(float deltaTime, NewInput& input) override
+	virtual bool HandleInput(float deltaTime, Input& input) override
 	{
 		return UIControl::HandleInput(deltaTime, input);
 	}

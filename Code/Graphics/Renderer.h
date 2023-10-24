@@ -2,8 +2,8 @@
 
 #include <box2d/box2d.h>
 
-#include "Shader.h"
-#include "Core/Camera.h"
+#include "Graphics/Shader.h"
+#include "Graphics/Camera.h"
 #include "Graphics/Texture.h"
 #include "Animations/Sprite.h"
 #include "Shapes/Shape2D.h"

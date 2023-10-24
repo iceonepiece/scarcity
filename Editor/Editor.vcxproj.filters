@@ -24,12 +24,6 @@
     <ClCompile Include="Code\ImGuiLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\SceneLayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\EditorScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Gizmos\Gizmo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -83,19 +77,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\EditorMouse.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Code\ImGuiComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\ImGuiLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\SceneLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\EditorScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Gizmos\Gizmo.h">
@@ -120,9 +105,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Gizmos\ViewGizmo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\SceneManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\SampleScene.h">

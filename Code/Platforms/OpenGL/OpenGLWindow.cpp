@@ -129,14 +129,12 @@ bool OpenGLWindow::WindowShouldClose()
 
 void OpenGLWindow::ProcessInput()
 {
-    glfwPollEvents();
-    Input::PollInputs(m_glfwWindow);        
+    glfwPollEvents();     
 }
 
 void OpenGLWindow::PreRender()
 {
-    int rawWidth;
-    int rawHeight;
+    int rawWidth;int rawHeight;
 
     glfwGetFramebufferSize(m_glfwWindow, &rawWidth, &rawHeight);
 

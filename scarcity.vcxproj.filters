@@ -22,12 +22,12 @@
     <ClCompile Include="Code\Core\Layer.cpp" />
     <ClCompile Include="Code\Core\ResourceAPI.cpp" />
     <ClCompile Include="Code\FSM\FiniteStateMachine.cpp" />
-    <ClCompile Include="Code\Core\Camera2D.cpp" />
+    <ClCompile Include="Code\Graphics\Camera2D.cpp" />
     <ClCompile Include="Code\Core\EntityManager.cpp" />
     <ClCompile Include="Code\Core\System.cpp" />
     <ClCompile Include="Code\Events\MouseEvent.cpp" />
     <ClCompile Include="Code\Events\WindowEvent.cpp" />
-    <ClCompile Include="Code\Input\NewInput.cpp" />
+    <ClCompile Include="Code\Input\Input.cpp" />
     <ClCompile Include="Code\Lua\LuaEngine.cpp" />
     <ClCompile Include="Code\Math\Math.cpp" />
     <ClCompile Include="Code\NativeScript\NativeScriptEngine.cpp" />
@@ -38,7 +38,6 @@
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLWindow.cpp" />
     <ClCompile Include="Code\Core\Timer.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLRenderer.cpp" />
-    <ClCompile Include="Code\Input\Input.cpp" />
     <ClCompile Include="Code\Core\ParticleSystem.cpp" />
     <ClCompile Include="Code\Core\Random.cpp" />
     <ClCompile Include="Code\Project\Project.cpp" />
@@ -103,7 +102,7 @@
     <ClInclude Include="Code\Components\UIComponent.h" />
     <ClInclude Include="Code\Components\UIComponents.h" />
     <ClInclude Include="Code\Constants\GameEngine.h" />
-    <ClInclude Include="Code\Core\Camera.h" />
+    <ClInclude Include="Code\Graphics\Camera.h" />
     <ClInclude Include="Code\Animations\Animation2D.h" />
     <ClInclude Include="Code\Components\Components.h" />
     <ClInclude Include="Code\Components\ScriptableComponent.h" />
@@ -123,7 +122,7 @@
     <ClInclude Include="Code\Events\WindowEvent.h" />
     <ClInclude Include="Code\Graphics\Shader.h" />
     <ClInclude Include="Code\Graphics\Texture.h" />
-    <ClInclude Include="Code\Input\NewInput.h" />
+    <ClInclude Include="Code\Input\Input.h" />
     <ClInclude Include="Code\Lua\LuaEngine.h" />
     <ClInclude Include="Code\Math\Math.h" />
     <ClInclude Include="Code\NativeScript\NativeScriptEngine.h" />
@@ -147,7 +146,7 @@
     <ClInclude Include="code\components\PlayerComponent.h" />
     <ClInclude Include="Code\Components\ScriptComponent.h" />
     <ClInclude Include="Code\Components\SpriteAnimatorComponent.h" />
-    <ClInclude Include="Code\Core\Camera2D.h" />
+    <ClInclude Include="Code\Graphics\Camera2D.h" />
     <ClInclude Include="Code\Core\Entity.h" />
     <ClInclude Include="Code\Core\EntityManager.h" />
     <ClInclude Include="Code\Animations\Sprite.h" />
@@ -159,7 +158,6 @@
     <ClInclude Include="Code\Events\MouseEvent.h" />
     <ClInclude Include="Code\FSM\AnimationDoneTransition.h" />
     <ClInclude Include="Code\FSM\EqualTransition.h" />
-    <ClInclude Include="Code\Input\Input.h" />
     <ClInclude Include="Code\Core\ParticleSystem.h" />
     <ClInclude Include="Code\Core\Random.h" />
     <ClInclude Include="Code\Core\ResourceManager.h" />

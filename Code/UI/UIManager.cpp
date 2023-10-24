@@ -2,12 +2,12 @@
 #include "Math/Math.h"
 #include <iostream>
 
-void UIManager::ProcessButton(ButtonComponent& button, NewInput& input)
+void UIManager::ProcessButton(ButtonComponent& button, Input& input)
 {
 
 }
 
-bool UIManager::HandleInput(CanvasComponent& canvas, ButtonComponent& button, NewInput& input)
+bool UIManager::HandleInput(CanvasComponent& canvas, ButtonComponent& button, Input& input)
 {
 	if (Math::Contains(canvas.position, canvas.size, input.GetCursorPosition()))
 	{

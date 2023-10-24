@@ -2,7 +2,7 @@
 #include "Systems/ScriptableSystem.h"
 #include "Systems/RenderSystem.h"
 #include "Graphics/Renderer.h"
-#include "Core/Camera2D.h"
+#include "Graphics/Camera2D.h"
 #include "Components/Components.h"
 #include "File/FileSystem.h"
 #include "NativeScript/NativeScriptEngine.h"
@@ -387,7 +387,7 @@ void Scene::Update(float deltaTime)
         canvas.position.y = y;
     }
 
-    NewInput& input = m_app->GetInput();
+    Input& input = m_app->GetInput();
 
     auto canvasHandleInputView = m_manager.m_registry.view<CanvasComponent>();
     for (auto [entity, canvas] : canvasHandleInputView.each())

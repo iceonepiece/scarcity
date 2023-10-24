@@ -1,70 +1,38 @@
 #pragma once
 
-#include <string>
-#include <vector>
-#include <map>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-
 #include "KeyCodes.h"
 #include "MouseCodes.h"
-
-class Game;
-
-struct InputCommand
-{
-    int glfwKeyCode;
-    KeyCode keyCode;
-    int previousState;
-    int currentState;
-
-    InputCommand(int glfwKeyCode, KeyCode keyCode)
-        : glfwKeyCode(glfwKeyCode)
-        , keyCode(keyCode)
-        , previousState(GLFW_RELEASE)
-        , currentState(GLFW_RELEASE)
-    {
-    }
-};
-
-struct MouseCommand
-{
-    int glfwMouseCode;
-    MouseCode mouseCode;
-    int previousState;
-    int currentState;
-    bool isActive;
-
-    MouseCommand(int glfwMouseCode, MouseCode mouseCode)
-        : glfwMouseCode(glfwMouseCode)
-        , mouseCode(mouseCode)
-        , isActive(false)
-        , previousState(GLFW_RELEASE)
-        , currentState(GLFW_RELEASE)
-    {
-    }
-};
-
+#include <map>
+#include <vector>
+#include <iostream>
+#include <glm/glm.hpp>
 
 class Input
 {
 public:
+    Input(const std::vector<KeyCode>& keyCodes, const std::vector<MouseCode>& mouseCodes);
+    virtual void Poll() = 0;
 
-    static void Init();
-    static bool IsKeyPressed(KeyCode keyCode);
-    static bool IsKeyHeld(KeyCode keyCode);
-    static bool IsMouseButtonPressed(MouseCode mouseCode);
-    static bool IsMouseButtonHeld(MouseCode mouseCode);
-    static void PollInputs(GLFWwindow* glfwWindow);
-    static void AddInputCommand(int glfwKeyCode, KeyCode keyCode);
-    static void AddMouseCommand(int glfwMouseCode, MouseCode mouseCode);
+    void UpdateKeyState(KeyCode key, bool isPressed);
+    void UpdateMouseState(MouseCode code, bool isPressed);
 
-    static glm::vec2 GetCursorPosition();
-    static void SetCursorPosition(float xPos, float yPos);
+    bool GetKey(KeyCode key);
+    bool GetKeyDown(KeyCode key);
+    bool GetKeyUp(KeyCode key);
 
-private:
-    static std::vector<InputCommand> s_inputCommands;
-    static std::vector<MouseCommand> s_mouseCommands;
-    static glm::vec2 s_cursorPosition;
+    bool GetMouseButton(MouseCode code);
+    bool GetMouseButtonDown(MouseCode code);
+    bool GetMouseButtonUp(MouseCode code);
+
+    glm::vec2 GetCursorPosition() const;
+    void SetCursorPosition(float x, float y);
+
+protected:
+    std::vector<KeyCode> m_keyCodes;
+    std::map<KeyCode, char> m_keyStates;
+
+    std::vector<MouseCode> m_mouseCodes;
+    std::map<MouseCode, char> m_mouseStates;
+
+    glm::vec2 m_cursorPosition;
 };

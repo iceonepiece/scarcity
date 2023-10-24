@@ -1,5 +1,5 @@
 #include "EditorLayer.h"
-#include "Core/Camera2D.h"
+#include "Graphics/Camera2D.h"
 #include "Gizmos/ViewGizmo.h"
 #include "Gizmos/TranslateGizmo.h"
 #include "Gizmos/RotateGizmo.h"
@@ -7,7 +7,7 @@
 #include "File/FileSystem.h"
 #include "Utils/FileDialog.h"
 #include <iostream>
-#include "Input/NewInput.h"
+#include "Input/Input.h"
 #include "Core/ResourceAPI.h"
 #include "Lua/LuaEngine.h"
 #include "File/FileSystem.h"
@@ -216,8 +216,7 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
 
     std::cout << "On Key PRessed" << std::endl;
 
-    bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
-
+    bool control = m_app.GetInput().GetKey(Key::LeftControl) || m_app.GetInput().GetKey(Key::RightControl);
 
     switch (event.GetKeyCode())
     {

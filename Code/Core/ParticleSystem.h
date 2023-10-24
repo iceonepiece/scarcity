@@ -6,7 +6,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include "Platforms/OpenGL/OpenGLShader.h"
-#include "Camera.h"
+#include "Graphics/Camera.h"
 
 struct ParticleProps
 {

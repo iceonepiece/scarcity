@@ -2,11 +2,11 @@
 
 #include "Components/UIComponents.h"
 #include "Components/ButtonComponent.h"
-#include "Input/NewInput.h"
+#include "Input/Input.h"
 
 class UIManager
 {
 public:
-	static void ProcessButton(ButtonComponent& button, NewInput& input);
-	static bool HandleInput(CanvasComponent& canvas, ButtonComponent& button, NewInput& input);
+	static void ProcessButton(ButtonComponent& button, Input& input);
+	static bool HandleInput(CanvasComponent& canvas, ButtonComponent& button, Input& input);
 };

@@ -1,8 +1,8 @@
 #include "HubLayer.h"
-#include "Core/Camera2D.h"
 #include "File/FileSystem.h"
 #include "Utils/FileDialog.h"
 #include <imgui/imgui_stdlib.h>
+#include <glad/glad.h>
 
 HubLayer::HubLayer(EditorApplication& editor)
 	: m_editor(editor)

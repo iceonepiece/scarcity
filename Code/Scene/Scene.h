@@ -5,7 +5,7 @@
 #include <filesystem>
 #include "Core/Application.h"
 #include "Core/EntityManager.h"
-#include "Core/Camera.h"
+#include "Graphics/Camera.h"
 #include "Physics/Physics.h"
 #include "Input/Input.h"
 #include "Events/Event.h"

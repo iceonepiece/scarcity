@@ -4,7 +4,7 @@
 #include "Core/Timer.h"
 #include "HubLayer.h"
 #include "EditorLayer.h"
-#include "Core/Camera2D.h"
+#include "Graphics/Camera2D.h"
 #include "ImGui/ImGuiManager.h"
 #include "Utils/FileDialog.h"
 #include "File/FileSystem.h"
@@ -28,7 +28,6 @@ EditorApplication::~EditorApplication()
 void EditorApplication::Initialize()
 {
     m_input = std::make_unique<GLFWInput>(*((GLFWwindow*)m_window->GetNativeWindow()));
-    Input::Init();
 
     ResourceAPI::Initialize(new OpenGLResourceManager());
 

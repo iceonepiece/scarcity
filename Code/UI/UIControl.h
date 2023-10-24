@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include "Input/NewInput.h"
+#include "Input/Input.h"
 #include "UI/EventHandler.h"
 #include "Math/Math.h"
 #include "Graphics/Renderer.h"
@@ -58,7 +58,7 @@ public:
 
 	}
 
-	virtual bool HandleInput(float deltaTime, NewInput& input);
+	virtual bool HandleInput(float deltaTime, Input& input);
 
 
 public:

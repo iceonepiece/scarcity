@@ -1,7 +1,7 @@
 #include "UIControl.h"
 #include "Input/MouseCodes.h"
 
-bool UIControl::HandleInput(float deltaTime, NewInput& input)
+bool UIControl::HandleInput(float deltaTime, Input& input)
 {
 	if (Math::Contains(m_canvas->position, m_canvas->size, input.GetCursorPosition()))
 	{

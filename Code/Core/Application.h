@@ -8,7 +8,7 @@
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
 #include "Events/WindowEvent.h"
-#include "Input/NewInput.h"
+#include "Input/Input.h"
 #include "Scene/Scene.h"
 #include "Core/EntityManager.h"
 #include "Asset/AssetManager.h"
@@ -64,7 +64,7 @@ public:
 	inline LuaEngine& GetLuaEngine() { return *m_luaEngine; }
 	inline Renderer& GetRenderer() { return *m_renderer; }
 	inline Window& GetWindow() { return *m_window; }
-	inline NewInput& GetInput() { return *m_input; }
+	inline Input& GetInput() { return *m_input; }
 	inline Audio& GetAudio() { return *m_audio; }
 	inline AssetManager& GetAssetManager() { return *m_assetManager; }
 	inline EntityManager& GetPrefabManager() { return m_prefabManager; }
@@ -85,7 +85,7 @@ protected:
 	std::unique_ptr<ImGuiManager> m_imguiManager;
 	std::unique_ptr<NativeScriptEngine> m_nativeScriptEngine;
 	std::unique_ptr<LuaEngine> m_luaEngine;
-	std::unique_ptr<NewInput> m_input;
+	std::unique_ptr<Input> m_input;
 	std::unique_ptr<Audio> m_audio;
 	std::unique_ptr<AssetManager> m_assetManager;
 

@@ -1,132 +1,96 @@
 #include "Input.h"
-#include "Core/Application.h"
 
-std::vector<InputCommand> Input::s_inputCommands;
-std::vector<MouseCommand> Input::s_mouseCommands;
-glm::vec2 Input::s_cursorPosition;
-
-void Input::Init()
+Input::Input(const std::vector<KeyCode>& keyCodes, const std::vector<MouseCode>& mouseCodes)
+    : m_keyCodes(keyCodes)
+    , m_mouseCodes(mouseCodes)
 {
-    AddInputCommand(GLFW_KEY_ESCAPE, Key::Escape);
-    AddInputCommand(GLFW_KEY_UP, Key::Up);
-    AddInputCommand(GLFW_KEY_DOWN, Key::Down);
-    AddInputCommand(GLFW_KEY_LEFT, Key::Left);
-    AddInputCommand(GLFW_KEY_RIGHT, Key::Right);
-    AddInputCommand(GLFW_KEY_SPACE, Key::Space);
-    AddInputCommand(GLFW_KEY_ENTER, Key::Enter);
-    AddInputCommand(GLFW_KEY_LEFT_CONTROL, Key::LeftControl);
-    AddInputCommand(GLFW_KEY_RIGHT_CONTROL, Key::RightControl);
-    AddInputCommand(GLFW_KEY_W, Key::W);
-    AddInputCommand(GLFW_KEY_A, Key::A);
-    AddInputCommand(GLFW_KEY_S, Key::S);
-    AddInputCommand(GLFW_KEY_D, Key::D);
-    AddInputCommand(GLFW_KEY_F, Key::F);
-
-    AddInputCommand(GLFW_KEY_X, Key::X);
-    AddInputCommand(GLFW_KEY_Y, Key::Y);
-    AddInputCommand(GLFW_KEY_Z, Key::Z);
-    AddInputCommand(GLFW_KEY_Q, Key::Q);
-
-
-    AddMouseCommand(GLFW_MOUSE_BUTTON_LEFT, Mouse::ButtonLeft);
-    AddMouseCommand(GLFW_MOUSE_BUTTON_RIGHT, Mouse::ButtonRight);
-    AddMouseCommand(GLFW_MOUSE_BUTTON_MIDDLE, Mouse::ButtonMiddle);
 }
 
-void Input::AddInputCommand(int glfwKeyCode, KeyCode keyCode)
+void Input::UpdateKeyState(KeyCode key, bool isPressed)
 {
-    s_inputCommands.push_back(InputCommand(glfwKeyCode, keyCode));
-}
-
-void Input::AddMouseCommand(int glfwMouseCode, MouseCode mouseCode)
-{
-    s_mouseCommands.push_back(MouseCommand(glfwMouseCode, mouseCode));
-}
-
-void Input::PollInputs(GLFWwindow* glfwWindow)
-{
-    for (auto& inputCommand : s_inputCommands)
-    {
-        inputCommand.previousState = inputCommand.currentState;
-        inputCommand.currentState = glfwGetKey(glfwWindow, inputCommand.glfwKeyCode);
+    if (m_keyStates.find(key) == m_keyStates.end()) {
+        m_keyStates[key] = 0; // Initialize with 0 if not found
     }
 
-    for (auto& mouseCommand : s_mouseCommands)
-    {
-        mouseCommand.previousState = mouseCommand.currentState;
-        mouseCommand.currentState = glfwGetMouseButton(glfwWindow, mouseCommand.glfwMouseCode);
-    }
+    char& state = m_keyStates[key];
+
+    // Shift the previous state to the left and set the current state
+    state = (state << 1) | (isPressed ? 1 : 0);
 }
 
-bool Input::IsKeyPressed(KeyCode keyCode)
+void Input::UpdateMouseState(MouseCode code, bool isPressed)
 {
-    /*
-    for (auto& inputCommand : s_inputCommands)
-    {
-        if (inputCommand.keyCode == keyCode
-            && inputCommand.previousState == GLFW_RELEASE
-            && inputCommand.currentState == GLFW_PRESS
-        )
-            return true;
+    if (m_mouseStates.find(code) == m_mouseStates.end()) {
+        m_mouseStates[code] = 0; // Initialize with 0 if not found
     }
 
-    return false;
-    */
+    char& state = m_mouseStates[code];
 
-    auto* window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
-    auto state = glfwGetKey(window, static_cast<int32_t>(keyCode));
-    return state == GLFW_PRESS;
+    // Shift the previous state to the left and set the current state
+    state = (state << 1) | (isPressed ? 1 : 0);
 }
 
-bool Input::IsKeyHeld(KeyCode keyCode)
+bool Input::GetKey(KeyCode key)
 {
-    for (auto& inputCommand : s_inputCommands)
-    {
-        if (inputCommand.keyCode == keyCode
-            && inputCommand.previousState == GLFW_PRESS
-            && inputCommand.currentState == GLFW_PRESS
-        )
-            return true;
-    }
+    auto it = m_keyStates.find(key);
+    if (it != m_keyStates.end())
+        return it->second & 0x1;
 
     return false;
 }
 
-bool Input::IsMouseButtonPressed(MouseCode mouseCode)
+bool Input::GetKeyDown(KeyCode key)
 {
-    for (auto& mouseCommand : s_mouseCommands)
-    {
-        if (mouseCommand.mouseCode == mouseCode
-            && mouseCommand.previousState == GLFW_RELEASE
-            && mouseCommand.currentState == GLFW_PRESS
-            )
-            return true;
-    }
+    auto it = m_keyStates.find(key);
+    if (it != m_keyStates.end())
+        return (it->second & 0x3) == 0x1;
 
     return false;
 }
 
-bool Input::IsMouseButtonHeld(MouseCode mouseCode)
+bool Input::GetKeyUp(KeyCode key)
 {
-    for (auto& mouseCommand : s_mouseCommands)
-    {
-        if (mouseCommand.mouseCode == mouseCode
-            && mouseCommand.previousState == GLFW_PRESS
-            && mouseCommand.currentState == GLFW_PRESS
-            )
-            return true;
-    }
+    auto it = m_keyStates.find(key);
+    if (it != m_keyStates.end())
+        return (it->second & 0x3) == 0x2;
 
     return false;
 }
 
-void Input::SetCursorPosition(float xPos, float yPos)
+bool Input::GetMouseButton(MouseCode code)
 {
-    s_cursorPosition.x = xPos;
-    s_cursorPosition.y = yPos;
+    auto it = m_mouseStates.find(code);
+    if (it != m_mouseStates.end())
+        return it->second & 0x1;
+
+    return false;
 }
 
-glm::vec2 Input::GetCursorPosition()
+bool Input::GetMouseButtonDown(MouseCode code)
 {
-    return s_cursorPosition;
+    auto it = m_mouseStates.find(code);
+    if (it != m_mouseStates.end())
+        return (it->second & 0x3) == 0x1;
+
+    return false;
+}
+
+bool Input::GetMouseButtonUp(MouseCode code)
+{
+    auto it = m_mouseStates.find(code);
+    if (it != m_mouseStates.end())
+        return (it->second & 0x3) == 0x2;
+
+    return false;
+}
+
+void Input::SetCursorPosition(float x, float y)
+{
+    m_cursorPosition.x = x;
+    m_cursorPosition.y = y;
+}
+
+glm::vec2 Input::GetCursorPosition() const
+{
+    return m_cursorPosition;
 }
