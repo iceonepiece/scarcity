@@ -12,7 +12,6 @@
     <ClCompile Include="Code\Audio\OpenAL\OpenALAudioSource.cpp" />
     <ClCompile Include="Code\Core\Application.cpp" />
     <ClCompile Include="Code\Core\GameState.cpp" />
-    <ClCompile Include="Code\Core\ResourceManager.cpp" />
     <ClCompile Include="Code\Core\UniqueID.cpp" />
     <ClCompile Include="Code\Core\Window.cpp" />
     <ClCompile Include="Code\File\FileSystem.cpp" />
@@ -20,7 +19,6 @@
     <ClCompile Include="Code\Graphics\Renderer.cpp" />
     <ClCompile Include="Code\ImGui\ImGuiManager.cpp" />
     <ClCompile Include="Code\Core\Layer.cpp" />
-    <ClCompile Include="Code\Core\ResourceAPI.cpp" />
     <ClCompile Include="Code\FSM\FiniteStateMachine.cpp" />
     <ClCompile Include="Code\Graphics\Camera2D.cpp" />
     <ClCompile Include="Code\Core\EntityManager.cpp" />
@@ -67,8 +65,8 @@
     <ClCompile Include="External\Include\imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="External\Include\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="External\Include\imgui\imgui_stdlib.cpp" />
-    <ClCompile Include="Code\Platforms\OpenGL\OpenGLResourceManager.cpp" />
     <ClCompile Include="Code\Project\ProjectSerializer.cpp" />
+    <ClCompile Include="Code\Platforms\OpenGL\OpenGLAssetManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Animations\AnimationSerializer.h" />
@@ -115,7 +113,6 @@
     <ClInclude Include="Code\ImGui\ImGuiManager.h" />
     <ClInclude Include="Code\Core\Input.h" />
     <ClInclude Include="Code\Core\Layer.h" />
-    <ClInclude Include="Code\Core\ResourceAPI.h" />
     <ClInclude Include="Code\Core\Scriptable.h" />
     <ClInclude Include="Code\Core\ServiceLocator.h" />
     <ClInclude Include="Code\Events\KeyEvent.h" />
@@ -160,7 +157,6 @@
     <ClInclude Include="Code\FSM\EqualTransition.h" />
     <ClInclude Include="Code\Core\ParticleSystem.h" />
     <ClInclude Include="Code\Core\Random.h" />
-    <ClInclude Include="Code\Core\ResourceManager.h" />
     <ClInclude Include="Code\Project\Project.h" />
     <ClInclude Include="Code\Asset\TextureAsset.h" />
     <ClInclude Include="Code\Asset\Asset.h" />
@@ -616,8 +612,8 @@
     <ClInclude Include="External\Include\sol\forward.hpp" />
     <ClInclude Include="External\Include\sol\sol.hpp" />
     <ClInclude Include="External\Include\stb_image.h" />
-    <ClInclude Include="Code\Platforms\OpenGL\OpenGLResourceManager.h" />
     <ClInclude Include="Code\Project\ProjectSerializer.h" />
+    <ClInclude Include="Code\Platforms\OpenGL\OpenGLAssetManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\awesomeface.png" />

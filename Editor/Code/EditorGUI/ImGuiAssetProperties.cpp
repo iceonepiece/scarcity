@@ -1,7 +1,6 @@
 #include <imgui/imgui.h>
 #include "ImGuiAssetProperties.h"
 #include "Graphics/Texture.h"
-#include "Core/ResourceAPI.h"
 #include <iostream>
 #include "File/MetaSerializer.h"
 #include "ImGuiEntityProperties.h"
@@ -89,14 +88,16 @@ void ImGuiAssetProperties::RenderTextureAsset(TextureAsset& textureAsset)
 
     Texture* texture = nullptr;
 
-    if (ResourceAPI::HasTexture(pathString))
+    AssetManager& assetManager = Application::Get().GetAssetManager();
+
+    if (assetManager.HasTexture(pathString))
     {
-        texture = &ResourceAPI::GetTexture(pathString);
+        texture = &assetManager.GetTexture(pathString);
     }
     else
     {
         std::cout << "Load when clicked: " << pathString << std::endl;
-        texture = ResourceAPI::LoadTexture(pathString, pathString.c_str());
+        texture = assetManager.LoadTexture(pathString, pathString.c_str());
     }
 
     if (texture != nullptr)
@@ -133,15 +134,16 @@ void ImGuiAssetProperties::RenderSpriteAsset(SpriteAsset& spriteAsset)
     std::string pathString = spriteAsset.GetTextureAsset().GetPath().string();
 
     Texture* texture = nullptr;
+    AssetManager& assetManager = Application::Get().GetAssetManager();
 
-    if (ResourceAPI::HasTexture(pathString))
+    if (assetManager.HasTexture(pathString))
     {
-        texture = &ResourceAPI::GetTexture(pathString);
+        texture = &assetManager.GetTexture(pathString);
     }
     else
     {
         std::cout << "Load when clicked: " << pathString << std::endl;
-        texture = ResourceAPI::LoadTexture(pathString, pathString.c_str());
+        texture = assetManager.LoadTexture(pathString, pathString.c_str());
     }
 
     if (texture != nullptr)

@@ -72,11 +72,13 @@ void Scene::Start()
     std::cout << "Scene::Start()\n";
     auto view = m_manager.m_registry.view<SpriteAnimatorComponent>();
 
+
     for (auto [entity, animator] : view.each())
     {
         Entity myEntity{ &m_manager, entity };
 
-        AnimatorController* baseAnimator = ResourceAPI::GetResourceManager()->GetAnimatorController(animator.controllerName);
+        //AnimatorController* baseAnimator = ResourceAPI::GetResourceManager()->GetAnimatorController(animator.controllerName);
+        AnimatorController* baseAnimator = m_app->GetAssetManager().GetAnimatorController(animator.controllerName);
         animator.controller = baseAnimator != nullptr ? new AnimatorController(*baseAnimator) : nullptr;
     }
 

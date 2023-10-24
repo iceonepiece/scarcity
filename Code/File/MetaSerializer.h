@@ -5,7 +5,7 @@
 #include <nlohmann/json.hpp>
 #include "Animations/Sprite.h"
 #include "Asset/TextureAsset.h"
-#include "Core/ResourceAPI.h"
+#include "Core/Application.h"
 
 using json = nlohmann::json;
 
@@ -71,8 +71,12 @@ public:
 
 		if (metaFile.is_open())
 		{
-			ResourceManager* resourceManager = ResourceAPI::GetResourceManager();
-			resourceManager->RemoveSpriteAssets(textureAsset.m_spriteAssets);
+			//ResourceManager* resourceManager = ResourceAPI::GetResourceManager();
+			//resourceManager->RemoveSpriteAssets(textureAsset.m_spriteAssets);
+			
+			AssetManager& assetManager = Application::Get().GetAssetManager();
+			assetManager.RemoveSpriteAssets(textureAsset.m_spriteAssets);
+
 			textureAsset.m_spriteAssets.clear();
 
 			json imageJson = json::parse(metaFile);
@@ -116,7 +120,8 @@ public:
 				textureAsset.m_spriteAssets.push_back(spriteAsset);
 			}
 
-			resourceManager->AddSpriteAssets(textureAsset.m_spriteAssets);
+			//resourceManager->AddSpriteAssets(textureAsset.m_spriteAssets);
+			assetManager.AddSpriteAssets(textureAsset.m_spriteAssets);
 		}
 		else
 		{

@@ -11,7 +11,7 @@ ImGuiSelectAnimatorControllerWindow::ImGuiSelectAnimatorControllerWindow(EditorL
 
 void ImGuiSelectAnimatorControllerWindow::Render()
 {
-	auto& animControllerMap = ResourceAPI::GetResourceManager()->GetAnimatorControllerAssets();
+	auto& animControllerMap = Application::Get().GetAssetManager().GetAnimatorControllerAssets();
 
 	for (auto& animController : animControllerMap)
 	{

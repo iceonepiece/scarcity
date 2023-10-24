@@ -3,8 +3,7 @@
 #include <glm/glm.hpp>
 #include <nlohmann/json.hpp>
 #include <imgui/imgui.h>
-#include "Core/ResourceAPI.h"
-#include "Core/ResourceManager.h"
+#include "Core/Application.h"
 
 using json = nlohmann::json;
 
@@ -48,7 +47,7 @@ static void DoDeserialize(SpriteRendererComponent& sprite, json& spriteRendererJ
 
 	sprite.spriteName = spriteRendererJson["spriteName"].get<std::string>();
 
-	SpriteAsset* spriteAsset = ResourceAPI::GetResourceManager()->GetSpriteAsset(sprite.spriteName);
+	SpriteAsset* spriteAsset = Application::Get().GetAssetManager().GetSpriteAsset(sprite.spriteName);
 
 	if (spriteAsset)
 		sprite.sprite = &(spriteAsset->GetSprite());

@@ -10,7 +10,8 @@ TextureAsset::TextureAsset(const std::filesystem::path& path, Texture* texture)
 TextureAsset::TextureAsset(const std::filesystem::path& path)
 	: Asset(path, AssetType::Texture)
 {
-	m_texture = ResourceAPI::LoadTexture(path.string(), path.string().c_str());
+	//m_texture = ResourceAPI::LoadTexture(path.string(), path.string().c_str());
+	m_texture = Application::Get().GetAssetManager().LoadTexture(path.string(), path.string().c_str());
 	MetaSerializer::DeserializeImage(*this, path);
 }
 

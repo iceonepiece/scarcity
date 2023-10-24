@@ -23,8 +23,6 @@ Application::Application(const ApplicationConfigs& configs)
 
 	m_audio = Audio::Create();
 	m_audio->Initialize();
-
-	m_assetManager = std::make_unique<AssetManager>();
 }
 
 Application::~Application()

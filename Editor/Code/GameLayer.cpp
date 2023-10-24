@@ -1,7 +1,5 @@
 #include "GameLayer.h"
 #include <iostream>
-#include "Core/ResourceAPI.h"
-#include "Core/ResourceManager.h"
 #include "Scene/SceneManager.h"
 
 GameLayer::GameLayer(EditorApplication& app)
@@ -42,7 +40,7 @@ void GameLayer::ChangeScene(const std::string& name)
 
 	if (m_sceneMap.find(name) == m_sceneMap.end())
 	{
-		if (Scene* sceneBlueprint = ResourceAPI::GetResourceManager()->GetScene(name))
+		if (Scene* sceneBlueprint = Application::Get().GetAssetManager().GetScene(name))
 		{
 			std::unique_ptr<Scene> activeScene = SceneManager::LoadScene(sceneBlueprint->m_path);
 

@@ -1,6 +1,6 @@
 #include "AnimationSerializer.h"
 #include "AnimatorState.h"
-#include "Core/ResourceAPI.h"
+#include "Core/Application.h"
 
 AnimatorController* AnimationSerializer::Deserialize(const std::filesystem::path& filepath)
 {
@@ -11,6 +11,7 @@ AnimatorController* AnimationSerializer::Deserialize(const std::filesystem::path
 
 	if (deserialzed.is_open())
 	{
+		AssetManager& assetManager = Application::Get().GetAssetManager();
 		animController = new AnimatorController();
 		json json_fsm = json::parse(deserialzed);
 
@@ -18,14 +19,16 @@ AnimatorController* AnimationSerializer::Deserialize(const std::filesystem::path
 
 		for (auto& json_state : json_states)
 		{
-			if (!ResourceAPI::HasTexture(json_state["texture"]))
+			//if (!ResourceAPI::HasTexture(json_state["texture"]))
+			if (!assetManager.HasTexture(json_state["texture"]))
 			{
 				std::cout << "No texture: " << json_state["texture"] << std::endl;
 				continue;
 			}
 
 			AnimatorState animState ({
-				ResourceAPI::GetTexture(json_state["texture"]),
+				//ResourceAPI::GetTexture(json_state["texture"]),
+				assetManager.GetTexture(json_state["texture"]),
 				json_state["startFrame"],
 				json_state["maxFrame"],
 				json_state["rows"],

@@ -13,8 +13,7 @@
 #include "Scene/SceneManager.h"
 #include "ScriptManager.h"
 #include "Platforms/GLFW/GLFWInput.h"
-#include "Core/ResourceAPI.h"
-#include "Platforms/OpenGL/OpenGLResourceManager.h"
+#include "Platforms/OpenGL/OpenGLAssetManager.h"
 
 EditorApplication::EditorApplication(const ApplicationConfigs& configs)
     : Application(configs)
@@ -28,15 +27,11 @@ EditorApplication::~EditorApplication()
 void EditorApplication::Initialize()
 {
     m_input = std::make_unique<GLFWInput>(*((GLFWwindow*)m_window->GetNativeWindow()));
-
-    ResourceAPI::Initialize(new OpenGLResourceManager());
-
+    m_assetManager = std::make_unique<OpenGLAssetManager>();
     m_imguiManager = std::make_unique<ImGuiManager>(*this);
 
     FileDialog::SetNativeWindow(m_window->GetNativeWindow());
-
     AddLayer(std::make_unique<HubLayer>(*this));
-    //AddLayer(std::make_unique<EditorLayer>(*this));
 }
 
 void EditorApplication::ChangeScene(std::string name)
