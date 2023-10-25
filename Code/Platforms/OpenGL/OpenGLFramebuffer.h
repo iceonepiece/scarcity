@@ -7,7 +7,7 @@ class OpenGLFramebuffer : public Framebuffer
 {
 public:
 	OpenGLFramebuffer();
-	virtual ~OpenGLFramebuffer() = default;
+	virtual ~OpenGLFramebuffer();
 
 	virtual void Bind() override;
 	virtual void Unbind() override;

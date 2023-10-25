@@ -2,8 +2,8 @@
 #include <iostream>
 
 OpenGLFramebuffer::OpenGLFramebuffer()
-    : m_width(0)
-    , m_height(0)
+    : m_width(1)
+    , m_height(1)
 {
     glGenFramebuffers(1, &m_FBO);
     glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
@@ -24,6 +24,11 @@ OpenGLFramebuffer::OpenGLFramebuffer()
         std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!\n";
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+OpenGLFramebuffer::~OpenGLFramebuffer()
+{
+    glDeleteFramebuffers(1, &m_FBO);
 }
 
 void OpenGLFramebuffer::Bind()
