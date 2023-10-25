@@ -21,6 +21,7 @@
 #include "EditorGUI/ImGuiAssetPanel.h"
 #include "GameLayer.h"
 #include "Commands/EditorCommand.h"
+#include "Graphics/Framebuffer.h"
 
 
 enum EditorMode
@@ -145,6 +146,8 @@ private:
 	void OnFileEvent(const FileEvent& event);
 
 private:
+	std::unique_ptr<Framebuffer> m_sceneFramebuffer;
+
 	glm::vec2 m_viewportSize = { 0.0f, 0.0f };
 	bool m_viewportFocused = false;
 	bool m_viewportHovered = false;

@@ -27,13 +27,7 @@ public:
 	virtual void PreRender(bool font = false) override;
 	virtual void PostRender(bool font = false) override;
 
-	virtual void CreateFramebuffer() override;
-	virtual void BindFramebuffer() override;
-	virtual void UnbindFramebuffer() override;
-	virtual void RescaleFramebuffer(float width, float height) override;
-	virtual unsigned int GetFramebufferTextureID() override { return m_framebufferTextureID; }
-
-	GLuint m_framebufferTextureID;
+	virtual std::unique_ptr<Framebuffer> CreateFramebuffer() override;
 
 private:
 	OpenGLShader m_basicShader;
@@ -47,12 +41,6 @@ private:
 	GLuint m_lineVBO;
 	GLuint m_circleVAO;
 	GLuint m_circleVBO;
-
-	unsigned int m_framebufferWidth;
-	unsigned int m_framebufferHeight;
-
-	GLuint m_FBO;
-	GLuint m_RBO;
 
 	OpenGLFontSystem m_fontSystem;
 };

@@ -17,6 +17,7 @@
 #include "Scene/SceneManager.h"
 #include "Asset/AssetManager.h"
 #include "Project/ProjectSerializer.h"
+#include "Platforms/OpenGL/OpenGLFramebuffer.h"
 
 EditorLayer* EditorLayer::s_instance = nullptr;
 
@@ -30,6 +31,8 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     , m_gameLayer(app)
 {
     s_instance = this;
+
+    m_sceneFramebuffer = m_app.GetRenderer().CreateFramebuffer();
 
     m_fileWatcher = std::make_unique<filewatch::FileWatch<std::string>>(
         (m_activeProject->GetDirectory()).string(),
@@ -386,11 +389,11 @@ void EditorLayer::Update(float deltaTime)
 
     if (m_viewportSize.x > 0.0f && m_viewportSize.y > 0.0f)
     {
-        renderer.RescaleFramebuffer(m_viewportSize.x, m_viewportSize.y);
+        m_sceneFramebuffer->Rescale(m_viewportSize.x, m_viewportSize.y);
         m_camera->SetScreenSize(m_viewportSize);
     }
 
-    renderer.BindFramebuffer();
+    m_sceneFramebuffer->Bind();
     renderer.Clear({ 0.2f, 0.2f, 0.2f, 1.0f });
 
     if (m_scenePlaying)
@@ -423,7 +426,7 @@ void EditorLayer::Update(float deltaTime)
         }
     }
 
-    renderer.UnbindFramebuffer();
+    m_sceneFramebuffer->Unbind();
 }
 
 
@@ -494,7 +497,7 @@ void EditorLayer::RenderImGui()
     auto& input = m_app.GetInput();
     input.SetCursorPosition(m_viewportCursorPosition.x, m_viewportCursorPosition.y);
 
-    uint64_t textureID = m_app.GetRenderer().GetFramebufferTextureID();
+    uint64_t textureID = m_sceneFramebuffer->GetID();
     ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_viewportSize.x, m_viewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
     ImGui::End();

@@ -5,6 +5,7 @@
 #include "Graphics/Shader.h"
 #include "Graphics/Camera.h"
 #include "Graphics/Texture.h"
+#include "Graphics/Framebuffer.h"
 #include "Animations/Sprite.h"
 #include "Shapes/Shape2D.h"
 #include "Components/CameraComponent.h"
@@ -35,12 +36,7 @@ public:
 	virtual void PreRender(bool font = false) = 0;
 	virtual void PostRender(bool font = false) = 0;
 
-	virtual void CreateFramebuffer() = 0;
-	virtual void BindFramebuffer() = 0;
-	virtual void UnbindFramebuffer() = 0;
-	virtual void RescaleFramebuffer(float width, float height) = 0;
-
-	virtual unsigned int GetFramebufferTextureID() = 0;
+	virtual std::unique_ptr<Framebuffer> CreateFramebuffer() = 0;
 
 	inline void SetScreenSize(int width, int height)
 	{

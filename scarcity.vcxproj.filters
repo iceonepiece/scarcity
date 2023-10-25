@@ -65,6 +65,7 @@
     <ClCompile Include="External\Include\imgui\imgui_stdlib.cpp" />
     <ClCompile Include="Code\Project\ProjectSerializer.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLAssetManager.cpp" />
+    <ClCompile Include="Code\Platforms\OpenGL\OpenGLFramebuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Animations\AnimationSerializer.h" />
@@ -599,6 +600,8 @@
     <ClInclude Include="External\Include\stb_image.h" />
     <ClInclude Include="Code\Project\ProjectSerializer.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLAssetManager.h" />
+    <ClInclude Include="Code\Graphics\Framebuffer.h" />
+    <ClInclude Include="Code\Platforms\OpenGL\OpenGLFramebuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\awesomeface.png" />
