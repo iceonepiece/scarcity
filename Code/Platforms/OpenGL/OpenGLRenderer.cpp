@@ -85,8 +85,6 @@ void OpenGLRenderer::Initialize()
     m_circleShader.Compile("Shaders/circle.vert", "Shaders/circle.frag");
 
     m_fontSystem.Init();
-
-    CreateFramebuffer();
 }
 
 void OpenGLRenderer::Draw(Sprite& sprite, const glm::mat4& modelMatrix)
