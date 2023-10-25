@@ -9,6 +9,7 @@
 #include "CameraComponent.h"
 #include "CircleCollider2DComponent.h"
 #include "Collider2DComponent.h"
+#include "GridComponent.h"
 #include "GroundDetectionComponent.h"
 #include "IDComponent.h"
 #include "MockComponent.h"
@@ -33,6 +34,7 @@ using CopyToSceneComponents = std::tuple<
 	BoxCollider2DComponent,
 	CircleCollider2DComponent,
 	CameraComponent,
+	GridComponent,
 	GroundDetectionComponent,
 	NativeScriptComponent,
 	Rigidbody2DComponent,
@@ -51,6 +53,7 @@ using ComponentList = std::tuple<
 	BoxCollider2DComponent,
 	CircleCollider2DComponent,
 	CameraComponent,
+	GridComponent,
 	GroundDetectionComponent,
 	NativeScriptComponent,
 	Rigidbody2DComponent,
@@ -69,6 +72,7 @@ using ToAddComponents = std::tuple<
 	BoxCollider2DComponent,
 	CircleCollider2DComponent,
 	CameraComponent,
+	GridComponent,
 	GroundDetectionComponent,
 	NativeScriptComponent,
 	Rigidbody2DComponent,

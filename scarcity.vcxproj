@@ -377,6 +377,7 @@
     <ClInclude Include="Code\Components\BaseComponent.h" />
     <ClInclude Include="Code\Components\BoxCollider2DComponent.h" />
     <ClInclude Include="Code\Components\CameraComponent.h" />
+    <ClInclude Include="Code\Components\GridComponent.h" />
     <ClInclude Include="Code\Components\GroundDetectionComponent.h" />
     <ClInclude Include="Code\Components\ComponentSerializer.h" />
     <ClInclude Include="Code\Components\ButtonComponent.h" />

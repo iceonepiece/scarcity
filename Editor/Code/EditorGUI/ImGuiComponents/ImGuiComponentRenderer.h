@@ -11,6 +11,7 @@
 #include "ImGuiSpriteAnimatorComponent.h"
 #include "ImGuiTransformComponent.h"
 #include "ImGuiNativeScriptComponent.h"
+#include "ImGuiGridComponent.h"
 #include "ImGuiGroundDetectionComponent.h"
 #include "ImGuiCircleCollider2DComponent.h"
 #include "ImGuiRectTransformComponent.h"

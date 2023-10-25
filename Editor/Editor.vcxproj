@@ -177,6 +177,7 @@
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiCameraComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiCircleCollider2DComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiComponentRenderer.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiGridComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiGroundDetectionComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiNativeScriptComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiRectTransformComponent.h" />
