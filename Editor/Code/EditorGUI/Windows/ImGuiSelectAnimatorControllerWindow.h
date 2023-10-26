@@ -7,7 +7,7 @@
 #include "FSM/FiniteStateMachine.h"
 #include "Animations/AnimatorController.h"
 
-class ImGuiSelectAnimatorControllerWindow : public ImGuiWindow
+class ImGuiSelectAnimatorControllerWindow : public ImGuiWindow_
 {
 public:
 	ImGuiSelectAnimatorControllerWindow(EditorLayer& editor, const std::filesystem::path& path);

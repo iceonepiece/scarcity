@@ -127,7 +127,7 @@ public:
 
 	static Asset* GetAsset(const std::filesystem::path& path);
 
-	static ImGuiWindow* GetImGuiWindow(ImGuiWindowType windowType)
+	static ImGuiWindow_* GetImGuiWindow(ImGuiWindowType windowType)
 	{
 		if (s_instance->m_imGuiWindowMap.find(windowType) != s_instance->m_imGuiWindowMap.end())
 			return s_instance->m_imGuiWindowMap.at(windowType).get();
@@ -198,5 +198,5 @@ private:
 	ImGuiAssetPanel m_assetPanel;
 	ImGuiNodeEditor m_nodeEditor;
 
-	std::unordered_map<ImGuiWindowType, std::unique_ptr<ImGuiWindow>> m_imGuiWindowMap;
+	std::unordered_map<ImGuiWindowType, std::unique_ptr<ImGuiWindow_>> m_imGuiWindowMap;
 };

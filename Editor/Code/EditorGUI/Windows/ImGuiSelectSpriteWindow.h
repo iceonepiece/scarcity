@@ -6,7 +6,7 @@
 #include "ImGuiWindow.h"
 #include "Animations/Sprite.h"
 
-class ImGuiSelectSpriteWindow : public ImGuiWindow
+class ImGuiSelectSpriteWindow : public ImGuiWindow_
 {
 public:
 	ImGuiSelectSpriteWindow(EditorLayer& editor, const std::filesystem::path& path);

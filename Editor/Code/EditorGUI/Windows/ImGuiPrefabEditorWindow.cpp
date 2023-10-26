@@ -1,7 +1,7 @@
 #include "ImGuiPrefabEditorWindow.h"
 
 ImGuiPrefabEditorWindow::ImGuiPrefabEditorWindow(EditorLayer& editor)
-	: ImGuiWindow(editor)
+	: ImGuiWindow_(editor)
 {
 
 }

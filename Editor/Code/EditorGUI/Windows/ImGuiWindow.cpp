@@ -1,6 +1,6 @@
 #include "ImGuiWindow.h"
 #include "../../EditorLayer.h"
 
-ImGuiWindow::ImGuiWindow(EditorLayer& editor)
+ImGuiWindow_::ImGuiWindow_(EditorLayer& editor)
 	: m_editor(editor)
 {}

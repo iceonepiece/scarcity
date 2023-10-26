@@ -11,11 +11,11 @@ enum class ImGuiWindowType
 	SelectAnimatorController
 };
 
-class ImGuiWindow
+class ImGuiWindow_
 {
 public:
-	ImGuiWindow(EditorLayer& editor);
-	virtual ~ImGuiWindow() = default;
+	ImGuiWindow_(EditorLayer& editor);
+	virtual ~ImGuiWindow_() = default;
 	virtual void Render() = 0;
 
 protected:

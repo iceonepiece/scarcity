@@ -2,7 +2,7 @@
 
 #include "ImGuiWindow.h"
 
-class ImGuiViewportWindow : public ImGuiWindow
+class ImGuiViewportWindow : public ImGuiWindow_
 {
 public:
 

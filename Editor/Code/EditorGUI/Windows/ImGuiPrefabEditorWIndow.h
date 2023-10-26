@@ -2,7 +2,7 @@
 
 #include "ImGuiWindow.h"
 
-class ImGuiPrefabEditorWindow : public ImGuiWindow
+class ImGuiPrefabEditorWindow : public ImGuiWindow_
 {
 public:
 	ImGuiPrefabEditorWindow(EditorLayer& editor);
