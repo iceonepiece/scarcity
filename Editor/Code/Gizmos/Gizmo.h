@@ -5,12 +5,12 @@
 #include "Graphics/Renderer.h"
 #include "Actionable.h"
 
-class EditorLayer;
+class EditorViewport;
 
 class Gizmo
 {
 public:
-	Gizmo(EditorLayer& editor);
+	Gizmo(EditorViewport& viewport);
 	virtual void Update(float dt);
 	void Render(Renderer& renderer, const glm::vec2& position);
 	virtual bool OnPicking2D(const glm::vec2& cursorPosition);
@@ -29,7 +29,7 @@ public:
 	virtual void OnDraggingEnd() {}
 
 protected:
-	EditorLayer& m_editor;
+	EditorViewport& m_viewport;
 	glm::vec2 m_position;
 	Actionable* m_actor = nullptr;
 	std::vector<std::unique_ptr<Actionable>> m_actionables;

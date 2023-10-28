@@ -5,8 +5,8 @@
 class ViewGizmo : public Gizmo
 {
 public:
-	ViewGizmo(EditorLayer& editor)
-		: Gizmo(editor)
+	ViewGizmo(EditorViewport& viewport)
+		: Gizmo(viewport)
 	{}
 
 	virtual bool OnPicking2D(const glm::vec2& cursorPosition) override
@@ -17,7 +17,7 @@ public:
 
 	virtual bool OnDragging(float x, float y) override
 	{
-		Camera& camera = m_editor.GetCamera();
+		Camera& camera = m_viewport.GetCamera();
 
 		glm::vec3 cameraPosition = camera.GetPosition();
 
