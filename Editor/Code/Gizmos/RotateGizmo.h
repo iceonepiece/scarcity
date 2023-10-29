@@ -8,8 +8,8 @@
 class RotateGizmo : public Gizmo
 {
 public:
-	RotateGizmo(EditorLayer& editor)
-		: Gizmo(editor)
+	RotateGizmo(EditorViewport& viewport)
+		: Gizmo(viewport)
 	{
 		m_actionables.push_back(std::make_unique<ActionableRect>(
 			glm::vec2 { 0.0f },

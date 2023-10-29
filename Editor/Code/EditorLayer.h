@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <functional>
 #include <memory>
+#include "EditorData.h"
 #include "Core/Layer.h"
 #include "Scene/Scene.h"
 #include "EditorApplication.h"
@@ -19,31 +20,11 @@
 #include "EditorGUI/ImGuiEntityProperties.h"
 #include "EditorGUI/ImGuiHierarchy.h"
 #include "EditorGUI/ImGuiAssetPanel.h"
+#include "EditorGUI/EditorSceneViewport.h"
 #include "GameLayer.h"
 #include "Commands/EditorCommand.h"
 #include "Graphics/Framebuffer.h"
 
-
-enum EditorMode
-{
-	ViewMode,
-	TranslateMode,
-	RotateMode,
-	ScaleMode
-};
-
-enum class EditorObjectType
-{
-	None,
-	Entity,
-	Path
-};
-
-struct GizmoStatus
-{
-	bool dragging = false;
-	EditorMode mode = ViewMode;
-};
 
 struct EditorObject
 {
@@ -120,7 +101,7 @@ public:
 
 	Camera& GetCamera() { return *m_camera; }
 
-	bool CheckPicking2D();
+	bool CheckPicking2D(const glm::vec2& cursorPosition);
 
 	inline EditorObject& GetSelectedObject() { return m_selectedObject; }
 	inline Asset* GetSelectedAsset() { return m_selectedObject.asset; }
@@ -133,6 +114,26 @@ public:
 			return s_instance->m_imGuiWindowMap.at(windowType).get();
 
 		return nullptr;
+	}
+
+	inline void SetMouseActive(bool active)
+	{
+		m_mouseActive = active;
+	}
+
+	inline bool IsMouseActive()
+	{
+		return m_mouseActive;
+	}
+
+	inline EditorMode GetCurrentMode()
+	{
+		return m_currentMode;
+	}
+
+	inline GameLayer& GetGameLayer()
+	{
+		return m_gameLayer;
 	}
 
 private:
@@ -197,6 +198,8 @@ private:
 	ImGuiHierarchy m_hierarchy;
 	ImGuiAssetPanel m_assetPanel;
 	ImGuiNodeEditor m_nodeEditor;
+
+	EditorSceneViewport m_editorSceneViewport;
 
 	std::unordered_map<ImGuiWindowType, std::unique_ptr<ImGuiWindow_>> m_imGuiWindowMap;
 };

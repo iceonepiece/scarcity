@@ -146,7 +146,9 @@
     <ClCompile Include="Code\EditorGUI\ImGuiMainMenuBar.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiNodeEditor.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiAssetProperties.cpp" />
+    <ClCompile Include="Code\EditorGUI\EditorSceneViewport.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiUtils.cpp" />
+    <ClCompile Include="Code\EditorGUI\EditorViewport.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiPrefabEditorWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.cpp" />
@@ -168,6 +170,7 @@
   <ItemGroup>
     <ClInclude Include="Code\Commands\EditorCommand.h" />
     <ClInclude Include="Code\Commands\TranslateCommand.h" />
+    <ClInclude Include="Code\EditorData.h" />
     <ClInclude Include="Code\EditorApplication.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiAssetPanel.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiAudioSourceComponent.h" />
@@ -190,7 +193,9 @@
     <ClInclude Include="Code\EditorGUI\ImGuiAssetProperties.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiMainMenuBar.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiNodeEditor.h" />
+    <ClInclude Include="Code\EditorGUI\EditorSceneViewport.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiUtils.h" />
+    <ClInclude Include="Code\EditorGUI\EditorViewport.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiPrefabEditorWIndow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiViewportWindow.h" />

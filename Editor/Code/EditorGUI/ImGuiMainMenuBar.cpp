@@ -58,6 +58,10 @@ void ImGuiMainMenuBar::Render()
     else if (!m_editor.IsScenePlaying() && ImGui::MenuItem(ICON_FA_PLAY))
         m_editor.PlayScene();
 
+    if (ImGui::MenuItem(ICON_FA_PAUSE)) {}
+
+    if (ImGui::MenuItem(ICON_FA_FORWARD_STEP)) {}
+
 
     std::stringstream fpsText;
     fpsText << "FPS: " << std::fixed << std::setprecision(1) << ImGui::GetIO().Framerate;

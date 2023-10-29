@@ -29,10 +29,11 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     , m_mainMenuBar(*this)
     , m_assetPanel(*this)
     , m_gameLayer(app)
+    , m_editorSceneViewport(*this)
 {
     s_instance = this;
 
-    m_sceneFramebuffer = m_app.GetRenderer().CreateFramebuffer();
+    //m_sceneFramebuffer = m_app.GetRenderer().CreateFramebuffer();
 
     m_fileWatcher = std::make_unique<filewatch::FileWatch<std::string>>(
         (m_activeProject->GetDirectory()).string(),
@@ -91,6 +92,7 @@ void EditorLayer::Initialize()
 {
 	std::cout << "EditorLayer Initialize()\n\n";
 
+    /*
     m_gizmos.push_back(std::make_unique<ViewGizmo>(*this));
     m_gizmos.push_back(std::make_unique<TranslateGizmo>(*this));
     m_gizmos.push_back(std::make_unique<RotateGizmo>(*this));
@@ -103,6 +105,7 @@ void EditorLayer::Initialize()
     );
 
     m_camera->SetCameraType(CameraType::Orthographic);
+        */
     
     if (m_activeProject != nullptr)
         m_assetPanel.SetProjectDirectory(m_activeProject->GetDirectory());
@@ -195,19 +198,7 @@ void EditorLayer::OnMouseMoved(MouseMovedEvent& event)
     m_cursorPosition.x = event.GetX();
     m_cursorPosition.y = event.GetY();
 
-    m_worldCursorPosition = m_camera->ScreenToWorldPosition(m_viewportCursorPosition);
-
-    if (m_mouseActive)
-    {
-        bool dragging = m_gizmos[m_currentMode]->OnDragging(m_worldCursorPosition.x, m_worldCursorPosition.y);
-
-        if (dragging && !m_gizmoStatus.dragging)
-        {
-            m_gizmos[m_currentMode]->OnDraggingStart();
-            m_gizmoStatus.dragging = true;
-            m_gizmoStatus.mode = m_currentMode;
-        }
-    }
+    m_editorSceneViewport.OnMouseMoved(event);
 }
 
 void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
@@ -316,17 +307,7 @@ void EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& event)
 {
     std::cout << "OnMouseButtonPressed" << std::endl;
 
-    if (event.GetMouseButton() == Mouse::ButtonLeft)
-    {
-        m_mouseActive = true;
-        m_worldCursorPosition = m_camera->ScreenToWorldPosition(m_viewportCursorPosition);
-
-        if (!m_gizmos[m_currentMode]->OnPicking2D(m_worldCursorPosition))
-        {
-            if (!CheckPicking2D())
-                UnselectObject();
-        }
-    }
+    m_editorSceneViewport.OnMouseButtonPressed(event);
 }
 
 void EditorLayer::OnMouseButtonReleased(MouseButtonReleasedEvent& event)
@@ -336,21 +317,16 @@ void EditorLayer::OnMouseButtonReleased(MouseButtonReleasedEvent& event)
     if (event.GetMouseButton() == Mouse::ButtonLeft)
     {
         m_mouseActive = false;
-
-        if (m_gizmoStatus.dragging)
-        {
-            m_gizmos[m_currentMode]->OnDraggingEnd();
-            m_gizmoStatus.dragging = false;
-        }
+        m_editorSceneViewport.OnMouseButtonReleased(event);
     }
 }
 
-bool EditorLayer::CheckPicking2D()
+bool EditorLayer::CheckPicking2D(const glm::vec2& cursorPosition)
 {
     auto transforms = m_activeScene->GetEntityManager().m_registry.view<TransformComponent>();
     for (auto [entity, transform] : transforms.each())
     {
-        if (!Shape2D::IsPointOnRectangle(m_worldCursorPosition, transform.position, transform.scale, transform.rotation.z))
+        if (!Shape2D::IsPointOnRectangle(cursorPosition, transform.position, transform.scale, transform.rotation.z))
             continue;
 
         std::cout << "PICKED" << std::endl;
@@ -379,54 +355,13 @@ TransformComponent* EditorLayer::GetEntityTransform()
 
 void EditorLayer::Update(float deltaTime)
 {
-    Renderer& renderer = m_app.GetRenderer();
-
     std::lock_guard<std::mutex> lock(m_fileEventMutex);
 
     for (auto& e : m_fileEvents)
         m_fileHandler.OnFileEvent(e);
     m_fileEvents.clear();
 
-    if (m_viewportSize.x > 0.0f && m_viewportSize.y > 0.0f)
-    {
-        m_sceneFramebuffer->Rescale(m_viewportSize.x, m_viewportSize.y);
-        m_camera->SetScreenSize(m_viewportSize);
-    }
-
-    m_sceneFramebuffer->Bind();
-    renderer.Clear({ 0.2f, 0.2f, 0.2f, 1.0f });
-
-    if (m_scenePlaying)
-    {
-        if (Scene* playingScene = m_gameLayer.GetCurrentScene())
-        {
-            //playingScene->UpdateUI(deltaTime);
-            playingScene->Update(deltaTime);
-            playingScene->SetViewportSize(m_viewportSize.x, m_viewportSize.y);
-            playingScene->OnViewportResize();
-            playingScene->Render();
-        }
-    }
-    else
-    {
-        m_gizmos[m_currentMode]->Update(deltaTime);
-
-        if (m_activeScene != nullptr)
-        {
-            //m_activeScene->UpdateUI(deltaTime);
-            m_activeScene->SetCamera(*m_camera);
-            m_activeScene->SetViewportSize(m_viewportSize.x, m_viewportSize.y);
-            m_activeScene->RenderEditor();
-
-            if (m_currentMode != EditorMode::ViewMode && m_selectedObject.type == EditorObjectType::Entity)
-            {
-                auto& transform = m_activeScene->GetEntityManager().m_registry.get<TransformComponent>(m_selectedObject.entity);
-                m_gizmos.at(m_currentMode)->Render(renderer, transform.position);
-            }
-        }
-    }
-
-    m_sceneFramebuffer->Unbind();
+    m_editorSceneViewport.Update(deltaTime);
 }
 
 
@@ -482,26 +417,7 @@ void EditorLayer::RenderImGui()
 
     style.WindowMinSize.x = minWinSizeX;
 
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
-    ImGui::Begin("Scene");
-
-    ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-    m_viewportSize = { viewportPanelSize.x, viewportPanelSize.y };
-
-    m_viewportFocused = ImGui::IsWindowFocused();
-    m_viewportHovered = ImGui::IsWindowHovered();
-
-    ImVec2 mousePos = ImGui::GetMousePos();
-    ImVec2 cursorScreenPos = ImGui::GetCursorScreenPos();
-    m_viewportCursorPosition = { mousePos.x - cursorScreenPos.x, mousePos.y - cursorScreenPos.y };
-    auto& input = m_app.GetInput();
-    input.SetCursorPosition(m_viewportCursorPosition.x, m_viewportCursorPosition.y);
-
-    uint64_t textureID = m_sceneFramebuffer->GetID();
-    ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_viewportSize.x, m_viewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-
-    ImGui::End();
-    ImGui::PopStyleVar();
+    m_editorSceneViewport.Render();
 
     if (!m_scenePlaying)
     {
@@ -518,7 +434,9 @@ void EditorLayer::RenderImGui()
 
 void EditorLayer::OnWindowResize(WindowResizeEvent& event)
 {
-    m_camera->SetScreenSize({ event.GetWidth() , event.GetHeight() });
+    //m_camera->SetScreenSize({ event.GetWidth() , event.GetHeight() });
+
+    m_editorSceneViewport.OnWindowResize(event);
 }
 
 void EditorLayer::PlayScene()
@@ -545,6 +463,10 @@ void EditorLayer::StopScene()
 
 void EditorLayer::OnMouseScrolled(MouseScrolledEvent& event)
 {
+
+    m_editorSceneViewport.OnMouseScrolled(event);
+
+    /*
     if (m_camera->GetCameraType() == CameraType::Orthographic)
     {
         m_camera->SetZoom(m_camera->GetZoom() * (1.0f + event.GetY() * 0.1f));
@@ -555,6 +477,7 @@ void EditorLayer::OnMouseScrolled(MouseScrolledEvent& event)
         newPosition.z += event.GetY() * 0.5f;
         m_camera->SetPosition(newPosition);
     }
+    */
 }
 
 void EditorLayer::OnEvent(Event& event)
@@ -571,6 +494,7 @@ void EditorLayer::OnEvent(Event& event)
 
     ImGuiIO& io = ImGui::GetIO();
 
+    /*
     if (!m_viewportHovered && io.WantCaptureMouse &&
         (
             evenType == EventType::MouseButtonPressed ||
@@ -581,7 +505,9 @@ void EditorLayer::OnEvent(Event& event)
         event.handled = true;
         return;
     }
+    */
 
+    /*
     if (io.WantCaptureKeyboard &&
         (
             evenType == EventType::KeyPressed ||
@@ -592,6 +518,7 @@ void EditorLayer::OnEvent(Event& event)
         event.handled = true;
         return;
     }
+    */
 
     switch (evenType)
     {

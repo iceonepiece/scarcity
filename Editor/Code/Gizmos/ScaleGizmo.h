@@ -6,8 +6,8 @@
 class ScaleGizmo : public Gizmo
 {
 public:
-	ScaleGizmo(EditorLayer& editor)
-		: Gizmo(editor)
+	ScaleGizmo(EditorViewport& viewport)
+		: Gizmo(viewport)
 	{
 		m_actionables.push_back(std::make_unique<ActionableRect>(
 			glm::vec2 { m_length / 2, 0.0f },

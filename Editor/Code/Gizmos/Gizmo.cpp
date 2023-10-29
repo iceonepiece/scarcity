@@ -1,30 +1,29 @@
 #include "Gizmo.h"
+#include "../EditorGUI/EditorViewport.h"
 #include "../EditorLayer.h"
 #include <iostream>
 
-Gizmo::Gizmo(EditorLayer& editor)
-	:m_editor(editor)
+Gizmo::Gizmo(EditorViewport& viewport)
+	:m_viewport(viewport)
 {}
 
 void Gizmo::Update(float dt)
 {
-	TransformComponent* transform = m_editor.GetEntityTransform();
+	TransformComponent* transform = m_viewport.GetEditorLayer().GetEntityTransform();
 	
-	float zoom = m_editor.GetCamera().GetZoom();
-
 	if (transform != nullptr)
 	{
 		for (auto& actionable : m_actionables)
 		{
 			actionable->SetTransformComponent(transform);
-			actionable->UpdateTransform(zoom);
+			actionable->UpdateTransform(m_viewport.GetCamera().GetZoom());
 		}
 	}
 }
 
 bool Gizmo::OnPicking2D(const glm::vec2& cursorPosition)
 {
-	TransformComponent* transform = m_editor.GetEntityTransform();
+	TransformComponent* transform = m_viewport.GetEditorLayer().GetEntityTransform();
 	if (transform != nullptr)
 	{
 		for (auto it = m_actionables.rbegin(); it != m_actionables.rend(); ++it)
@@ -33,7 +32,7 @@ bool Gizmo::OnPicking2D(const glm::vec2& cursorPosition)
 			{
 				std::cout << "IsCursorOn: " << cursorPosition.x << ", " << cursorPosition.y << std::endl;
 				it->get()->SetStartCursorPosition(cursorPosition);
-				it->get()->SetEntity(m_editor.GetSelectedEntity());
+				it->get()->SetEntity(m_viewport.GetEditorLayer().GetSelectedEntity());
 				it->get()->m_startTransform = *transform;
 				m_actor = it->get();
 				return true;

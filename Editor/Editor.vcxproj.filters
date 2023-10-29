@@ -75,6 +75,12 @@
     <ClCompile Include="Code\EditorGUI\ImGuiUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Code\EditorGUI\EditorViewport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\EditorGUI\EditorSceneViewport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\ImGuiComponent.h">
@@ -213,6 +219,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiGridComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\EditorViewport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\EditorSceneViewport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

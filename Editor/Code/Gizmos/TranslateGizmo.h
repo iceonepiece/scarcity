@@ -7,8 +7,8 @@
 class TranslateGizmo : public Gizmo
 {
 public:
-	TranslateGizmo(EditorLayer& editor)
-		: Gizmo(editor)
+	TranslateGizmo(EditorViewport& viewport)
+		: Gizmo(viewport)
 	{
 		m_actionables.push_back(std::make_unique<ActionableRect>(
 			glm::vec2 { 0.13f },
@@ -85,7 +85,7 @@ public:
 			m_startPosition
 		);
 
-		m_editor.AddCommand(command);
+		m_viewport.GetEditorLayer().AddCommand(command);
 	}
 
 protected:
