@@ -86,8 +86,9 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
     else if (FileSystem::IsPrefabFile(path))
     {
         std::cout << "LoadAsset (Prefab): " << path << "\n";
-        Entity entity = Application::Get().GetPrefabManager().CreateEntity();
-        std::unique_ptr<PrefabAsset> prefabAsset = std::make_unique<PrefabAsset>(path, entity);
+		Entity entity = Application::Get().GetPrefabManager().CreateEntity();
+		std::unique_ptr<PrefabAsset> prefabAsset = std::make_unique<PrefabAsset>(path, entity);
+		Application::Get().AddPrefab(entity);
         m_assetMap.insert({ path.string(), std::move(prefabAsset) });
     }
     else if (FileSystem::IsNativeScriptFile(path))

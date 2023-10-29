@@ -85,6 +85,20 @@ void Application::Run()
 	}
 }
 
+void Application::AddPrefab(Entity entity)
+{
+	m_prefabMap.insert({ entity.GetName(), entity });
+}
+
+Entity Application::GetPrefabByName(const std::string& name)
+{
+	if (m_prefabMap.find(name) != m_prefabMap.end())
+		return m_prefabMap[name];
+
+	return Entity{};
+}
+
+
 void Application::Close()
 {
 	m_running = false;

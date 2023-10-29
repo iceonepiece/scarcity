@@ -99,6 +99,8 @@ public:
 
 	void RenderUI();
 
+	Entity InstantiateEntity(Entity entity);
+
 	template<typename T, typename... Args>
 	void Instantiate(Args&&... args)
 	{

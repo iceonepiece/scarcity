@@ -627,6 +627,21 @@ void Scene::RenderUI()
     }
 }
 
+Entity Scene::InstantiateEntity(Entity entity)
+{
+    entt::registry& srcRegistry = entity.GetRegistry();
+    entt::registry& registry = m_manager.m_registry;
+
+    auto newEntity = registry.create();
+    registry.emplace<IDComponent>(newEntity);
+
+    std::apply([&](auto... componentTypes) {
+        (CopyComponent<decltype(componentTypes)>(srcRegistry, registry, entity.GetEntity(), newEntity), ...);
+    }, ComponentList{});
+
+    return Entity{ &m_manager, newEntity };
+}
+
 EntityManager& Scene::GetEntityManager()
 {
     return m_manager;

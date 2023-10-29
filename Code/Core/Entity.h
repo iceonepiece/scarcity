@@ -66,6 +66,8 @@ public:
 		return GetComponent<IDComponent>()->ID;
 	}
 
+	inline EntityManager* GetManager() { return m_manager; }
+
 	entt::entity GetEntity() { return m_id; }
 	entt::registry& GetRegistry() { return m_manager->m_registry; }
 
