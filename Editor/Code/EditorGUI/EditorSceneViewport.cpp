@@ -143,6 +143,9 @@ void EditorSceneViewport::OnMouseMoved(MouseMovedEvent& event)
 
 void EditorSceneViewport::OnMouseButtonPressed(MouseButtonPressedEvent& event)
 {
+    if (!m_viewportHovered)
+        return;
+
     if (event.GetMouseButton() == Mouse::ButtonLeft)
     {
         m_editor.SetMouseActive(true);
