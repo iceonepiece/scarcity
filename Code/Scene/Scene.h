@@ -99,7 +99,7 @@ public:
 
 	void RenderUI();
 
-	Entity InstantiateEntity(Entity entity);
+	Entity InstantiateEntity(Entity entity, const glm::vec3& position);
 
 	template<typename T, typename... Args>
 	void Instantiate(Args&&... args)

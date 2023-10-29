@@ -627,7 +627,7 @@ void Scene::RenderUI()
     }
 }
 
-Entity Scene::InstantiateEntity(Entity entity)
+Entity Scene::InstantiateEntity(Entity entity, const glm::vec3& position)
 {
     entt::registry& srcRegistry = entity.GetRegistry();
     entt::registry& registry = m_manager.m_registry;
@@ -639,7 +639,18 @@ Entity Scene::InstantiateEntity(Entity entity)
         (CopyComponent<decltype(componentTypes)>(srcRegistry, registry, entity.GetEntity(), newEntity), ...);
     }, ComponentList{});
 
-    return Entity{ &m_manager, newEntity };
+
+    Entity returnEntity { &m_manager, newEntity };
+
+    if (TransformComponent* transform = returnEntity.GetComponent<TransformComponent>())
+    {
+        transform->position = position;
+
+        if (Rigidbody2DComponent* rb2d = returnEntity.GetComponent<Rigidbody2DComponent>())
+            InitializePhysicsEntity(newEntity, *transform, *rb2d);
+    }
+
+    return returnEntity;
 }
 
 EntityManager& Scene::GetEntityManager()
