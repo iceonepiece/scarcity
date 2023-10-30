@@ -131,6 +131,11 @@ public:
 		return m_currentMode;
 	}
 
+	inline void SetCurrentMode(EditorMode mode)
+	{
+		m_currentMode = mode;
+	}
+
 	inline GameLayer& GetGameLayer()
 	{
 		return m_gameLayer;

@@ -13,6 +13,7 @@ public:
 
 	virtual void Update(float deltaTime) override;
 	virtual void Render() override;
+	void RenderTools();
 
 	virtual void OnMouseScrolled(MouseScrolledEvent& event) override;
 	virtual void OnWindowResize(WindowResizeEvent& event) override;
