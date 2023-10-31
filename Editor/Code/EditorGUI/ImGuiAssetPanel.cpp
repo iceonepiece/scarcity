@@ -74,6 +74,17 @@ void ImGuiAssetPanel::RenderPrefab(PrefabAsset& prefabAsset, ImGuiTreeNodeFlags 
 	ImGui::SameLine();
 	ImGui::Text(prefabAsset.GetPath().filename().string().c_str());
 
+	if (ImGui::BeginPopupContextItem(prefabAsset.GetPath().string().c_str()))
+	{
+		if (ImGui::MenuItem("Delete"))
+		{
+			m_showDeleteModal = true;
+			m_onActionAsset = &prefabAsset;
+		}
+
+		ImGui::EndPopup();
+	}
+
 	if (opened)
 		ImGui::TreePop();
 }
@@ -302,6 +313,31 @@ void ImGuiAssetPanel::Render()
 		ImGui::EndDragDropTarget();
 	}
 
+	if (m_showDeleteModal && m_onActionAsset)
+		ImGui::OpenPopup("Delete selected asset?");
+
+	if (ImGui::BeginPopupModal("Delete selected asset?", NULL, NULL))
+	{
+		ImGui::Text(m_onActionAsset->GetPath().string().c_str());
+		ImGui::Text("You cannot undo the delete assets action.");
+
+		if (ImGui::Button("Delete"))
+		{
+			FileSystem::RemoveFile(m_onActionAsset->GetPath());
+			m_showDeleteModal = false;
+			m_onActionAsset = nullptr;
+			ImGui::CloseCurrentPopup();
+		}
+
+		if (ImGui::Button("Cancel"))
+		{
+			m_showDeleteModal = false;
+			m_onActionAsset = nullptr;
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::EndPopup();
+	}
 
 	//ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
 	//ImGui::SliderFloat("Padding", &padding, 0, 32);

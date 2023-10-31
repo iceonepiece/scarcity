@@ -26,7 +26,7 @@ public:
 		m_currentDirectory = path;
 	}
 
-	static void RenderPrefab(PrefabAsset& prefabAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
+	void RenderPrefab(PrefabAsset& prefabAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn = [](SpriteAsset&){}, const std::string& note = "");
 	static void RenderAudio(AudioAsset& audioAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderNativeScript(NativeScriptAsset& nativeScriptAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
@@ -40,6 +40,9 @@ private:
 
 	std::unique_ptr<Texture> m_folderIcon;
 	std::unique_ptr<Texture> m_fileIcon;
+
+	bool m_showDeleteModal = false;
+	Asset* m_onActionAsset = nullptr;
 
 	EditorLayer& m_editor;
 };
