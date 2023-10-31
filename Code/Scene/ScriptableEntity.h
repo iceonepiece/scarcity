@@ -45,9 +45,10 @@ public:
 	}
 
 	virtual void Start() {}
-	virtual void Destroy() {}
 	virtual void Update(float dt) {}
 	virtual void LateUpdate(float dt) {}
+
+	void Destroy();
 
 	virtual std::vector<std::string> GetFunctionNames()
 	{

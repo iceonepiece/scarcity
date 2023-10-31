@@ -49,11 +49,23 @@ void Scene::SpawnCollision2D(Collision2D* collision)
     m_spawnCommands.push_back({ collision });
 }
 
+void Scene::OnDestroyEntity(entt::entity entity)
+{
+    if (m_manager.IsEntityValid(entity))
+        m_toDestroyEntities.push_back(entity);
+}
+
+
 void Scene::DestroyEntity(entt::entity entity)
 {
     if (m_manager.m_registry.all_of<Rigidbody2DComponent>(entity))
     {
         DestroyPhysicsEntity(m_manager.m_registry.get<Rigidbody2DComponent>(entity));
+    }
+
+    if (NativeScriptComponent* nativeScript = m_manager.m_registry.try_get<NativeScriptComponent>(entity))
+    {
+        delete nativeScript->instance;
     }
 
     m_manager.m_registry.destroy(entity);
@@ -453,6 +465,12 @@ void Scene::Update(float deltaTime)
             DestroyEntity(entity);
     }
 
+    for (auto entity : m_toDestroyEntities)
+    {
+        DestroyEntity(entity);
+    }
+    m_toDestroyEntities.clear();
+
     auto nativeScriptLateUpdateView = m_manager.m_registry.view<NativeScriptComponent>();
 
     for (auto [entity, nativeScript] : nativeScriptLateUpdateView.each())
@@ -648,6 +666,20 @@ Entity Scene::InstantiateEntity(Entity entity, const glm::vec3& position)
 
         if (Rigidbody2DComponent* rb2d = returnEntity.GetComponent<Rigidbody2DComponent>())
             InitializePhysicsEntity(newEntity, *transform, *rb2d);
+    }
+
+    if (NativeScriptComponent* nativeScript = returnEntity.GetComponent<NativeScriptComponent>())
+    {
+        std::unique_ptr<ScriptableEntity> uniqueInstance = m_app->GetNativeScriptEngine().CopyInstance(nativeScript->className);
+        nativeScript->instance = uniqueInstance.release();
+
+        if (nativeScript->instance != nullptr)
+        {
+            nativeScript->instance->m_app = m_app;
+            nativeScript->instance->m_scene = this;
+            nativeScript->instance->m_entity = returnEntity;
+            nativeScript->instance->Start();
+        }
     }
 
     return returnEntity;

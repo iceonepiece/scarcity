@@ -48,6 +48,7 @@ public:
 	
 	bool HasSaved();
 
+	void OnDestroyEntity(entt::entity entity);
 	entt::entity DuplicateEntity(entt::entity entity);
 	void DestroyEntity(entt::entity entity);
 	void SpawnCollision2D(Collision2D* collision);
@@ -126,6 +127,7 @@ public:
 	std::vector<std::unique_ptr<System>> m_systems;
 	Application *m_app;
 	
+	std::vector<entt::entity> m_toDestroyEntities;
 	std::unique_ptr<Camera> m_camera;
 	std::unique_ptr<b2World> m_physics = nullptr;
 	std::unique_ptr<b2ContactListener> m_contactListener;
