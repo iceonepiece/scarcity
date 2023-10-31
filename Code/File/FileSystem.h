@@ -21,6 +21,7 @@ public:
 	static void HandleMetaFile(const std::filesystem::path& path);
 	static AssetType GetAssetType(const std::filesystem::path& path);
 
+	static bool IsIgnoreDirectory(const std::filesystem::path& path);
 	static bool IsSceneFile(const std::filesystem::path& path);
 	static bool IsImageFile(const std::filesystem::path& path);
 	static bool IsAudioFile(const std::filesystem::path& path);
@@ -33,6 +34,12 @@ public:
 
 	static void GenerateImageMetaFile(const std::filesystem::path& path);
 	static void GenerateAudioMetaFile(const std::filesystem::path& path);
+};
+
+static const std::array<std::string, 3> ignoreDirectories {
+	".git",
+	".vs",
+	"Debug"
 };
 
 static const std::array<std::string, 3> supportedNativeScriptFormats {

@@ -24,37 +24,17 @@ void AssetManager::InitializeAssets(const std::filesystem::path& path)
 		{
 			std::filesystem::path targetPath = directoryEntry.path();
 
-			if (directoryEntry.is_directory())
+			if (directoryEntry.is_directory() && !FileSystem::IsIgnoreDirectory(targetPath))
 			{
-				std::cout << "[Folder]";
+				std::cout << "[Folder] : " << targetPath << '\n';
 				pathQueue.push(targetPath);
-			}
-			else if (FileSystem::IsSceneFile(targetPath))
-			{
-				std::cout << "[Scene]";
-				std::unique_ptr<Scene> scene = std::make_unique<Scene>(targetPath.stem().string(), targetPath);
-				m_sceneMap.insert({ targetPath.stem().string(),std::move(scene) });
-
-				std::cout << "Initialize Scene: " << targetPath.stem().string();
-			}
-			else if (FileSystem::IsImageFile(targetPath))
-			{
-				std::cout << "[Texture]";
-				FileSystem::HandleMetaFile(targetPath);
-				std::unique_ptr<TextureAsset> textureAsset = std::make_unique<TextureAsset>(targetPath);
-				m_assetMap.insert({ targetPath.string(), std::move(textureAsset) });
-			}
-			else if (FileSystem::IsAnimatorFile(targetPath))
-			{
-				std::cout << "[Animator Controller]";
-				m_animControllerMap.insert({ targetPath.string(), std::make_unique<AnimatorControllerAsset>(targetPath) });
 			}
 			else
 			{
-				std::cout << "[Not supported]";
+				Asset* asset = LoadAsset(targetPath);
+				if (asset == nullptr)
+					std::cout << "[Not supported] : " << targetPath << '\n';
 			}
-
-			std::cout << "\t" << targetPath << std::endl;
 		}
 
 		pathQueue.pop();
@@ -73,19 +53,30 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
 {
     if (FileSystem::IsImageFile(path))
     {
-        std::cout << "LoadAsset (Texture): " << path << "\n";
+        std::cout << "[Texture] : " << path << '\n';
         std::unique_ptr<TextureAsset> textureAsset = std::make_unique<TextureAsset>(path);
         m_assetMap.insert({ path.string(), std::move(textureAsset) });
     }
+	else if (FileSystem::IsSceneFile(path))
+	{
+		std::cout << "[Scene] : " << path << '\n';
+		std::unique_ptr<Scene> scene = std::make_unique<Scene>(path.stem().string(), path);
+		m_sceneMap.insert({ path.stem().string(),std::move(scene) });
+	}
+	else if (FileSystem::IsAnimatorFile(path))
+	{
+		std::cout << "[Animator] : " << path << '\n';
+		m_animControllerMap.insert({ path.string(), std::make_unique<AnimatorControllerAsset>(path) });
+	}
     else if (FileSystem::IsAudioFile(path))
     {
-        std::cout << "LoadAsset (Audio): " << path << "\n";
+        std::cout << "[Audio] : " << path << '\n';
         std::unique_ptr<AudioAsset> audioAsset = std::make_unique<AudioAsset>(path);
         m_assetMap.insert({ path.string(), std::move(audioAsset) });
     }
     else if (FileSystem::IsPrefabFile(path))
     {
-        std::cout << "LoadAsset (Prefab): " << path << "\n";
+        std::cout << "[Prefab] : " << path << '\n';
 		Entity entity = Application::Get().GetPrefabManager().CreateEntity();
 		std::unique_ptr<PrefabAsset> prefabAsset = std::make_unique<PrefabAsset>(path, entity);
 		Application::Get().AddPrefab(entity);
@@ -93,7 +84,7 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
     }
     else if (FileSystem::IsNativeScriptFile(path))
     {
-        std::cout << "LoadAsset (NativeScrpt): " << path << "\n";
+        std::cout << "[NativeScrpt] : " << path << '\n';
         std::unique_ptr<NativeScriptAsset> nativeScritpAsset = std::make_unique<NativeScriptAsset>(path);
         m_assetMap.insert({ path.string(), std::move(nativeScritpAsset) });
     }

@@ -164,6 +164,18 @@ bool FileSystem::IsNativeScriptFile(const std::filesystem::path& path)
 	return false;
 }
 
+bool FileSystem::IsIgnoreDirectory(const std::filesystem::path& path)
+{
+	const std::string pathName = path.filename().generic_string();
+	for (const auto& directory : ignoreDirectories)
+	{
+		if (pathName == directory)
+			return true;
+	}
+
+	return false;
+}
+
 bool FileSystem::IsSceneFile(const std::filesystem::path& path)
 {
 	return path.extension().generic_string() == ".bfs";
