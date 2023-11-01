@@ -5,7 +5,8 @@ enum EditorMode
 	ViewMode,
 	TranslateMode,
 	RotateMode,
-	ScaleMode
+	ScaleMode,
+	GridMode
 };
 
 enum class EditorObjectType

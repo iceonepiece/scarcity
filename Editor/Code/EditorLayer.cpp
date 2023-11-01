@@ -153,6 +153,13 @@ void EditorLayer::SetPickedEntity(entt::entity picked)
     m_selectedObject.type = EditorObjectType::Entity;
     m_selectedObject.entity = picked;
     m_selectedObject.asset = nullptr;
+
+    EntityManager& manager = GetScene()->GetEntityManager();
+
+    if (GridComponent* grid = manager.m_registry.try_get<GridComponent>(picked))
+        m_gridModeAvailable = true;
+    else
+        m_gridModeAvailable = false;
 }
 
 void EditorLayer::SetSelectedAsset(Asset* asset, const std::string& note)
@@ -161,6 +168,8 @@ void EditorLayer::SetSelectedAsset(Asset* asset, const std::string& note)
     m_selectedObject.asset = asset;
     m_selectedObject.entity = entt::null;
     m_selectedObject.note = note;
+
+    m_gridModeAvailable = false;
 }
 
 void EditorLayer::SetSelectedPath(const std::filesystem::path& path, const std::string& note)
@@ -314,11 +323,7 @@ void EditorLayer::OnMouseButtonReleased(MouseButtonReleasedEvent& event)
 {
     std::cout << "OnMouseButtonReleased" << std::endl;
 
-    if (event.GetMouseButton() == Mouse::ButtonLeft)
-    {
-        m_mouseActive = false;
-        m_editorSceneViewport.OnMouseButtonReleased(event);
-    }
+    m_editorSceneViewport.OnMouseButtonReleased(event);
 }
 
 bool EditorLayer::CheckPicking2D(const glm::vec2& cursorPosition)

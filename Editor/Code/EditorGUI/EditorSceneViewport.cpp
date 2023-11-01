@@ -4,6 +4,7 @@
 #include "../Gizmos/TranslateGizmo.h"
 #include "../Gizmos/RotateGizmo.h"
 #include "../Gizmos/ScaleGizmo.h"
+#include "../Gizmos/GridGizmo.h"
 #include "Graphics/Camera2D.h"
 #include <imgui/imgui.h>
 #include <IconsFontAwesome6.h>
@@ -26,6 +27,7 @@ EditorSceneViewport::EditorSceneViewport(EditorLayer& editor)
     m_gizmos.push_back(std::make_unique<TranslateGizmo>(*this));
     m_gizmos.push_back(std::make_unique<RotateGizmo>(*this));
     m_gizmos.push_back(std::make_unique<ScaleGizmo>(*this));
+    m_gizmos.push_back(std::make_unique<GridGizmo>(*this));
 }
 
 
@@ -78,7 +80,7 @@ void EditorSceneViewport::RenderTools()
 {
     static int location = 0;
     ImGuiIO& io = ImGui::GetIO();
-    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_AlwaysAutoResize;
     if (location >= 0)
     {
         const float PAD = 10.0f;
@@ -113,14 +115,15 @@ void EditorSceneViewport::RenderTools()
 
     if (ImGui::Begin("##gizmo_modes", NULL, window_flags))
     {
-        std::string iconStrings[] = { ICON_FA_HAND, ICON_FA_ARROWS_UP_DOWN_LEFT_RIGHT, ICON_FA_ROTATE, ICON_FA_EXPAND };
+        std::string iconStrings[] = { ICON_FA_HAND, ICON_FA_ARROWS_UP_DOWN_LEFT_RIGHT, ICON_FA_ROTATE, ICON_FA_EXPAND, ICON_FA_TABLE_CELLS };
         ImColor normalColor{ 85, 85, 85, 255 };
 
         ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)normalColor);
 
         EditorMode currentMode = m_editor.GetCurrentMode();
+        int modes = m_editor.IsGridModeAvailable() ? 5 : 4;
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < modes; i++)
         {
             if (currentMode == i)
                 ImGui::PopStyleColor();
@@ -211,13 +214,20 @@ void EditorSceneViewport::OnMouseMoved(MouseMovedEvent& event)
 
     if (m_editor.IsMouseActive())
     {
-        bool dragging = m_gizmos[m_editor.GetCurrentMode()]->OnDragging(worldCursorPosition.x, worldCursorPosition.y);
-
-        if (dragging && !m_gizmoStatus.dragging)
+        if (m_editor.GetCurrentMode() == EditorMode::GridMode)
         {
-            m_gizmos[m_editor.GetCurrentMode()]->OnDraggingStart();
-            m_gizmoStatus.dragging = true;
-            m_gizmoStatus.mode = m_editor.GetCurrentMode();
+            m_gizmos[m_editor.GetCurrentMode()]->OnPicking2D(worldCursorPosition);
+        }
+        else
+        {
+            bool dragging = m_gizmos[m_editor.GetCurrentMode()]->OnDragging(worldCursorPosition.x, worldCursorPosition.y);
+
+            if (dragging && !m_gizmoStatus.dragging)
+            {
+                m_gizmos[m_editor.GetCurrentMode()]->OnDraggingStart();
+                m_gizmoStatus.dragging = true;
+                m_gizmoStatus.mode = m_editor.GetCurrentMode();
+            }
         }
     }
 }
@@ -227,11 +237,24 @@ void EditorSceneViewport::OnMouseButtonPressed(MouseButtonPressedEvent& event)
     if (!m_viewportHovered)
         return;
 
-    if (event.GetMouseButton() == Mouse::ButtonLeft)
-    {
-        m_editor.SetMouseActive(true);
-        glm::vec4 worldCursorPosition = m_camera->ScreenToWorldPosition(m_cursorPosition);
+    m_editor.SetMouseActive(true);
+    glm::vec4 worldCursorPosition = m_camera->ScreenToWorldPosition(m_cursorPosition);
 
+    if (m_editor.GetCurrentMode() == EditorMode::GridMode)
+    {
+        GridGizmoMode mode = GridGizmoMode::None;
+        GridGizmo* gridGizmo = (GridGizmo*)m_gizmos[m_editor.GetCurrentMode()].get();
+
+        if (event.GetMouseButton() == Mouse::ButtonLeft)
+            mode = GridGizmoMode::Draw;
+        else if (event.GetMouseButton() == Mouse::ButtonRight)
+            mode = GridGizmoMode::Erase;
+
+        gridGizmo->SetMode(mode);
+        gridGizmo->OnPicking2D(worldCursorPosition);
+    }
+    else if (event.GetMouseButton() == Mouse::ButtonLeft)
+    {
         if (!m_gizmos[m_editor.GetCurrentMode()]->OnPicking2D(worldCursorPosition))
         {
             if (!m_editor.CheckPicking2D(worldCursorPosition))
@@ -242,6 +265,8 @@ void EditorSceneViewport::OnMouseButtonPressed(MouseButtonPressedEvent& event)
 
 void EditorSceneViewport::OnMouseButtonReleased(MouseButtonReleasedEvent& event)
 {
+    m_editor.SetMouseActive(false);
+
     if (m_gizmoStatus.dragging)
     {
         m_gizmos[m_editor.GetCurrentMode()]->OnDraggingEnd();

@@ -615,6 +615,19 @@ void Scene::RenderEditor()
         }
     }
 
+    auto gridView = m_manager.m_registry.view<GridComponent>();
+
+    for (auto [entity, grid] : gridView.each())
+    {
+        float halfSize = grid.size / 2.0f;
+        glm::vec2 cellSize { grid.size, grid.size };
+
+        for (auto& [pos, second] : grid.cellMap)
+        {
+            renderer.DrawQuad2D({ pos.first * grid.size + halfSize, pos.second * grid.size + halfSize }, cellSize, 0.0f, grid.color);
+        }
+    }
+
     renderer.PostRender();
 
     RenderUI();

@@ -74,6 +74,8 @@ public:
 	void SetSelectedAsset(Asset* asset, const std::string& note);
 	void SetSelectedPath(const std::filesystem::path& path, const std::string& note = "");
 
+	inline bool IsGridModeAvailable() { return m_gridModeAvailable; }
+
 	void SetPickedEntity(entt::entity picked);
 	void UnselectObject();
 
@@ -161,6 +163,7 @@ private:
 	GizmoStatus m_gizmoStatus;
 	std::vector<std::unique_ptr<EditorCommand>> m_editorCommands;
 	int m_currentCommandIndex = -1;
+	bool m_gridModeAvailable = false;
 
 	GameLayer m_gameLayer;
 	static EditorLayer* s_instance;

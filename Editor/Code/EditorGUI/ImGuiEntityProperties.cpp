@@ -74,6 +74,9 @@ void ImGuiEntityProperties::Render()
                 (RenderAddUIComponent<decltype(componentTypes)>(registry, entity), ...);
             }, ToAddUIComponents{});
 
+            if (registry.try_get<GridComponent>(entity))
+                m_editor.SetPickedEntity(entity);
+
             ImGui::EndPopup();
         }
 

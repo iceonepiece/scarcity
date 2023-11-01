@@ -155,6 +155,7 @@
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiWindow.cpp" />
     <ClCompile Include="Code\GameLayer.cpp" />
     <ClCompile Include="Code\Gizmos\Gizmo.cpp" />
+    <ClCompile Include="Code\Gizmos\GridGizmo.cpp" />
     <ClCompile Include="Code\Helpers\FileHandler.cpp" />
     <ClCompile Include="Code\HubLayer.cpp" />
     <ClCompile Include="Code\ImGuiComponent.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="Code\Gizmos\ActionableCircle.h" />
     <ClInclude Include="Code\Gizmos\ActionableRect.h" />
     <ClInclude Include="Code\Gizmos\Gizmo.h" />
+    <ClInclude Include="Code\Gizmos\GridGizmo.h" />
     <ClInclude Include="Code\Gizmos\RotateGizmo.h" />
     <ClInclude Include="Code\Gizmos\ScaleGizmo.h" />
     <ClInclude Include="Code\Gizmos\ViewGizmo.h" />

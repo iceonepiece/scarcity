@@ -81,6 +81,9 @@
     <ClCompile Include="Code\EditorGUI\EditorSceneViewport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Gizmos\GridGizmo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\ImGuiComponent.h">
@@ -228,6 +231,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\EditorData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Gizmos\GridGizmo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
