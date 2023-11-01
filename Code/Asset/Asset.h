@@ -6,6 +6,7 @@
 enum class AssetType
 {
 	None,
+	Scene,
 	NativeScript,
 	Prefab,
 	Texture,
@@ -26,7 +27,10 @@ public:
 
 	virtual std::string GetTypeString() { return "None"; }
 	inline AssetType GetType() { return m_type; }
+
+	inline void SetPath(const std::filesystem::path& path) { m_path = path; }
 	inline std::filesystem::path GetPath() { return m_path; }
+
 	inline std::string GetName() { return m_path.filename().string(); }
 
 	friend class MetaSerializer;

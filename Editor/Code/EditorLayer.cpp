@@ -590,8 +590,8 @@ void EditorLayer::OnSceneUpdate()
     std::string windowTitle = m_activeProject->GetName() + " - " + m_activeScene->m_name + " - BossFight Engine";
     m_app.GetWindow().SetTitle(windowTitle);
 
-    std::cout << "m_activeScene->m_path: " << m_activeScene->m_path << std::endl;
-    m_activeProject->SetStartScene(m_activeScene->m_path);
+    std::cout << "m_activeScene->m_path: " << m_activeScene->GetPath() << std::endl;
+    m_activeProject->SetStartScene(m_activeScene->GetPath());
 
     std::cout << "m_activeProject->GetDirectory(): " << m_activeProject->GetDirectory() << std::endl;
     ProjectSerializer::Serialize(*m_activeProject, m_activeProject->GetDirectory() / (m_activeProject->GetName() + PROJECT_FILE_EXTENSION));
@@ -611,7 +611,7 @@ bool EditorLayer::SaveScene()
         return SaveSceneAs();
     }
 
-    m_activeProject->SetStartScene(m_activeScene->m_path);
+    m_activeProject->SetStartScene(m_activeScene->GetPath());
 
     return true;
 }
@@ -633,7 +633,7 @@ bool EditorLayer::SaveSceneAs()
         return false;
 
     m_activeScene->m_name = sceneName;
-    m_activeScene->m_path = savePath;
+    m_activeScene->SetPath(savePath);
 
     OnSceneUpdate();
 

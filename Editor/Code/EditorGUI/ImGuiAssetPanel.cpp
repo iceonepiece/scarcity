@@ -142,6 +142,22 @@ void ImGuiAssetPanel::RenderAudio(AudioAsset& audioAsset, ImGuiTreeNodeFlags fla
 	}
 }
 
+void ImGuiAssetPanel::RenderAnimatorController(AnimatorControllerAsset& animControllerAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
+{
+	std::string useIcon = (ICON_FA_PERSON_RUNNING " ");
+
+	flags |= ImGuiTreeNodeFlags_Leaf;
+
+	bool opened = ImGui::TreeNodeEx(animControllerAsset.GetPath().string().c_str(), flags, (useIcon + animControllerAsset.GetName()).c_str());
+
+	callback();
+
+	if (opened)
+	{
+		ImGui::TreePop();
+	}
+}
+
 
 void ImGuiAssetPanel::RenderFolder(const std::filesystem::path& path, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
 {
@@ -260,20 +276,29 @@ void ImGuiAssetPanel::Render()
 						m_editor.SetSelectedPath(prefabAsset->GetPath());
 				});
 			}
-		}
-		else if (FileSystem::IsSceneFile(path))
-		{
-			flags |= ImGuiTreeNodeFlags_Leaf;
+			else if (asset->GetType() == AssetType::AnimatorController)
+			{
+				AnimatorControllerAsset* animControllerAsset = static_cast<AnimatorControllerAsset*>(asset);
+				RenderAnimatorController(*animControllerAsset, flags, [&]()
+				{
+					if (ImGui::IsItemClicked())
+						m_editor.SetSelectedPath(animControllerAsset->GetPath());
+				});
+			}
+			else if (asset->GetType() == AssetType::Scene)
+			{
+				flags |= ImGuiTreeNodeFlags_Leaf;
 
-			std::string useIcon = (ICON_FA_TV " ");
+				std::string useIcon = (ICON_FA_WINDOW_MAXIMIZE " ");
 
-			bool opened = ImGui::TreeNodeEx(path.string().c_str(), flags, (useIcon + path.filename().string()).c_str());
+				bool opened = ImGui::TreeNodeEx(path.string().c_str(), flags, (useIcon + path.filename().string()).c_str());
 
-			if (ImGui::IsItemClicked())
-				m_editor.OpenScene(path);
+				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
+					m_editor.OpenScene(path);
 
-			if (opened)
-				ImGui::TreePop();
+				if (opened)
+					ImGui::TreePop();
+			}
 		}
 		else
 		{

@@ -11,8 +11,8 @@
 #include "UI/UIManager.h"
 
 Scene::Scene(const std::string& name, const std::filesystem::path& path)
-    : m_name(name)
-    , m_path(path)
+    : Asset(path, AssetType::Scene)
+    , m_name(name)
 	, m_camera(
         new Camera2D({ 0.0f, 0.0f, -14.0f }, { 0.5f, 0.25f }, { 1280, 720 })
     )

@@ -13,6 +13,7 @@
 #include "Components/TransformComponent.h"
 #include "Components/Rigidbody2DComponent.h"
 #include "Project/Project.h"
+#include "Asset/Asset.h"
 
 #include "Events/Event.h"
 
@@ -24,7 +25,7 @@ struct SpawnCommand
 	Collision2D* collision = nullptr;
 };
 
-class Scene
+class Scene : public Asset
 {
 public:
 
@@ -118,7 +119,6 @@ public:
 	unsigned int m_viewportHeight;
 
 	std::string m_name;
-	std::filesystem::path m_path;
 	std::filesystem::path m_location;
 
 	bool physicsActive = true;
@@ -135,6 +135,7 @@ public:
 	EntityManager m_manager;
 
 	friend class SceneSerializer;
+	friend class SceneManager;
 
 	InitializeFunction m_initializeFunction;
 

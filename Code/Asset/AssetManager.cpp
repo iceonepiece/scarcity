@@ -32,6 +32,7 @@ void AssetManager::InitializeAssets(const std::filesystem::path& path)
 			else
 			{
 				Asset* asset = LoadAsset(targetPath);
+
 				if (asset == nullptr)
 					std::cout << "[Not supported] : " << targetPath << '\n';
 			}
@@ -61,12 +62,15 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
 	{
 		std::cout << "[Scene] : " << path << '\n';
 		std::unique_ptr<Scene> scene = std::make_unique<Scene>(path.stem().string(), path);
-		m_sceneMap.insert({ path.stem().string(),std::move(scene) });
+		//m_sceneMap.insert({ path.stem().string(),std::move(scene) });
+		m_assetMap.insert({ path.string(), std::move(scene) });
 	}
 	else if (FileSystem::IsAnimatorFile(path))
 	{
-		std::cout << "[Animator] : " << path << '\n';
-		m_animControllerMap.insert({ path.string(), std::make_unique<AnimatorControllerAsset>(path) });
+		std::cout << "[Animator Controller] : " << path << '\n';
+		//m_animControllerMap.insert({ path.string(), std::make_unique<AnimatorControllerAsset>(path) });
+		std::unique_ptr<AnimatorControllerAsset> animControllerAsset = std::make_unique<AnimatorControllerAsset>(path);
+		m_assetMap.insert({ path.string(), std::move(animControllerAsset) });
 	}
     else if (FileSystem::IsAudioFile(path))
     {
