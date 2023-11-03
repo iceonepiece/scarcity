@@ -30,6 +30,8 @@ struct Rigidbody2DComponent
 
 	BodyType type = BodyType::Static;
 	bool fixedRotation = false;
+	float gravityScale = 1.0f;
+
 	void* body = nullptr;
 	FixtureData* fixtureData = nullptr;
 
@@ -66,12 +68,14 @@ static void DoSerialize(const Rigidbody2DComponent& rb2d, json& entityJson)
 {
 	entityJson["Rigidbody2D"]["type"] = rb2d.type;
 	entityJson["Rigidbody2D"]["fixedRotation"] = rb2d.fixedRotation;
+	entityJson["Rigidbody2D"]["gravityScale"] = rb2d.gravityScale;
 }
 
 static void DoDeserialize(Rigidbody2DComponent& rb2d, json& rb2dJson)
 {
 	rb2d.type = rb2dJson["type"].get<BodyType>();
 	rb2d.fixedRotation = rb2dJson["fixedRotation"].get<bool>();
+	rb2d.gravityScale = rb2dJson["gravityScale"].get<float>();
 }
 
 static void RenderImGui(Rigidbody2DComponent& rb2d)
@@ -97,4 +101,5 @@ static void RenderImGui(Rigidbody2DComponent& rb2d)
     }
 
     ImGui::Checkbox("Fixed Rotation", &rb2d.fixedRotation);
+	ImGui::InputFloat("Gravity Scale", &rb2d.gravityScale);
 }

@@ -241,6 +241,7 @@ void Scene::InitializePhysicsEntity(entt::entity entity, TransformComponent& tra
     bodyDef.type = Rigidbody2DTypeToBox2DBody(rb2d.type);
     bodyDef.position.Set(transform.position.x, transform.position.y);
     bodyDef.angle = transform.rotation.z;
+    bodyDef.gravityScale = rb2d.gravityScale;
 
     b2Body* body = m_physics->CreateBody(&bodyDef);
     body->SetFixedRotation(rb2d.fixedRotation);
