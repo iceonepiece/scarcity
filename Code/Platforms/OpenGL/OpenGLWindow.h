@@ -29,6 +29,9 @@ public:
 	virtual void SetTitle(const std::string& title) override;
 	virtual void SetCursorShape(CursorShape shape) override;
 
+	virtual void SetVSync(bool enabled) override;
+	virtual bool IsVSync() const override;
+
 	virtual void* GetNativeWindow() const override { return m_glfwWindow; }
 
 	GLFWwindow* GetGLFWwindow();
@@ -36,4 +39,6 @@ public:
 protected:
 	GLFWwindow* m_glfwWindow;
 	GLFWcursor* m_cursor;
+
+	bool m_vsync;
 };

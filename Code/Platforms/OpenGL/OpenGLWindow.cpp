@@ -188,3 +188,14 @@ void OpenGLWindow::SetCursorShape(CursorShape shape)
             break;
     }
 }
+
+void OpenGLWindow::SetVSync(bool enabled)
+{
+    glfwSwapInterval(enabled ? 1 : 0);
+    m_vsync = enabled;
+}
+
+bool OpenGLWindow::IsVSync() const
+{
+    return m_vsync;
+}

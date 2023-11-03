@@ -237,7 +237,6 @@ void EditorSceneViewport::OnMouseButtonPressed(MouseButtonPressedEvent& event)
     if (!m_viewportHovered)
         return;
 
-    m_editor.SetMouseActive(true);
     glm::vec4 worldCursorPosition = m_camera->ScreenToWorldPosition(m_cursorPosition);
 
     if (m_editor.GetCurrentMode() == EditorMode::GridMode)
@@ -250,11 +249,16 @@ void EditorSceneViewport::OnMouseButtonPressed(MouseButtonPressedEvent& event)
         else if (event.GetMouseButton() == Mouse::ButtonRight)
             mode = GridGizmoMode::Erase;
 
+        if (mode != GridGizmoMode::None)
+            m_editor.SetMouseActive(true);
+
         gridGizmo->SetMode(mode);
         gridGizmo->OnPicking2D(worldCursorPosition);
     }
     else if (event.GetMouseButton() == Mouse::ButtonLeft)
     {
+        m_editor.SetMouseActive(true);
+
         if (!m_gizmos[m_editor.GetCurrentMode()]->OnPicking2D(worldCursorPosition))
         {
             if (!m_editor.CheckPicking2D(worldCursorPosition))

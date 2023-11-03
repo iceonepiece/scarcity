@@ -50,6 +50,12 @@ void ImGuiMainMenuBar::Render()
         m_editor.ReloadNativeScripts();
     }
 
+    bool vsyncEnabled = Application::Get().GetWindow().IsVSync();
+    if (ImGui::Checkbox("VSync", &vsyncEnabled))
+    {
+        Application::Get().GetWindow().SetVSync(vsyncEnabled);
+    }
+
     ImGui::SetCursorPosX(ImGui::GetWindowSize().x / 2);
 
     if (m_editor.IsScenePlaying() && ImGui::MenuItem(ICON_FA_STOP))

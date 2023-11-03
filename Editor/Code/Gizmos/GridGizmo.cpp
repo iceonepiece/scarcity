@@ -15,8 +15,6 @@ bool GridGizmo::OnPicking2D(const glm::vec2& cursorPosition)
 		int x = (int)std::floor(cursorPosition.x / grid->size);
 		int y = (int)std::floor(cursorPosition.y / grid->size);
 
-		std::cout << "GridGizmo::OnPicking2D(): " << cursorPosition.x << ", " << cursorPosition.y << "  -  " << x << ", " << y << std::endl;
-
 		auto pair = std::make_pair(x, y);
 
 		if (m_mode == GridGizmoMode::Draw)
