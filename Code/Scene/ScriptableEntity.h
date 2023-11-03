@@ -56,7 +56,7 @@ public:
 	}
 
 protected:
-	Application* m_app;
+	Application* m_app = nullptr;
 	Entity m_entity;
 	Scene* m_scene = nullptr;
 

@@ -18,14 +18,6 @@ public:
 	virtual void Render() override;
 	virtual bool WindowShouldClose() override;
 
-	virtual void SetEventCallback(EventCallbackFn callback) override
-	{
-		
-		m_data.EventCallback = callback;
-		std::cout << "Set Event Callback" << std::endl;
-		std::cout << "XXXX: " << &(m_data.EventCallback) << std::endl;
-	}
-
 	virtual void SetTitle(const std::string& title) override;
 	virtual void SetCursorShape(CursorShape shape) override;
 

@@ -104,7 +104,7 @@ void ImGuiAssetProperties::RenderTextureAsset(TextureAsset& textureAsset)
     {
         ImGui::Text("pointer = %p", texture->GetRendererID());
         ImGui::Text("size = %d x %d", texture->GetWidth(), texture->GetHeight());
-        ImGui::Image((ImTextureID)texture->GetRendererID(), ImVec2(texture->GetWidth(), texture->GetHeight()), { 0, 1 }, { 1, 0 });
+        ImGui::Image((ImTextureID)texture->GetRendererID(), ImVec2((float)texture->GetWidth(), (float)texture->GetHeight()), { 0, 1 }, { 1, 0 });
     }
 }
 

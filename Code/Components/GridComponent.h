@@ -10,7 +10,7 @@ struct GridComponent
 {
 	static std::string Name() { return "Grid"; }
 
-	float size;
+	float size = 1.0f;
 	glm::vec4 color { 1.0f };
 
 	std::map<std::pair<int, int>, int> cellMap;

@@ -16,14 +16,14 @@ enum TransformDepending
 class Actionable
 {
 public:
-	//using DraggingFunction = std::function<bool(TransformComponent& transform, float x, float y)>;
 	using DraggingFunction = std::function<bool(Actionable& actor, float x, float y)>;
 
-	Actionable(const glm::vec2& position, const glm::vec4 color)
+	Actionable(const glm::vec2& position, const glm::vec4& color)
 		: m_position(position)
 		, m_angle(0.0f)
 		, m_color(color)
 		, m_draggingCallback([](Actionable& actor, float x, float y) { return false; })
+		, m_transform(nullptr)
 	{
 	}
 
