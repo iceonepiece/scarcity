@@ -69,7 +69,9 @@ public:
 	inline AssetManager& GetAssetManager() { return *m_assetManager; }
 	inline EntityManager& GetPrefabManager() { return m_prefabManager; }
 
-	std::array<std::string, TAG_SIZE>& GetTags() { return m_tags; };
+	std::vector<std::string>& GetTags() { return m_tags; }
+	size_t GetDefaultTagSize() { return m_defaultTagSize; }
+
 	void AddPrefab(Entity entity);
 	Entity GetPrefabByName(const std::string& name);
 
@@ -95,5 +97,7 @@ protected:
 	std::unordered_map<std::string, Entity> m_prefabMap;
 
 	std::vector<std::unique_ptr<Layer>> m_layers;
-	std::array<std::string, TAG_SIZE> m_tags { "Player", "Enemy", "Platform", "", "", "", "", ""  };
+
+	size_t m_defaultTagSize;
+	std::vector<std::string> m_tags { "Player", "Enemy", "Platform" };
 };

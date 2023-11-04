@@ -8,7 +8,8 @@ enum class ImGuiWindowType
 {
 	None,
 	SelectSprite,
-	SelectAnimatorController
+	Tags,
+	SelectAnimatorController,
 };
 
 class ImGuiWindow_

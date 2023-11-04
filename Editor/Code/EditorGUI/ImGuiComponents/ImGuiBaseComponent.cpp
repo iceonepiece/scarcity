@@ -1,14 +1,18 @@
-#pragma once
-
+#include <imgui/imgui.h>
+#include "imgui/imgui_stdlib.h"
+#include "ImGuiBaseComponent.h"
 #include "Components/BaseComponent.h"
+#include "Core/Application.h"
+#include "../Windows/ImGuiTagEditorWindow.h"
+#include "../../EditorLayer.h"
 
-void RenderImGui(BaseComponent& base);
-/*
+void RenderImGui(BaseComponent& base)
 {
 	ImGui::Text("Name: "); ImGui::SameLine();
 	ImGui::InputText("##name", &(base.name));
 
 	auto& tags = Application::Get().GetTags();
+	bool openPopup = false;
 
 	ImGui::Text("Tag: "); ImGui::SameLine();
 
@@ -37,15 +41,24 @@ void RenderImGui(BaseComponent& base);
 		}
 
 		ImGui::Separator();
-		
-		if (ImGui::Selectable("Add Tag...", false))
+
+		if (ImGui::Button("Add Tag..."))
 		{
-			ImGuiTagEditorWindow* window = dynamic_cast<ImGuiTagEditorWindow*>(EditorLayer::GetImGuiWindow(ImGuiWindowType::Tags));
-			window->Render();
+			openPopup = true;
 		}
 
 		ImGui::EndCombo();
 	}
 
+	if (openPopup)
+		ImGui::OpenPopup("Tag Editor");
+
+	if (ImGui::BeginPopupModal("Tag Editor"))
+	{
+		ImGuiTagEditorWindow* window = dynamic_cast<ImGuiTagEditorWindow*>(EditorLayer::GetImGuiWindow(ImGuiWindowType::Tags));
+		window->Render();
+
+		ImGui::EndPopup();
+	}
+
 }
-*/
