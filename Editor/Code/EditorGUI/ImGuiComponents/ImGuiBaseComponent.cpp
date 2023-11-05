@@ -5,40 +5,23 @@
 #include "Core/Application.h"
 #include "../Windows/ImGuiTagEditorWindow.h"
 #include "../../EditorLayer.h"
+#include "Core/TagManager.h"
+#include "../ImGuiUtils.h"
 
 void RenderImGui(BaseComponent& base)
 {
 	ImGui::Text("Name: "); ImGui::SameLine();
 	ImGui::InputText("##name", &(base.name));
 
-	auto& tags = Application::Get().GetTags();
+	auto& tagManager = Application::Get().GetTagManager();
 	bool openPopup = false;
 
 	ImGui::Text("Tag: "); ImGui::SameLine();
 
-	if (ImGui::BeginCombo("##Tag", base.tag > 0 ? tags[base.tag - 1].c_str() : "Untagged"))
+	if (ImGui::BeginCombo("##Tag", base.tag.c_str()))
 	{
-		for (int i = 0; i <= tags.size(); i++)
-		{
-			bool isSelected = base.tag == i;
-
-			ImGui::PushID(("TAG_" + std::to_string(i)).c_str());
-			if (i == 0)
-			{
-				if (ImGui::Selectable("Untagged", isSelected))
-					base.tag = i;
-			}
-			else
-			{
-				if (ImGui::Selectable(tags[i - 1].c_str(), isSelected))
-					base.tag = i;
-			}
-
-			if (isSelected)
-				ImGui::SetItemDefaultFocus();
-
-			ImGui::PopID();
-		}
+		ImGuiUtils::RenderTags(tagManager.GetDefaultTags(), base.tag);
+		ImGuiUtils::RenderTags(tagManager.GetTags(), base.tag);
 
 		ImGui::Separator();
 
@@ -57,6 +40,11 @@ void RenderImGui(BaseComponent& base)
 	{
 		ImGuiTagEditorWindow* window = dynamic_cast<ImGuiTagEditorWindow*>(EditorLayer::GetImGuiWindow(ImGuiWindowType::Tags));
 		window->Render();
+
+		ImGui::Separator();
+
+		if (ImGui::Button("Cancel", ImVec2(120, 0)))
+			ImGui::CloseCurrentPopup();
 
 		ImGui::EndPopup();
 	}

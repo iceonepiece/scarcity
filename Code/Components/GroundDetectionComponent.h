@@ -14,7 +14,7 @@ struct GroundDetectionComponent
 {
 	static std::string Name() { return "GroundDetection"; }
 
-	int groundTag = 0;
+	std::string groundTag = "Untagged";
 
 	int numGrounds = 0;
 	std::vector<FixtureData*> groundFixtures;
@@ -28,5 +28,8 @@ static void DoSerialize(const GroundDetectionComponent& groundDetection, json& e
 
 static void DoDeserialize(GroundDetectionComponent& groundDetection, json& groundDetectionJson)
 {
-	groundDetection.groundTag = groundDetectionJson["groundTag"].get<int>();
+	if (groundDetectionJson["groundTag"].is_number())
+		groundDetection.groundTag = "Untagged";
+	else
+		groundDetection.groundTag = groundDetectionJson["groundTag"].get<std::string>();
 }

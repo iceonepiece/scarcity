@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <map>
 #include "PCH.h"
 #include "Window.h"
 //#include "Graphics/Renderer.h"
@@ -12,6 +13,7 @@
 #include "Scene/Scene.h"
 #include "Core/EntityManager.h"
 #include "Asset/AssetManager.h"
+#include "Core/TagManager.h"
 
 class NativeScriptEngine;
 class LuaEngine;
@@ -68,9 +70,7 @@ public:
 	inline Audio& GetAudio() { return *m_audio; }
 	inline AssetManager& GetAssetManager() { return *m_assetManager; }
 	inline EntityManager& GetPrefabManager() { return m_prefabManager; }
-
-	std::vector<std::string>& GetTags() { return m_tags; }
-	size_t GetDefaultTagSize() { return m_defaultTagSize; }
+	inline TagManager& GetTagManager() { return m_tagManager; }
 
 	void AddPrefab(Entity entity);
 	Entity GetPrefabByName(const std::string& name);
@@ -94,10 +94,9 @@ protected:
 	std::unique_ptr<AssetManager> m_assetManager;
 
 	EntityManager m_prefabManager;
+	TagManager m_tagManager;
+
 	std::unordered_map<std::string, Entity> m_prefabMap;
 
 	std::vector<std::unique_ptr<Layer>> m_layers;
-
-	size_t m_defaultTagSize;
-	std::vector<std::string> m_tags { "Player", "Enemy", "Platform" };
 };

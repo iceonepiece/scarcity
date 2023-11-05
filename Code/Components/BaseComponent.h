@@ -10,7 +10,7 @@ struct BaseComponent
 	static std::string Name() { return "Base"; }
 
 	std::string name = "";
-	int tag = 0;
+	std::string tag = "Untagged";
 };
 
 static void DoSerialize(const BaseComponent& base, json& entityJson)
@@ -22,5 +22,9 @@ static void DoSerialize(const BaseComponent& base, json& entityJson)
 static void DoDeserialize(BaseComponent& base, json& baseJson)
 {
 	base.name = baseJson["name"].get<std::string>();
-	base.tag = baseJson["tag"].get<int>();
+
+	if (baseJson["tag"].is_number())
+		base.tag = baseJson["tag"] = "Untagged";
+	else
+		base.tag = baseJson["tag"].get<std::string>();
 }

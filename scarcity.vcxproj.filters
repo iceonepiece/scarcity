@@ -66,6 +66,7 @@
     <ClCompile Include="Code\Project\ProjectSerializer.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLAssetManager.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLFramebuffer.cpp" />
+    <ClCompile Include="Code\Core\TagManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Animations\AnimationSerializer.h" />
@@ -603,6 +604,7 @@
     <ClInclude Include="Code\Graphics\Framebuffer.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLFramebuffer.h" />
     <ClInclude Include="Code\Components\GridComponent.h" />
+    <ClInclude Include="Code\Core\TagManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\awesomeface.png" />

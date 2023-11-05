@@ -302,6 +302,7 @@
     <ClCompile Include="Code\Audio\OpenAL\OpenALAudio.cpp" />
     <ClCompile Include="Code\Audio\OpenAL\OpenALAudioSource.cpp" />
     <ClCompile Include="Code\Core\Application.cpp" />
+    <ClCompile Include="Code\Core\TagManager.cpp" />
     <ClCompile Include="Code\Core\UniqueID.cpp" />
     <ClCompile Include="Code\Core\Window.cpp" />
     <ClCompile Include="Code\File\FileSystem.cpp" />
@@ -391,6 +392,7 @@
     <ClInclude Include="Code\Components\UIComponent.h" />
     <ClInclude Include="Code\Components\UIComponents.h" />
     <ClInclude Include="Code\Constants\GameEngine.h" />
+    <ClInclude Include="Code\Core\TagManager.h" />
     <ClInclude Include="Code\Graphics\Camera.h" />
     <ClInclude Include="Code\Animations\Animation2D.h" />
     <ClInclude Include="Code\Components\Components.h" />

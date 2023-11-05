@@ -1,5 +1,23 @@
 #include "ImGuiUtils.h"
 
+void ImGuiUtils::RenderTags(const std::vector<std::string>& tags, std::string& str)
+{
+    for (int i = 0; i < tags.size(); i++)
+    {
+        bool isSelected = str == tags[i];
+
+        ImGui::PushID(tags[i].c_str());
+
+        if (ImGui::Selectable(tags[i].c_str(), isSelected))
+            str = tags[i];
+
+        if (isSelected)
+            ImGui::SetItemDefaultFocus();
+
+        ImGui::PopID();
+    }
+}
+
 void ImGuiUtils::RenderInputVec3(const std::string& name, glm::vec3& values, float width)
 {
     std::string xValue = "##X" + name;

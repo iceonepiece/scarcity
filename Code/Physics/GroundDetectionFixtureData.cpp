@@ -12,7 +12,7 @@ void GroundDetectionFixtureData::BeginContact(FixtureData* otherFixtureData, b2C
 {
     std::cout << "GroundDetectionFixtureData >> BeginContact\n";
 
-    if (m_groundDetection.groundTag == otherFixtureData->tag)
+    if (m_groundDetection.groundTag == otherFixtureData->m_tag)
     {
         b2WorldManifold worldManifold;
         contact->GetWorldManifold(&worldManifold);

@@ -17,7 +17,7 @@ enum PhysicsLayer : uint16_t
 struct Collision2D
 {
 	std::string name;
-	int tag;
+	std::string tag;
 	float x;
 	float y;
 	float lifetime = -1.0f;

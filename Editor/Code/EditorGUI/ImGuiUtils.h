@@ -8,6 +8,7 @@
 class ImGuiUtils
 {
 public:
+    static void RenderTags(const std::vector<std::string>& tags, std::string& str);
     static void RenderInputVec3(const std::string& name, glm::vec3& values, float width = 100.0f);
     static void RenderDropdownList(const std::string& label, const std::vector<std::string>& keys, unsigned int& selectedIndex);  
 };

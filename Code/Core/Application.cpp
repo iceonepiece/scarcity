@@ -13,8 +13,6 @@ Application::Application(const ApplicationConfigs& configs)
 	: m_configs(configs)
 {
 	s_instance = this;
-	
-	m_defaultTagSize = m_tags.size();
 
 	m_window = Window::Create(WindowConfigs(configs.name, configs.width, configs.height));
 	m_renderer = Renderer::Create();

@@ -22,7 +22,7 @@ public:
 		{
 			std::cout << "GroundDetectionFixtureData >> BeginContact\n";
 
-			if (groundDetection->groundTag == other->tag)
+			if (groundDetection->groundTag == other->m_tag)
 			{
 				b2WorldManifold worldManifold;
 				contact->GetWorldManifold(&worldManifold);

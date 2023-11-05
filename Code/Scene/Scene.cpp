@@ -268,7 +268,7 @@ void Scene::InitializePhysicsEntity(entt::entity entity, TransformComponent& tra
         fixtureDef.isSensor = bc2d.isTrigger;
 
         FixtureData* fixtureData = new EntityFixtureData(Entity{ &m_manager, entity });
-        fixtureData->tag = m_manager.m_registry.get<BaseComponent>(entity).tag;
+        fixtureData->m_tag = m_manager.m_registry.get<BaseComponent>(entity).tag;
         fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
         rb2d.fixtureData = fixtureData;
 
@@ -290,7 +290,7 @@ void Scene::InitializePhysicsEntity(entt::entity entity, TransformComponent& tra
         fixtureDef.isSensor = cc2d.isTrigger;
 
         FixtureData* fixtureData = new EntityFixtureData(Entity{ &m_manager, entity });
-        fixtureData->tag = m_manager.m_registry.get<BaseComponent>(entity).tag;
+        fixtureData->m_tag = m_manager.m_registry.get<BaseComponent>(entity).tag;
         fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
         rb2d.fixtureData = fixtureData;
 
