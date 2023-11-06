@@ -33,6 +33,12 @@ void ImGuiMainMenuBar::Render()
             m_editor.SaveScene();
         }
 
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Save Project"))
+        {
+            m_editor.SaveProject();
+        }
 
         ImGui::Separator();
 

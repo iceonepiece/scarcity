@@ -46,6 +46,8 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
         }
     );
 
+    m_app.GetTagManager().Deserialize(m_activeProject->GetDirectory() / "ProjectSettings" / "TagManager.asset");
+
     std::filesystem::path luaFilePath = m_activeProject->GetDirectory() / (m_activeProject->GetName() + ".lua");
 
     if (FileSystem::FileExists(luaFilePath))
@@ -643,6 +645,16 @@ bool EditorLayer::SaveSceneAs()
     m_activeScene->SetPath(savePath);
 
     OnSceneUpdate();
+
+    return true;
+}
+
+bool EditorLayer::SaveProject()
+{
+    std::filesystem::path projectPath = m_activeProject->GetDirectory();
+
+    if (!m_app.GetTagManager().Serialize(projectPath / "ProjectSettings" / "TagManager.asset"))
+        return false;
 
     return true;
 }

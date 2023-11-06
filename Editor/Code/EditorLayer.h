@@ -87,6 +87,8 @@ public:
 	bool SaveScene();
 	bool SaveSceneAs();
 
+	bool SaveProject();
+
 	void PlayScene();
 	void StopScene();
 	void ReloadNativeScripts();
