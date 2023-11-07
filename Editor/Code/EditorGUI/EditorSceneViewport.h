@@ -5,6 +5,7 @@
 #include "../Gizmos/Gizmo.h"
 #include "EditorViewport.h"
 #include "../EditorData.h"
+#include "Scene/Scene.h"
 
 class EditorSceneViewport : public EditorViewport
 {
@@ -22,6 +23,7 @@ public:
 	virtual void OnMouseButtonReleased(MouseButtonReleasedEvent& event) override;
 
 private:
+	RenderOptions m_renderOptions;
 	std::vector<std::unique_ptr<Gizmo>> m_gizmos;
 	GizmoStatus m_gizmoStatus;
 };

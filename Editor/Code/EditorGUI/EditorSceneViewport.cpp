@@ -52,7 +52,7 @@ void EditorSceneViewport::Update(float deltaTime)
             playingScene->Update(deltaTime);
             playingScene->SetViewportSize(m_width, m_height);
             playingScene->OnViewportResize();
-            playingScene->Render();
+            playingScene->Render(m_renderOptions);
         }
     }
     else
@@ -63,7 +63,7 @@ void EditorSceneViewport::Update(float deltaTime)
         {
             activeScene->SetCamera(*m_camera);
             activeScene->SetViewportSize(m_width, m_height);
-            activeScene->RenderEditor();
+            activeScene->RenderEditor(m_renderOptions);
 
             if (m_editor.GetCurrentMode() != EditorMode::ViewMode && m_editor.GetSelectedObject().type == EditorObjectType::Entity)
             {
@@ -156,7 +156,21 @@ void EditorSceneViewport::RenderTools()
 void EditorSceneViewport::Render()
 {
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
-    ImGui::Begin("Scene");
+    ImGui::Begin("Scene", NULL, ImGuiWindowFlags_MenuBar);
+
+    ImGui::BeginMenuBar();
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 16, 8 });
+
+    std::string text = ICON_FA_EYE "  " ICON_FA_CARET_DOWN;
+    if (ImGui::BeginMenu(text.c_str()))
+    {
+        ImGui::Checkbox("Collision", &m_renderOptions.collisionVisible);
+
+        ImGui::EndMenu();
+    }
+
+    ImGui::PopStyleVar();
+    ImGui::EndMenuBar();
 
     ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
     m_width = static_cast<unsigned int>(viewportPanelSize.x);

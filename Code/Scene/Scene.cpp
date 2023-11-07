@@ -538,7 +538,7 @@ void Scene::SetCamera(Camera& camera)
     renderer.SetCamera(&camera);
 }
 
-void Scene::Render()
+void Scene::Render(RenderOptions renderOptions)
 {
     Renderer& renderer = Application::Get().GetRenderer();
     renderer.PreRender();
@@ -581,11 +581,14 @@ void Scene::Render()
         system->Render();
 
     RenderUI();
-    RenderCollisionComponents();
+
+    if (renderOptions.collisionVisible)
+        RenderCollisionComponents();
+
     RenderTexts();
 }
 
-void Scene::RenderEditor()
+void Scene::RenderEditor(RenderOptions renderOptions)
 {
     Renderer& renderer = Application::Get().GetRenderer();
     renderer.PreRender();
@@ -632,7 +635,10 @@ void Scene::RenderEditor()
     renderer.PostRender();
 
     RenderUI();
-    RenderCollisionComponents();
+
+    if (renderOptions.collisionVisible)
+        RenderCollisionComponents();
+
     RenderTexts();
 }
 

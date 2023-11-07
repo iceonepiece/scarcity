@@ -25,6 +25,11 @@ struct SpawnCommand
 	Collision2D* collision = nullptr;
 };
 
+struct RenderOptions
+{
+	bool collisionVisible = true;
+};
+
 class Scene : public Asset
 {
 public:
@@ -35,8 +40,8 @@ public:
 	virtual void Initialize();
 	virtual void OnEvent(Event* e);
 	virtual void Update(float deltaTime);
-	virtual void Render();
-	virtual void RenderEditor();
+	virtual void Render(RenderOptions renderOptions = {});
+	virtual void RenderEditor(RenderOptions renderOptions = {});
 
 	void UpdateUI(float deltaTime);
 
