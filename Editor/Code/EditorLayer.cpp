@@ -19,6 +19,7 @@
 #include "Asset/AssetManager.h"
 #include "Project/ProjectSerializer.h"
 #include "Platforms/OpenGL/OpenGLFramebuffer.h"
+#include <stack>
 
 EditorLayer* EditorLayer::s_instance = nullptr;
 
@@ -214,6 +215,36 @@ void EditorLayer::OnMouseMoved(MouseMovedEvent& event)
     m_editorSceneViewport.OnMouseMoved(event);
 }
 
+std::map<std::pair<int, int>, int> floodFill(std::map<std::pair<int, int>, int>& cellMap)
+{
+    std::map<std::pair<int, int>, int> connected;
+    std::stack<std::pair<int, int>> pixels;
+    std::pair<int, int> current = cellMap.begin()->first;
+    int prevColor = (cellMap.begin())->second;
+
+    pixels.push(current);
+
+    while (!pixels.empty()) {
+        current = pixels.top();
+        pixels.pop();
+        int i = current.first;
+        int j = current.second;
+
+        if (cellMap.find(current) == cellMap.end() || cellMap.at(current) != prevColor)
+            continue;
+
+        connected.insert({ current, cellMap.at(current) });
+        cellMap.erase(current);
+
+        pixels.push(std::make_pair(i + 1, j));
+        pixels.push(std::make_pair(i - 1, j));
+        pixels.push(std::make_pair(i, j + 1));
+        pixels.push(std::make_pair(i, j - 1));
+    }
+
+    return connected;
+}
+
 void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
 {
     ImGuiIO& io = ImGui::GetIO();
@@ -275,6 +306,151 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
         {
             if (m_selectedObject.type == EditorObjectType::Entity)
                 DeleteEntity(m_selectedObject.entity);
+        }
+        break;
+
+        case Key::Space:
+        {
+            if (m_selectedObject.type == EditorObjectType::Entity)
+            {
+                if (GridComponent* grid = m_activeScene->m_manager.m_registry.try_get<GridComponent>(m_selectedObject.entity))
+                {
+                    std::map<std::pair<int, int>, int> cellMap = grid->cellMap;
+
+                    while (cellMap.size() > 0)
+                    {
+                        std::map<std::pair<int, int>, int> connected = floodFill(cellMap);
+
+                        GridPolygon polygon;
+
+                        std::pair<int, int> startPos = connected.begin()->first;
+                        std::pair<int, int> currentPos = startPos;
+                        EdgeOnCell currentEdge = EdgeOnCell::Left;
+
+                        polygon.push_back({ currentPos.first, currentPos.second, currentEdge });
+
+                        while (true)
+                        {
+                            int x = currentPos.first;
+                            int y = currentPos.second;
+
+                            switch (currentEdge)
+                            {
+                                case EdgeOnCell::Left:
+                                {
+                                    if (connected.find(std::make_pair(x - 1, y - 1)) != connected.end())
+                                    {
+                                        currentPos.first = x - 1;
+                                        currentPos.second = y - 1;
+                                        currentEdge = EdgeOnCell::Top;
+                                    }
+                                    else if (connected.find(std::make_pair(x, y - 1)) != connected.end())
+                                    {
+                                        currentPos.first = x;
+                                        currentPos.second = y - 1;
+                                    }
+                                    else
+                                    {
+                                        currentEdge = EdgeOnCell::Bottom;
+                                    }
+                                }
+                                break;
+
+                                case EdgeOnCell::Bottom:
+                                {
+                                    if (connected.find(std::make_pair(x + 1, y - 1)) != connected.end())
+                                    {
+                                        currentPos.first = x + 1;
+                                        currentPos.second = y - 1;
+                                        currentEdge = EdgeOnCell::Left;
+                                    }
+                                    else if (connected.find(std::make_pair(x + 1, y)) != connected.end())
+                                    {
+                                        currentPos.first = x + 1;
+                                        currentPos.second = y;
+                                    }
+                                    else
+                                    {
+                                        currentEdge = EdgeOnCell::Right;
+                                    }
+
+                                }
+                                break;
+
+                                case EdgeOnCell::Right:
+                                {
+                                    if (connected.find(std::make_pair(x + 1, y + 1)) != connected.end())
+                                    {
+                                        currentPos.first = x + 1;
+                                        currentPos.second = y + 1;
+                                        currentEdge = EdgeOnCell::Bottom;
+                                    }
+                                    else if (connected.find(std::make_pair(x, y + 1)) != connected.end())
+                                    {
+                                        currentPos.first = x;
+                                        currentPos.second = y + 1;
+                                    }
+                                    else
+                                    {
+                                        currentEdge = EdgeOnCell::Top;
+                                    }
+                                }
+                                break;
+
+                                case EdgeOnCell::Top:
+                                {
+                                    if (connected.find(std::make_pair(x - 1, y + 1)) != connected.end())
+                                    {
+                                        currentPos.first = x - 1;
+                                        currentPos.second = y + 1;
+                                        currentEdge = EdgeOnCell::Right;
+                                    }
+                                    else if (connected.find(std::make_pair(x - 1, y)) != connected.end())
+                                    {
+                                        currentPos.first = x - 1;
+                                        currentPos.second = y;
+                                    }
+                                    else
+                                    {
+                                        currentEdge = EdgeOnCell::Left;
+                                    }
+                                }
+                                break;
+
+                            }
+
+                            if (currentPos == startPos && currentEdge == EdgeOnCell::Left)
+                                break;
+
+                            polygon.push_back({ currentPos.first, currentPos.second, currentEdge });
+                        }
+
+
+                        for (auto [pos, value] : connected)
+                        {
+                            std::cout << pos.first << "," << pos.second << ' ';
+                        }
+
+                        std::cout << '\n';
+
+                        for (auto& edge : polygon)
+                        {
+                            std::string onCell = "Left";
+
+                            if (edge.onCell == EdgeOnCell::Right)
+                                onCell = "Right";
+                            else if (edge.onCell == EdgeOnCell::Bottom)
+                                onCell = "Bottom";
+                            else if (edge.onCell == EdgeOnCell::Top)
+                                onCell = "Top";
+
+                            std::cout << edge.cellX << ":" << edge.cellY << ":" << onCell << ' ';
+                        }
+
+                        std::cout << '\n';
+                    }
+                }
+            }
         }
         break;
     }

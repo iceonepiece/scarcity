@@ -6,6 +6,24 @@
 
 using json = nlohmann::json;
 
+enum class EdgeOnCell
+{
+	Left,
+	Bottom,
+	Right,
+	Top
+};
+
+struct GridEdge
+{
+	int cellX;
+	int cellY;
+	EdgeOnCell onCell;
+};
+
+using GridPolygon = std::vector<GridEdge>;
+
+
 struct GridComponent
 {
 	static std::string Name() { return "Grid"; }
@@ -14,6 +32,7 @@ struct GridComponent
 	glm::vec4 color { 1.0f };
 
 	std::map<std::pair<int, int>, int> cellMap;
+	std::vector<GridPolygon> polygons;
 };
 
 static void DoSerialize(const GridComponent& grid, json& entityJson)
