@@ -16,6 +16,7 @@
 #include "ImGuiCircleCollider2DComponent.h"
 #include "ImGuiRectTransformComponent.h"
 #include "ImGuiTextComponent.h"
+#include <IconsFontAwesome6.h>
 
 class ImGuiComponentRenderer
 {
@@ -31,8 +32,8 @@ public:
 
             bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, T::Name().c_str());
 
-            ImGui::SameLine();
-            if (ImGui::Button("+"))
+            ImGui::SameLine(ImGui::GetWindowWidth() - 32);
+            if (ImGui::Button(ICON_FA_ELLIPSIS_VERTICAL))
             {
                 ImGui::OpenPopup("ComponentSettings");
             }

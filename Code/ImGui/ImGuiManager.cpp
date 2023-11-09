@@ -12,8 +12,7 @@ ImGuiManager::ImGuiManager(Application& app)
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
 	float baseFontSize = 18.0f;
-	//float iconFontSize = baseFontSize * 2.0f / 3.0f;
-	float iconFontSize = baseFontSize * 1.0f;
+	float iconFontSize = baseFontSize * 0.9f;
 
 	io.Fonts->AddFontFromFileTTF("Fonts/Xolonium-Regular.ttf", baseFontSize);
 
@@ -23,6 +22,7 @@ ImGuiManager::ImGuiManager(Application& app)
 	icons_config.MergeMode = true;
 	icons_config.PixelSnapH = true;
 	icons_config.GlyphMinAdvanceX = iconFontSize;
+	icons_config.GlyphOffset = ImVec2(0.0f, 1.0f);
 	io.Fonts->AddFontFromFileTTF(FONT_ICON_FILE_NAME_FAS, iconFontSize, &icons_config, icons_ranges);
 
 	ImGui::StyleColorsDark();
