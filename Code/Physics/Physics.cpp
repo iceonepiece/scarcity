@@ -242,9 +242,25 @@ void Physics::InitializePhysicsEntity(Entity& entity, TransformComponent& transf
 	body->SetFixedRotation(rb2d.fixedRotation);
 	rb2d.body = body;
 
-	if (BoxCollider2DComponent* bc2d = entity.GetComponent<BoxCollider2DComponent>())
+	if (BoxCollider2DComponent* ptr = entity.GetComponent<BoxCollider2DComponent>())
 	{
-		b2FixtureDef fixtureDef = CreateBoxCollider2DFixture(entity, transform, rb2d, *bc2d);
+		auto& bc2d = *ptr;
+
+		glm::vec2 absoluteScale{ std::abs(transform.scale.x), std::abs(transform.scale.y) };
+
+		b2PolygonShape boxShape;
+		boxShape.SetAsBox(
+			bc2d.size.x * absoluteScale.x / 2,
+			bc2d.size.y * absoluteScale.y / 2,
+			b2Vec2(bc2d.offset.x * absoluteScale.x, bc2d.offset.y * absoluteScale.y),
+			0.0f
+		);
+
+		b2FixtureDef fixtureDef;
+		fixtureDef.shape = &boxShape;
+		fixtureDef.density = 1.0f;
+		fixtureDef.friction = 0.0f;
+		fixtureDef.isSensor = bc2d.isTrigger;
 
 		FixtureData* fixtureData = new EntityFixtureData(entity);
 		fixtureData->m_tag = entity.GetComponent<BaseComponent>()->tag;
@@ -254,9 +270,19 @@ void Physics::InitializePhysicsEntity(Entity& entity, TransformComponent& transf
 		body->CreateFixture(&fixtureDef);
 	}
 
-	if (CircleCollider2DComponent* cc2d = entity.GetComponent<CircleCollider2DComponent>())
+	if (CircleCollider2DComponent* ptr = entity.GetComponent<CircleCollider2DComponent>())
 	{
-		b2FixtureDef fixtureDef = CreateCircleCollider2DFixture(entity, transform, rb2d, *cc2d);
+		auto& cc2d = *ptr;
+
+		b2CircleShape circleShape;
+		circleShape.m_p.Set(cc2d.offset.x, cc2d.offset.y);
+		circleShape.m_radius = transform.scale.x * cc2d.radius;
+
+		b2FixtureDef fixtureDef;
+		fixtureDef.shape = &circleShape;
+		fixtureDef.density = 1.0f;
+		fixtureDef.friction = 0.0f;
+		fixtureDef.isSensor = cc2d.isTrigger;
 
 		FixtureData* fixtureData = new EntityFixtureData(entity);
 		fixtureData->m_tag = entity.GetComponent<BaseComponent>()->tag;
