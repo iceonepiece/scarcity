@@ -245,7 +245,7 @@ void Scene::RenderCollisionComponents()
 
         b2Fixture* fixture = body->GetFixtureList();
 
-        if (fixture)
+        while (fixture)
         {
             if (b2ChainShape* chain = dynamic_cast<b2ChainShape*>(fixture->GetShape()))
             {
@@ -254,17 +254,14 @@ void Scene::RenderCollisionComponents()
                     b2EdgeShape edge;
                     chain->GetChildEdge(&edge, i);
                     
-
                     glm::vec3 v1{ edge.m_vertex1.x, edge.m_vertex1.y, 0 };
                     glm::vec3 v2{ edge.m_vertex2.x, edge.m_vertex2.y, 0 };
 
                     renderer.DrawLine(v1, v2, { 0.0f, 1.0f, 0.0f, 1.0f });
-
-                    //std::cout << edge.m_vertex1.x << ", " << edge.m_vertex1.y << std::endl;
-                    //std::cout << edge.m_vertex2.x << ", " << edge.m_vertex2.y << std::endl;
-                    std::cout << std::endl;
                 }
             }
+
+            fixture = fixture->GetNext();
         }
     }
 }

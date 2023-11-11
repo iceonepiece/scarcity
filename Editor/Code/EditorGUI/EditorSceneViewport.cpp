@@ -6,6 +6,7 @@
 #include "../Gizmos/ScaleGizmo.h"
 #include "../Gizmos/GridGizmo.h"
 #include "Graphics/Camera2D.h"
+#include "Physics/GridUtils.h"
 #include <imgui/imgui.h>
 #include <IconsFontAwesome6.h>
 
@@ -267,7 +268,14 @@ void EditorSceneViewport::OnMouseButtonPressed(MouseButtonPressedEvent& event)
             m_editor.SetMouseActive(true);
 
         gridGizmo->SetMode(mode);
-        gridGizmo->OnPicking2D(worldCursorPosition);
+
+        if (gridGizmo->OnPicking2D(worldCursorPosition))
+        {
+            if (GridComponent* grid = m_editor.GetSelectedEntity().GetComponent<GridComponent>())
+            {
+                GenerateGridCollision(*grid);
+            }
+        }
     }
     else if (event.GetMouseButton() == Mouse::ButtonLeft)
     {

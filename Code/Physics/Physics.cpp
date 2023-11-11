@@ -6,7 +6,7 @@
 #include "Components/GridComponent.h"
 
 Physics::Physics()
-	: m_world(b2Vec2(0.0f, -18.0f))
+	: m_world(b2Vec2(0.0f, -10.0f))
 	, m_velocityIterations(6)
 	, m_positionIterations(2)
 {
@@ -185,6 +185,17 @@ b2Body* Physics::CreateBoxBody(Entity& entity, float x, float y, float width, fl
 	return body;
 }
 
+b2FixtureDef Physics::CreateFixtureDef(b2Shape& shape, Collider2DComponent& collider)
+{
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &shape;
+	fixtureDef.density = collider.density;
+	fixtureDef.friction = collider.friction;
+	fixtureDef.isSensor = collider.isTrigger;
+
+	return fixtureDef;
+}
+
 b2PolygonShape Physics::CreateBoxShape(TransformComponent& transform, BoxCollider2DComponent& bc2d)
 {
 	glm::vec2 absoluteScale{ std::abs(transform.scale.x), std::abs(transform.scale.y) };
@@ -199,6 +210,16 @@ b2PolygonShape Physics::CreateBoxShape(TransformComponent& transform, BoxCollide
 
 	return boxShape;
 }
+
+b2CircleShape Physics::CreateCircleShape(TransformComponent& transform, CircleCollider2DComponent& cc2d)
+{
+	b2CircleShape circleShape;
+	circleShape.m_p.Set(cc2d.offset.x, cc2d.offset.y);
+	circleShape.m_radius = transform.scale.x * cc2d.radius;
+
+	return circleShape;
+}
+
 
 b2FixtureDef Physics::CreateBoxCollider2DFixture(Entity& entity, TransformComponent& transform, Rigidbody2DComponent& rb2d, BoxCollider2DComponent& bc2d)
 {
@@ -246,21 +267,8 @@ void Physics::InitializePhysicsEntity(Entity& entity, TransformComponent& transf
 	{
 		auto& bc2d = *ptr;
 
-		glm::vec2 absoluteScale{ std::abs(transform.scale.x), std::abs(transform.scale.y) };
-
-		b2PolygonShape boxShape;
-		boxShape.SetAsBox(
-			bc2d.size.x * absoluteScale.x / 2,
-			bc2d.size.y * absoluteScale.y / 2,
-			b2Vec2(bc2d.offset.x * absoluteScale.x, bc2d.offset.y * absoluteScale.y),
-			0.0f
-		);
-
-		b2FixtureDef fixtureDef;
-		fixtureDef.shape = &boxShape;
-		fixtureDef.density = 1.0f;
-		fixtureDef.friction = 0.0f;
-		fixtureDef.isSensor = bc2d.isTrigger;
+		b2PolygonShape boxShape = CreateBoxShape(transform, bc2d);
+		b2FixtureDef fixtureDef = CreateFixtureDef(boxShape, bc2d);
 
 		FixtureData* fixtureData = new EntityFixtureData(entity);
 		fixtureData->m_tag = entity.GetComponent<BaseComponent>()->tag;
@@ -274,15 +282,8 @@ void Physics::InitializePhysicsEntity(Entity& entity, TransformComponent& transf
 	{
 		auto& cc2d = *ptr;
 
-		b2CircleShape circleShape;
-		circleShape.m_p.Set(cc2d.offset.x, cc2d.offset.y);
-		circleShape.m_radius = transform.scale.x * cc2d.radius;
-
-		b2FixtureDef fixtureDef;
-		fixtureDef.shape = &circleShape;
-		fixtureDef.density = 1.0f;
-		fixtureDef.friction = 0.0f;
-		fixtureDef.isSensor = cc2d.isTrigger;
+		b2CircleShape circleShape = CreateCircleShape(transform, cc2d);
+		b2FixtureDef fixtureDef = CreateFixtureDef(circleShape, cc2d);
 
 		FixtureData* fixtureData = new EntityFixtureData(entity);
 		fixtureData->m_tag = entity.GetComponent<BaseComponent>()->tag;
@@ -290,6 +291,66 @@ void Physics::InitializePhysicsEntity(Entity& entity, TransformComponent& transf
 		rb2d.fixtureData = fixtureData;
 
 		body->CreateFixture(&fixtureDef);
+	}
+
+	if (GridComponent* ptr = entity.GetComponent<GridComponent>())
+	{
+		auto& grid = *ptr;
+
+		for (int i = 0; i < grid.polygons.size(); i++)
+		{
+			int edgeSize = grid.polygons[i].size();
+
+			std::cout << "edgeSize: " << edgeSize << '\n';
+
+			b2Vec2* vs = new b2Vec2[edgeSize];
+
+			for (int j = 0; j < edgeSize; j++)
+			{
+				int x = grid.polygons[i][j].startCell.first;
+				int y = grid.polygons[i][j].startCell.second;
+				EdgeOnCell onCell = grid.polygons[i][j].onCell;
+
+				float pointX = x;
+				float pointY = y;
+
+				if (onCell == EdgeOnCell::Left)
+				{
+					pointY++;
+				}
+				else if (onCell == EdgeOnCell::Right)
+				{
+					pointX++;
+				}
+				else if (onCell == EdgeOnCell::Top)
+				{
+					pointX++;
+					pointY++;
+				}
+
+				vs[j].Set(pointX, pointY);
+				std::cout << "Point: " << j << " - " << pointX << "," << pointY << '\n';
+			}
+
+			b2ChainShape chain;
+			chain.CreateLoop(vs, edgeSize);
+
+			b2FixtureDef fixtureDef;
+			fixtureDef.density = 1.0f;
+			fixtureDef.friction = 0.0f;
+			fixtureDef.isSensor = false;
+			fixtureDef.shape = &chain;
+
+			FixtureData* fixtureData = new EntityFixtureData(entity);
+			fixtureData->m_tag = entity.GetComponent<BaseComponent>()->tag;
+			fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
+			rb2d.fixtureData = fixtureData;
+
+			body->CreateFixture(&fixtureDef);
+
+			delete[] vs;
+		}
+
 	}
 }
 

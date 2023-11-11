@@ -1,8 +1,12 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <vector>
+#include <stack>
+#include <glm/glm.hpp>
 #include <nlohmann/json.hpp>
+#include "Physics/GridUtils.h"
 
 using json = nlohmann::json;
 
@@ -70,4 +74,6 @@ static void DoDeserialize(GridComponent& grid, json& gridJson)
 			grid.cellMap.insert({ std::make_pair(cellJson[0], cellJson[1]), 1 });
 		}
 	}
+
+	GenerateGridCollision(grid);
 }

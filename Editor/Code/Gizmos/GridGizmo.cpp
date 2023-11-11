@@ -24,6 +24,8 @@ bool GridGizmo::OnPicking2D(const glm::vec2& cursorPosition)
 			if (grid->cellMap.find(pair) != grid->cellMap.end())
 				grid->cellMap.erase(pair);
 		}
+		else
+			return false;
 	}
 
 	return true;

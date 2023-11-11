@@ -321,6 +321,7 @@
     <ClCompile Include="Code\Math\Math.cpp" />
     <ClCompile Include="Code\NativeScript\NativeScriptEngine.cpp" />
     <ClCompile Include="Code\pch.cpp" />
+    <ClCompile Include="Code\Physics\GridUtils.cpp" />
     <ClCompile Include="Code\Physics\GroundDetectionFixtureData.cpp" />
     <ClCompile Include="Code\Platforms\GLFW\GLFWInput.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLFramebuffer.cpp" />
@@ -417,6 +418,7 @@
     <ClInclude Include="Code\NativeScript\NativeScript.h" />
     <ClInclude Include="Code\pch.h" />
     <ClInclude Include="Code\Physics\EntityFixtureData.h" />
+    <ClInclude Include="Code\Physics\GridUtils.h" />
     <ClInclude Include="Code\Physics\GroundDetectionFixtureData.h" />
     <ClInclude Include="Code\Platforms\GLFW\GLFWInput.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLAssetManager.h" />

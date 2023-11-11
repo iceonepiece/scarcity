@@ -51,8 +51,9 @@ public:
 	b2Body* CreateStaticBox(b2Vec2 position, b2Vec2 size, float angle, FixtureData* fixtureData);
 	void CreateFixtureDef(b2Body* body, b2Vec2 size, b2Vec2 offset, bool isSensor, FixtureData* fixtureData);
 	
-
+	b2FixtureDef CreateFixtureDef(b2Shape& shape, Collider2DComponent& collider);
 	b2PolygonShape CreateBoxShape(TransformComponent& transform, BoxCollider2DComponent& bc2d);
+	b2CircleShape CreateCircleShape(TransformComponent& transform, CircleCollider2DComponent& cc2d);
 
 	b2FixtureDef CreateBoxCollider2DFixture(Entity& entity, TransformComponent& transform, Rigidbody2DComponent& rb2d, BoxCollider2DComponent& bc2d);
 	b2FixtureDef CreateCircleCollider2DFixture(Entity& entity, TransformComponent& transform, Rigidbody2DComponent& rb2d, CircleCollider2DComponent& cc2d);
