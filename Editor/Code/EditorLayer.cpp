@@ -316,6 +316,7 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
                 if (GridComponent* grid = m_activeScene->m_manager.m_registry.try_get<GridComponent>(m_selectedObject.entity))
                 {
                     std::map<std::pair<int, int>, int> cellMap = grid->cellMap;
+                    grid->polygons.clear();
 
                     while (cellMap.size() > 0)
                     {
@@ -327,12 +328,16 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
                         std::pair<int, int> currentPos = startPos;
                         EdgeOnCell currentEdge = EdgeOnCell::Left;
 
-                        polygon.push_back({ currentPos.first, currentPos.second, currentEdge });
+                        std::pair<int, int> startCell = startPos;
 
-                        while (true)
+                        while (connected.size())
                         {
                             int x = currentPos.first;
                             int y = currentPos.second;
+
+                            bool hasChanged = false;
+                            EdgeOnCell nextEdge = currentEdge;
+                            std::pair<int, int> nextPos = currentPos;
 
                             switch (currentEdge)
                             {
@@ -340,9 +345,10 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
                                 {
                                     if (connected.find(std::make_pair(x - 1, y - 1)) != connected.end())
                                     {
-                                        currentPos.first = x - 1;
-                                        currentPos.second = y - 1;
-                                        currentEdge = EdgeOnCell::Top;
+                                        nextPos.first = x - 1;
+                                        nextPos.second = y - 1;
+                                        nextEdge = EdgeOnCell::Top;
+                                        hasChanged = true;
                                     }
                                     else if (connected.find(std::make_pair(x, y - 1)) != connected.end())
                                     {
@@ -351,7 +357,8 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
                                     }
                                     else
                                     {
-                                        currentEdge = EdgeOnCell::Bottom;
+                                        nextEdge = EdgeOnCell::Bottom;
+                                        hasChanged = true;
                                     }
                                 }
                                 break;
@@ -360,9 +367,10 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
                                 {
                                     if (connected.find(std::make_pair(x + 1, y - 1)) != connected.end())
                                     {
-                                        currentPos.first = x + 1;
-                                        currentPos.second = y - 1;
-                                        currentEdge = EdgeOnCell::Left;
+                                        nextPos.first = x + 1;
+                                        nextPos.second = y - 1;
+                                        nextEdge = EdgeOnCell::Left;
+                                        hasChanged = true;
                                     }
                                     else if (connected.find(std::make_pair(x + 1, y)) != connected.end())
                                     {
@@ -371,7 +379,8 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
                                     }
                                     else
                                     {
-                                        currentEdge = EdgeOnCell::Right;
+                                        nextEdge = EdgeOnCell::Right;
+                                        hasChanged = true;
                                     }
 
                                 }
@@ -381,9 +390,11 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
                                 {
                                     if (connected.find(std::make_pair(x + 1, y + 1)) != connected.end())
                                     {
-                                        currentPos.first = x + 1;
-                                        currentPos.second = y + 1;
-                                        currentEdge = EdgeOnCell::Bottom;
+                                        nextPos.first = x + 1;
+                                        nextPos.second = y + 1;
+                                        nextEdge = EdgeOnCell::Bottom;
+
+                                        hasChanged = true;
                                     }
                                     else if (connected.find(std::make_pair(x, y + 1)) != connected.end())
                                     {
@@ -392,7 +403,8 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
                                     }
                                     else
                                     {
-                                        currentEdge = EdgeOnCell::Top;
+                                        nextEdge = EdgeOnCell::Top;
+                                        hasChanged = true;
                                     }
                                 }
                                 break;
@@ -401,9 +413,10 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
                                 {
                                     if (connected.find(std::make_pair(x - 1, y + 1)) != connected.end())
                                     {
-                                        currentPos.first = x - 1;
-                                        currentPos.second = y + 1;
-                                        currentEdge = EdgeOnCell::Right;
+                                        nextPos.first = x - 1;
+                                        nextPos.second = y + 1;
+                                        nextEdge = EdgeOnCell::Right;
+                                        hasChanged = true;
                                     }
                                     else if (connected.find(std::make_pair(x - 1, y)) != connected.end())
                                     {
@@ -412,17 +425,33 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
                                     }
                                     else
                                     {
-                                        currentEdge = EdgeOnCell::Left;
+                                        nextEdge = EdgeOnCell::Left;
+                                        hasChanged = true;
                                     }
                                 }
                                 break;
 
                             }
 
-                            if (currentPos == startPos && currentEdge == EdgeOnCell::Left)
-                                break;
+                            if (nextPos == startPos && nextEdge == EdgeOnCell::Left)
+                            {
+                                if (polygon[0].endCell == currentPos && polygon[0].onCell == currentEdge)
+                                {
+                                    polygon[0] = { startCell, currentPos, currentEdge };
+                                }
+                                else
+                                    polygon.push_back({ startCell, currentPos, currentEdge });
 
-                            polygon.push_back({ currentPos.first, currentPos.second, currentEdge });
+                                break;
+                            }
+
+                            if (hasChanged)
+                            {
+                                polygon.push_back({ startCell, currentPos, currentEdge });
+                                currentEdge = nextEdge;
+                                currentPos = nextPos;
+                                startCell = currentPos;
+                            }
                         }
 
 
@@ -444,11 +473,17 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
                             else if (edge.onCell == EdgeOnCell::Top)
                                 onCell = "Top";
 
-                            std::cout << edge.cellX << ":" << edge.cellY << ":" << onCell << ' ';
+                            std::cout << onCell << " ";
+                            std::cout << edge.startCell.first << "," << edge.startCell.second << " -> ";
+                            std::cout << edge.endCell.first << "," << edge.endCell.second << "  ";
                         }
+
+                        grid->polygons.push_back(polygon);
 
                         std::cout << '\n';
                     }
+
+
                 }
             }
         }

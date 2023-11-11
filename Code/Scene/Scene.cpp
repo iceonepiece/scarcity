@@ -60,7 +60,7 @@ void Scene::DestroyEntity(entt::entity entity)
 {
     if (m_manager.m_registry.all_of<Rigidbody2DComponent>(entity))
     {
-        DestroyPhysicsEntity(m_manager.m_registry.get<Rigidbody2DComponent>(entity));
+        //DestroyPhysicsEntity(m_manager.m_registry.get<Rigidbody2DComponent>(entity));
     }
 
     if (NativeScriptComponent* nativeScript = m_manager.m_registry.try_get<NativeScriptComponent>(entity))
@@ -233,8 +233,43 @@ void Scene::RenderCollisionComponents()
 
         renderer.DrawCircle2D(renderCircle, 0.01f);
     }
+
+    auto gridColliders = m_manager.m_registry.view<TransformComponent, GridComponent, Rigidbody2DComponent>();
+
+    for (auto [entity, transform, grid, rigid] : gridColliders.each())
+    {
+        b2Body* body = (b2Body*)rigid.body;
+
+        if (!body)
+            continue;
+
+        b2Fixture* fixture = body->GetFixtureList();
+
+        if (fixture)
+        {
+            if (b2ChainShape* chain = dynamic_cast<b2ChainShape*>(fixture->GetShape()))
+            {
+                for (int32 i = 0; i < chain->GetChildCount(); ++i)
+                {
+                    b2EdgeShape edge;
+                    chain->GetChildEdge(&edge, i);
+                    
+
+                    glm::vec3 v1{ edge.m_vertex1.x, edge.m_vertex1.y, 0 };
+                    glm::vec3 v2{ edge.m_vertex2.x, edge.m_vertex2.y, 0 };
+
+                    renderer.DrawLine(v1, v2, { 0.0f, 1.0f, 0.0f, 1.0f });
+
+                    //std::cout << edge.m_vertex1.x << ", " << edge.m_vertex1.y << std::endl;
+                    //std::cout << edge.m_vertex2.x << ", " << edge.m_vertex2.y << std::endl;
+                    std::cout << std::endl;
+                }
+            }
+        }
+    }
 }
 
+/*
 void Scene::InitializePhysicsEntity(entt::entity entity, TransformComponent& transform, Rigidbody2DComponent& rb2d)
 {
     b2BodyDef bodyDef;
@@ -296,8 +331,75 @@ void Scene::InitializePhysicsEntity(entt::entity entity, TransformComponent& tra
 
         body->CreateFixture(&fixtureDef);
     }
-}
 
+    if (m_manager.m_registry.all_of<GridComponent>(entity))
+    {
+        auto& grid = m_manager.m_registry.get<GridComponent>(entity);
+
+        b2ChainShape chain;
+
+        for (int i = 0; i < 1; i++)
+        {
+            int edgeSize = grid.polygons[i].size();
+
+            b2Vec2* vs = new b2Vec2[edgeSize];
+
+            for (int j = 0; j < edgeSize; j ++)
+            {
+                int x = grid.polygons[i][j].startCell.first;
+                int y = grid.polygons[i][j].startCell.second;
+                EdgeOnCell onCell = grid.polygons[i][j].onCell;
+
+                float pointX = x;
+                float pointY = y;
+
+                if (onCell == EdgeOnCell::Left)
+                {
+                    pointY++;
+                }
+                else if (onCell == EdgeOnCell::Right)
+                {
+                    pointX++;
+                }
+                else if (onCell == EdgeOnCell::Top)
+                {
+                    pointX++;
+                    pointY++;
+                }
+
+                //vs[j].Set(pointX, pointY);
+                std::cout << pointX << "," << pointY << '\n';
+            }
+
+            b2Vec2 ss[4];
+            ss[0].Set(2.0f, 0.0f);
+            ss[1].Set(1.0f, 0.25f);
+            ss[2].Set(0.0f, 0.0f);
+            ss[3].Set(-2.0f, 0.4f);
+            chain.CreateLoop(ss, 4);
+            
+            delete [] vs;
+        }
+
+
+        b2FixtureDef fixtureDef;
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.0f;
+        fixtureDef.isSensor = false;
+        fixtureDef.shape = &chain;
+        
+        FixtureData* fixtureData = new EntityFixtureData(Entity{ &m_manager, entity });
+        fixtureData->m_tag = m_manager.m_registry.get<BaseComponent>(entity).tag;
+        fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
+        rb2d.fixtureData = fixtureData;
+
+        body->CreateFixture(&fixtureDef);
+
+    }
+}
+*/
+
+/*
 void Scene::DestroyPhysicsEntity(Rigidbody2DComponent& rb2d)
 {
     std::vector<FixtureData*> pendingList;
@@ -324,9 +426,11 @@ void Scene::DestroyPhysicsEntity(Rigidbody2DComponent& rb2d)
         delete fixtureData;
     }
 }
+*/
 
 void Scene::StartPhysics()
 {
+    /*
     m_physics = std::make_unique<b2World>(b2Vec2 { 0.0f, -9.8f });
     m_contactListener = std::make_unique<ContactListener>();
     m_physics->SetContactListener(m_contactListener.get());
@@ -336,10 +440,20 @@ void Scene::StartPhysics()
 	{
         InitializePhysicsEntity(entity, transform, rb2d);
 	}
+    */
+
+    auto view = m_manager.m_registry.view<TransformComponent, Rigidbody2DComponent>();
+    for (auto [entity, transform, rb2d] : view.each())
+    {
+        Entity _entity { &m_manager, entity };
+        m_physics.InitializePhysicsEntity(_entity, transform, rb2d);
+    }
+
 }
 
 void Scene::StopPhysics()
 {
+    /*
     auto view = m_manager.m_registry.view<Rigidbody2DComponent>();
     for (auto [entity, rb2d] : view.each())
     {
@@ -347,6 +461,11 @@ void Scene::StopPhysics()
     }
 
     m_physics.reset();
+    */
+
+    auto view = m_manager.m_registry.view<Rigidbody2DComponent>();
+    for (auto [entity, rb2d] : view.each())
+        m_physics.DestroyPhysicsEntity(rb2d);
 }
 
 std::filesystem::path Scene::GetAbsolutePath()
@@ -405,11 +524,15 @@ void Scene::Update(float deltaTime)
     for (auto& system : m_systems)
         system->Update(deltaTime);
 
-    if (m_physics != nullptr && physicsActive)
+    //if (m_physics != nullptr && physicsActive)
+    if (physicsActive)
     {
+        /*
         const int32_t velocityIterations = 6;
         const int32_t positionIterations = 2;
         m_physics->Step(deltaTime, velocityIterations, positionIterations);
+        */
+        m_physics.Update(deltaTime);
 
         auto view = m_manager.m_registry.view<TransformComponent, Rigidbody2DComponent>();
         for (auto [entity, transform, rb2d] : view.each())
@@ -450,7 +573,7 @@ void Scene::Update(float deltaTime)
             entity.AddComponent<TimerComponent>(0.0f, command.collision->lifetime);
         }
 
-        InitializePhysicsEntity(entity.GetEntity(), transform, rb2d);
+        //InitializePhysicsEntity(entity.GetEntity(), transform, rb2d);
 
         delete command.collision;
     }
@@ -684,8 +807,8 @@ Entity Scene::InstantiateEntity(Entity entity, const glm::vec3& position)
     {
         transform->position = position;
 
-        if (Rigidbody2DComponent* rb2d = returnEntity.GetComponent<Rigidbody2DComponent>())
-            InitializePhysicsEntity(newEntity, *transform, *rb2d);
+        //if (Rigidbody2DComponent* rb2d = returnEntity.GetComponent<Rigidbody2DComponent>())
+          //  InitializePhysicsEntity(newEntity, *transform, *rb2d);
     }
 
     if (NativeScriptComponent* nativeScript = returnEntity.GetComponent<NativeScriptComponent>())

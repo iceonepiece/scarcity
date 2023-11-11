@@ -16,8 +16,8 @@ enum class EdgeOnCell
 
 struct GridEdge
 {
-	int cellX;
-	int cellY;
+	std::pair<int, int> startCell;
+	std::pair<int, int> endCell;
 	EdgeOnCell onCell;
 };
 

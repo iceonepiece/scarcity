@@ -62,8 +62,8 @@ public:
 	virtual void Start();
 	virtual void Stop();
 
-	void InitializePhysicsEntity(entt::entity entity, TransformComponent& transform, Rigidbody2DComponent& rb2d);
-	void DestroyPhysicsEntity(Rigidbody2DComponent& rb2d);
+	//void InitializePhysicsEntity(entt::entity entity, TransformComponent& transform, Rigidbody2DComponent& rb2d);
+	//void DestroyPhysicsEntity(Rigidbody2DComponent& rb2d);
 	void StartPhysics();
 	void StopPhysics();
 	void StartNativeScripts(NativeScriptEngine& scriptEngine);
@@ -134,8 +134,11 @@ public:
 	
 	std::vector<entt::entity> m_toDestroyEntities;
 	std::unique_ptr<Camera> m_camera;
-	std::unique_ptr<b2World> m_physics = nullptr;
-	std::unique_ptr<b2ContactListener> m_contactListener;
+
+	//std::unique_ptr<b2World> m_physics = nullptr;
+	//std::unique_ptr<b2ContactListener> m_contactListener;
+
+	Physics m_physics;
 
 	EntityManager m_manager;
 

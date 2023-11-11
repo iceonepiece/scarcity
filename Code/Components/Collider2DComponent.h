@@ -2,7 +2,7 @@
 
 struct Collider2DComponent
 {
-	b2Body* body;
-
-	Collider2DComponent(b2Body* body) : body(body) {}
+	bool isTrigger = false;
+	float density = 1.0f;
+	float friction = 0.0f;
 };
