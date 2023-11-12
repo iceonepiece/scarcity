@@ -19,6 +19,8 @@
 #include "Asset/AssetManager.h"
 #include "Project/ProjectSerializer.h"
 #include "Platforms/OpenGL/OpenGLFramebuffer.h"
+#include <stack>
+#include "Physics/GridUtils.h"
 
 EditorLayer* EditorLayer::s_instance = nullptr;
 
@@ -277,6 +279,7 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
                 DeleteEntity(m_selectedObject.entity);
         }
         break;
+
     }
 }
 

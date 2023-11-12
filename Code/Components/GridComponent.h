@@ -1,10 +1,32 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <vector>
+#include <stack>
+#include <glm/glm.hpp>
 #include <nlohmann/json.hpp>
+#include "Physics/GridUtils.h"
 
 using json = nlohmann::json;
+
+enum class EdgeOnCell
+{
+	Left,
+	Bottom,
+	Right,
+	Top
+};
+
+struct GridEdge
+{
+	std::pair<int, int> startCell;
+	std::pair<int, int> endCell;
+	EdgeOnCell onCell;
+};
+
+using GridPolygon = std::vector<GridEdge>;
+
 
 struct GridComponent
 {
@@ -14,6 +36,7 @@ struct GridComponent
 	glm::vec4 color { 1.0f };
 
 	std::map<std::pair<int, int>, int> cellMap;
+	std::vector<GridPolygon> polygons;
 };
 
 static void DoSerialize(const GridComponent& grid, json& entityJson)
@@ -51,4 +74,6 @@ static void DoDeserialize(GridComponent& grid, json& gridJson)
 			grid.cellMap.insert({ std::make_pair(cellJson[0], cellJson[1]), 1 });
 		}
 	}
+
+	GenerateGridCollision(grid);
 }

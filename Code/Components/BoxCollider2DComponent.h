@@ -3,14 +3,14 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <nlohmann/json.hpp>
+#include "Components/Collider2DComponent.h"
 
 using json = nlohmann::json;
 
-struct BoxCollider2DComponent
+struct BoxCollider2DComponent : public Collider2DComponent
 {
 	static std::string Name() { return "BoxCollider2D"; }
 
-	bool isTrigger = false;
 	glm::vec2 offset = { 0.0f, 0.0f };
 	glm::vec2 size = { 1.0f, 1.0f };
 };

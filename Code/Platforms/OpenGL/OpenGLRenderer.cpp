@@ -172,20 +172,9 @@ void OpenGLRenderer::DrawLine(const glm::vec3& v1, const glm::vec3& v2, const gl
 {
     m_basicShader.Use();
 
-    glm::mat4 projection = glm::mat4(1.0f);
-    // glm::perspective(glm::radians(45.0f), m_screenSize.x / m_screenSize.y, 0.1f, 100.0f);
-
-    if (m_camera != nullptr)
-        projection = m_camera->GetProjectionMatrix();
-
-    m_basicShader.SetMatrix4("model", glm::mat4(1));
-
-    glm::mat4 view = glm::mat4(1.0f);
-    if (m_camera != nullptr)
-        view = m_camera->GetViewMatrix();
-
-    m_basicShader.SetMatrix4("view", view);
-    m_basicShader.SetMatrix4("projection", projection);
+    m_basicShader.SetMatrix4("model", glm::mat4(1.0f));
+    m_basicShader.SetMatrix4("view", m_viewMatrix);
+    m_basicShader.SetMatrix4("projection", m_projectionMatrix);
     m_basicShader.SetVector4f("color", color);
 
     glBindVertexArray(m_lineVAO);

@@ -1,12 +1,14 @@
 #pragma once
 
 #include <string>
+#include <algorithm>
 #include <box2d/box2d.h>
 #include "../Core/Entity.h"
 #include "FixtureData.h"
 #include "Scene/ScriptableEntity.h"
 #include "Components/NativeScriptComponent.h"
 #include "Components/BaseComponent.h"
+#include "Components/GroundDetectionComponent.h"
 
 class EntityFixtureData : public FixtureData
 {
