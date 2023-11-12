@@ -24,7 +24,8 @@ void SceneSerializer::SerializeEntity(Scene& scene, entt::entity entity, std::fi
 		ComponentSerializer serializer(registry);
 
 		json entityJson = {};
-		entityJson["id"] = entity;
+
+		entityJson["ID"] = (uint64_t)UniqueID();
 
 		std::apply([&](auto... componentTypes) {
 			(serializer.Serialize<decltype(componentTypes)>(entityJson, entity), ...);

@@ -785,7 +785,7 @@ void Scene::RenderUI()
     }
 }
 
-Entity Scene::InstantiateEntity(Entity entity, const glm::vec3& position)
+Entity Scene::InstantiateEntity(Entity entity, const glm::vec3& position, bool playing)
 {
     entt::registry& srcRegistry = entity.GetRegistry();
     entt::registry& registry = m_manager.m_registry;
@@ -797,7 +797,6 @@ Entity Scene::InstantiateEntity(Entity entity, const glm::vec3& position)
         (CopyComponent<decltype(componentTypes)>(srcRegistry, registry, entity.GetEntity(), newEntity), ...);
     }, ComponentList{});
 
-
     Entity returnEntity { &m_manager, newEntity };
 
     if (TransformComponent* transform = returnEntity.GetComponent<TransformComponent>())
@@ -808,17 +807,20 @@ Entity Scene::InstantiateEntity(Entity entity, const glm::vec3& position)
           //  InitializePhysicsEntity(newEntity, *transform, *rb2d);
     }
 
-    if (NativeScriptComponent* nativeScript = returnEntity.GetComponent<NativeScriptComponent>())
+    if (playing)
     {
-        std::unique_ptr<ScriptableEntity> uniqueInstance = m_app->GetNativeScriptEngine().CopyInstance(nativeScript->className);
-        nativeScript->instance = uniqueInstance.release();
-
-        if (nativeScript->instance != nullptr)
+        if (NativeScriptComponent* nativeScript = returnEntity.GetComponent<NativeScriptComponent>())
         {
-            nativeScript->instance->m_app = m_app;
-            nativeScript->instance->m_scene = this;
-            nativeScript->instance->m_entity = returnEntity;
-            nativeScript->instance->Start();
+            std::unique_ptr<ScriptableEntity> uniqueInstance = m_app->GetNativeScriptEngine().CopyInstance(nativeScript->className);
+            nativeScript->instance = uniqueInstance.release();
+
+            if (nativeScript->instance != nullptr)
+            {
+                nativeScript->instance->m_app = m_app;
+                nativeScript->instance->m_scene = this;
+                nativeScript->instance->m_entity = returnEntity;
+                nativeScript->instance->Start();
+            }
         }
     }
 

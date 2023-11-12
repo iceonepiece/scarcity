@@ -10,8 +10,6 @@ ImGuiAssetPanel::ImGuiAssetPanel(EditorLayer& editor)
 	, m_baseDirectory(std::filesystem::current_path())
 	, m_currentDirectory(m_baseDirectory)
 {
-	m_folderIcon = std::make_unique<OpenGLTexture>("Editor/icons8-folder-200.png");
-	m_fileIcon = std::make_unique<OpenGLTexture>("Editor/icons8-file-200.png");
 }
 
 void ImGuiAssetPanel::RenderUnsupportedFile(const std::filesystem::path& path)
@@ -68,6 +66,8 @@ void ImGuiAssetPanel::RenderPrefab(PrefabAsset& prefabAsset, ImGuiTreeNodeFlags 
 
 	if (ImGui::BeginDragDropSource())
 	{
+		ImGui::SetDragDropPayload("PREFAB_ASSET", &prefabAsset, sizeof(prefabAsset));
+
 		ImGui::EndDragDropSource();
 	}
 

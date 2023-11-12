@@ -9,6 +9,7 @@
 #include "Physics/GridUtils.h"
 #include <imgui/imgui.h>
 #include <IconsFontAwesome6.h>
+#include "Scene/SceneManager.h"
 
 EditorSceneViewport::EditorSceneViewport(EditorLayer& editor)
     : EditorViewport(editor)
@@ -190,8 +191,22 @@ void EditorSceneViewport::Render()
     uint64_t textureID = m_framebuffer->GetID();
     ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ (float)m_width, (float)m_height }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PREFAB_ASSET"))
+        {
+            if (PrefabAsset* prefabAsset = reinterpret_cast<PrefabAsset*>(payload->Data))
+            {
+                glm::vec4 worldCursorPosition = m_camera->ScreenToWorldPosition(m_cursorPosition);
+                m_editor.GetScene()->InstantiateEntity(prefabAsset->GetEntity(), worldCursorPosition, false);
+            }
+        }
+        ImGui::EndDragDropTarget();
+    }
+
     if (!m_editor.IsScenePlaying())
         RenderTools();
+
 
     ImGui::End();
     ImGui::PopStyleVar();

@@ -23,63 +23,42 @@
 #include "UIComponents.h"
 #include "ButtonComponent.h"
 
+#define RequiredComponents BaseComponent, \
+	TransformComponent
+
+#define BasicComponents SpriteAnimatorComponent, \
+	SpriteRendererComponent, \
+	Rigidbody2DComponent, \
+	BoxCollider2DComponent, \
+	CircleCollider2DComponent, \
+	CameraComponent, \
+	GridComponent, \
+	GroundDetectionComponent, \
+	NativeScriptComponent, \
+	AudioSourceComponent
+
+#define UIComponents CanvasComponent, \
+	ButtonComponent, \
+	TextComponent
+
+
 using CopyToSceneComponents = std::tuple<
 	IDComponent,
-
-	BaseComponent,
-	TransformComponent,
-	CanvasComponent,
-	SpriteAnimatorComponent,
-	SpriteRendererComponent,
-	BoxCollider2DComponent,
-	CircleCollider2DComponent,
-	CameraComponent,
-	GridComponent,
-	GroundDetectionComponent,
-	NativeScriptComponent,
-	Rigidbody2DComponent,
-	AudioSourceComponent,
-
-	ButtonComponent,
-	TextComponent
+	RequiredComponents,
+	BasicComponents,
+	UIComponents
 >;
 
 using ComponentList = std::tuple<
-	BaseComponent,
-	TransformComponent,
-	CanvasComponent,
-	SpriteAnimatorComponent,
-	SpriteRendererComponent,
-	BoxCollider2DComponent,
-	CircleCollider2DComponent,
-	CameraComponent,
-	GridComponent,
-	GroundDetectionComponent,
-	NativeScriptComponent,
-	Rigidbody2DComponent,
-	AudioSourceComponent,
-
-	ButtonComponent,
-	TextComponent
+	RequiredComponents,
+	BasicComponents,
+	UIComponents
 >;
 
 using ToAddComponents = std::tuple<
-	BaseComponent,
-	TransformComponent,
-	CanvasComponent,
-	SpriteAnimatorComponent,
-	SpriteRendererComponent,
-	BoxCollider2DComponent,
-	CircleCollider2DComponent,
-	CameraComponent,
-	GridComponent,
-	GroundDetectionComponent,
-	NativeScriptComponent,
-	Rigidbody2DComponent,
-	AudioSourceComponent
+	BasicComponents
 >;
 
 using ToAddUIComponents = std::tuple<
-	ButtonComponent,
-	TextComponent
+	UIComponents
 >;

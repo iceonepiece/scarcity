@@ -24,7 +24,7 @@ public:
 
 			std::apply([&](auto... componentTypes) {
 				(serializer.Deserialize<decltype(componentTypes)>(entityJson, entity), ...);
-			}, ComponentList{});
+			}, CopyToSceneComponents{});
 		});
 	}
 

@@ -32,6 +32,7 @@ public:
 	template <typename T>
 	bool RenderAddUIComponent(entt::registry& registry, entt::entity entity)
 	{
+		/*
 		if (RenderAddComponent<T>(registry, entity))
 		{
 			if (CanvasComponent* canvas = registry.try_get<CanvasComponent>(entity))
@@ -40,6 +41,7 @@ public:
 				return true;
 			}
 		}
+		*/
 
 		return false;
 	}

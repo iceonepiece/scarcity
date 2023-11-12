@@ -39,9 +39,6 @@ private:
 	std::filesystem::path m_baseDirectory;
 	std::filesystem::path m_currentDirectory;
 
-	std::unique_ptr<Texture> m_folderIcon;
-	std::unique_ptr<Texture> m_fileIcon;
-
 	bool m_showDeleteModal = false;
 	Asset* m_onActionAsset = nullptr;
 
