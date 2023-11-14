@@ -354,6 +354,8 @@
     <ClCompile Include="External\Include\ImGuiNodeEditor\imgui_canvas.cpp" />
     <ClCompile Include="External\Include\ImGuiNodeEditor\imgui_node_editor.cpp" />
     <ClCompile Include="External\Include\ImGuiNodeEditor\imgui_node_editor_api.cpp" />
+    <ClCompile Include="External\Include\ImGuiNodes\ImNodes.cpp" />
+    <ClCompile Include="External\Include\ImGuiNodes\ImNodesEz.cpp" />
     <ClCompile Include="External\Include\imgui\ImGuizmo.cpp" />
     <ClCompile Include="External\Include\imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="External\Include\imgui\imgui_impl_opengl3.cpp" />
@@ -876,6 +878,8 @@
     <ClInclude Include="External\Include\ImGuiNodeEditor\imgui_extra_math.h" />
     <ClInclude Include="External\Include\ImGuiNodeEditor\imgui_node_editor.h" />
     <ClInclude Include="External\Include\ImGuiNodeEditor\imgui_node_editor_internal.h" />
+    <ClInclude Include="External\Include\ImGuiNodes\ImNodes.h" />
+    <ClInclude Include="External\Include\ImGuiNodes\ImNodesEz.h" />
     <ClInclude Include="External\Include\imgui\imconfig.h" />
     <ClInclude Include="External\Include\imgui\imgui.h" />
     <ClInclude Include="External\Include\imgui\ImGuizmo.h" />

@@ -2,16 +2,214 @@
 
 ImGuiNodeEditor::ImGuiNodeEditor()
 {
+    m_context = ImNodes::Ez::CreateContext();
+    /*
     ed::Config config;
     config.SettingsFile = "NodeEditor.json";
     m_context = ed::CreateEditor(&config);
+    */
+
 }
 
 ImGuiNodeEditor::~ImGuiNodeEditor()
 {
-    ed::DestroyEditor(m_context);
+    for (auto node : nodes)
+        delete node;
+
+    ImNodes::Ez::FreeContext(m_context);
+    //ImNodes::DestroyContext();
+    //ed::DestroyEditor(m_context);
 }
 
+void ImGuiNodeEditor::Render()
+{
+
+    if (ImGui::Begin("ImNodes", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse))
+    {
+        // We probably need to keep some state, like positions of nodes/slots for rendering connections.
+        ImNodes::Ez::BeginCanvas();
+        for (auto it = nodes.begin(); it != nodes.end();)
+        {
+            MyNode* node = *it;
+
+            // Start rendering node
+            if (ImNodes::Ez::BeginNode(node, node->Title, &node->Pos, &node->Selected))
+            {
+                // Render input nodes first (order is important)
+                ImNodes::Ez::InputSlots(node->InputSlots.data(), node->InputSlots.size());
+
+                // Custom node content may go here
+                //ImGui::Text("Content of %s", node->Title);
+
+                // Render output nodes first (order is important)
+                ImNodes::Ez::OutputSlots(node->OutputSlots.data(), node->OutputSlots.size());
+
+                // Store new connections when they are created
+                Connection new_connection;
+                if (ImNodes::GetNewConnection(&new_connection.InputNode, &new_connection.InputSlot,
+                    &new_connection.OutputNode, &new_connection.OutputSlot))
+                {
+                    ((MyNode*)new_connection.InputNode)->Connections.push_back(new_connection);
+                    ((MyNode*)new_connection.OutputNode)->Connections.push_back(new_connection);
+                }
+
+                // Render output connections of this node
+                for (const Connection& connection : node->Connections)
+                {
+                    // Node contains all it's connections (both from output and to input slots). This means that multiple
+                    // nodes will have same connection. We render only output connections and ensure that each connection
+                    // will be rendered once.
+                    if (connection.OutputNode != node)
+                        continue;
+
+                    if (!ImNodes::Connection(connection.InputNode, connection.InputSlot, connection.OutputNode,
+                        connection.OutputSlot))
+                    {
+                        // Remove deleted connections
+                        ((MyNode*)connection.InputNode)->DeleteConnection(connection);
+                        ((MyNode*)connection.OutputNode)->DeleteConnection(connection);
+                    }
+                }
+            }
+            // Node rendering is done. This call will render node background based on size of content inside node.
+            ImNodes::Ez::EndNode();
+
+            if (node->Selected && ImGui::IsKeyPressed(ImGuiKey_Delete) && ImGui::IsWindowFocused())
+            {
+                // Deletion order is critical: first we delete connections to us
+                for (auto& connection : node->Connections)
+                {
+                    if (connection.OutputNode == node)
+                    {
+                        ((MyNode*)connection.InputNode)->DeleteConnection(connection);
+                    }
+                    else
+                    {
+                        ((MyNode*)connection.OutputNode)->DeleteConnection(connection);
+                    }
+                }
+                // Then we delete our own connections, so we don't corrupt the list
+                node->Connections.clear();
+
+                delete node;
+                it = nodes.erase(it);
+            }
+            else
+                ++it;
+        }
+
+        if (ImGui::IsMouseReleased(1) && ImGui::IsWindowHovered() && !ImGui::IsMouseDragging(1))
+        {
+            ImGui::SetWindowFocus();
+            ImGui::OpenPopup("NodesContextMenu");
+        }
+
+        if (ImGui::BeginPopup("NodesContextMenu"))
+        {
+            for (const auto& desc : available_nodes)
+            {
+                if (ImGui::MenuItem(desc.first.c_str()))
+                {
+                    nodes.push_back(desc.second());
+                    ImNodes::AutoPositionNode(nodes.back());
+                }
+            }
+
+            ImGui::Separator();
+            if (ImGui::MenuItem("Reset Zoom"))
+                ImNodes::GetCurrentCanvas()->Zoom = 1;
+
+            if (ImGui::IsAnyMouseDown() && !ImGui::IsWindowHovered())
+                ImGui::CloseCurrentPopup();
+            ImGui::EndPopup();
+        }
+
+        ImNodes::Ez::EndCanvas();
+    }
+    ImGui::End();
+}
+
+/*
+void ImGuiNodeEditor::Render()
+{
+    ImGui::Begin("Save & load example");
+    ImGui::TextUnformatted("A -- add node");
+    ImGui::TextUnformatted(
+        "Close the executable and rerun it -- your nodes should be exactly "
+        "where you left them!");
+
+    ImNodes::BeginNodeEditor();
+
+    if (ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows) &&
+        ImNodes::IsEditorHovered() && ImGui::IsKeyReleased(ImGuiKey_A))
+    {
+        const int node_id = ++current_id_;
+        ImNodes::SetNodeScreenSpacePos(node_id, ImGui::GetMousePos());
+        nodes_.push_back(Node(node_id, 0.f));
+    }
+
+    for (Node& node : nodes_)
+    {
+        ImNodes::BeginNode(node.id);
+
+        ImNodes::BeginNodeTitleBar();
+        ImGui::TextUnformatted("node");
+        ImNodes::EndNodeTitleBar();
+
+        ImNodes::BeginInputAttribute(node.id << 8);
+        ImGui::TextUnformatted("input");
+        ImNodes::EndInputAttribute();
+
+        ImNodes::BeginStaticAttribute(node.id << 16);
+        ImGui::PushItemWidth(120.f);
+        ImGui::DragFloat("value", &node.value, 0.01f);
+        ImGui::PopItemWidth();
+        ImNodes::EndStaticAttribute();
+
+        ImNodes::BeginOutputAttribute(node.id << 24);
+        const float text_width = ImGui::CalcTextSize("output").x;
+        ImGui::Indent(120.f + ImGui::CalcTextSize("value").x - text_width);
+        ImGui::TextUnformatted("output");
+        ImNodes::EndOutputAttribute();
+
+        ImNodes::EndNode();
+    }
+
+    for (const Link& link : links_)
+    {
+        ImNodes::Link(link.id, link.start_attr, link.end_attr);
+    }
+
+    ImNodes::MiniMap(0.2f, ImNodesMiniMapLocation_TopRight);
+    ImNodes::EndNodeEditor();
+
+    {
+        Link link;
+        if (ImNodes::IsLinkCreated(&link.start_attr, &link.end_attr))
+        {
+            link.id = ++current_id_;
+            links_.push_back(link);
+        }
+    }
+
+    {
+        int link_id;
+        if (ImNodes::IsLinkDestroyed(&link_id))
+        {
+            auto iter =
+                std::find_if(links_.begin(), links_.end(), [link_id](const Link& link) -> bool {
+                return link.id == link_id;
+                    });
+            assert(iter != links_.end());
+            links_.erase(iter);
+        }
+    }
+
+    ImGui::End();
+}
+*/
+
+/*
 void ImGuiNodeEditor::Render()
 {
     auto& io = ImGui::GetIO();
@@ -169,3 +367,4 @@ void ImGuiNodeEditor::Render()
 
     m_firstFrame = false;
 }
+*/

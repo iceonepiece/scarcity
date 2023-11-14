@@ -439,7 +439,7 @@ void EditorLayer::RenderImGui()
     }
 
     m_mainMenuBar.Render();
-    //m_nodeEditor.Render();
+    m_nodeEditor.Render();
 
     ImGui::End();
 }

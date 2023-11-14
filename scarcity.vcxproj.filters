@@ -68,6 +68,8 @@
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLFramebuffer.cpp" />
     <ClCompile Include="Code\Core\TagManager.cpp" />
     <ClCompile Include="Code\Physics\GridUtils.cpp" />
+    <ClCompile Include="External\Include\ImGuiNodes\ImNodes.cpp" />
+    <ClCompile Include="External\Include\ImGuiNodes\ImNodesEz.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Animations\AnimationSerializer.h" />
@@ -607,6 +609,8 @@
     <ClInclude Include="Code\Components\GridComponent.h" />
     <ClInclude Include="Code\Core\TagManager.h" />
     <ClInclude Include="Code\Physics\GridUtils.h" />
+    <ClInclude Include="External\Include\ImGuiNodes\ImNodes.h" />
+    <ClInclude Include="External\Include\ImGuiNodes\ImNodesEz.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\awesomeface.png" />
