@@ -27,8 +27,9 @@ EditorLayer* EditorLayer::s_instance = nullptr;
 EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> project)
     : m_app(app)
     , m_activeProject(std::move(project))
-    , m_entityProperties(*this)
+    , m_inspectorPanel(*this)
     , m_hierarchy(*this)
+    , m_animatorPanel(*this)
     , m_mainMenuBar(*this)
     , m_assetPanel(*this)
     , m_gameLayer(app)
@@ -158,7 +159,7 @@ void EditorLayer::SetPickedEntity(entt::entity picked)
 {
     m_selectedObject.type = EditorObjectType::Entity;
     m_selectedObject.entity = picked;
-    m_selectedObject.asset = nullptr;
+    m_selectedObject.objectPtr = nullptr;
 
     EntityManager& manager = GetScene()->GetEntityManager();
 
@@ -168,10 +169,19 @@ void EditorLayer::SetPickedEntity(entt::entity picked)
         m_gridModeAvailable = false;
 }
 
+EditorObject& EditorLayer::SetSelectedObject(EditorObjectType type, void* objectPtr)
+{
+    m_selectedObject.type = type;
+    m_selectedObject.objectPtr = objectPtr;
+    m_selectedObject.entity = entt::null;
+
+    return m_selectedObject;
+}
+
 void EditorLayer::SetSelectedAsset(Asset* asset, const std::string& note)
 {
-    m_selectedObject.type = EditorObjectType::Path;
-    m_selectedObject.asset = asset;
+    m_selectedObject.type = EditorObjectType::Asset;
+    m_selectedObject.objectPtr = asset;
     m_selectedObject.entity = entt::null;
     m_selectedObject.note = note;
 
@@ -180,10 +190,12 @@ void EditorLayer::SetSelectedAsset(Asset* asset, const std::string& note)
 
 void EditorLayer::SetSelectedPath(const std::filesystem::path& path, const std::string& note)
 {
+    /*
     m_selectedObject.type = EditorObjectType::Path;
     m_selectedObject.asset = GetAsset(path);
     m_selectedObject.entity = entt::null;
     m_selectedObject.note = note;
+    */
 }
 
 Asset* EditorLayer::GetAsset(const std::filesystem::path& path)
@@ -204,7 +216,7 @@ void EditorLayer::UnselectObject()
 {
     m_selectedObject.type = EditorObjectType::None;
     m_selectedObject.entity = entt::null;
-    m_selectedObject.asset = nullptr;
+    m_selectedObject.objectPtr = nullptr;
     m_selectedObject.note = "";
 }
 
@@ -433,13 +445,13 @@ void EditorLayer::RenderImGui()
 
     if (!m_scenePlaying)
     {
-        m_entityProperties.Render();
+        m_inspectorPanel.Render();
         m_hierarchy.Render();
         m_assetPanel.Render();
     }
 
     m_mainMenuBar.Render();
-    m_nodeEditor.Render();
+    m_animatorPanel.Render();
 
     ImGui::End();
 }

@@ -9,7 +9,6 @@
 #include "EditorApplication.h"
 #include "Gizmos/Gizmo.h"
 #include "NativeScript/NativeScriptEngine.h"
-#include "EditorGUI/ImGuiNodeEditor.h"
 #include "File/FileSystem.h"
 #include <filewatch/FileWatch.h>
 #include "Helpers/FileHandler.h"
@@ -21,6 +20,8 @@
 #include "EditorGUI/ImGuiHierarchy.h"
 #include "EditorGUI/ImGuiAssetPanel.h"
 #include "EditorGUI/EditorSceneViewport.h"
+#include "EditorGUI/ImGui_AnimatorPanel.h"
+#include "EditorGUI/ImGui_InspectorPanel.h"
 #include "GameLayer.h"
 #include "Commands/EditorCommand.h"
 #include "Graphics/Framebuffer.h"
@@ -30,8 +31,9 @@ struct EditorObject
 {
 	EditorObjectType type = EditorObjectType::None;
 	entt::entity entity = entt::null;
-	Asset* asset = nullptr;
+	//Asset* asset = nullptr;
 	std::string note = "";
+	void* objectPtr = nullptr;
 };
 
 class EditorLayer : public Layer
@@ -65,13 +67,17 @@ public:
 
 	inline std::filesystem::path GetSelectedPath()
 	{
-		if (m_selectedObject.type == EditorObjectType::Path && m_selectedObject.asset)
-			return m_selectedObject.asset->GetPath();
+		if (m_selectedObject.type == EditorObjectType::Asset)
+		{
+			if (Asset* asset = reinterpret_cast<Asset*>(m_selectedObject.objectPtr))
+				return asset->GetPath();
+		}
 
 		return "";
 	}
 
-	void SetSelectedAsset(Asset* asset, const std::string& note);
+	EditorObject& SetSelectedObject(EditorObjectType type, void* objectPtr);
+	void SetSelectedAsset(Asset* asset, const std::string& note = "");
 	void SetSelectedPath(const std::filesystem::path& path, const std::string& note = "");
 
 	inline bool IsGridModeAvailable() { return m_gridModeAvailable; }
@@ -107,8 +113,15 @@ public:
 
 	bool CheckPicking2D(const glm::vec2& cursorPosition);
 
-	inline EditorObject& GetSelectedObject() { return m_selectedObject; }
-	inline Asset* GetSelectedAsset() { return m_selectedObject.asset; }
+	inline EditorObject& GetSelectedObject()
+	{
+		return m_selectedObject;
+	}
+
+	inline Asset* GetSelectedAsset()
+	{
+		return reinterpret_cast<Asset*>(m_selectedObject.objectPtr);
+	}
 
 	static Asset* GetAsset(const std::filesystem::path& path);
 
@@ -204,10 +217,10 @@ private:
 	glm::vec2 m_viewportCursorPosition;
 
 	ImGuiMainMenuBar m_mainMenuBar;
-	ImGuiEntityProperties m_entityProperties;
 	ImGuiHierarchy m_hierarchy;
 	ImGuiAssetPanel m_assetPanel;
-	ImGuiNodeEditor m_nodeEditor;
+	ImGui_AnimatorPanel m_animatorPanel;
+	ImGui_InspectorPanel m_inspectorPanel;
 
 	EditorSceneViewport m_editorSceneViewport;
 

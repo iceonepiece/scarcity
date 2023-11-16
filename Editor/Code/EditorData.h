@@ -13,7 +13,8 @@ enum class EditorObjectType
 {
 	None,
 	Entity,
-	Path
+	Asset,
+	AnimatorState
 };
 
 struct GizmoStatus

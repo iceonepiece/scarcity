@@ -22,8 +22,8 @@ void ImGuiAssetPanel::RenderUnsupportedFile(const std::filesystem::path& path)
 
 	bool opened = ImGui::TreeNodeEx(path.c_str(), flags, std::string(useIcon + path.filename().string()).c_str());
 
-	if (ImGui::IsItemClicked())
-		m_editor.SetSelectedPath(path);
+	//if (ImGui::IsItemClicked())
+		//m_editor.SetSelectedPath(path);
 
 	if (opened)
 	{
@@ -238,13 +238,13 @@ void ImGuiAssetPanel::Render()
 					[&]()
 					{
 						if (ImGui::IsItemClicked())
-							m_editor.SetSelectedPath(textureAsset->GetPath());
+							m_editor.SetSelectedObject(EditorObjectType::Asset, textureAsset);
 					},
 
 					[&](SpriteAsset& spriteAsset)
 					{
-						//m_editor.SetSelectedPath(textureAsset->GetPath(), sprite.GetName());
-						m_editor.SetSelectedAsset(&spriteAsset, spriteAsset.GetSprite().GetName());
+						EditorObject& editorObject = m_editor.SetSelectedObject(EditorObjectType::Asset, &spriteAsset);
+						editorObject.note = spriteAsset.GetSprite().GetName();
 					},
 					m_editor.GetSelectedObject().note
 				);
@@ -255,7 +255,7 @@ void ImGuiAssetPanel::Render()
 				RenderAudio(*audioAsset, flags, [&]()
 				{
 					if (ImGui::IsItemClicked())
-						m_editor.SetSelectedPath(audioAsset->GetPath());
+						m_editor.SetSelectedObject(EditorObjectType::Asset, audioAsset);
 				});
 			}
 			else if (asset->GetType() == AssetType::NativeScript)
@@ -264,7 +264,7 @@ void ImGuiAssetPanel::Render()
 				RenderNativeScript(*nativeScriptAsset, flags, [&]()
 				{
 					if (ImGui::IsItemClicked())
-						m_editor.SetSelectedPath(nativeScriptAsset->GetPath());
+						m_editor.SetSelectedObject(EditorObjectType::Asset, nativeScriptAsset);
 				});
 			}
 			else if (asset->GetType() == AssetType::Prefab)
@@ -273,7 +273,7 @@ void ImGuiAssetPanel::Render()
 				RenderPrefab(*prefabAsset, flags, [&]()
 				{
 					if (ImGui::IsItemClicked())
-						m_editor.SetSelectedPath(prefabAsset->GetPath());
+						m_editor.SetSelectedObject(EditorObjectType::Asset, prefabAsset);
 				});
 			}
 			else if (asset->GetType() == AssetType::AnimatorController)
@@ -282,7 +282,7 @@ void ImGuiAssetPanel::Render()
 				RenderAnimatorController(*animControllerAsset, flags, [&]()
 				{
 					if (ImGui::IsItemClicked())
-						m_editor.SetSelectedPath(animControllerAsset->GetPath());
+						m_editor.SetSelectedObject(EditorObjectType::Asset, animControllerAsset);
 				});
 			}
 			else if (asset->GetType() == AssetType::Scene)
@@ -308,8 +308,8 @@ void ImGuiAssetPanel::Render()
 
 			bool opened = ImGui::TreeNodeEx(path.string().c_str(), flags, (useIcon + path.filename().string()).c_str());
 
-			if (ImGui::IsItemClicked())
-				m_editor.SetSelectedPath(path);
+			//if (ImGui::IsItemClicked())
+				//m_editor.SetSelectedPath(path);
 
 			if (opened)
 				ImGui::TreePop();

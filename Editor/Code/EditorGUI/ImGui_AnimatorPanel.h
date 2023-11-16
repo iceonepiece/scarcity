@@ -1,13 +1,11 @@
 #pragma once
 
-//#include <ImGuiNodeEditor/imgui_node_editor.h>
-//#include <imnodes/imnodes.h>
 #include <vector>
 #include <ImGuiNodes/ImNodesEz.h>
 #include <map>
 #include <string>
 
-//namespace ed = ax::NodeEditor;
+class EditorLayer;
 
 struct Connection
 {
@@ -42,7 +40,7 @@ enum NodeSlotTypes
 };
 
 /// A structure holding node state.
-struct MyNode
+struct Node
 {
 	/// Title which will be displayed at the center-top of the node.
 	const char* Title = nullptr;
@@ -57,7 +55,7 @@ struct MyNode
 	/// A list of output slots current node has.
 	std::vector<ImNodes::Ez::SlotInfo> OutputSlots{};
 
-	explicit MyNode(const char* title,
+	explicit Node(const char* title,
 		const std::vector<ImNodes::Ez::SlotInfo>&& input_slots,
 		const std::vector<ImNodes::Ez::SlotInfo>&& output_slots)
 	{
@@ -79,37 +77,11 @@ struct MyNode
 		}
 	}
 };
-
-struct Node
-{
-	int   id;
-	float value;
-
-	Node() = default;
-
-	Node(const int i, const float v) : id(i), value(v) {}
-};
-
-struct Link
-{
-	int id;
-	int start_attr, end_attr;
-};
-
-class ImGuiNodeEditor
+class ImGui_AnimatorPanel
 {
 public:
-	/*
-	struct LinkInfo
-	{
-		ed::LinkId Id;
-		ed::PinId  InputId;
-		ed::PinId  OutputId;
-	};
-	*/
-
-	ImGuiNodeEditor();
-	~ImGuiNodeEditor();
+	ImGui_AnimatorPanel(EditorLayer& editor);
+	~ImGui_AnimatorPanel();
 
 	void Render();
 
@@ -117,13 +89,13 @@ private:
 	ImNodes::Ez::Context* m_context;
 
 	
-	std::map<std::string, MyNode* (*)()> available_nodes{
+	std::map<std::string, Node* (*)()> available_nodes{
 		{
-			"Compose",
+			"Animator State",
 			[]()
 			{
-				return new MyNode(
-					"Compose",
+				return new Node(
+					"Untitled",
 					{ {"In", 1} },
 					{ {"Out", 1} }
 				);
@@ -150,15 +122,6 @@ private:
 	};
 
 
-	std::vector<MyNode*> nodes;
-	/*
-	std::vector<Node> nodes_;
-	std::vector<Link> links_;
-	int               current_id_;
-
-	bool m_firstFrame = true;
-	ed::EditorContext* m_context = nullptr;
-	ImVector<LinkInfo>   m_links;
-	int                  m_nextLinkId = 100;
-	*/
+	std::vector<Node*> nodes;
+	EditorLayer& m_editor;
 };

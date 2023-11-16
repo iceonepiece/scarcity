@@ -48,7 +48,7 @@
     <ClCompile Include="Code\HubLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\EditorGUI\ImGuiNodeEditor.cpp">
+    <ClCompile Include="Code\EditorGUI\ImGui_AnimatorPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Helpers\FileHandler.cpp">
@@ -88,6 +88,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiBaseComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\EditorGUI\ImGui_InspectorPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\EditorGUI\Inspectors\ImGui_AssetInspector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\EditorGUI\Inspectors\ImGui_AnimatorInspector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -155,7 +164,7 @@
     <ClInclude Include="Code\ScriptManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\EditorGUI\ImGuiNodeEditor.h">
+    <ClInclude Include="Code\EditorGUI\ImGui_AnimatorPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Helpers\FileHandler.h">
@@ -243,6 +252,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiTagEditorWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\ImGui_InspectorPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\Inspectors\ImGui_AssetInspector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\Inspectors\ImGui_AnimatorInspector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
