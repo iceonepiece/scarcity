@@ -157,6 +157,9 @@ void EditorLayer::CreatePrefab(entt::entity entity, const std::filesystem::path&
 
 void EditorLayer::SetPickedEntity(entt::entity picked)
 {
+    UnselectObject();
+    m_animatorPanel.ClearSelection();
+
     m_selectedObject.type = EditorObjectType::Entity;
     m_selectedObject.entity = picked;
     m_selectedObject.objectPtr = nullptr;
@@ -171,9 +174,14 @@ void EditorLayer::SetPickedEntity(entt::entity picked)
 
 EditorObject& EditorLayer::SetSelectedObject(EditorObjectType type, void* objectPtr)
 {
+    UnselectObject();
+    if (type != EditorObjectType::AnimatorState)
+        m_animatorPanel.ClearSelection();
+
     m_selectedObject.type = type;
     m_selectedObject.objectPtr = objectPtr;
     m_selectedObject.entity = entt::null;
+
 
     return m_selectedObject;
 }

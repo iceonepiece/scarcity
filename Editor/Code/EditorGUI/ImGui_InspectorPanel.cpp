@@ -1,9 +1,11 @@
 #include "ImGui_InspectorPanel.h"
 #include "Inspectors/ImGui_AssetInspector.h"
 #include "ImGuiComponents/ImGuiComponentRenderer.h"
+#include "Inspectors/ImGui_AnimatorInspector.h"
 #include "Components/Components.h"
 #include "../EditorLayer.h"
 #include "imgui/imgui_stdlib.h"
+#include "ImGui_AnimatorPanel.h"
 #include <string>
 
 ImGui_InspectorPanel::ImGui_InspectorPanel(EditorLayer& editor)
@@ -22,6 +24,13 @@ void ImGui_InspectorPanel::Render()
     {
         if (Asset* asset = m_editor.GetSelectedAsset())
             ImGui_AssetInspector::Render(asset);
+    }
+    else if (m_editor.GetSelectedObject().type == EditorObjectType::AnimatorState)
+    {
+        if (Node* animatorState = reinterpret_cast<Node*>(m_editor.GetSelectedObject().objectPtr))
+        {
+            ImGui_AnimatorInspector::Render(*animatorState);
+        }
     }
 
     else if (m_editor.GetSelectedObject().type == EditorObjectType::Entity)

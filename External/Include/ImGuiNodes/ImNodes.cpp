@@ -29,6 +29,7 @@
 #include <imgui/imgui_internal.h>
 #include <limits>
 #include <cmath>
+#include <iostream>
 
 namespace ImNodes
 {
@@ -284,6 +285,7 @@ void BeginCanvas(CanvasState* canvas)
     canvas->_Impl->CurrSelectCount = 0;
 }
 
+
 void EndCanvas()
 {
     IM_ASSERT(gCanvas != nullptr);     // Did you forget calling BeginCanvas()?
@@ -291,6 +293,12 @@ void EndCanvas()
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     auto* canvas = gCanvas;
     auto* impl = canvas->_Impl;
+
+
+    if (canvas->_Impl->PrevSelectCount != canvas->_Impl->CurrSelectCount)
+    {
+        std::cout << "CHANGINE\n";
+    }
 
     // Draw pending connection
     if (const ImGuiPayload* payload = ImGui::GetDragDropPayload())
@@ -615,7 +623,9 @@ void EndNode()
     draw_list->ChannelsMerge();
 
     if (!ImGui::IsMouseDown(0) && ImGui::IsItemActive())
+    {
         ImGui::ClearActiveID();
+    }
 
     if (node_selected)
         impl->CurrSelectCount++;
@@ -754,6 +764,19 @@ bool Connection(void* input_node, const char* input_slot, void* output_node, con
 CanvasState* GetCurrentCanvas()
 {
     return gCanvas;
+}
+
+int GetPrevSelectCount()
+{
+    return gCanvas->_Impl->PrevSelectCount;
+}
+
+void ClearSelection()
+{
+    std::cout << "Imnodes :: ClearSelection\n";
+
+    gCanvas->_Impl->SingleSelectedNode = nullptr;   // unselect all
+    gCanvas->_Impl->DoSelectionsFrame = ImGui::GetCurrentContext()->FrameCount + 1;
 }
 
 bool BeginSlot(const char* title, int kind)

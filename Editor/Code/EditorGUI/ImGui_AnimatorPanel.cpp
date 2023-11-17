@@ -16,6 +16,11 @@ ImGui_AnimatorPanel::~ImGui_AnimatorPanel()
     ImNodes::Ez::FreeContext(m_context);
 }
 
+void ImGui_AnimatorPanel::ClearSelection()
+{
+    m_toClear = true;
+}
+
 void ImGui_AnimatorPanel::Render()
 {
     unsigned int nodeCount = 0;
@@ -26,13 +31,12 @@ void ImGui_AnimatorPanel::Render()
         // We probably need to keep some state, like positions of nodes/slots for rendering connections.
         ImNodes::Ez::BeginCanvas();
 
-
         for (auto it = nodes.begin(); it != nodes.end();)
         {
             Node* node = *it;
 
             // Start rendering node
-            if (ImNodes::Ez::BeginNode(node, node->Title, &node->Pos, &node->Selected))
+            if (ImNodes::Ez::BeginNode(node, node->title.c_str(), &node->Pos, &node->Selected))
             {
                 // Render input nodes first (order is important)
                 ImNodes::Ez::InputSlots(node->InputSlots.data(), node->InputSlots.size());
@@ -70,6 +74,7 @@ void ImGui_AnimatorPanel::Render()
                     }
                 }
             }
+
             // Node rendering is done. This call will render node background based on size of content inside node.
             ImNodes::Ez::EndNode();
 
@@ -129,17 +134,22 @@ void ImGui_AnimatorPanel::Render()
             ImGui::EndPopup();
         }
 
+        if (m_toClear)
+        {
+            ImNodes::ClearSelection();
+            m_toClear = false;
+            nodeCount = 0;
+        }
+
         ImNodes::Ez::EndCanvas();
     }
     ImGui::End();
 
     if (nodeCount == 1 && selectedNode != nullptr)
     {
-        std::cout << "Selected: " << selectedNode->Title << '\n';
-        //m_editor.SetSelectedAsset()
-    }
-    else if (nodeCount > 1)
-    {
-        std::cout << nodeCount << " Animator States\n";
+        if (m_editor.GetSelectedObject().objectPtr != selectedNode)
+        {
+            m_editor.SetSelectedObject(EditorObjectType::AnimatorState, selectedNode);
+        }
     }
 }

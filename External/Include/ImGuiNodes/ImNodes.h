@@ -93,6 +93,11 @@ IMGUI_API bool GetPendingConnection(void** node_id, const char** slot_title, int
 IMGUI_API bool Connection(void* input_node, const char* input_slot, void* output_node, const char* output_slot);
 /// Returns active canvas state when called between BeginCanvas() and EndCanvas(). Returns nullptr otherwise. This function is not thread-safe.
 IMGUI_API CanvasState* GetCurrentCanvas();
+
+IMGUI_API int GetPrevSelectCount();
+
+IMGUI_API void ClearSelection();
+
 /// Convert kind id to input type.
 inline int InputSlotKind(int kind) { return kind > 0 ? -kind : kind; }
 /// Convert kind id to output type.

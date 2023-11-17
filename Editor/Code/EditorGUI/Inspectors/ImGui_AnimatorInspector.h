@@ -1,7 +1,9 @@
 #pragma once
 
+class Node;
+
 class ImGui_AnimatorInspector
 {
 public:
-	static void Render();
+	static void Render(Node& node);
 };

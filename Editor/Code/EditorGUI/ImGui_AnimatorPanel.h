@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <ImGuiNodes/ImNodes.h>
 #include <ImGuiNodes/ImNodesEz.h>
 #include <map>
 #include <string>
@@ -42,8 +43,10 @@ enum NodeSlotTypes
 /// A structure holding node state.
 struct Node
 {
-	/// Title which will be displayed at the center-top of the node.
-	const char* Title = nullptr;
+	std::string title = "New State";
+
+	float speed;
+
 	/// Flag indicating that node is selected by the user.
 	bool Selected = false;
 	/// Node position on the canvas.
@@ -59,7 +62,7 @@ struct Node
 		const std::vector<ImNodes::Ez::SlotInfo>&& input_slots,
 		const std::vector<ImNodes::Ez::SlotInfo>&& output_slots)
 	{
-		Title = title;
+		title = title;
 		InputSlots = input_slots;
 		OutputSlots = output_slots;
 	}
@@ -84,10 +87,11 @@ public:
 	~ImGui_AnimatorPanel();
 
 	void Render();
+	void ClearSelection();
 
 private:
 	ImNodes::Ez::Context* m_context;
-
+	bool m_toClear = false;
 	
 	std::map<std::string, Node* (*)()> available_nodes{
 		{
