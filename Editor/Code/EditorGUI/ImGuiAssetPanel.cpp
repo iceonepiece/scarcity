@@ -282,7 +282,10 @@ void ImGuiAssetPanel::Render()
 				RenderAnimatorController(*animControllerAsset, flags, [&]()
 				{
 					if (ImGui::IsItemClicked())
+					{
 						m_editor.SetSelectedObject(EditorObjectType::Asset, animControllerAsset);
+						m_editor.SetAnimatorController(*animControllerAsset->GetController());
+					}
 				});
 			}
 			else if (asset->GetType() == AssetType::Scene)

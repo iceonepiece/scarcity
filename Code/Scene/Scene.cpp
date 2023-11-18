@@ -687,7 +687,7 @@ void Scene::Render(RenderOptions renderOptions)
         if (spriteAnimator != nullptr && spriteAnimator->controller != nullptr)
         {
             AnimatorState* animState = spriteAnimator->controller->GetCurrentState();
-            SpriteAnimation& spriteAnim = animState->GetSpriteAnimation();
+            SpriteAnimation spriteAnim = animState->GetSpriteAnimation();
             Sprite sprite = spriteAnim.GetSprite();
             renderer.DrawSprite(sprite, transform.position, transform.scale, transform.rotation.z);
         }

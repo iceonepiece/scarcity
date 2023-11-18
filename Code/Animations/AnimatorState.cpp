@@ -12,6 +12,15 @@ AnimatorState::AnimatorState(SpriteAnimation spriteAnimation)
 {
 }
 
+AnimatorState& AnimatorState::operator=(const AnimatorState& other)
+{
+	std::cout << "AnimatorState operator=\n";
+	m_spriteAnimation = other.m_spriteAnimation;
+	m_done = other.IsDone();
+
+	return *this;
+}
+
 void AnimatorState::Process(AnimatorController& fsm)
 {
 	m_spriteAnimation.timer += Timer::GetDeltaTime();

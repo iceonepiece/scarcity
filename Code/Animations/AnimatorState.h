@@ -16,9 +16,10 @@ public:
         std::cout << "AnimatorState Copy Constructor\n";
     }
 
+    AnimatorState& operator=(const AnimatorState& other);
     AnimatorState(SpriteAnimation spriteAnimation);
         
-    SpriteAnimation& GetSpriteAnimation()
+    SpriteAnimation GetSpriteAnimation() const
     {
         return m_spriteAnimation;
     }

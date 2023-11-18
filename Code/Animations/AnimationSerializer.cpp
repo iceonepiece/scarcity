@@ -27,8 +27,7 @@ AnimatorController* AnimationSerializer::Deserialize(const std::filesystem::path
 			}
 
 			AnimatorState animState ({
-				//ResourceAPI::GetTexture(json_state["texture"]),
-				assetManager.GetTexture(json_state["texture"]),
+				assetManager.GetTexturePtr(json_state["texture"]),
 				json_state["startFrame"],
 				json_state["maxFrame"],
 				json_state["rows"],

@@ -122,6 +122,14 @@ Texture& AssetManager::GetTexture(const std::string& name)
 	return *m_textures[name];
 }
 
+Texture* AssetManager::GetTexturePtr(const std::string& name)
+{
+	if (m_textures.find(name) != m_textures.end())
+		return m_textures[name].get();
+
+	return nullptr;
+}
+
 void AssetManager::RemoveTexture(const std::string& name)
 {
 	m_textures.erase(name);

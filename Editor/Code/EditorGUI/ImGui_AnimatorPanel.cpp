@@ -1,9 +1,11 @@
 #include "ImGui_AnimatorPanel.h"
 #include <iostream>
+#include <IconsFontAwesome6.h>
 #include "../EditorLayer.h"
 
 ImGui_AnimatorPanel::ImGui_AnimatorPanel(EditorLayer& editor)
     : m_editor(editor)
+    , m_animController(s_animController)
 {
     m_context = ImNodes::Ez::CreateContext();
 }
@@ -14,6 +16,11 @@ ImGui_AnimatorPanel::~ImGui_AnimatorPanel()
         delete node;
 
     ImNodes::Ez::FreeContext(m_context);
+}
+
+void ImGui_AnimatorPanel::SetAnimatorController(AnimatorController& animController)
+{
+    m_animController = animController;
 }
 
 void ImGui_AnimatorPanel::ClearSelection()
@@ -28,7 +35,53 @@ void ImGui_AnimatorPanel::Render()
 
     if (ImGui::Begin("Animator", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse))
     {
-        // We probably need to keep some state, like positions of nodes/slots for rendering connections.
+        ImGui::BeginChild("Parameters", ImVec2(200, 0), false, 0);
+
+        auto& parameters = m_animController.GetParameters();
+
+        static int selected_fish = -1;
+        const char* names[] = { "Float", "Int", "Bool", "Trigger" };
+        static bool toggles[] = { true, false, false, false };
+
+        if (ImGui::Button(ICON_FA_PLUS ICON_FA_CARET_DOWN))
+            ImGui::OpenPopup("my_select_popup");
+
+        ImGui::SameLine();
+        ImGui::TextUnformatted(selected_fish == -1 ? "<None>" : names[selected_fish]);
+
+        if (ImGui::BeginPopup("my_select_popup"))
+        {
+            for (int i = 0; i < IM_ARRAYSIZE(names); i++)
+                if (ImGui::Selectable(names[i]))
+                    selected_fish = i;
+            ImGui::EndPopup();
+        }
+
+        if (ImGui::BeginTable("table1", 2))
+        {
+            for (auto& p : parameters)
+            {
+                std::string name = p.first;
+                ImGui::TableNextRow();
+
+                ImGui::TableSetColumnIndex(0);
+
+                ImGui::PushID(p.first.c_str());
+                ImGui::InputText("###name", &name);
+
+                ImGui::TableSetColumnIndex(1);
+
+                ImGui::PopID();
+            }
+            ImGui::EndTable();
+        }
+
+        ImGui::EndChild();
+
+        ImGui::SameLine();
+
+        ImGui::BeginChild("Viewport");
+
         ImNodes::Ez::BeginCanvas();
 
         for (auto it = nodes.begin(); it != nodes.end();)
@@ -142,8 +195,15 @@ void ImGui_AnimatorPanel::Render()
         }
 
         ImNodes::Ez::EndCanvas();
+
+        ImGui::EndChild();
     }
     ImGui::End();
+
+    if (nodeCount == 0 && m_editor.GetSelectedObject().type == EditorObjectType::AnimatorState)
+    {
+        m_editor.UnselectObject();
+    }
 
     if (nodeCount == 1 && selectedNode != nullptr)
     {

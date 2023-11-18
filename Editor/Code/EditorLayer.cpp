@@ -182,7 +182,6 @@ EditorObject& EditorLayer::SetSelectedObject(EditorObjectType type, void* object
     m_selectedObject.objectPtr = objectPtr;
     m_selectedObject.entity = entt::null;
 
-
     return m_selectedObject;
 }
 
@@ -449,6 +448,7 @@ void EditorLayer::RenderImGui()
 
     style.WindowMinSize.x = minWinSizeX;
 
+    m_animatorPanel.Render();
     m_editorSceneViewport.Render();
 
     if (!m_scenePlaying)
@@ -459,7 +459,6 @@ void EditorLayer::RenderImGui()
     }
 
     m_mainMenuBar.Render();
-    m_animatorPanel.Render();
 
     ImGui::End();
 }

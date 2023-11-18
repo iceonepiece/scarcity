@@ -21,6 +21,37 @@ void ImGui_AssetInspector::Render(Asset* asset)
 
     else if (AudioAsset* audioAsset = dynamic_cast<AudioAsset*>(asset))
         RenderAudioAsset(*audioAsset);
+
+    else if (AnimatorControllerAsset* animatorAsset = dynamic_cast<AnimatorControllerAsset*>(asset))
+        RenderAnimatorControllerAsset(*animatorAsset);
+}
+
+void ImGui_AssetInspector::RenderAnimatorControllerAsset(AnimatorControllerAsset& animatorAsset)
+{
+    std::string name = animatorAsset.GetPath().stem().string() + " (Animator Controller)";
+
+    ImGui::Text(name.c_str());
+
+    if (AnimatorController* animController = animatorAsset.GetController())
+    {
+        auto& parameters = animController->GetParameters();
+
+        for (auto& p : parameters)
+        {
+            std::string typeStr;
+
+            if (auto ptr = std::get_if<float>(&p.second))
+                typeStr = "Float";
+            else if (auto ptr = std::get_if<int>(&p.second))
+                typeStr = "Int";
+            else if (auto ptr = std::get_if<bool>(&p.second))
+                typeStr = "Bool";
+            else if (auto ptr = std::get_if<Trigger>(&p.second))
+                typeStr = "Trigger";
+
+            ImGui::Text((p.first + " " + typeStr).c_str());
+        }
+    }
 }
 
 void ImGui_AssetInspector::RenderPrefabAsset(PrefabAsset& prefabAsset)

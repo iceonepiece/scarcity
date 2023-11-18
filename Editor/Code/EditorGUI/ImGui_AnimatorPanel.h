@@ -5,6 +5,7 @@
 #include <ImGuiNodes/ImNodesEz.h>
 #include <map>
 #include <string>
+#include "Animations/AnimatorController.h"
 
 class EditorLayer;
 
@@ -45,7 +46,7 @@ struct Node
 {
 	std::string title = "New State";
 
-	float speed;
+	float speed = 1.0f;
 
 	/// Flag indicating that node is selected by the user.
 	bool Selected = false;
@@ -83,13 +84,17 @@ struct Node
 class ImGui_AnimatorPanel
 {
 public:
+
 	ImGui_AnimatorPanel(EditorLayer& editor);
 	~ImGui_AnimatorPanel();
 
 	void Render();
 	void ClearSelection();
+	void SetAnimatorController(AnimatorController& controller);
 
 private:
+	inline static AnimatorController s_animController;
+
 	ImNodes::Ez::Context* m_context;
 	bool m_toClear = false;
 	
@@ -125,7 +130,7 @@ private:
 		*/
 	};
 
-
+	AnimatorController& m_animController;
 	std::vector<Node*> nodes;
 	EditorLayer& m_editor;
 };

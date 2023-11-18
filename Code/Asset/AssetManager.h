@@ -23,6 +23,7 @@ public:
 
 	bool HasTexture(const std::string& name);
 	Texture& GetTexture(const std::string& name);
+	Texture* GetTexturePtr(const std::string& name);
 
 	Asset* GetAsset(const std::filesystem::path& path, bool loadIfNotExist = false);
 	Asset* LoadAsset(const std::filesystem::path& path);

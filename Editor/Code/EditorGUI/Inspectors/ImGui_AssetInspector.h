@@ -3,6 +3,7 @@
 #include "Asset/TextureAsset.h"
 #include "Asset/PrefabAsset.h"
 #include "Asset/AudioAsset.h"
+#include "Asset/AnimatorControllerAsset.h"
 
 class ImGui_AssetInspector
 {
@@ -12,4 +13,5 @@ public:
 	static void RenderTextureAsset(TextureAsset& textureAsset);
 	static void RenderSpriteAsset(SpriteAsset& spriteAsset);
 	static void RenderAudioAsset(AudioAsset& audioAsset);
+	static void RenderAnimatorControllerAsset(AnimatorControllerAsset& animatorAsset);
 };

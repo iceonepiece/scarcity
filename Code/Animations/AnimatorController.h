@@ -9,6 +9,8 @@
 
 struct Trigger {};
 
+using ParameterType = std::variant<float, int, bool, Trigger>;
+
 class AnimatorController
 {
 public:
@@ -32,10 +34,15 @@ public:
     void SetBool(std::string name, bool value);
     bool GetBool(std::string name);
 
+    std::unordered_map<std::string, ParameterType>& GetParameters()
+    {
+        return m_parameters;
+    }
+
 private:
     std::string m_currentStateName;
 
-    std::unordered_map<std::string, std::variant<float, int, bool, Trigger>> m_parameters;
+    std::unordered_map<std::string, ParameterType> m_parameters;
     std::unordered_map<std::string, AnimatorState> m_states;
 
     std::vector<AnimatorTransition> m_anyStateTransitions;

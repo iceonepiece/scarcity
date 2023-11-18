@@ -158,6 +158,11 @@ public:
 		return m_gameLayer;
 	}
 
+	void SetAnimatorController(AnimatorController& animController)
+	{
+		m_animatorPanel.SetAnimatorController(animController);
+	}
+
 private:
 	void OnWindowResize(WindowResizeEvent& event);
 	void OnMouseMoved(MouseMovedEvent& event);
