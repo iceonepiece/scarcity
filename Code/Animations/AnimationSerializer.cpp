@@ -47,6 +47,10 @@ AnimatorController* AnimationSerializer::Deserialize(const std::filesystem::path
 			{
 				animController->SetBool(json_variable["name"], json_variable["defaultValue"]);
 			}
+			else if (json_variable["type"] == "int")
+			{
+				animController->SetInt(json_variable["name"], json_variable["defaultValue"]);
+			}
 		}
 
 		json json_transitions = json_fsm["transitions"];

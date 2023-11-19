@@ -11,6 +11,12 @@ struct Trigger {};
 
 using ParameterType = std::variant<float, int, bool, Trigger>;
 
+struct AnimatorParameter
+{
+    std::string name;
+    ParameterType value;
+};
+
 class AnimatorController
 {
 public:
@@ -34,7 +40,18 @@ public:
     void SetBool(std::string name, bool value);
     bool GetBool(std::string name);
 
-    std::unordered_map<std::string, ParameterType>& GetParameters()
+    bool ChangeParameterName(std::string oldName, std::string newName);
+
+    void AddParameter(const std::string& name, ParameterType value)
+    {
+        if (m_paramMap.find(name) == m_paramMap.end())
+        {
+            m_parameters.push_back({ name, value });
+            m_paramMap[name] = m_parameters.size() - 1;
+        }
+    }
+
+    std::vector<AnimatorParameter>& GetParameters()
     {
         return m_parameters;
     }
@@ -42,7 +59,8 @@ public:
 private:
     std::string m_currentStateName;
 
-    std::unordered_map<std::string, ParameterType> m_parameters;
+    std::vector<AnimatorParameter> m_parameters;
+    std::unordered_map<std::string, size_t> m_paramMap;
     std::unordered_map<std::string, AnimatorState> m_states;
 
     std::vector<AnimatorTransition> m_anyStateTransitions;

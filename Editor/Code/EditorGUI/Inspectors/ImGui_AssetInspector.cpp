@@ -40,6 +40,7 @@ void ImGui_AssetInspector::RenderAnimatorControllerAsset(AnimatorControllerAsset
         {
             std::string typeStr;
 
+            /*
             if (auto ptr = std::get_if<float>(&p.second))
                 typeStr = "Float";
             else if (auto ptr = std::get_if<int>(&p.second))
@@ -50,6 +51,7 @@ void ImGui_AssetInspector::RenderAnimatorControllerAsset(AnimatorControllerAsset
                 typeStr = "Trigger";
 
             ImGui::Text((p.first + " " + typeStr).c_str());
+            */
         }
     }
 }

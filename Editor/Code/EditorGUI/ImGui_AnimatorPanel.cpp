@@ -28,18 +28,31 @@ void ImGui_AnimatorPanel::ClearSelection()
     m_toClear = true;
 }
 
+struct NameEditing
+{
+    std::string oldName;
+    std::string newName;
+    bool changed = false;
+};
+
 void ImGui_AnimatorPanel::Render()
 {
+    static std::string currentNameEditing = "";
     unsigned int nodeCount = 0;
     Node* selectedNode = nullptr;
+    static int selected_fish = -1;
+
+    bool openPopup = false;
+    static int editingIndex = -1;
 
     if (ImGui::Begin("Animator", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse))
     {
-        ImGui::BeginChild("Parameters", ImVec2(200, 0), false, 0);
+        ImGui::BeginChild("Parameters", ImVec2(220, 0), false, 0);
 
         auto& parameters = m_animController.GetParameters();
 
-        static int selected_fish = -1;
+        NameEditing nameEditing;
+
         const char* names[] = { "Float", "Int", "Bool", "Trigger" };
         static bool toggles[] = { true, false, false, false };
 
@@ -49,30 +62,73 @@ void ImGui_AnimatorPanel::Render()
         ImGui::SameLine();
         ImGui::TextUnformatted(selected_fish == -1 ? "<None>" : names[selected_fish]);
 
+
         if (ImGui::BeginPopup("my_select_popup"))
         {
             for (int i = 0; i < IM_ARRAYSIZE(names); i++)
+            {
                 if (ImGui::Selectable(names[i]))
+                {
                     selected_fish = i;
+                    openPopup = true;
+
+                    if (selected_fish == 0)
+                        m_animController.AddParameter("", 0.0f);
+                    else if (selected_fish == 1)
+                        m_animController.AddParameter("", 0);
+                    else if (selected_fish == 2)
+                        m_animController.AddParameter("", false);
+                    else if (selected_fish == 3)
+                        m_animController.AddParameter("", Trigger{});
+
+                    editingIndex = m_animController.GetParameters().size() - 1;
+                }
+            }
+
             ImGui::EndPopup();
         }
 
         if (ImGui::BeginTable("table1", 2))
         {
-            for (auto& p : parameters)
+            for (auto& param : parameters)
             {
-                std::string name = p.first;
+                ParameterType value = param.value;
+
                 ImGui::TableNextRow();
+
+                ImGui::PushID(param.name.c_str());
 
                 ImGui::TableSetColumnIndex(0);
 
-                ImGui::PushID(p.first.c_str());
-                ImGui::InputText("###name", &name);
+                //std::string text = ICON_FA_GEAR + " " + param.name;
+
+                if (ImGui::Button(ICON_FA_GEAR))
+                {
+                    openPopup = true;
+                }
+
+                ImGui::SameLine();
+                ImGui::Text(param.name.c_str());
 
                 ImGui::TableSetColumnIndex(1);
 
+                if (auto ptr = std::get_if<float>(&param.value)) {
+                    ImGui::InputFloat("###value", ptr);
+
+                }
+                else if (auto ptr = std::get_if<int>(&param.value)) {
+                    ImGui::InputInt("###value", ptr, 0);
+                }
+                else if (auto ptr = std::get_if<bool>(&param.value)) {
+                    ImGui::Checkbox("###value", ptr);
+                }
+                else if (auto ptr = std::get_if<Trigger>(&param.value)) {
+                    ImGui::RadioButton("###value", false);
+                }
+
                 ImGui::PopID();
             }
+
             ImGui::EndTable();
         }
 
@@ -198,6 +254,47 @@ void ImGui_AnimatorPanel::Render()
 
         ImGui::EndChild();
     }
+
+
+    static std::string newName;
+    static std::string prevName;
+
+    if (openPopup)
+    {
+
+        if (editingIndex != -1)
+        {
+            prevName = m_animController.GetParameters()[editingIndex].name;
+            newName = prevName;
+        }
+
+        ImGui::OpenPopup("Parameter Editor");
+    }
+
+    if (ImGui::BeginPopupModal("Parameter Editor"))
+    {
+        ImGui::InputText("Name", &newName);
+
+        ImGui::Separator();
+
+        if (ImGui::Button("OK", ImVec2(120, 0)))
+        {
+            if (editingIndex != -1)
+                m_animController.ChangeParameterName(prevName, newName);
+           // else
+              //  m_animController.AddParameter(newName, 0);
+
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("Cancel", ImVec2(120, 0)))
+            ImGui::CloseCurrentPopup();
+
+        ImGui::EndPopup();
+    }
+
     ImGui::End();
 
     if (nodeCount == 0 && m_editor.GetSelectedObject().type == EditorObjectType::AnimatorState)
