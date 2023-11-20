@@ -7,7 +7,6 @@
 #include <filesystem>
 #include "Asset/Asset.h"
 #include "Asset/AnimatorControllerAsset.h"
-#include "Asset/TextureAsset.h"
 
 class Scene;
 
@@ -29,9 +28,13 @@ public:
 	Asset* LoadAsset(const std::filesystem::path& path);
 	bool AssetExists(const std::filesystem::path& path);
 
-	SpriteAsset* GetSpriteAsset(const std::string& name);
-	void AddSpriteAssets(std::vector<SpriteAsset>& spriteAssets);
-	void RemoveSpriteAssets(std::vector<SpriteAsset>& spriteAssets);
+	Sprite* GetSprite(const std::string& name);
+	void AddSprites(std::vector<Sprite>& sprites);
+	void RemoveSprites(std::vector<Sprite>& sprites);
+
+	//SpriteAsset* GetSpriteAsset(const std::string& name);
+	//void AddSpriteAssets(std::vector<SpriteAsset>& spriteAssets);
+	//void RemoveSpriteAssets(std::vector<SpriteAsset>& spriteAssets);
 
 	AnimatorController* GetAnimatorController(const std::string& name);
 	std::map<std::string, std::unique_ptr<AnimatorControllerAsset>>& GetAnimatorControllerAssets();
@@ -40,7 +43,8 @@ public:
 protected:
 	std::map<std::string, std::unique_ptr<Scene>> m_sceneMap;
 	std::map<std::string, std::unique_ptr<Asset>> m_assetMap;
-	std::map<std::string, SpriteAsset*> m_spriteAssetMap;
+	//std::map<std::string, SpriteAsset*> m_spriteAssetMap;
+	std::map<std::string, Sprite*> m_spriteMap;
 	std::map<std::string, std::unique_ptr<AnimatorControllerAsset>> m_animControllerMap;
 
 	std::unordered_map<std::string, std::unique_ptr<Texture>> m_textures;

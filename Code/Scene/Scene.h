@@ -3,19 +3,18 @@
 #include <memory>
 #include <functional>
 #include <filesystem>
-#include "Core/Application.h"
 #include "Core/EntityManager.h"
 #include "Graphics/Camera.h"
 #include "Physics/Physics.h"
 #include "Input/Input.h"
-#include "Events/Event.h"
 #include "Core/System.h"
 #include "Components/TransformComponent.h"
 #include "Components/Rigidbody2DComponent.h"
 #include "Project/Project.h"
 #include "Asset/Asset.h"
 
-#include "Events/Event.h"
+class Application;
+class Event;
 
 using InitializeFunction = std::function<void(Scene&)>;
 class NativeScriptEngine;

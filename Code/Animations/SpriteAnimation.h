@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <glm/glm.hpp>
-#include "Animations/Sprite.h"
+#include "Graphics/Sprite.h"
 
 /*
 class SpriteAnimation

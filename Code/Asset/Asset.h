@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <string>
+#include "Core/UniqueID.h"
 
 enum class AssetType
 {
@@ -9,10 +10,11 @@ enum class AssetType
 	Scene,
 	NativeScript,
 	Prefab,
-	Texture,
+	Image,
 	Sprite,
 	AnimatorController,
-	Audio
+	Audio,
+	AnimationClip
 };
 
 class Asset
@@ -23,7 +25,16 @@ public:
 		, m_path(path)
 	{}
 
+	Asset(UniqueID id, const std::filesystem::path& path, AssetType type = AssetType::None)
+		: m_ID(id)
+		, m_type(type)
+		, m_path(path)
+	{}
+
 	virtual ~Asset() = default;
+
+	UniqueID GetID() { return m_ID; }
+	void SetID(UniqueID id) { m_ID = id; }
 
 	virtual std::string GetTypeString() { return "None"; }
 	inline AssetType GetType() { return m_type; }
@@ -36,6 +47,7 @@ public:
 	friend class MetaSerializer;
 
 protected:
+	UniqueID m_ID;
 	AssetType m_type;
 	std::filesystem::path m_path;
 };

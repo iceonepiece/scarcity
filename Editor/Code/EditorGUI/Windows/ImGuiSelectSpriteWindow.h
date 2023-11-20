@@ -4,7 +4,7 @@
 #include <IconsFontAwesome6.h>
 #include "File/FileSystem.h"
 #include "ImGuiWindow.h"
-#include "Animations/Sprite.h"
+#include "Graphics/Sprite.h"
 
 class ImGuiSelectSpriteWindow : public ImGuiWindow_
 {

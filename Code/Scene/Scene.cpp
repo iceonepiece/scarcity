@@ -1,4 +1,6 @@
 #include "Scene.h"
+#include "Core/Application.h"
+#include "Events/Event.h"
 #include "Graphics/Renderer.h"
 #include "Graphics/Camera2D.h"
 #include "Components/Components.h"

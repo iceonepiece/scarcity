@@ -2,6 +2,11 @@
 #include "AnimatorState.h"
 #include "Core/Application.h"
 
+void AnimationSerializer::Serialize(AnimatorController& controller, const std::filesystem::path& filePath)
+{
+
+}
+
 AnimatorController* AnimationSerializer::Deserialize(const std::filesystem::path& filepath)
 {
 	AnimatorController* animController = nullptr;

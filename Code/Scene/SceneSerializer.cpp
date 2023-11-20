@@ -7,6 +7,7 @@
 #include <entt/entt.hpp>
 #include <nlohmann/json.hpp>
 #include "Components/Components.h"
+#include "File/FileSystem.h"
 
 using json = nlohmann::json;
 

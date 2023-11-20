@@ -292,12 +292,14 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\Animations\AnimationClip.cpp" />
     <ClCompile Include="Code\Animations\AnimationSerializer.cpp" />
     <ClCompile Include="Code\Animations\AnimatorController.cpp" />
     <ClCompile Include="Code\Animations\AnimatorState.cpp" />
     <ClCompile Include="Code\Animations\AnimatorTransition.cpp" />
+    <ClCompile Include="Code\Graphics\Sprite.cpp" />
     <ClCompile Include="Code\Asset\AssetManager.cpp" />
-    <ClCompile Include="Code\Asset\TextureAsset.cpp" />
+    <ClCompile Include="Code\Graphics\Image.cpp" />
     <ClCompile Include="Code\Audio\Audio.cpp" />
     <ClCompile Include="Code\Audio\OpenAL\OpenALAudio.cpp" />
     <ClCompile Include="Code\Audio\OpenAL\OpenALAudioSource.cpp" />
@@ -306,6 +308,7 @@
     <ClCompile Include="Code\Core\UniqueID.cpp" />
     <ClCompile Include="Code\Core\Window.cpp" />
     <ClCompile Include="Code\File\FileSystem.cpp" />
+    <ClCompile Include="Code\File\MetaSerializer.cpp" />
     <ClCompile Include="Code\FSM\FSMState.cpp" />
     <ClCompile Include="Code\Graphics\Renderer.cpp" />
     <ClCompile Include="Code\ImGui\ImGuiManager.cpp" />
@@ -363,6 +366,7 @@
     <ClCompile Include="Code\Project\ProjectSerializer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\Animations\AnimationClip.h" />
     <ClInclude Include="Code\Animations\AnimationSerializer.h" />
     <ClInclude Include="Code\Animations\AnimatorController.h" />
     <ClInclude Include="Code\Animations\AnimatorState.h" />
@@ -442,7 +446,7 @@
     <ClInclude Include="Code\Graphics\Camera2D.h" />
     <ClInclude Include="Code\Core\Entity.h" />
     <ClInclude Include="Code\Core\EntityManager.h" />
-    <ClInclude Include="Code\Animations\Sprite.h" />
+    <ClInclude Include="Code\Graphics\Sprite.h" />
     <ClInclude Include="Code\Animations\SpriteAnimation.h" />
     <ClInclude Include="Code\Core\Timer.h" />
     <ClInclude Include="Code\Core\Window.h" />
@@ -453,7 +457,7 @@
     <ClInclude Include="Code\Core\ParticleSystem.h" />
     <ClInclude Include="Code\Core\Random.h" />
     <ClInclude Include="Code\Project\Project.h" />
-    <ClInclude Include="Code\Asset\TextureAsset.h" />
+    <ClInclude Include="Code\Graphics\Image.h" />
     <ClInclude Include="Code\Asset\Asset.h" />
     <ClInclude Include="Code\Scene\Scene.h" />
     <ClInclude Include="Code\Core\System.h" />

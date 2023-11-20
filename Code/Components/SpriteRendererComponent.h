@@ -47,8 +47,9 @@ static void DoDeserialize(SpriteRendererComponent& sprite, json& spriteRendererJ
 
 	sprite.spriteName = spriteRendererJson["spriteName"].get<std::string>();
 
-	SpriteAsset* spriteAsset = Application::Get().GetAssetManager().GetSpriteAsset(sprite.spriteName);
+	//SpriteAsset* spriteAsset = Application::Get().GetAssetManager().GetSpriteAsset(sprite.spriteName);
+	Sprite* spritePtr = Application::Get().GetAssetManager().GetSprite(sprite.spriteName);
 
-	if (spriteAsset)
-		sprite.sprite = &(spriteAsset->GetSprite());
+	if (spritePtr)
+		sprite.sprite = spritePtr;
 }

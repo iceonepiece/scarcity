@@ -12,5 +12,6 @@ using json = nlohmann::json;
 class AnimationSerializer
 {
 public:
+	static void Serialize(AnimatorController& controller, const std::filesystem::path& filePath);
 	static AnimatorController* Deserialize(const std::filesystem::path& filepath);
 };

@@ -89,7 +89,7 @@ void ImGuiAssetPanel::RenderPrefab(PrefabAsset& prefabAsset, ImGuiTreeNodeFlags 
 		ImGui::TreePop();
 }
 
-void ImGuiAssetPanel::RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn, const std::string& note)
+void ImGuiAssetPanel::RenderImage(Image& image, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn, const std::string& note)
 {
 	std::string useIcon = (ICON_FA_IMAGE " ");
 
@@ -98,17 +98,18 @@ void ImGuiAssetPanel::RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFla
 	if (note != "")
 		flags &= ~ImGuiTreeNodeFlags_Selected;
 
-	bool opened = ImGui::TreeNodeEx(textureAsset.GetPath().string().c_str(), flags, (useIcon + textureAsset.GetName()).c_str());
+	bool opened = ImGui::TreeNodeEx(image.GetPath().string().c_str(), flags, (useIcon + image.GetName()).c_str());
 
 	callback();
 
 	if (opened)
 	{
-		std::vector<SpriteAsset>& spriteAssets = textureAsset.GetSpriteAssets();
+		//std::vector<SpriteAsset>& spriteAssets = image.GetSpriteAssets();
+		std::vector<Sprite>& sprites = image.GetSprites();
 
-		for (auto& sprite : spriteAssets)
+		for (auto& sprite : sprites)
 		{
-			if (ImGui::Selectable(sprite.GetSprite().GetName().c_str(), sprite.GetSprite().GetName() == note, ImGuiSelectableFlags_DontClosePopups))
+			if (ImGui::Selectable(sprite.GetName().c_str(), sprite.GetName() == note, ImGuiSelectableFlags_DontClosePopups))
 				selectSpriteFn(sprite);
 		}
 
@@ -231,20 +232,21 @@ void ImGuiAssetPanel::Render()
 		}
 		else if (Asset* asset = m_editor.GetAsset(path))
 		{
-			if (asset->GetType() == AssetType::Texture)
+			if (asset->GetType() == AssetType::Image)
 			{
-				TextureAsset* textureAsset = static_cast<TextureAsset*>(asset);
-				RenderTexture(*textureAsset, flags,
+				Image* image = static_cast<Image*>(asset);
+				RenderImage(*image, flags,
 					[&]()
 					{
 						if (ImGui::IsItemClicked())
-							m_editor.SetSelectedObject(EditorObjectType::Asset, textureAsset);
+							m_editor.SetSelectedObject(EditorObjectType::Asset, image);
 					},
 
-					[&](SpriteAsset& spriteAsset)
+					//[&](SpriteAsset& spriteAsset)
+					[&](Sprite& sprite)
 					{
-						EditorObject& editorObject = m_editor.SetSelectedObject(EditorObjectType::Asset, &spriteAsset);
-						editorObject.note = spriteAsset.GetSprite().GetName();
+						EditorObject& editorObject = m_editor.SetSelectedObject(EditorObjectType::Asset, &sprite);
+						editorObject.note = sprite.GetName();
 					},
 					m_editor.GetSelectedObject().note
 				);

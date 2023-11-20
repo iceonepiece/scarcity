@@ -13,7 +13,7 @@
 #include <filewatch/FileWatch.h>
 #include "Helpers/FileHandler.h"
 #include "Asset/Asset.h"
-#include "Animations/Sprite.h"
+#include "Graphics/Sprite.h"
 #include "EditorGUI/Windows/ImGuiWindow.h"
 #include "EditorGUI/ImGuiMainMenuBar.h"
 #include "EditorGUI/ImGuiEntityProperties.h"

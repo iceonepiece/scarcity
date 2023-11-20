@@ -1,5 +1,5 @@
 #include "AssetManager.h"
-#include "Asset/TextureAsset.h"
+#include "Graphics/Image.h"
 #include "Asset/AudioAsset.h"
 #include "Asset/PrefabAsset.h"
 #include "Scene/Scene.h"
@@ -54,9 +54,9 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
 {
     if (FileSystem::IsImageFile(path))
     {
-        std::cout << "[Texture] : " << path << '\n';
-        std::unique_ptr<TextureAsset> textureAsset = std::make_unique<TextureAsset>(path);
-        m_assetMap.insert({ path.string(), std::move(textureAsset) });
+        std::cout << "[Image] : " << path << '\n';
+        std::unique_ptr<Image> image = std::make_unique<Image>(path);
+        m_assetMap.insert({ path.string(), std::move(image) });
     }
 	else if (FileSystem::IsSceneFile(path))
 	{
@@ -135,6 +135,26 @@ void AssetManager::RemoveTexture(const std::string& name)
 	m_textures.erase(name);
 }
 
+Sprite* AssetManager::GetSprite(const std::string& name)
+{
+	return m_spriteMap.find(name) != m_spriteMap.end() ? m_spriteMap[name] : nullptr;
+}
+
+void AssetManager::AddSprites(std::vector<Sprite>& sprites)
+{
+	for (auto& sprite : sprites)
+	{
+		m_spriteMap.insert({ sprite.GetName(), &sprite });
+	}
+}
+
+void AssetManager::RemoveSprites(std::vector<Sprite>& sprites)
+{
+	for (auto& sprite : sprites)
+		m_spriteMap.erase(sprite.GetName());
+}
+
+/*
 SpriteAsset* AssetManager::GetSpriteAsset(const std::string& name)
 {
 	return m_spriteAssetMap.find(name) != m_spriteAssetMap.end() ? m_spriteAssetMap[name] : nullptr;
@@ -153,6 +173,7 @@ void AssetManager::RemoveSpriteAssets(std::vector<SpriteAsset>& spriteAssets)
 	for (auto& sprite : spriteAssets)
 		m_spriteAssetMap.erase(sprite.GetSprite().GetName());
 }
+*/
 
 AnimatorController* AssetManager::GetAnimatorController(const std::string& name)
 {

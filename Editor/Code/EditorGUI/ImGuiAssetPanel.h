@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <functional>
 #include "Graphics/Texture.h"
-#include "Asset/TextureAsset.h"
+#include "Graphics/Image.h"
 #include "Asset/AudioAsset.h"
 #include "Asset/PrefabAsset.h"
 #include "Asset/NativeScriptAsset.h"
@@ -12,7 +12,8 @@
 class EditorLayer;
 
 using AssetEventFunction = std::function<void()>;
-using OnSelectSpriteFunction = std::function<void(SpriteAsset&)>;
+//using OnSelectSpriteFunction = std::function<void(SpriteAsset&)>;
+using OnSelectSpriteFunction = std::function<void(Sprite&)>;
 
 class ImGuiAssetPanel
 {
@@ -27,7 +28,7 @@ public:
 	}
 
 	void RenderPrefab(PrefabAsset& prefabAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
-	static void RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn = [](SpriteAsset&){}, const std::string& note = "");
+	static void RenderImage(Image& image, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn = [](Sprite&){}, const std::string& note = "");
 	static void RenderAudio(AudioAsset& audioAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderAnimatorController(AnimatorControllerAsset& animControllerAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderNativeScript(NativeScriptAsset& nativeScriptAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);

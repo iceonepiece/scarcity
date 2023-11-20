@@ -36,11 +36,11 @@ void ImGuiSelectSpriteWindow::Render()
 		}
 		else if (FileSystem::IsImageFile(path))
 		{
-			if (TextureAsset* asset = dynamic_cast<TextureAsset*>(EditorLayer::GetAsset(path)))
+			if (Image* image = dynamic_cast<Image*>(EditorLayer::GetAsset(path)))
 			{
-				ImGuiAssetPanel::RenderTexture(*asset, 0, [&](){}, [&](SpriteAsset& sprite)
+				ImGuiAssetPanel::RenderImage(*image, 0, [&](){}, [&](Sprite& sprite)
 				{
-					m_selectedSprite = &sprite.GetSprite();
+					m_selectedSprite = &sprite;
 				});
 			}
 		}
