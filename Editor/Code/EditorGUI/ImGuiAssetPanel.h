@@ -13,7 +13,7 @@ class EditorLayer;
 
 using AssetEventFunction = std::function<void()>;
 //using OnSelectSpriteFunction = std::function<void(SpriteAsset&)>;
-using OnSelectSpriteFunction = std::function<void(Sprite&)>;
+using OnSelectSpriteFunction = std::function<void(Sprite&, size_t)>;
 
 class ImGuiAssetPanel
 {
@@ -28,7 +28,7 @@ public:
 	}
 
 	void RenderPrefab(PrefabAsset& prefabAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
-	static void RenderImage(Image& image, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn = [](Sprite&){}, const std::string& note = "");
+	static void RenderImage(Image& image, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn = [](Sprite&, size_t){}, const std::string& note = "");
 	static void RenderAudio(AudioAsset& audioAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderAnimatorController(AnimatorControllerAsset& animControllerAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderNativeScript(NativeScriptAsset& nativeScriptAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);

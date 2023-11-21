@@ -107,10 +107,11 @@ void ImGuiAssetPanel::RenderImage(Image& image, ImGuiTreeNodeFlags flags, AssetE
 		//std::vector<SpriteAsset>& spriteAssets = image.GetSpriteAssets();
 		std::vector<Sprite>& sprites = image.GetSprites();
 
-		for (auto& sprite : sprites)
+		for (int i = 0; i < sprites.size(); i++)
 		{
+			Sprite& sprite = sprites[i];
 			if (ImGui::Selectable(sprite.GetName().c_str(), sprite.GetName() == note, ImGuiSelectableFlags_DontClosePopups))
-				selectSpriteFn(sprite);
+				selectSpriteFn(sprite, i);
 		}
 
 		ImGui::TreePop();
@@ -243,7 +244,7 @@ void ImGuiAssetPanel::Render()
 					},
 
 					//[&](SpriteAsset& spriteAsset)
-					[&](Sprite& sprite)
+					[&](Sprite& sprite, size_t index)
 					{
 						EditorObject& editorObject = m_editor.SetSelectedObject(EditorObjectType::Asset, &sprite);
 						editorObject.note = sprite.GetName();

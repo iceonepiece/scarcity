@@ -694,7 +694,10 @@ void Scene::Render(RenderOptions renderOptions)
             renderer.DrawSprite(sprite, transform.position, transform.scale, transform.rotation.z);
         }
         else if (sprite.sprite != nullptr)
-            renderer.DrawSprite(*(sprite.sprite), transform.position, transform.scale, transform.rotation.z);
+        {
+            Sprite& targetSprite = sprite.image->GetSprites()[sprite.spriteIndex];
+            renderer.DrawSprite(targetSprite, transform.position, transform.scale, transform.rotation.z);
+        }
     }
 
     renderer.PostRender();

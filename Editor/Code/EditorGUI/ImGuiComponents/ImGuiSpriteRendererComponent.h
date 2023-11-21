@@ -47,6 +47,9 @@ static void RenderImGui(SpriteRendererComponent& spriteRenderer)
 
 			if (sprite)
 			{
+				spriteRenderer.image = sprite->GetImage();
+				spriteRenderer.spriteIndex = window->GetSpriteIndex();
+
 				spriteRenderer.sprite = sprite;
 				spriteRenderer.spriteName = sprite->GetName();
 			}

@@ -38,9 +38,10 @@ void ImGuiSelectSpriteWindow::Render()
 		{
 			if (Image* image = dynamic_cast<Image*>(EditorLayer::GetAsset(path)))
 			{
-				ImGuiAssetPanel::RenderImage(*image, 0, [&](){}, [&](Sprite& sprite)
+				ImGuiAssetPanel::RenderImage(*image, 0, [&](){}, [&](Sprite& sprite, size_t index)
 				{
 					m_selectedSprite = &sprite;
+					m_spriteIndex = index;
 				});
 			}
 		}

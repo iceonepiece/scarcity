@@ -19,7 +19,8 @@ std::string EditorComponentNames[] = {
 
 ImGuiEntityProperties::ImGuiEntityProperties(EditorLayer& editor)
     : m_editor(editor)
-{}
+{
+}
 
 void ImGuiEntityProperties::Render()
 {
