@@ -20,16 +20,17 @@ struct AnimatorParameter
 class AnimatorController
 {
 public:
+
     void AddState(const std::string& name, AnimatorState state);
     void AddTransition(const std::string& name, AnimatorTransition transition);
     void Process();
 
     inline AnimatorState* GetCurrentState()
     {
-        if (m_states.find(m_currentStateName) != m_states.end())
-            return &m_states[m_currentStateName];
+        //if (m_states.find(m_currentStateName) != m_states.end())
+          //  return &m_states[m_currentStateName];
 
-        return nullptr;
+        return m_currentState;
     }
 
     inline void SetCurrentStateName(const std::string& name) { m_currentStateName = name; }
@@ -57,6 +58,19 @@ public:
     }
 
 private:
+    std::vector<AnimatorParameter> m_parameters;
+    std::unordered_map<std::string, size_t> m_paramMap;
+
+    std::vector<AnimatorState> m_states;
+
+    AnimatorState* m_currentState;
+    AnimatorState* m_defaultState;
+    AnimatorState m_anyState;
+
+    std::string m_currentStateName;
+
+    /*
+    std::string m_defaultStateName;
     std::string m_currentStateName;
 
     std::vector<AnimatorParameter> m_parameters;
@@ -64,6 +78,7 @@ private:
     std::unordered_map<std::string, AnimatorState> m_states;
 
     std::vector<AnimatorTransition> m_anyStateTransitions;
-    std::unordered_map<std::string, std::vector<AnimatorTransition>> m_transitions;
+    */
 
+    friend class AnimationSerializer;
 };

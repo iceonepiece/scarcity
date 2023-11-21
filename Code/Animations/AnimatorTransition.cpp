@@ -3,14 +3,14 @@
 
 void AnimatorTransition::AddCondition(ConditionFunction fn)
 {
-    m_conditions.emplace_back(fn);
+    m_conditionFunctions.emplace_back(fn);
 }
 
 bool AnimatorTransition::CheckConditions(AnimatorController& fsm)
 {
-    for (auto& condition : m_conditions)
+    for (auto& function : m_conditionFunctions)
     {
-        if (!condition(fsm))
+        if (!function(fsm))
             return false;
     }
 

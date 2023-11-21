@@ -688,10 +688,12 @@ void Scene::Render(RenderOptions renderOptions)
         SpriteAnimatorComponent* spriteAnimator = m_manager.m_registry.try_get<SpriteAnimatorComponent>(entity);
         if (spriteAnimator != nullptr && spriteAnimator->controller != nullptr)
         {
+            /*
             AnimatorState* animState = spriteAnimator->controller->GetCurrentState();
             SpriteAnimation spriteAnim = animState->GetSpriteAnimation();
             Sprite sprite = spriteAnim.GetSprite();
             renderer.DrawSprite(sprite, transform.position, transform.scale, transform.rotation.z);
+            */
         }
         else if (sprite.sprite != nullptr)
         {

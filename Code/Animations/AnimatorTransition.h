@@ -5,6 +5,25 @@
 #include <string>
 
 class AnimatorController;
+class AnimatorState;
+
+enum class ConditionMode
+{
+    None,
+    True,
+    False,
+    Greater,
+    Less,
+    Equals,
+    NotEqual
+};
+
+struct AnimatorCondition
+{
+    ConditionMode mode;
+    std::string parameter;
+    float threshold;
+};
 
 using ConditionFunction = std::function<bool(AnimatorController&)>;
 
@@ -20,7 +39,12 @@ public:
     inline void SetNextStateName(const std::string& name) { m_nextStateName = name; }
 
 protected:
-    std::vector<ConditionFunction> m_conditions;
+    std::vector<ConditionFunction> m_conditionFunctions;
+    std::vector<AnimatorCondition> m_conditions;
     std::string m_nextStateName;
+
+    AnimatorState* m_nextState = nullptr;
+
+    friend class AnimationSerializer;
 
 };

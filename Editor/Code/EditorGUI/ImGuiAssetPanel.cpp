@@ -184,6 +184,29 @@ void ImGuiAssetPanel::Render()
 {
 	ImGui::Begin("Project");
 
+
+	if (ImGui::Button(ICON_FA_PLUS ICON_FA_CARET_DOWN))
+	{
+		ImGui::OpenPopup("Add Asset");
+	}
+
+	if (ImGui::BeginPopup("Add Asset"))
+	{
+		ImGui::Text("Add Asset");
+		ImGui::Separator();
+
+		if (ImGui::Selectable("Animator Controller"))
+		{
+			AnimatorController animController;
+			AnimationSerializer::Serialize(animController, "New Animator Controller");
+
+		}
+
+		ImGui::EndPopup();
+	}
+
+	ImGui::SameLine();
+
 	if (m_currentDirectory != std::filesystem::path(m_baseDirectory))
 	{
 		if (ImGui::Button("Back"))

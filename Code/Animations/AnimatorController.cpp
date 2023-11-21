@@ -3,19 +3,22 @@
 
 void AnimatorController::AddState(const std::string& name, AnimatorState state)
 {
-    m_states.insert({ name, state });
+    //m_states.insert({ name, state });
 }
 
 void AnimatorController::AddTransition(const std::string& name, AnimatorTransition transition)
 {
+    /*
     if (m_transitions.find(name) == m_transitions.end())
         m_transitions.insert({ name, {} });
     
     m_transitions[name].push_back(transition);
+    */
 }
 
 void AnimatorController::Process()
 {
+    /*
     if (m_states.find(m_currentStateName) == m_states.end())
         return;
 
@@ -35,6 +38,7 @@ void AnimatorController::Process()
 
     if (m_states.find(m_currentStateName) != m_states.end())
         m_states[m_currentStateName].Process(*this);
+        */
 }
 
 bool AnimatorController::ChangeParameterName(std::string oldName, std::string newName)

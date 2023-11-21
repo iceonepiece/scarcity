@@ -1,10 +1,54 @@
 #include "AnimationSerializer.h"
-#include "AnimatorState.h"
+#include "Animations/AnimatorState.h"
+#include "Animations/AnimatorController.h"
 #include "Core/Application.h"
 
 void AnimationSerializer::Serialize(AnimatorController& controller, const std::filesystem::path& filePath)
 {
+	std::ofstream serialized(filePath);
 
+	// Serialize the AnimatorController to a json file
+	if (serialized.is_open())
+	{
+		json controllerJson;
+		controllerJson["defaultState"] = controller.m_defaultState != nullptr ? controller.m_defaultState->m_name : "";
+
+		json statesJson = json::array();
+
+		for (auto& state : controller.m_states)
+		{
+			json stateJson = json::object();
+			stateJson["name"] = state.m_name;
+			stateJson["motion"]	= (uint64_t)state.m_motion->GetID();
+			stateJson["speed"] = state.m_speed;
+
+			statesJson.push_back(stateJson);
+		}
+
+		/*
+		for (auto& transition : controller)
+		{
+			for (auto& animatorTransition : transition.second)
+			{
+				json transitionJson = json::object();
+				transitionJson["to"] = animatorTransition.GetNextStateName();
+				
+				json conditionsJson = json::object();
+
+				for (auto& condition : animatorTransition.m_conditionsData)
+				{
+					json conditionJson = json::object();
+					conditionJson["mode"] = (int)condition.mode;
+					conditionJson["parameter"] = condition.parameter;
+					conditionJson["threshold"] = condition.threshold;
+				}
+			}
+
+		}
+		*/
+
+		json json_sprites = json::array();
+	}
 }
 
 AnimatorController* AnimationSerializer::Deserialize(const std::filesystem::path& filepath)

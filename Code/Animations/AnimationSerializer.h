@@ -5,9 +5,10 @@
 #include <fstream>
 #include <unordered_map>
 #include <nlohmann/json.hpp>
-#include "AnimatorController.h"
 
 using json = nlohmann::json;
+
+class AnimatorController;
 
 class AnimationSerializer
 {
