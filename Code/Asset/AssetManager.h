@@ -32,6 +32,8 @@ public:
 	void AddSprites(std::vector<Sprite>& sprites);
 	void RemoveSprites(std::vector<Sprite>& sprites);
 
+	Asset* GetAssetByID(UniqueID id);
+
 	//SpriteAsset* GetSpriteAsset(const std::string& name);
 	//void AddSpriteAssets(std::vector<SpriteAsset>& spriteAssets);
 	//void RemoveSpriteAssets(std::vector<SpriteAsset>& spriteAssets);
@@ -43,6 +45,7 @@ public:
 protected:
 	std::map<std::string, std::unique_ptr<Scene>> m_sceneMap;
 	std::map<std::string, std::unique_ptr<Asset>> m_assetMap;
+	std::map<UniqueID, Asset*> m_assetIDMap;
 	//std::map<std::string, SpriteAsset*> m_spriteAssetMap;
 	std::map<std::string, Sprite*> m_spriteMap;
 	std::map<std::string, std::unique_ptr<AnimatorControllerAsset>> m_animControllerMap;
