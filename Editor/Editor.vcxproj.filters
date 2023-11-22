@@ -263,5 +263,8 @@
     <ClInclude Include="Code\EditorGUI\Inspectors\ImGui_AnimatorInspector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Code\Animator\ImGui_AnimatorState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

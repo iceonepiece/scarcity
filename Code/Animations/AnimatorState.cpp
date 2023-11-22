@@ -2,9 +2,16 @@
 #include "AnimatorController.h"
 #include "Core/Timer.h"
 
-AnimatorState::AnimatorState()
+AnimatorState::AnimatorState(const std::string& name)
+	: m_name(name)
 	//: m_spriteAnimation(SpriteAnimation())
 {
+}
+
+AnimatorState::~AnimatorState()
+{
+	for (auto& transition : m_transitions)
+		delete transition;
 }
 
 AnimatorState::AnimatorState(SpriteAnimation spriteAnimation)
@@ -19,6 +26,25 @@ AnimatorState& AnimatorState::operator=(const AnimatorState& other)
 	m_done = other.IsDone();
 
 	return *this;
+}
+
+void AnimatorState::AddTransition(AnimatorTransition* transition)
+{
+	m_transitions.push_back(transition);
+}
+
+bool AnimatorState::RemoveTransition(AnimatorState* toState)
+{
+	for (auto it = m_transitions.begin(); it != m_transitions.end(); ++it)
+	{
+		if (toState == (*it)->GetNextState())
+		{
+			m_transitions.erase(it);
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void AnimatorState::Process(AnimatorController& fsm)

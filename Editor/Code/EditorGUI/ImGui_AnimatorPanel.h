@@ -51,7 +51,7 @@ struct Node
 	/// Flag indicating that node is selected by the user.
 	bool Selected = false;
 	/// Node position on the canvas.
-	ImVec2 Pos{};
+	ImVec2 pos{};
 	/// List of node connections.
 	std::vector<Connection> Connections{};
 	/// A list of input slots current node has.
@@ -89,11 +89,14 @@ public:
 	~ImGui_AnimatorPanel();
 
 	void Render();
+
+	void RenderAnimatorState(AnimatorState& state);
+
 	void ClearSelection();
-	void SetAnimatorController(AnimatorController& controller);
+	void SetAnimatorController(AnimatorController* controller);
 
 private:
-	inline static AnimatorController s_animController;
+	inline static AnimatorController* s_animController = nullptr;
 
 	ImNodes::Ez::Context* m_context;
 	bool m_toClear = false;
@@ -130,7 +133,10 @@ private:
 		*/
 	};
 
-	AnimatorController& m_animController;
+	AnimatorController* m_animController;
 	std::vector<Node*> nodes;
 	EditorLayer& m_editor;
+
+	size_t m_stateCount = 0;
+	AnimatorState* m_selectedState = nullptr;
 };

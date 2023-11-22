@@ -1,5 +1,6 @@
 #include "AnimatorTransition.h"
-#include "AnimatorController.h"
+#include "Animations/AnimatorController.h"
+#include "Animations/AnimatorState.h"
 
 void AnimatorTransition::AddCondition(ConditionFunction fn)
 {

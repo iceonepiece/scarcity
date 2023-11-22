@@ -2,8 +2,10 @@
 
 #include <string>
 #include <unordered_map>
+#include <memory>
 #include <variant>
 #include <functional>
+#include "Asset/Asset.h"
 #include "AnimatorState.h"
 #include "AnimatorTransition.h"
 
@@ -17,13 +19,20 @@ struct AnimatorParameter
     ParameterType value;
 };
 
-class AnimatorController
+class AnimatorController : public Asset
 {
 public:
+    AnimatorController(const std::filesystem::path& path = "");
+    virtual ~AnimatorController();
 
+    void AddState(AnimatorState* state);
     void AddState(const std::string& name, AnimatorState state);
     void AddTransition(const std::string& name, AnimatorTransition transition);
     void Process();
+
+    AnimatorState& GetAnyState() { return *m_anyState; }
+
+
 
     inline AnimatorState* GetCurrentState()
     {
@@ -52,6 +61,11 @@ public:
         }
     }
 
+    std::vector<AnimatorState*>& GetStates()
+	{
+		return m_states;
+	}
+
     std::vector<AnimatorParameter>& GetParameters()
     {
         return m_parameters;
@@ -61,11 +75,11 @@ private:
     std::vector<AnimatorParameter> m_parameters;
     std::unordered_map<std::string, size_t> m_paramMap;
 
-    std::vector<AnimatorState> m_states;
+    std::vector<AnimatorState*> m_states;
 
     AnimatorState* m_currentState;
     AnimatorState* m_defaultState;
-    AnimatorState m_anyState;
+    AnimatorState* m_anyState = nullptr;
 
     std::string m_currentStateName;
 

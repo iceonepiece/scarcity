@@ -160,7 +160,7 @@ public:
 
 	void SetAnimatorController(AnimatorController& animController)
 	{
-		m_animatorPanel.SetAnimatorController(animController);
+		m_animatorPanel.SetAnimatorController(&animController);
 	}
 
 private:

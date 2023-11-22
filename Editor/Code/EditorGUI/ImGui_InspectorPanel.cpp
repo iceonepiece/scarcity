@@ -27,7 +27,7 @@ void ImGui_InspectorPanel::Render()
     }
     else if (m_editor.GetSelectedObject().type == EditorObjectType::AnimatorState)
     {
-        if (Node* animatorState = reinterpret_cast<Node*>(m_editor.GetSelectedObject().objectPtr))
+        if (AnimatorState* animatorState = reinterpret_cast<AnimatorState*>(m_editor.GetSelectedObject().objectPtr))
         {
             ImGui_AnimatorInspector::Render(*animatorState);
         }

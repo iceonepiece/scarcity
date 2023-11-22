@@ -144,7 +144,7 @@ void ImGuiAssetPanel::RenderAudio(AudioAsset& audioAsset, ImGuiTreeNodeFlags fla
 	}
 }
 
-void ImGuiAssetPanel::RenderAnimatorController(AnimatorControllerAsset& animControllerAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
+void ImGuiAssetPanel::RenderAnimatorController(AnimatorController& animControllerAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
 {
 	std::string useIcon = (ICON_FA_PERSON_RUNNING " ");
 
@@ -198,7 +198,7 @@ void ImGuiAssetPanel::Render()
 		if (ImGui::Selectable("Animator Controller"))
 		{
 			AnimatorController animController;
-			AnimationSerializer::Serialize(animController, "New Animator Controller");
+			AnimationSerializer::Serialize(animController, m_currentDirectory / "New Animator Controller.controller");
 
 		}
 
@@ -304,13 +304,13 @@ void ImGuiAssetPanel::Render()
 			}
 			else if (asset->GetType() == AssetType::AnimatorController)
 			{
-				AnimatorControllerAsset* animControllerAsset = static_cast<AnimatorControllerAsset*>(asset);
+				AnimatorController* animControllerAsset = static_cast<AnimatorController*>(asset);
 				RenderAnimatorController(*animControllerAsset, flags, [&]()
 				{
 					if (ImGui::IsItemClicked())
 					{
 						m_editor.SetSelectedObject(EditorObjectType::Asset, animControllerAsset);
-						m_editor.SetAnimatorController(*animControllerAsset->GetController());
+						m_editor.SetAnimatorController(*animControllerAsset);
 					}
 				});
 			}

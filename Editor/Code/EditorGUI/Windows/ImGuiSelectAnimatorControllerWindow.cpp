@@ -10,7 +10,7 @@ ImGuiSelectAnimatorControllerWindow::ImGuiSelectAnimatorControllerWindow(EditorL
 
 void ImGuiSelectAnimatorControllerWindow::Render()
 {
-	auto& animControllerMap = Application::Get().GetAssetManager().GetAnimatorControllerAssets();
+	auto& animControllerMap = Application::Get().GetAssetManager().GetAnimatorControllers();
 
 	for (auto& animController : animControllerMap)
 	{

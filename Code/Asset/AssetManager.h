@@ -6,7 +6,7 @@
 #include <string>
 #include <filesystem>
 #include "Asset/Asset.h"
-#include "Asset/AnimatorControllerAsset.h"
+#include "Animations/AnimatorController.h"
 
 class Scene;
 
@@ -39,7 +39,7 @@ public:
 	//void RemoveSpriteAssets(std::vector<SpriteAsset>& spriteAssets);
 
 	AnimatorController* GetAnimatorController(const std::string& name);
-	std::map<std::string, std::unique_ptr<AnimatorControllerAsset>>& GetAnimatorControllerAssets();
+	std::map<std::string, std::unique_ptr<AnimatorController>>& GetAnimatorControllers();
 
 
 protected:
@@ -48,7 +48,7 @@ protected:
 	std::map<UniqueID, Asset*> m_assetIDMap;
 	//std::map<std::string, SpriteAsset*> m_spriteAssetMap;
 	std::map<std::string, Sprite*> m_spriteMap;
-	std::map<std::string, std::unique_ptr<AnimatorControllerAsset>> m_animControllerMap;
+	std::map<std::string, std::unique_ptr<AnimatorController>> m_animControllerMap;
 
 	std::unordered_map<std::string, std::unique_ptr<Texture>> m_textures;
 };

@@ -79,7 +79,6 @@
     <ClInclude Include="Code\Animations\AnimatorController.h" />
     <ClInclude Include="Code\Animations\AnimatorState.h" />
     <ClInclude Include="Code\Animations\AnimatorTransition.h" />
-    <ClInclude Include="Code\Asset\AnimatorControllerAsset.h" />
     <ClInclude Include="Code\Asset\AssetManager.h" />
     <ClInclude Include="Code\Asset\AudioAsset.h" />
     <ClInclude Include="Code\Asset\NativeScriptAsset.h" />

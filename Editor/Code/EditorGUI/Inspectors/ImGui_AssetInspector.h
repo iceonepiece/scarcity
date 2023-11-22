@@ -4,7 +4,7 @@
 #include "Graphics/Sprite.h"
 #include "Asset/PrefabAsset.h"
 #include "Asset/AudioAsset.h"
-#include "Asset/AnimatorControllerAsset.h"
+#include "Animations/AnimatorController.h"
 
 class ImGui_AssetInspector
 {
@@ -14,5 +14,5 @@ public:
 	static void RenderImage(Image& image);
 	static void RenderSprite(Sprite& sprite);
 	static void RenderAudioAsset(AudioAsset& audioAsset);
-	static void RenderAnimatorControllerAsset(AnimatorControllerAsset& animatorAsset);
+	static void RenderAnimatorController(AnimatorController& animController);
 };

@@ -37,6 +37,8 @@ public:
 
     inline std::string GetNextStateName() { return m_nextStateName; }
     inline void SetNextStateName(const std::string& name) { m_nextStateName = name; }
+    AnimatorState* GetNextState() { return m_nextState; }
+    void SetNextState(AnimatorState* state) { m_nextState = state; }
 
 protected:
     std::vector<ConditionFunction> m_conditionFunctions;

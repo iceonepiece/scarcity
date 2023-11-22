@@ -14,5 +14,5 @@ class AnimationSerializer
 {
 public:
 	static void Serialize(AnimatorController& controller, const std::filesystem::path& filePath);
-	static AnimatorController* Deserialize(const std::filesystem::path& filepath);
+	static void Deserialize(AnimatorController& controller, const std::filesystem::path& filepath);
 };

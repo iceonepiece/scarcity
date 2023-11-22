@@ -1,6 +1,27 @@
 #include "AnimatorController.h"
 #include <iostream>
 
+AnimatorController::AnimatorController(const std::filesystem::path& path)
+	: Asset(path, AssetType::AnimatorController)
+    , m_defaultState(nullptr)
+    , m_anyState(new AnimatorState("Any State"))
+{
+    AnimationSerializer::Deserialize(*this, path);
+}
+
+AnimatorController::~AnimatorController()
+{
+    delete m_anyState;
+
+    for (auto& state : m_states)
+        delete state;
+}
+
+void AnimatorController::AddState(AnimatorState* state)
+{
+    m_states.push_back(state);
+}
+
 void AnimatorController::AddState(const std::string& name, AnimatorState state)
 {
     //m_states.insert({ name, state });

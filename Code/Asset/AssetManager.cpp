@@ -72,7 +72,7 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
 	{
 		std::cout << "[Animator Controller] : " << path << '\n';
 		//m_animControllerMap.insert({ path.string(), std::make_unique<AnimatorControllerAsset>(path) });
-		std::unique_ptr<AnimatorControllerAsset> animControllerAsset = std::make_unique<AnimatorControllerAsset>(path);
+		std::unique_ptr<AnimatorController> animControllerAsset = std::make_unique<AnimatorController>(path);
 		m_assetMap.insert({ path.string(), std::move(animControllerAsset) });
 	}
     else if (FileSystem::IsAudioFile(path))
@@ -168,12 +168,12 @@ void AssetManager::RemoveSprites(std::vector<Sprite>& sprites)
 AnimatorController* AssetManager::GetAnimatorController(const std::string& name)
 {
     if (m_animControllerMap.find(name) != m_animControllerMap.end())
-        return m_animControllerMap[name]->GetController();
+        return m_animControllerMap[name].get();
 
     return nullptr;
 }
 
-std::map<std::string, std::unique_ptr<AnimatorControllerAsset>>& AssetManager::GetAnimatorControllerAssets()
+std::map<std::string, std::unique_ptr<AnimatorController>>& AssetManager::GetAnimatorControllers()
 {
 	return m_animControllerMap;
 }

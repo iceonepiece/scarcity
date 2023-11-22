@@ -1,10 +1,11 @@
 #include "ImGui_AnimatorInspector.h"
 #include "../ImGui_AnimatorPanel.h"
+#include "Animations/AnimatorState.h"
 #include <imgui/imgui_stdlib.h>
 
-void ImGui_AnimatorInspector::Render(Node& node)
+void ImGui_AnimatorInspector::Render(AnimatorState& state)
 {
-	ImGui::InputText("Title", &(node.title));
+	ImGui::InputText("Title", &state.m_name);
 
 	const char* motions[] = { "None", "Square", "Circle" };
 	int selectedIndex = 0;
@@ -25,5 +26,5 @@ void ImGui_AnimatorInspector::Render(Node& node)
 		ImGui::EndCombo();
 	}
 
-	ImGui::InputFloat("Speed", &node.speed);
+	ImGui::InputFloat("Speed", &state.m_speed);
 }
