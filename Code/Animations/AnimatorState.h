@@ -52,13 +52,21 @@ public:
     AnimationClip* m_motion;
     float m_speed;
 
-    void AddTransition(AnimatorTransition* transition);
+    void AddOutgoingTransition(AnimatorTransition* transition);
+    void AddIncomingTransition(AnimatorTransition* transition);
+
+    bool RemoveOutgoingTransition(AnimatorTransition* transition);
+    bool RemoveIncomingTransition(AnimatorTransition* transition);
+
     bool RemoveTransition(AnimatorState* toState);
-    std::vector<AnimatorTransition*>& GetTransitions() { return m_transitions; }
+
+    std::vector<AnimatorTransition*>& GetOutgoingTransitions() { return m_outgoingTransitions; }
+    std::vector<AnimatorTransition*>& GetIncomingTransitions() { return m_incomingTransitions; }
 
 private:
     //SpriteAnimation m_spriteAnimation;
-    std::vector<AnimatorTransition*> m_transitions;
+    std::vector<AnimatorTransition*> m_outgoingTransitions;
+    std::vector<AnimatorTransition*> m_incomingTransitions;
 
     bool m_done = false;
 

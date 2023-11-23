@@ -62,18 +62,13 @@ void ImGui_AnimatorPanel::RenderAnimatorState(AnimatorState& state)
 
             if (fromState && toState)
             {
-                AnimatorTransition* transition = new AnimatorTransition();
-                transition->SetNextState(toState);
-
-                fromState->AddTransition(transition);
+                AnimatorTransition* transition = new AnimatorTransition(fromState, toState);
             }
         }
 
-        auto& transitions = state.GetTransitions();
-
         std::vector<Connection> connections;
 
-        for (auto& transition : transitions)
+        for (auto& transition : state.GetOutgoingTransitions())
         {
             connections.push_back({
                 transition->GetNextState(),
@@ -82,6 +77,9 @@ void ImGui_AnimatorPanel::RenderAnimatorState(AnimatorState& state)
                 "Out"
             });
         }
+
+        AnimatorState* deletingFromState = nullptr;
+        AnimatorState* deletingNextState = nullptr;
 
         // Render output connections of this node
         for (const Connection& connection : connections)
@@ -94,13 +92,15 @@ void ImGui_AnimatorPanel::RenderAnimatorState(AnimatorState& state)
 
                 if (fromState && toState)
 				{
-					fromState->RemoveTransition(toState);
+                    deletingFromState = fromState;
+                    deletingNextState = toState;
 				}
-
-                // Remove deleted connections
-               // ((Node*)connection.InputNode)->DeleteConnection(connection);
-                //((Node*)connection.OutputNode)->DeleteConnection(connection);
             }
+        }
+
+        if (deletingFromState && deletingNextState)
+        {
+            deletingFromState->RemoveTransition(deletingNextState);
         }
 
 		ImNodes::Ez::EndNode();
@@ -226,9 +226,25 @@ void ImGui_AnimatorPanel::Render()
 
         RenderAnimatorState(m_animController->GetAnyState());
 
-        for (auto& state : m_animController->GetStates())
+        AnimatorState* toDeleteState = nullptr;
+
+        const auto& states = m_animController->GetStates();
+        for (int i = 0; i < states.size(); i++)
         {
-          RenderAnimatorState(*state);
+            AnimatorState* currentState = states[i];
+            RenderAnimatorState(*currentState);
+
+            if (currentState->m_selected && ImGui::IsKeyPressed(ImGuiKey_Delete) && ImGui::IsWindowFocused())
+            {
+                toDeleteState = currentState;
+            }
+        }
+
+        if (toDeleteState != nullptr)
+        {
+            m_stateCount = 0;
+            m_selectedState = nullptr;
+            m_animController->RemoveState(toDeleteState);
         }
 
         /*

@@ -33,6 +33,9 @@ void AnimationSerializer::Serialize(AnimatorController& controller, const std::f
 		}
 		controllerJson["parameters"] = parametersJson;
 
+
+		json transitionsJson = json::array();
+
 		json statesJson = json::array();
 		for (auto& state : controller.m_states)
 		{
@@ -46,11 +49,13 @@ void AnimationSerializer::Serialize(AnimatorController& controller, const std::f
 
 			stateJson["speed"] = state->m_speed;
 
-			auto& transitions = state->m_transitions;
+			auto& transitions = state->m_outgoingTransitions;
 
 			for (auto& transition : transitions)
 			{
 				json transitionJson = json::object();
+
+				transitionJson["fromState"] = state->m_name;
 				transitionJson["nextState"] = "";
 				if (transition->m_nextState != nullptr)
 					transitionJson["nextState"] = transition->m_nextState->m_name;
@@ -67,12 +72,14 @@ void AnimationSerializer::Serialize(AnimatorController& controller, const std::f
 				}
 
 				transitionJson["conditions"] = conditionsJson;
-				stateJson["transitions"].push_back(transitionJson);
+				transitionsJson.push_back(transitionJson);
 			}
 
 			statesJson.push_back(stateJson);
 		}
+
 		controllerJson["states"] = statesJson;
+		controllerJson["transitions"] = transitionsJson;
 
 		serialized << controllerJson.dump(2);
 
@@ -83,6 +90,8 @@ void AnimationSerializer::Deserialize(AnimatorController& controller, const std:
 {
 	std::cout << "Deserialize AnimatorController: " << filepath << std::endl;
 	std::ifstream deserialzed(filepath);
+
+	std::unordered_map<std::string, AnimatorState*> statesMap;
 
 	if (deserialzed.is_open())
 	{
@@ -119,6 +128,19 @@ void AnimationSerializer::Deserialize(AnimatorController& controller, const std:
 			state->m_motion = nullptr;
 
 			controller.AddState(state);
+			statesMap[name] = state;
+		}
+
+		json transitionsJson = controllerJson["transitions"];
+		for (auto& transitionJson : transitionsJson)
+		{
+			std::string fromState = transitionJson["fromState"].get<std::string>();
+			std::string nextState = transitionJson["nextState"].get<std::string>();
+
+			if (statesMap.find(fromState) == statesMap.end() || statesMap.find(nextState) == statesMap.end())
+				continue;
+
+			AnimatorTransition* transition = new AnimatorTransition(statesMap[fromState], statesMap[nextState]);
 		}
 	}
 	else

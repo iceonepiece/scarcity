@@ -22,6 +22,20 @@ void AnimatorController::AddState(AnimatorState* state)
     m_states.push_back(state);
 }
 
+void AnimatorController::RemoveState(AnimatorState* state)
+{
+    for (auto it = m_states.begin(); it != m_states.end(); ++it)
+    {
+        if (*it == state)
+        {
+			delete* it;
+			m_states.erase(it);
+
+			break;
+		}
+	}
+}
+
 void AnimatorController::AddState(const std::string& name, AnimatorState state)
 {
     //m_states.insert({ name, state });

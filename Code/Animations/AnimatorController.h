@@ -26,6 +26,8 @@ public:
     virtual ~AnimatorController();
 
     void AddState(AnimatorState* state);
+    void RemoveState(AnimatorState* state);
+
     void AddState(const std::string& name, AnimatorState state);
     void AddTransition(const std::string& name, AnimatorTransition transition);
     void Process();

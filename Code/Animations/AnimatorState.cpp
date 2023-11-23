@@ -4,13 +4,20 @@
 
 AnimatorState::AnimatorState(const std::string& name)
 	: m_name(name)
-	//: m_spriteAnimation(SpriteAnimation())
+	, m_position(0.0f, 0.0f)
+	, m_selected(false)
+	, m_motion(nullptr)
+	, m_speed(1.0f)
+	, m_done(false)
 {
 }
 
 AnimatorState::~AnimatorState()
 {
-	for (auto& transition : m_transitions)
+	for (auto& transition : m_outgoingTransitions)
+		delete transition;
+
+	for (auto& transition : m_incomingTransitions)
 		delete transition;
 }
 
@@ -28,18 +35,51 @@ AnimatorState& AnimatorState::operator=(const AnimatorState& other)
 	return *this;
 }
 
-void AnimatorState::AddTransition(AnimatorTransition* transition)
+void AnimatorState::AddOutgoingTransition(AnimatorTransition* transition)
 {
-	m_transitions.push_back(transition);
+	m_outgoingTransitions.push_back(transition);
+}
+void AnimatorState::AddIncomingTransition(AnimatorTransition* transition)
+{
+	m_incomingTransitions.push_back(transition);
+}
+
+bool AnimatorState::RemoveOutgoingTransition(AnimatorTransition* transition)
+{
+	for (auto it = m_outgoingTransitions.begin(); it != m_outgoingTransitions.end(); ++it)
+	{
+		if (transition == *it)
+		{
+			m_outgoingTransitions.erase(it);
+
+			return true;
+		}
+	}
+
+	return false;
 }
 
 bool AnimatorState::RemoveTransition(AnimatorState* toState)
 {
-	for (auto it = m_transitions.begin(); it != m_transitions.end(); ++it)
+	for (int i = 0; i < m_outgoingTransitions.size(); ++i)
 	{
-		if (toState == (*it)->GetNextState())
+		if (toState == m_outgoingTransitions[i]->GetNextState())
 		{
-			m_transitions.erase(it);
+			delete m_outgoingTransitions[i];
+
+			return true;
+		}
+	}
+}
+
+bool AnimatorState::RemoveIncomingTransition(AnimatorTransition* transition)
+{
+	for (auto it = m_incomingTransitions.begin(); it != m_incomingTransitions.end(); ++it)
+	{
+		if (transition == *it)
+		{
+			m_incomingTransitions.erase(it);
+
 			return true;
 		}
 	}
