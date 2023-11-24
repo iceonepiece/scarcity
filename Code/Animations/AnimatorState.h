@@ -16,6 +16,9 @@ public:
     AnimatorState(const std::string& name = "New State");
     ~AnimatorState();
 
+    void SetController(AnimatorController* controller) { m_controller = controller; }
+    AnimatorController* GetController() { return m_controller; }
+
     /*
     AnimatorState(const AnimatorState& other)
         : m_spriteAnimation(other.m_spriteAnimation)
@@ -64,6 +67,7 @@ public:
     std::vector<AnimatorTransition*>& GetIncomingTransitions() { return m_incomingTransitions; }
 
 private:
+    AnimatorController* m_controller;
     //SpriteAnimation m_spriteAnimation;
     std::vector<AnimatorTransition*> m_outgoingTransitions;
     std::vector<AnimatorTransition*> m_incomingTransitions;

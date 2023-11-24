@@ -19,6 +19,22 @@ struct AnimatorParameter
     ParameterType value;
 };
 
+enum class ConditionMode
+{
+    True,
+    False,
+    Greater,
+    Less,
+    Equals,
+    NotEqual
+};
+
+struct AnimatorCondition
+{
+    ConditionMode mode;
+    AnimatorParameter parameter;
+};
+
 class AnimatorController : public Asset
 {
 public:

@@ -4,6 +4,7 @@
 #include <imgui/imgui.h>
 #include "File/FileSystem.h"
 #include "Components/Components.h"
+#include "Inspectors/ImGui_AnimatorInspector.h"
 
 class EditorLayer;
 
@@ -36,4 +37,5 @@ public:
 
 private:
 	EditorLayer& m_editor;
+	ImGui_AnimatorInspector m_animatorInspector;
 };

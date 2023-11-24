@@ -29,7 +29,7 @@ void ImGui_InspectorPanel::Render()
     {
         if (AnimatorState* animatorState = reinterpret_cast<AnimatorState*>(m_editor.GetSelectedObject().objectPtr))
         {
-            ImGui_AnimatorInspector::Render(*animatorState);
+            m_animatorInspector.Render(*animatorState);
         }
     }
 

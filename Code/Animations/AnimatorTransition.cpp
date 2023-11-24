@@ -22,9 +22,9 @@ AnimatorTransition::~AnimatorTransition()
 		m_nextState->RemoveIncomingTransition(this);
 }
 
-void AnimatorTransition::AddCondition(ConditionFunction fn)
+void AnimatorTransition::AddCondition(const AnimatorCondition& condition)
 {
-    m_conditionFunctions.emplace_back(fn);
+    m_conditions.emplace_back(condition);
 }
 
 bool AnimatorTransition::CheckConditions(AnimatorController& fsm)

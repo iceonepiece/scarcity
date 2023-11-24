@@ -19,6 +19,7 @@ AnimatorController::~AnimatorController()
 
 void AnimatorController::AddState(AnimatorState* state)
 {
+    state->SetController(this);
     m_states.push_back(state);
 }
 

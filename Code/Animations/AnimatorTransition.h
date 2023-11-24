@@ -6,24 +6,7 @@
 
 class AnimatorController;
 class AnimatorState;
-
-enum class ConditionMode
-{
-    None,
-    True,
-    False,
-    Greater,
-    Less,
-    Equals,
-    NotEqual
-};
-
-struct AnimatorCondition
-{
-    ConditionMode mode;
-    std::string parameter;
-    float threshold;
-};
+struct AnimatorCondition;
 
 using ConditionFunction = std::function<bool(AnimatorController&)>;
 
@@ -33,11 +16,14 @@ public:
     AnimatorTransition(AnimatorState* fromState, AnimatorState* nextState);
     ~AnimatorTransition();
 
-    void AddCondition(ConditionFunction fn);
+    void AddCondition(const AnimatorCondition& condition);
     bool CheckConditions(AnimatorController& fsm);
 
+    AnimatorState* GetFromState() { return m_fromState; }
     AnimatorState* GetNextState() { return m_nextState; }
     void SetNextState(AnimatorState* state);
+
+    std::vector<AnimatorCondition>& GetConditions() { return m_conditions; }
 
 protected:
     std::vector<ConditionFunction> m_conditionFunctions;

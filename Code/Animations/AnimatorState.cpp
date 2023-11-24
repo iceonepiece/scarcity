@@ -4,6 +4,7 @@
 
 AnimatorState::AnimatorState(const std::string& name)
 	: m_name(name)
+	, m_controller(nullptr)
 	, m_position(0.0f, 0.0f)
 	, m_selected(false)
 	, m_motion(nullptr)

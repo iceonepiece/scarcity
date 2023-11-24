@@ -65,8 +65,26 @@ void AnimationSerializer::Serialize(AnimatorController& controller, const std::f
 				{
 					json conditionJson = json::object();
 					conditionJson["mode"] = (int)condition.mode;
-					conditionJson["parameter"] = condition.parameter;
-					conditionJson["threshold"] = condition.threshold;
+					conditionJson["parameter"] = condition.parameter.name;
+
+					switch (condition.parameter.value.index())
+					{
+						case 0:
+							conditionJson["threshold"] = std::get<float>(condition.parameter.value);
+							break;
+
+						case 1:
+							conditionJson["threshold"] = std::get<int>(condition.parameter.value);
+							break;
+
+						case 2:
+							conditionJson["threshold"] = std::get<bool>(condition.parameter.value);
+							break;
+
+						case 3:
+							conditionJson["threshold"] = 0;
+							break;
+					}
 
 					conditionsJson.push_back(conditionJson);
 				}
