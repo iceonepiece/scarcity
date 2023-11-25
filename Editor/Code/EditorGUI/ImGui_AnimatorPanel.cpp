@@ -174,8 +174,12 @@ void ImGui_AnimatorPanel::Render()
 
         if (ImGui::BeginTable("table1", 2))
         {
-            for (auto& param : parameters)
+            int deleteIndex = -1;
+
+            for (int i = 0; i < parameters.size(); i++)
             {
+                AnimatorParameter& param = parameters[i];
+
                 ParameterType value = param.value;
 
                 ImGui::TableNextRow();
@@ -186,9 +190,9 @@ void ImGui_AnimatorPanel::Render()
 
                 //std::string text = ICON_FA_GEAR + " " + param.name;
 
-                if (ImGui::Button(ICON_FA_GEAR))
+                if (ImGui::Button(ICON_FA_TRASH))
                 {
-                    openPopup = true;
+                    deleteIndex = i;
                 }
 
                 ImGui::SameLine();
@@ -212,6 +216,11 @@ void ImGui_AnimatorPanel::Render()
 
                 ImGui::PopID();
             }
+
+            if (deleteIndex != -1)
+            {
+				m_animController->RemoveParameter(parameters[deleteIndex].name);
+			}
 
             ImGui::EndTable();
         }

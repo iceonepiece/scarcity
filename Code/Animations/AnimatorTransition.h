@@ -17,6 +17,7 @@ public:
     ~AnimatorTransition();
 
     void AddCondition(const AnimatorCondition& condition);
+    void RemoveCondition(size_t index);
     bool CheckConditions(AnimatorController& fsm);
 
     AnimatorState* GetFromState() { return m_fromState; }

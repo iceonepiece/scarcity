@@ -27,6 +27,11 @@ void AnimatorTransition::AddCondition(const AnimatorCondition& condition)
     m_conditions.emplace_back(condition);
 }
 
+void AnimatorTransition::RemoveCondition(size_t index)
+{
+	m_conditions.erase(m_conditions.begin() + index);
+}
+
 bool AnimatorTransition::CheckConditions(AnimatorController& fsm)
 {
     for (auto& function : m_conditionFunctions)

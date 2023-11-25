@@ -3,6 +3,7 @@
 #include "Animations/AnimatorState.h"
 #include "../ImGuiUtils.h"
 #include <imgui/imgui_stdlib.h>
+#include <IconsFontAwesome6.h>
 
 void ImGui_AnimatorInspector::Render(AnimatorState& state)
 {
@@ -49,7 +50,12 @@ void ImGui_AnimatorInspector::Render(AnimatorState& state)
 
 	if (isSelected && m_selectedTransition != nullptr)
 	{
-		if (ImGui::Button("Add condition"))
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(8, 16));
+		ImGui::BeginChild("Conditions", ImVec2(0, 0), true);
+
+		ImGui::Text("Conditions");
+		ImGui::SameLine();
+		if (ImGui::Button("Add"))
 		{
 			ImGui::OpenPopup("AddConditionPopup");
 		}
@@ -62,7 +68,7 @@ void ImGui_AnimatorInspector::Render(AnimatorState& state)
 				{
 					ConditionMode selectedMode = ConditionMode::Greater;
 
-					if (parameter.value.index() == 2)
+					if (parameter.value.index() == 2 || parameter.value.index() == 3)
 						selectedMode = ConditionMode::True;
 
 					m_selectedTransition->AddCondition({ selectedMode, parameter });
@@ -71,6 +77,9 @@ void ImGui_AnimatorInspector::Render(AnimatorState& state)
 
 			ImGui::EndPopup();
 		}
+
+
+		int deleteIndex = -1;
 
 		if (ImGui::BeginTable("table1", 3))
 		{
@@ -85,6 +94,10 @@ void ImGui_AnimatorInspector::Render(AnimatorState& state)
 
 				ImGui::TableSetColumnIndex(0);
 
+				if (ImGui::Button(ICON_FA_TRASH))
+					deleteIndex = i;
+
+				ImGui::SameLine();
 				ImGui::Text(conditions[i].parameter.name.c_str());
 
 				if (conditions[i].parameter.value.index() == 0)
@@ -115,6 +128,7 @@ void ImGui_AnimatorInspector::Render(AnimatorState& state)
 				{
 					ImGui::TableSetColumnIndex(1);
 					ImGuiUtils::RenderDropdownList("##mode", { "True", "False" }, selectedIndex);
+					conditions[i].parameter.value = selectedIndex == 0 ? true : false;
 				}
 
 				conditions[i].mode = (ConditionMode)selectedIndex;
@@ -124,6 +138,11 @@ void ImGui_AnimatorInspector::Render(AnimatorState& state)
 
 			ImGui::EndTable();
 		}
-	}
 
+		if (deleteIndex != -1)
+			m_selectedTransition->RemoveCondition(deleteIndex);
+
+		ImGui::EndChild();
+		ImGui::PopStyleVar();
+	}
 }

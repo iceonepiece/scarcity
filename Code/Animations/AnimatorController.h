@@ -70,14 +70,8 @@ public:
 
     bool ChangeParameterName(std::string oldName, std::string newName);
 
-    void AddParameter(const std::string& name, ParameterType value)
-    {
-        if (m_paramMap.find(name) == m_paramMap.end())
-        {
-            m_parameters.push_back({ name, value });
-            m_paramMap[name] = m_parameters.size() - 1;
-        }
-    }
+    void AddParameter(const std::string& name, ParameterType value);
+    void RemoveParameter(const std::string& name);
 
     std::vector<AnimatorState*>& GetStates()
 	{
@@ -89,9 +83,17 @@ public:
         return m_parameters;
     }
 
+    AnimatorParameter* GetParameter(const std::string& name)
+    {
+        if (m_paramMap.find(name) != m_paramMap.end())
+            return m_paramMap[name];
+
+        return nullptr;
+	}
+
 private:
     std::vector<AnimatorParameter> m_parameters;
-    std::unordered_map<std::string, size_t> m_paramMap;
+    std::unordered_map<std::string, AnimatorParameter*> m_paramMap;
 
     std::vector<AnimatorState*> m_states;
 

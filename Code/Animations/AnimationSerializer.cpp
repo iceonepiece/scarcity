@@ -132,6 +132,7 @@ void AnimationSerializer::Deserialize(AnimatorController& controller, const std:
 			else if (type == 3)
 				value = Trigger{};
 
+
 			controller.AddParameter(name, value);
 		}
 
@@ -159,6 +160,30 @@ void AnimationSerializer::Deserialize(AnimatorController& controller, const std:
 				continue;
 
 			AnimatorTransition* transition = new AnimatorTransition(statesMap[fromState], statesMap[nextState]);
+
+			json conditionsJson = transitionJson["conditions"];
+			for (auto& conditionJson : conditionsJson)
+			{
+				AnimatorCondition condition;
+				condition.mode = (ConditionMode)conditionJson["mode"].get<int>();
+				condition.parameter.name = conditionJson["parameter"].get<std::string>();
+
+				if (AnimatorParameter* p = controller.GetParameter(condition.parameter.name))
+				{
+					ParameterType value = conditionJson["threshold"].get<float>();
+
+					if (p->value.index() == 1)
+						value = conditionJson["threshold"].get<int>();
+					else if (p->value.index() == 2)
+						value = conditionJson["threshold"].get<bool>();
+					else if (p->value.index() == 3)
+						value = Trigger{};
+
+					condition.parameter.value = value;
+
+					transition->AddCondition(condition);
+				}
+			}
 		}
 	}
 	else
