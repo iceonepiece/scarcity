@@ -116,7 +116,7 @@ void ImGui_AnimatorPanel::RenderAnimatorState(AnimatorState& state)
 void ImGui_AnimatorPanel::Render()
 {
     static std::string currentNameEditing = "";
-    static int selected_fish = -1;
+    static int selectedParameterType = -1;
 
     m_stateCount = 0;
     m_selectedState = nullptr;
@@ -153,19 +153,8 @@ void ImGui_AnimatorPanel::Render()
             {
                 if (ImGui::Selectable(names[i]))
                 {
-                    selected_fish = i;
+                    selectedParameterType = i;
                     openPopup = true;
-
-                    if (selected_fish == 0)
-                        m_animController->AddParameter("", 0.0f);
-                    else if (selected_fish == 1)
-                        m_animController->AddParameter("", 0);
-                    else if (selected_fish == 2)
-                        m_animController->AddParameter("", false);
-                    else if (selected_fish == 3)
-                        m_animController->AddParameter("", Trigger{});
-
-                    editingIndex = m_animController->GetParameters().size() - 1;
                 }
             }
 
@@ -190,7 +179,7 @@ void ImGui_AnimatorPanel::Render()
 
                 //std::string text = ICON_FA_GEAR + " " + param.name;
 
-                if (ImGui::Button(ICON_FA_TRASH))
+                if (ImGui::Button(ICON_FA_MINUS))
                 {
                     deleteIndex = i;
                 }
@@ -389,6 +378,10 @@ void ImGui_AnimatorPanel::Render()
             prevName = m_animController->GetParameters()[editingIndex].name;
             newName = prevName;
         }
+        else
+        {
+            newName = "";
+        }
 
         ImGui::OpenPopup("Parameter Editor");
     }
@@ -403,8 +396,20 @@ void ImGui_AnimatorPanel::Render()
         {
             if (editingIndex != -1)
                 m_animController->ChangeParameterName(prevName, newName);
-           // else
-              //  m_animController->AddParameter(newName, 0);
+            else
+            {
+                if (selectedParameterType == 0)
+                    m_animController->AddParameter(newName, 0.0f);
+
+                else if (selectedParameterType == 1)
+                    m_animController->AddParameter(newName, 0);
+
+                else if (selectedParameterType == 2)
+                    m_animController->AddParameter(newName, false);
+
+                else if (selectedParameterType == 3)
+                    m_animController->AddParameter(newName, Trigger{});
+            }
 
             ImGui::CloseCurrentPopup();
         }

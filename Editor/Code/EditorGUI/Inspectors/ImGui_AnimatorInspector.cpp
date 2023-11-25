@@ -50,6 +50,9 @@ void ImGui_AnimatorInspector::Render(AnimatorState& state)
 
 	if (isSelected && m_selectedTransition != nullptr)
 	{
+		AnimatorController* controller = state.GetController();
+		auto& parameters = controller->GetParameters();
+
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(8, 16));
 		ImGui::BeginChild("Conditions", ImVec2(0, 0), true);
 
@@ -62,8 +65,10 @@ void ImGui_AnimatorInspector::Render(AnimatorState& state)
 
 		if (ImGui::BeginPopup("AddConditionPopup"))
 		{
-			for (auto& parameter : state.GetController()->GetParameters())
+			for (int i = 0; i < parameters.size(); i++)
 			{
+				AnimatorParameter& parameter = parameters[i];
+
 				if (ImGui::MenuItem(parameter.name.c_str()))
 				{
 					ConditionMode selectedMode = ConditionMode::Greater;
@@ -94,7 +99,7 @@ void ImGui_AnimatorInspector::Render(AnimatorState& state)
 
 				ImGui::TableSetColumnIndex(0);
 
-				if (ImGui::Button(ICON_FA_TRASH))
+				if (ImGui::Button(ICON_FA_MINUS))
 					deleteIndex = i;
 
 				ImGui::SameLine();

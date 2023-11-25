@@ -79,13 +79,14 @@ void AnimatorController::Process()
 
 bool AnimatorController::ChangeParameterName(std::string oldName, std::string newName)
 {
-    if (m_paramMap.find(oldName) != m_paramMap.end() && m_paramMap.find(newName) == m_paramMap.end())
+    if (GetParameter(newName) != nullptr)
     {
-        m_paramMap[oldName]->name = newName;
-        m_paramMap[newName] = m_paramMap[oldName];
+		return false;
+    }
 
-        m_paramMap.erase(oldName);
-
+    if (AnimatorParameter* param = GetParameter(oldName))
+    {
+        param->name = newName;
         return true;
     }
 
@@ -94,28 +95,22 @@ bool AnimatorController::ChangeParameterName(std::string oldName, std::string ne
 
 void AnimatorController::AddParameter(const std::string& name, ParameterType value)
 {
-    if (m_paramMap.find(name) == m_paramMap.end())
-    {
-        m_parameters.push_back({ name, value });
-        m_paramMap[name] = &m_parameters[m_parameters.size() - 1];
-    }
+    if (GetParameter(name) != nullptr)
+		return;
+
+    m_parameters.push_back({ name, value });
 }
 
 void AnimatorController::RemoveParameter(const std::string& name)
 {
-    if (m_paramMap.find(name) != m_paramMap.end())
+    for (auto it = m_parameters.begin(); it != m_parameters.end(); ++it)
     {
-        for (auto param = m_parameters.begin(); param != m_parameters.end(); ++param)
+        if (it->name == name)
         {
-            if (param->name == name)
-            {
-				m_parameters.erase(param);
-				break;
-			}
+			m_parameters.erase(it);
+			break;
 		}
-
-		m_paramMap.erase(name);
-    }
+	}
 }
 
 void AnimatorController::SetInt(std::string name, int value)
@@ -125,7 +120,10 @@ void AnimatorController::SetInt(std::string name, int value)
 
 int AnimatorController::GetInt(std::string name)
 {
-    return std::get<int>(m_paramMap[name]->value);
+    if (AnimatorParameter* param = GetParameter(name))
+		return std::get<int>(param->value);
+
+    return 0;
 }
 
 void AnimatorController::SetBool(std::string name, bool value)
@@ -135,5 +133,8 @@ void AnimatorController::SetBool(std::string name, bool value)
 
 bool AnimatorController::GetBool(std::string name)
 {
-    return std::get<bool>(m_paramMap[name]->value);
+    if (AnimatorParameter* param = GetParameter(name))
+        return std::get<bool>(param->value);
+
+    return false;
 }

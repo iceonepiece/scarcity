@@ -85,15 +85,17 @@ public:
 
     AnimatorParameter* GetParameter(const std::string& name)
     {
-        if (m_paramMap.find(name) != m_paramMap.end())
-            return m_paramMap[name];
+        for (auto& param : m_parameters)
+        {
+			if (param.name == name)
+				return &param;
+		}
 
         return nullptr;
 	}
 
 private:
     std::vector<AnimatorParameter> m_parameters;
-    std::unordered_map<std::string, AnimatorParameter*> m_paramMap;
 
     std::vector<AnimatorState*> m_states;
 
