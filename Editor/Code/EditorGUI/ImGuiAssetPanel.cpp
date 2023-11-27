@@ -4,6 +4,8 @@
 #include <string>
 #include "Platforms/OpenGL/OpenGLTexture.h"
 #include "../EditorLayer.h"
+#include "Windows/ImGui_AnimationClipWindow.h"
+#include "Animations/AnimationClip.h"
 
 ImGuiAssetPanel::ImGuiAssetPanel(EditorLayer& editor)
 	: m_editor(editor)
@@ -146,7 +148,7 @@ void ImGuiAssetPanel::RenderAudio(AudioAsset& audioAsset, ImGuiTreeNodeFlags fla
 
 void ImGuiAssetPanel::RenderAnimatorController(AnimatorController& animControllerAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
 {
-	std::string useIcon = (ICON_FA_PERSON_RUNNING " ");
+	std::string useIcon = (ICON_FA_CIRCLE_NODES " ");
 
 	flags |= ImGuiTreeNodeFlags_Leaf;
 
@@ -158,6 +160,23 @@ void ImGuiAssetPanel::RenderAnimatorController(AnimatorController& animControlle
 	{
 		ImGui::TreePop();
 	}
+}
+
+void ImGuiAssetPanel::RenderAnimationClip(AnimationClip& animClip, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
+{
+	std::string useIcon = ICON_FA_PERSON_RUNNING;
+
+	flags |= ImGuiTreeNodeFlags_Leaf;
+
+	bool opened = ImGui::TreeNodeEx(animClip.GetPath().string().c_str(), flags, (useIcon + animClip.GetName()).c_str());
+
+	callback();
+
+	if (opened)
+	{
+		ImGui::TreePop();
+	}
+
 }
 
 
@@ -199,7 +218,12 @@ void ImGuiAssetPanel::Render()
 		{
 			AnimatorController animController;
 			AnimationSerializer::Serialize(animController, m_currentDirectory / "New Animator Controller.controller");
+		}
 
+		if (ImGui::Selectable("Animation Clip"))
+		{
+			AnimationClip animClip("");
+			AnimationSerializer::Serialize(animClip, m_currentDirectory / "New Animation.anim");
 		}
 
 		ImGui::EndPopup();
@@ -311,6 +335,22 @@ void ImGuiAssetPanel::Render()
 					{
 						m_editor.SetSelectedObject(EditorObjectType::Asset, animControllerAsset);
 						m_editor.SetAnimatorController(*animControllerAsset);
+					}
+				});
+			}
+			else if (asset->GetType() == AssetType::AnimationClip)
+			{
+				AnimationClip* animClipAsset = static_cast<AnimationClip*>(asset);
+				RenderAnimationClip(*animClipAsset, flags, [&]()
+				{
+					if (ImGui::IsItemClicked())
+						m_editor.SetSelectedObject(EditorObjectType::Asset, animClipAsset);
+
+					if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+					{
+						ImGui_AnimationClipWindow* animClipWindow = static_cast<ImGui_AnimationClipWindow*>(m_editor.GetImGuiWindow(ImGuiWindowType::AnimationClip));
+						animClipWindow->SetAnimationClip(animClipAsset);
+						animClipWindow->SetOpen(true);
 					}
 				});
 			}

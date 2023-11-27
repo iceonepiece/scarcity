@@ -32,6 +32,7 @@ public:
 	static void RenderImage(Image& image, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn = [](Sprite&, size_t){}, const std::string& note = "");
 	static void RenderAudio(AudioAsset& audioAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderAnimatorController(AnimatorController& animControllerAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
+	static void RenderAnimationClip(AnimationClip& animClip, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderNativeScript(NativeScriptAsset& nativeScriptAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderFolder(const std::filesystem::path& path, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	void RenderUnsupportedFile(const std::filesystem::path& path);

@@ -15,4 +15,5 @@ public:
 	static void RenderSprite(Sprite& sprite);
 	static void RenderAudioAsset(AudioAsset& audioAsset);
 	static void RenderAnimatorController(AnimatorController& animController);
+	static void RenderAnimationClip(AnimationClip& animClip);
 };

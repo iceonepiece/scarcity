@@ -10,15 +10,19 @@ enum class ImGuiWindowType
 	SelectSprite,
 	Tags,
 	SelectAnimatorController,
+	AnimationClip,
 };
 
-class ImGuiWindow_
+class ImGui_Window
 {
 public:
-	ImGuiWindow_(EditorLayer& editor);
-	virtual ~ImGuiWindow_() = default;
+	ImGui_Window(EditorLayer& editor);
+	virtual ~ImGui_Window() = default;
 	virtual void Render() = 0;
+
+	inline void SetOpen(bool isOpen) { m_isOpen = isOpen; }
 
 protected:
 	EditorLayer& m_editor;
+	bool m_isOpen = false;
 };

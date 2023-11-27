@@ -211,6 +211,11 @@ bool FileSystem::IsAnimatorFile(const std::filesystem::path& path)
 	return path.extension().generic_string() == ".controller";
 }
 
+bool FileSystem::IsAnimationFile(const std::filesystem::path& path)
+{
+	return path.extension().generic_string() == ".anim";
+}
+
 bool FileSystem::IsPrefabFile(const std::filesystem::path& path)
 {
 	return path.extension().generic_string() == ".prefab";

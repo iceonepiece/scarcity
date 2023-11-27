@@ -14,6 +14,7 @@
 #include "EditorGUI/Windows/ImGuiSelectSpriteWindow.h"
 #include "EditorGUI/Windows/ImGuiSelectAnimatorControllerWindow.h"
 #include "EditorGUI/Windows/ImGuiTagEditorWindow.h"
+#include "EditorGUI/Windows/ImGui_AnimationClipWindow.h"
 #include "Scene/SceneSerializer.h"
 #include "Scene/SceneManager.h"
 #include "Asset/AssetManager.h"
@@ -61,6 +62,7 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     m_imGuiWindowMap[ImGuiWindowType::SelectSprite] = std::make_unique<ImGuiSelectSpriteWindow>(*this, m_activeProject->GetDirectory());
     m_imGuiWindowMap[ImGuiWindowType::SelectAnimatorController] = std::make_unique<ImGuiSelectAnimatorControllerWindow>(*this, m_activeProject->GetDirectory());
     m_imGuiWindowMap[ImGuiWindowType::Tags] = std::make_unique<ImGuiTagEditorWindow>(*this);
+    m_imGuiWindowMap[ImGuiWindowType::AnimationClip] = std::make_unique<ImGui_AnimationClipWindow>(*this);
 
     OpenScene(m_activeProject->GetStartScene());
 
@@ -447,6 +449,8 @@ void EditorLayer::RenderImGui()
     }
 
     style.WindowMinSize.x = minWinSizeX;
+
+    GetImGuiWindow(ImGuiWindowType::AnimationClip)->Render();
 
     m_animatorPanel.Render();
     m_editorSceneViewport.Render();

@@ -157,7 +157,8 @@
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiTagEditorWindow.cpp" />
-    <ClCompile Include="Code\EditorGUI\Windows\ImGuiWindow.cpp" />
+    <ClCompile Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.cpp" />
+    <ClCompile Include="Code\EditorGUI\Windows\ImGui_Window.cpp" />
     <ClCompile Include="Code\GameLayer.cpp" />
     <ClCompile Include="Code\Gizmos\Gizmo.cpp" />
     <ClCompile Include="Code\Gizmos\GridGizmo.cpp" />
@@ -209,8 +210,8 @@
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiPrefabEditorWIndow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiTagEditorWindow.h" />
-    <ClInclude Include="Code\EditorGUI\Windows\ImGuiViewportWindow.h" />
-    <ClInclude Include="Code\EditorGUI\Windows\ImGuiWindow.h" />
+    <ClInclude Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.h" />
+    <ClInclude Include="Code\EditorGUI\Windows\ImGui_Window.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.h" />
     <ClInclude Include="Code\GameLayer.h" />
     <ClInclude Include="Code\Gizmos\Actionable.h" />

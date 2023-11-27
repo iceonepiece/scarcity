@@ -4,7 +4,7 @@
 
 
 ImGuiSelectSpriteWindow::ImGuiSelectSpriteWindow(EditorLayer& editor, const std::filesystem::path& path)
-	: ImGuiWindow_(editor)
+	: ImGui_Window(editor)
 	, m_baseDirectory(path)
 	, m_currentDirectory(path)
 {

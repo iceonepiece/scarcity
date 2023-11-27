@@ -194,3 +194,55 @@ void AnimationSerializer::Deserialize(AnimatorController& controller, const std:
 
 	deserialzed.close();
 }
+
+void AnimationSerializer::Serialize(AnimationClip& clip, const std::filesystem::path& filePath)
+{
+	std::ofstream serialized(filePath);
+
+	if (serialized.is_open())
+	{
+		json clipJson;
+
+		clipJson["imageID"] = clip.m_image != nullptr ? (uint64_t)clip.m_image->GetID() : 0;
+
+		json spriteIndicesJson = json::array();
+
+		for (auto& spriteIndex : clip.m_spriteIndices)
+			spriteIndicesJson.push_back(spriteIndex);
+
+		clipJson["spriteIndices"] = spriteIndicesJson;
+
+		serialized << clipJson.dump(2);
+	}
+}
+
+void AnimationSerializer::Deserialize(AnimationClip& clip, const std::filesystem::path& filepath)
+{
+	std::ifstream deserialzed(filepath);
+
+	if (deserialzed.is_open())
+	{
+		json clipJson = json::parse(deserialzed);
+
+		uint64_t imageID = clipJson["imageID"].get<uint64_t>();
+		clip.m_image = (Image*)Application::Get().GetAssetManager().GetAssetByID(imageID);
+
+		Application::Get().GetAssetManager().AddAssetLink(
+			[&](Asset* asset)
+			{
+				clip.m_image = dynamic_cast<Image*>(asset);
+			}
+			, imageID
+		);
+
+		json spriteIndicesJson = clipJson["spriteIndices"];
+
+		for (auto& spriteIndexJson : spriteIndicesJson)
+			clip.m_spriteIndices.push_back(spriteIndexJson.get<size_t>());
+	}
+	else
+	{
+		std::cerr << "Error opening the file!" << std::endl;
+		return;
+	}
+}

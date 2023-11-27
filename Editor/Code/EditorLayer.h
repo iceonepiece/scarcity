@@ -14,7 +14,7 @@
 #include "Helpers/FileHandler.h"
 #include "Asset/Asset.h"
 #include "Graphics/Sprite.h"
-#include "EditorGUI/Windows/ImGuiWindow.h"
+#include "EditorGUI/Windows/ImGui_Window.h"
 #include "EditorGUI/ImGuiMainMenuBar.h"
 #include "EditorGUI/ImGuiEntityProperties.h"
 #include "EditorGUI/ImGuiHierarchy.h"
@@ -125,7 +125,7 @@ public:
 
 	static Asset* GetAsset(const std::filesystem::path& path);
 
-	static ImGuiWindow_* GetImGuiWindow(ImGuiWindowType windowType)
+	static ImGui_Window* GetImGuiWindow(ImGuiWindowType windowType)
 	{
 		if (s_instance->m_imGuiWindowMap.find(windowType) != s_instance->m_imGuiWindowMap.end())
 			return s_instance->m_imGuiWindowMap.at(windowType).get();
@@ -229,5 +229,5 @@ private:
 
 	EditorSceneViewport m_editorSceneViewport;
 
-	std::unordered_map<ImGuiWindowType, std::unique_ptr<ImGuiWindow_>> m_imGuiWindowMap;
+	std::unordered_map<ImGuiWindowType, std::unique_ptr<ImGui_Window>> m_imGuiWindowMap;
 };

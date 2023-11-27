@@ -6,6 +6,7 @@
 #include <iostream>
 #include "File/MetaSerializer.h"
 #include "Audio/AudioSource.h"
+#include "Animations/AnimationClip.h"
 #include "../ImGuiComponents/ImGuiComponentRenderer.h"
 
 void ImGui_AssetInspector::Render(Asset* asset)
@@ -24,6 +25,9 @@ void ImGui_AssetInspector::Render(Asset* asset)
 
     else if (AnimatorController* animatorAsset = dynamic_cast<AnimatorController*>(asset))
         RenderAnimatorController(*animatorAsset);
+
+    else if (AnimationClip* animation = dynamic_cast<AnimationClip*>(asset))
+        RenderAnimationClip(*animation);
 }
 
 void ImGui_AssetInspector::RenderAnimatorController(AnimatorController& animController)
@@ -52,6 +56,13 @@ void ImGui_AssetInspector::RenderAnimatorController(AnimatorController& animCont
         ImGui::Text((p.first + " " + typeStr).c_str());
         */
     }
+}
+
+void ImGui_AssetInspector::RenderAnimationClip(AnimationClip& animClip)
+{
+    std::string name = animClip.GetPath().stem().string() + " (Animation Clip)";
+
+    ImGui::Text(name.c_str());
 }
 
 void ImGui_AssetInspector::RenderPrefabAsset(PrefabAsset& prefabAsset)

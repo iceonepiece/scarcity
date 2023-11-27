@@ -3,10 +3,10 @@
 #include <filesystem>
 #include <IconsFontAwesome6.h>
 #include "File/FileSystem.h"
-#include "ImGuiWindow.h"
+#include "ImGui_Window.h"
 #include "Graphics/Sprite.h"
 
-class ImGuiSelectSpriteWindow : public ImGuiWindow_
+class ImGuiSelectSpriteWindow : public ImGui_Window
 {
 public:
 	ImGuiSelectSpriteWindow(EditorLayer& editor, const std::filesystem::path& path);
