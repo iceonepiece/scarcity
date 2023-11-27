@@ -40,6 +40,19 @@ void AssetManager::InitializeAssets(const std::filesystem::path& path)
 
 		pathQueue.pop();
 	}
+
+	LinkIDsToAssets();
+}
+
+void AssetManager::LinkIDsToAssets()
+{
+	for (auto& link : m_assetLinks)
+	{
+		if (Asset* asset = GetAssetByID(link.ID))
+		{
+			link.linkFunction(asset);
+		}
+	}
 }
 
 Scene* AssetManager::GetScene(const std::string& name)
@@ -58,8 +71,14 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
         std::unique_ptr<Image> image = std::make_unique<Image>(path);
         m_assetMap.insert({ path.string(), std::move(image) });
 
-
-		m_assetIDMap.insert({ m_assetMap[path.string()]->GetID(), m_assetMap[path.string()].get()});
+		if (m_assetMap.find(path.string()) != m_assetMap.end())
+		{
+			if (Image* imagePtr = dynamic_cast<Image*>(m_assetMap[path.string()].get()))
+			{
+				m_images.push_back(imagePtr);
+				m_assetIDMap.insert({ imagePtr->GetID(), imagePtr });
+			}
+		}
     }
 	else if (FileSystem::IsSceneFile(path))
 	{
@@ -74,6 +93,11 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
 		//m_animControllerMap.insert({ path.string(), std::make_unique<AnimatorControllerAsset>(path) });
 		std::unique_ptr<AnimatorController> animControllerAsset = std::make_unique<AnimatorController>(path);
 		m_assetMap.insert({ path.string(), std::move(animControllerAsset) });
+	}
+	else if (FileSystem::IsAnimationFile(path))
+	{
+		std::cout << "[Animation Clip] : " << path << '\n';
+		m_assetMap.insert({ path.string(), std::make_unique<AnimationClip>(path) });
 	}
     else if (FileSystem::IsAudioFile(path))
     {
