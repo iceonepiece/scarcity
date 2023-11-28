@@ -346,7 +346,7 @@ void ImGuiAssetPanel::Render()
 					if (ImGui::IsItemClicked())
 						m_editor.SetSelectedObject(EditorObjectType::Asset, animClipAsset);
 
-					if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+					if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 					{
 						ImGui_AnimationClipWindow* animClipWindow = static_cast<ImGui_AnimationClipWindow*>(m_editor.GetImGuiWindow(ImGuiWindowType::AnimationClip));
 						animClipWindow->SetAnimationClip(animClipAsset);
