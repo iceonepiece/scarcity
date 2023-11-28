@@ -54,6 +54,20 @@ void ImGuiAssetPanel::RenderNativeScript(NativeScriptAsset& nativeScriptAsset, I
 	}
 }
 
+void ImGuiAssetPanel::RightClickMenu(Asset& asset)
+{
+	if (ImGui::BeginPopupContextItem(asset.GetPath().filename().string().c_str()))
+	{
+		if (ImGui::MenuItem("Delete"))
+		{
+			m_showDeleteModal = true;
+			m_onActionAsset = &asset;
+		}
+
+		ImGui::EndPopup();
+	}
+}
+
 void ImGuiAssetPanel::RenderPrefab(PrefabAsset& prefabAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
 {
 	std::string useIcon = ICON_FA_CUBE;
@@ -76,16 +90,7 @@ void ImGuiAssetPanel::RenderPrefab(PrefabAsset& prefabAsset, ImGuiTreeNodeFlags 
 	ImGui::SameLine();
 	ImGui::Text(prefabAsset.GetPath().filename().string().c_str());
 
-	if (ImGui::BeginPopupContextItem(prefabAsset.GetPath().string().c_str()))
-	{
-		if (ImGui::MenuItem("Delete"))
-		{
-			m_showDeleteModal = true;
-			m_onActionAsset = &prefabAsset;
-		}
-
-		ImGui::EndPopup();
-	}
+	RightClickMenu(prefabAsset);
 
 	if (opened)
 		ImGui::TreePop();
@@ -156,6 +161,8 @@ void ImGuiAssetPanel::RenderAnimatorController(AnimatorController& animControlle
 
 	callback();
 
+	RightClickMenu(animControllerAsset);
+
 	if (opened)
 	{
 		ImGui::TreePop();
@@ -172,11 +179,12 @@ void ImGuiAssetPanel::RenderAnimationClip(AnimationClip& animClip, ImGuiTreeNode
 
 	callback();
 
+	RightClickMenu(animClip);
+
 	if (opened)
 	{
 		ImGui::TreePop();
 	}
-
 }
 
 
@@ -199,11 +207,8 @@ void ImGuiAssetPanel::RenderFolder(const std::filesystem::path& path, ImGuiTreeN
 		ImGui::TreePop();
 }
 
-void ImGuiAssetPanel::Render()
+void ImGuiAssetPanel::RenderAddAssetButton()
 {
-	ImGui::Begin("Project");
-
-
 	if (ImGui::Button(ICON_FA_PLUS ICON_FA_CARET_DOWN))
 	{
 		ImGui::OpenPopup("Add Asset");
@@ -215,19 +220,62 @@ void ImGuiAssetPanel::Render()
 		ImGui::Separator();
 
 		if (ImGui::Selectable("Animator Controller"))
-		{
-			AnimatorController animController;
-			AnimationSerializer::Serialize(animController, m_currentDirectory / "New Animator Controller.controller");
-		}
+			m_addingAssetType = AssetType::AnimatorController;
 
 		if (ImGui::Selectable("Animation Clip"))
+			m_addingAssetType = AssetType::AnimationClip;
+
+		ImGui::EndPopup();
+	}
+
+	if (m_addingAssetType != AssetType::None)
+	{
+		ImGui::OpenPopup("Add Asset Name");
+	}
+
+	if (ImGui::BeginPopupModal("Add Asset Name", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Add Asset Name");
+		ImGui::Separator();
+
+		ImGui::InputText("Name", &m_addingAssetName);
+
+		if (ImGui::Button("Add"))
 		{
-			AnimationClip animClip("");
-			AnimationSerializer::Serialize(animClip, m_currentDirectory / "New Animation.anim");
+			if (m_addingAssetType == AssetType::AnimatorController)
+			{
+				AnimatorController animController;
+				AnimationSerializer::Serialize(animController, m_currentDirectory / (m_addingAssetName + ".controller"));
+			}
+			else if (m_addingAssetType == AssetType::AnimationClip)
+			{
+				AnimationClip animClip(m_addingAssetName);
+				AnimationSerializer::Serialize(animClip, m_currentDirectory / (m_addingAssetName + ".anim"));
+			}
+
+			m_addingAssetType = AssetType::None;
+			m_addingAssetName = "";
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Cancel"))
+		{
+			m_addingAssetType = AssetType::None;
+			m_addingAssetName = "";
+			ImGui::CloseCurrentPopup();
 		}
 
 		ImGui::EndPopup();
 	}
+}
+
+void ImGuiAssetPanel::Render()
+{
+	ImGui::Begin("Project");
+
+	RenderAddAssetButton();
 
 	ImGui::SameLine();
 
@@ -422,6 +470,8 @@ void ImGuiAssetPanel::Render()
 			m_onActionAsset = nullptr;
 			ImGui::CloseCurrentPopup();
 		}
+
+		ImGui::SameLine();
 
 		if (ImGui::Button("Cancel"))
 		{

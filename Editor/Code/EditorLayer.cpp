@@ -450,7 +450,8 @@ void EditorLayer::RenderImGui()
 
     style.WindowMinSize.x = minWinSizeX;
 
-    GetImGuiWindow(ImGuiWindowType::AnimationClip)->Render();
+    if (GetImGuiWindow(ImGuiWindowType::AnimationClip))
+        GetImGuiWindow(ImGuiWindowType::AnimationClip)->Render();
 
     m_animatorPanel.Render();
     m_editorSceneViewport.Render();
