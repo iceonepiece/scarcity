@@ -2,7 +2,7 @@
 #include "Core/Application.h"
 
 ImGuiSelectAnimatorControllerWindow::ImGuiSelectAnimatorControllerWindow(EditorLayer& editor, const std::filesystem::path& path)
-	: ImGuiWindow_(editor)
+	: ImGui_Window(editor)
 	, m_baseDirectory(path)
 	, m_currentDirectory(path)
 {
@@ -10,7 +10,7 @@ ImGuiSelectAnimatorControllerWindow::ImGuiSelectAnimatorControllerWindow(EditorL
 
 void ImGuiSelectAnimatorControllerWindow::Render()
 {
-	auto& animControllerMap = Application::Get().GetAssetManager().GetAnimatorControllerAssets();
+	auto& animControllerMap = Application::Get().GetAssetManager().GetAnimatorControllers();
 
 	for (auto& animController : animControllerMap)
 	{

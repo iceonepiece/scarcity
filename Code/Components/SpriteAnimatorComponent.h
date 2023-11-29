@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <nlohmann/json.hpp>
-#include "Animations/Sprite.h"
+#include "Graphics/Sprite.h"
 #include "Animations/SpriteAnimation.h"
 #include "Animations/AnimatorController.h"
 

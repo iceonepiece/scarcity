@@ -14,6 +14,7 @@
 #include "EditorGUI/Windows/ImGuiSelectSpriteWindow.h"
 #include "EditorGUI/Windows/ImGuiSelectAnimatorControllerWindow.h"
 #include "EditorGUI/Windows/ImGuiTagEditorWindow.h"
+#include "EditorGUI/Windows/ImGui_AnimationClipWindow.h"
 #include "Scene/SceneSerializer.h"
 #include "Scene/SceneManager.h"
 #include "Asset/AssetManager.h"
@@ -27,8 +28,9 @@ EditorLayer* EditorLayer::s_instance = nullptr;
 EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> project)
     : m_app(app)
     , m_activeProject(std::move(project))
-    , m_entityProperties(*this)
+    , m_inspectorPanel(*this)
     , m_hierarchy(*this)
+    , m_animatorPanel(*this)
     , m_mainMenuBar(*this)
     , m_assetPanel(*this)
     , m_gameLayer(app)
@@ -60,6 +62,7 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     m_imGuiWindowMap[ImGuiWindowType::SelectSprite] = std::make_unique<ImGuiSelectSpriteWindow>(*this, m_activeProject->GetDirectory());
     m_imGuiWindowMap[ImGuiWindowType::SelectAnimatorController] = std::make_unique<ImGuiSelectAnimatorControllerWindow>(*this, m_activeProject->GetDirectory());
     m_imGuiWindowMap[ImGuiWindowType::Tags] = std::make_unique<ImGuiTagEditorWindow>(*this);
+    m_imGuiWindowMap[ImGuiWindowType::AnimationClip] = std::make_unique<ImGui_AnimationClipWindow>(*this);
 
     OpenScene(m_activeProject->GetStartScene());
 
@@ -156,9 +159,12 @@ void EditorLayer::CreatePrefab(entt::entity entity, const std::filesystem::path&
 
 void EditorLayer::SetPickedEntity(entt::entity picked)
 {
+    UnselectObject();
+    m_animatorPanel.ClearSelection();
+
     m_selectedObject.type = EditorObjectType::Entity;
     m_selectedObject.entity = picked;
-    m_selectedObject.asset = nullptr;
+    m_selectedObject.objectPtr = nullptr;
 
     EntityManager& manager = GetScene()->GetEntityManager();
 
@@ -168,10 +174,23 @@ void EditorLayer::SetPickedEntity(entt::entity picked)
         m_gridModeAvailable = false;
 }
 
+EditorObject& EditorLayer::SetSelectedObject(EditorObjectType type, void* objectPtr)
+{
+    UnselectObject();
+    if (type != EditorObjectType::AnimatorState)
+        m_animatorPanel.ClearSelection();
+
+    m_selectedObject.type = type;
+    m_selectedObject.objectPtr = objectPtr;
+    m_selectedObject.entity = entt::null;
+
+    return m_selectedObject;
+}
+
 void EditorLayer::SetSelectedAsset(Asset* asset, const std::string& note)
 {
-    m_selectedObject.type = EditorObjectType::Path;
-    m_selectedObject.asset = asset;
+    m_selectedObject.type = EditorObjectType::Asset;
+    m_selectedObject.objectPtr = asset;
     m_selectedObject.entity = entt::null;
     m_selectedObject.note = note;
 
@@ -180,10 +199,12 @@ void EditorLayer::SetSelectedAsset(Asset* asset, const std::string& note)
 
 void EditorLayer::SetSelectedPath(const std::filesystem::path& path, const std::string& note)
 {
+    /*
     m_selectedObject.type = EditorObjectType::Path;
     m_selectedObject.asset = GetAsset(path);
     m_selectedObject.entity = entt::null;
     m_selectedObject.note = note;
+    */
 }
 
 Asset* EditorLayer::GetAsset(const std::filesystem::path& path)
@@ -204,7 +225,7 @@ void EditorLayer::UnselectObject()
 {
     m_selectedObject.type = EditorObjectType::None;
     m_selectedObject.entity = entt::null;
-    m_selectedObject.asset = nullptr;
+    m_selectedObject.objectPtr = nullptr;
     m_selectedObject.note = "";
 }
 
@@ -429,17 +450,20 @@ void EditorLayer::RenderImGui()
 
     style.WindowMinSize.x = minWinSizeX;
 
+    if (GetImGuiWindow(ImGuiWindowType::AnimationClip))
+        GetImGuiWindow(ImGuiWindowType::AnimationClip)->Render();
+
+    m_animatorPanel.Render();
     m_editorSceneViewport.Render();
 
     if (!m_scenePlaying)
     {
-        m_entityProperties.Render();
+        m_inspectorPanel.Render();
         m_hierarchy.Render();
         m_assetPanel.Render();
     }
 
     m_mainMenuBar.Render();
-    //m_nodeEditor.Render();
 
     ImGui::End();
 }

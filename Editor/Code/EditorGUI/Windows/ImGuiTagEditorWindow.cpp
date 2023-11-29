@@ -4,7 +4,7 @@
 #include "imgui/imgui_stdlib.h"
 
 ImGuiTagEditorWindow::ImGuiTagEditorWindow(EditorLayer& editor)
-	: ImGuiWindow_(editor)
+	: ImGui_Window(editor)
 {
 
 }

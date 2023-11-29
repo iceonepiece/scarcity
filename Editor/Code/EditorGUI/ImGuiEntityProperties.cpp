@@ -19,7 +19,8 @@ std::string EditorComponentNames[] = {
 
 ImGuiEntityProperties::ImGuiEntityProperties(EditorLayer& editor)
     : m_editor(editor)
-{}
+{
+}
 
 void ImGuiEntityProperties::Render()
 {
@@ -32,7 +33,7 @@ void ImGuiEntityProperties::Render()
         ImGui::SetWindowPos(ImVec2(800, 100));
     }
 
-    if (m_editor.GetScene() != nullptr && m_editor.GetSelectedObject().type == EditorObjectType::Path)
+    if (m_editor.GetScene() != nullptr && m_editor.GetSelectedObject().type == EditorObjectType::Asset)
     {
         Asset* asset = m_editor.GetSelectedAsset();
 

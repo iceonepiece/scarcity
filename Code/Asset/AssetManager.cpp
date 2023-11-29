@@ -1,5 +1,5 @@
 #include "AssetManager.h"
-#include "Asset/TextureAsset.h"
+#include "Graphics/Image.h"
 #include "Asset/AudioAsset.h"
 #include "Asset/PrefabAsset.h"
 #include "Scene/Scene.h"
@@ -40,6 +40,19 @@ void AssetManager::InitializeAssets(const std::filesystem::path& path)
 
 		pathQueue.pop();
 	}
+
+	LinkIDsToAssets();
+}
+
+void AssetManager::LinkIDsToAssets()
+{
+	for (auto& link : m_assetLinks)
+	{
+		if (Asset* asset = GetAssetByID(link.ID))
+		{
+			link.linkFunction(asset);
+		}
+	}
 }
 
 Scene* AssetManager::GetScene(const std::string& name)
@@ -54,9 +67,18 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
 {
     if (FileSystem::IsImageFile(path))
     {
-        std::cout << "[Texture] : " << path << '\n';
-        std::unique_ptr<TextureAsset> textureAsset = std::make_unique<TextureAsset>(path);
-        m_assetMap.insert({ path.string(), std::move(textureAsset) });
+        std::cout << "[Image] : " << path << '\n';
+        std::unique_ptr<Image> image = std::make_unique<Image>(path);
+        m_assetMap.insert({ path.string(), std::move(image) });
+
+		if (m_assetMap.find(path.string()) != m_assetMap.end())
+		{
+			if (Image* imagePtr = dynamic_cast<Image*>(m_assetMap[path.string()].get()))
+			{
+				m_images.push_back(imagePtr);
+				m_assetIDMap.insert({ imagePtr->GetID(), imagePtr });
+			}
+		}
     }
 	else if (FileSystem::IsSceneFile(path))
 	{
@@ -69,8 +91,22 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
 	{
 		std::cout << "[Animator Controller] : " << path << '\n';
 		//m_animControllerMap.insert({ path.string(), std::make_unique<AnimatorControllerAsset>(path) });
-		std::unique_ptr<AnimatorControllerAsset> animControllerAsset = std::make_unique<AnimatorControllerAsset>(path);
+		std::unique_ptr<AnimatorController> animControllerAsset = std::make_unique<AnimatorController>(path);
 		m_assetMap.insert({ path.string(), std::move(animControllerAsset) });
+	}
+	else if (FileSystem::IsAnimationFile(path))
+	{
+		std::cout << "[Animation Clip] : " << path << '\n';
+		m_assetMap.insert({ path.string(), std::make_unique<AnimationClip>(path) });
+
+		if (m_assetMap.find(path.string()) != m_assetMap.end())
+		{
+			if (AnimationClip* clipPtr = dynamic_cast<AnimationClip*>(m_assetMap[path.string()].get()))
+			{
+				m_animClips.push_back(clipPtr);
+				m_assetIDMap.insert({ clipPtr->GetID(), clipPtr });
+			}
+		}
 	}
     else if (FileSystem::IsAudioFile(path))
     {
@@ -112,6 +148,14 @@ Asset* AssetManager::GetAsset(const std::filesystem::path& path, bool loadIfNotE
     return nullptr;
 }
 
+Asset* AssetManager::GetAssetByID(UniqueID id)
+{
+	if (m_assetIDMap.find(id) != m_assetIDMap.end())
+		return m_assetIDMap[id];
+
+	return nullptr;
+}
+
 bool AssetManager::HasTexture(const std::string& name)
 {
 	return m_textures.find(name) != m_textures.end();
@@ -122,39 +166,47 @@ Texture& AssetManager::GetTexture(const std::string& name)
 	return *m_textures[name];
 }
 
+Texture* AssetManager::GetTexturePtr(const std::string& name)
+{
+	if (m_textures.find(name) != m_textures.end())
+		return m_textures[name].get();
+
+	return nullptr;
+}
+
 void AssetManager::RemoveTexture(const std::string& name)
 {
 	m_textures.erase(name);
 }
 
-SpriteAsset* AssetManager::GetSpriteAsset(const std::string& name)
+Sprite* AssetManager::GetSprite(const std::string& name)
 {
-	return m_spriteAssetMap.find(name) != m_spriteAssetMap.end() ? m_spriteAssetMap[name] : nullptr;
+	return m_spriteMap.find(name) != m_spriteMap.end() ? m_spriteMap[name] : nullptr;
 }
 
-void AssetManager::AddSpriteAssets(std::vector<SpriteAsset>& spriteAssets)
+void AssetManager::AddSprites(std::vector<Sprite>& sprites)
 {
-	for (auto& sprite : spriteAssets)
+	for (auto& sprite : sprites)
 	{
-		m_spriteAssetMap.insert({ sprite.GetSprite().GetName(), &sprite });
+		m_spriteMap.insert({ sprite.GetName(), &sprite });
 	}
 }
 
-void AssetManager::RemoveSpriteAssets(std::vector<SpriteAsset>& spriteAssets)
+void AssetManager::RemoveSprites(std::vector<Sprite>& sprites)
 {
-	for (auto& sprite : spriteAssets)
-		m_spriteAssetMap.erase(sprite.GetSprite().GetName());
+	for (auto& sprite : sprites)
+		m_spriteMap.erase(sprite.GetName());
 }
 
 AnimatorController* AssetManager::GetAnimatorController(const std::string& name)
 {
     if (m_animControllerMap.find(name) != m_animControllerMap.end())
-        return m_animControllerMap[name]->GetController();
+        return m_animControllerMap[name].get();
 
     return nullptr;
 }
 
-std::map<std::string, std::unique_ptr<AnimatorControllerAsset>>& AssetManager::GetAnimatorControllerAssets()
+std::map<std::string, std::unique_ptr<AnimatorController>>& AssetManager::GetAnimatorControllers()
 {
 	return m_animControllerMap;
 }

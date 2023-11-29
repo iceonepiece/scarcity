@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <glm/glm.hpp>
-#include "Animations/Sprite.h"
+#include "Graphics/Sprite.h"
 
 /*
 class SpriteAnimation
@@ -33,7 +33,7 @@ public:
 
 struct SpriteAnimation
 {
-	Texture& texture = g_nullTexture;
+	Texture* texture = &g_nullTexture;
 	int startFrame;
 	int maxFame;
 	int rows;
@@ -43,12 +43,42 @@ struct SpriteAnimation
 	int currentFrame = 0;
 	float timer = 0.0f;
 
+	SpriteAnimation& operator=(const SpriteAnimation& other)
+	{
+		texture = other.texture;
+		startFrame = other.startFrame;
+		maxFame = other.maxFame;
+		rows = other.rows;
+		cols = other.cols;
+		frameSpeed = other.frameSpeed;
+		scale = other.scale;
+		currentFrame = other.currentFrame;
+		timer = other.timer;
+
+		return *this;
+	}
+
+	/*
+	SpriteAnimation(const SpriteAnimation& other)
+	{
+		texture = other.texture;
+		startFrame = other.startFrame;
+		maxFame = other.maxFame;
+		rows = other.rows;
+		cols = other.cols;
+		frameSpeed = other.frameSpeed;
+		scale = other.scale;
+		currentFrame = other.currentFrame;
+		timer = other.timer;
+	}
+	*/
+
 	Sprite GetSprite()
 	{
 		int x = currentFrame % cols;
 		int y = (rows - 1) - currentFrame / cols;
-		float u = texture.GetWidth() / (float)cols;
-		float v = texture.GetHeight() / (float)rows;
+		float u = texture->GetWidth() / (float)cols;
+		float v = texture->GetHeight() / (float)rows;
 
 		return Sprite{};
 		//return Sprite { &(texture), {u, v}, {x, y} };

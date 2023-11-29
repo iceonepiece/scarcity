@@ -6,7 +6,7 @@
 #include "Graphics/Camera.h"
 #include "Graphics/Texture.h"
 #include "Graphics/Framebuffer.h"
-#include "Animations/Sprite.h"
+#include "Graphics/Sprite.h"
 #include "Shapes/Shape2D.h"
 #include "Components/CameraComponent.h"
 

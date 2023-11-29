@@ -5,6 +5,7 @@
 #include "OpenGLRenderer.h"
 #include "OpenGLTexture.h"
 #include "OpenGLFramebuffer.h"
+#include "Graphics/Image.h"
 
 void OpenGLRenderer::Initialize()
 {

@@ -1,4 +1,6 @@
 #include "Scene.h"
+#include "Core/Application.h"
+#include "Events/Event.h"
 #include "Graphics/Renderer.h"
 #include "Graphics/Camera2D.h"
 #include "Components/Components.h"
@@ -686,13 +688,18 @@ void Scene::Render(RenderOptions renderOptions)
         SpriteAnimatorComponent* spriteAnimator = m_manager.m_registry.try_get<SpriteAnimatorComponent>(entity);
         if (spriteAnimator != nullptr && spriteAnimator->controller != nullptr)
         {
+            /*
             AnimatorState* animState = spriteAnimator->controller->GetCurrentState();
-            SpriteAnimation& spriteAnim = animState->GetSpriteAnimation();
+            SpriteAnimation spriteAnim = animState->GetSpriteAnimation();
             Sprite sprite = spriteAnim.GetSprite();
             renderer.DrawSprite(sprite, transform.position, transform.scale, transform.rotation.z);
+            */
         }
         else if (sprite.sprite != nullptr)
-            renderer.DrawSprite(*(sprite.sprite), transform.position, transform.scale, transform.rotation.z);
+        {
+            Sprite& targetSprite = sprite.image->GetSprites()[sprite.spriteIndex];
+            renderer.DrawSprite(targetSprite, transform.position, transform.scale, transform.rotation.z);
+        }
     }
 
     renderer.PostRender();

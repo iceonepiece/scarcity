@@ -1,11 +1,13 @@
 #include "ImGuiManager.h"
 #include <IconsFontAwesome6.h>
+//#include <imnodes/imnodes.h>
 
 ImGuiManager::ImGuiManager(Application& app)
 	: m_app(app)
 {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
+	//ImNodes::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;

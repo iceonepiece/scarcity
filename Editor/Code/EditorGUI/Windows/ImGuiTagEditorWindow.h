@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ImGuiWindow.h"
+#include "ImGui_Window.h"
 
-class ImGuiTagEditorWindow : public ImGuiWindow_
+class ImGuiTagEditorWindow : public ImGui_Window
 {
 public:
 	ImGuiTagEditorWindow(EditorLayer& editor);

@@ -1,6 +1,6 @@
 #include "FileSystem.h"
 #include "MetaSerializer.h"
-#include "Asset/TextureAsset.h"
+#include "Graphics/Image.h"
 #include "Asset/AudioAsset.h"
 
 std::filesystem::path FileSystem::GetRelativePath(const std::filesystem::path& basePath, const std::filesystem::path& filePath)
@@ -147,7 +147,7 @@ void FileSystem::HandleMetaFile(const std::filesystem::path& path)
 AssetType FileSystem::GetAssetType(const std::filesystem::path& path)
 {
 	if (IsImageFile(path))
-		return AssetType::Texture;
+		return AssetType::Image;
 
 	return AssetType::None;
 }
@@ -211,6 +211,11 @@ bool FileSystem::IsAnimatorFile(const std::filesystem::path& path)
 	return path.extension().generic_string() == ".controller";
 }
 
+bool FileSystem::IsAnimationFile(const std::filesystem::path& path)
+{
+	return path.extension().generic_string() == ".anim";
+}
+
 bool FileSystem::IsPrefabFile(const std::filesystem::path& path)
 {
 	return path.extension().generic_string() == ".prefab";
@@ -221,8 +226,8 @@ void FileSystem::GenerateImageMetaFile(const std::filesystem::path& path)
 	if (!FileSystem::FileExists(path.string() + ".meta"))
 	{
 		std::cout << "Create meta file for " << path << std::endl;
-		TextureAsset textureAsset(path, nullptr);
-		MetaSerializer::SerializeImage(textureAsset, path);
+		Image image(path, nullptr);
+		MetaSerializer::SerializeImage(image, path);
 	}
 	else
 	{

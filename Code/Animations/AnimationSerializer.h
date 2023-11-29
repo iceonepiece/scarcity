@@ -5,12 +5,18 @@
 #include <fstream>
 #include <unordered_map>
 #include <nlohmann/json.hpp>
-#include "AnimatorController.h"
 
 using json = nlohmann::json;
+
+class AnimatorController;
+class AnimationClip;
 
 class AnimationSerializer
 {
 public:
-	static AnimatorController* Deserialize(const std::filesystem::path& filepath);
+	static void Serialize(AnimatorController& controller, const std::filesystem::path& filePath);
+	static void Deserialize(AnimatorController& controller, const std::filesystem::path& filepath);
+
+	static void Serialize(AnimationClip& clip, const std::filesystem::path& filePath);
+	static void Deserialize(AnimationClip& clip, const std::filesystem::path& filepath);
 };

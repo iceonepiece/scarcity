@@ -10,11 +10,11 @@
 
 void ImGuiAssetProperties::Render(Asset* asset)
 {
-    if (TextureAsset* textureAsset = dynamic_cast<TextureAsset*>(asset))
-        RenderTextureAsset(*textureAsset);
+    if (Image* image = dynamic_cast<Image*>(asset))
+        RenderImage(*image);
 
-    else if (SpriteAsset* spriteAsset = dynamic_cast<SpriteAsset*>(asset))
-        RenderSpriteAsset(*spriteAsset);
+    else if (Sprite* sprite = dynamic_cast<Sprite*>(asset))
+        RenderSprite(*sprite);
 
     else if (PrefabAsset* prefabAsset = dynamic_cast<PrefabAsset*>(asset))
         RenderPrefabAsset(*prefabAsset);
@@ -40,13 +40,13 @@ void ImGuiAssetProperties::RenderPrefabAsset(PrefabAsset& prefabAsset)
     ImGui::PopID();
 }
 
-void ImGuiAssetProperties::RenderTextureAsset(TextureAsset& textureAsset)
+void ImGuiAssetProperties::RenderImage(Image& image)
 {
-    std::string name = textureAsset.GetName() + " (Texture 2D)";
+    std::string name = image.GetName() + " (Texture 2D)";
     ImGui::Text(name.c_str());
 
     const char* spriteModeStrings[] = { "Single", "Multiple" };
-    const char* currentSpriteModeString = spriteModeStrings[(int)textureAsset.GetSpriteMode()];
+    const char* currentSpriteModeString = spriteModeStrings[(int)image.GetSpriteMode()];
     if (ImGui::BeginCombo("Sprite Mode", currentSpriteModeString))
     {
         for (int i = 0; i < 2; i++)
@@ -55,7 +55,7 @@ void ImGuiAssetProperties::RenderTextureAsset(TextureAsset& textureAsset)
             if (ImGui::Selectable(spriteModeStrings[i], isSelected))
             {
                 currentSpriteModeString = spriteModeStrings[i];
-                textureAsset.SetSpriteMode((SpriteMode)i);
+                image.SetSpriteMode((SpriteMode)i);
             }
 
             if (isSelected)
@@ -65,10 +65,10 @@ void ImGuiAssetProperties::RenderTextureAsset(TextureAsset& textureAsset)
         ImGui::EndCombo();
     }
 
-    if (textureAsset.GetSpriteMode() == SpriteMode::Multiple)
+    if (image.GetSpriteMode() == SpriteMode::Multiple)
     {
-        ImGui::InputInt("Rows", &textureAsset.GetRows());
-        ImGui::InputInt("Cols", &textureAsset.GetCols());
+        ImGui::InputInt("Rows", &image.GetRows());
+        ImGui::InputInt("Cols", &image.GetCols());
     }
 
     if (ImGui::Button("Revert"))
@@ -80,11 +80,11 @@ void ImGuiAssetProperties::RenderTextureAsset(TextureAsset& textureAsset)
 
     if (ImGui::Button("Apply"))
     {
-        if (MetaSerializer::SerializeImage(textureAsset, textureAsset.GetPath()))
-            MetaSerializer::DeserializeImage(textureAsset, textureAsset.GetPath());
+        if (MetaSerializer::SerializeImage(image, image.GetPath()))
+            MetaSerializer::DeserializeImage(image, image.GetPath());
     }
 
-    std::string pathString = textureAsset.GetPath().string();
+    std::string pathString = image.GetPath().string();
 
     Texture* texture = nullptr;
 
@@ -126,12 +126,12 @@ void ImGuiAssetProperties::RenderAudioAsset(AudioAsset& audioAsset)
     }
 }
 
-void ImGuiAssetProperties::RenderSpriteAsset(SpriteAsset& spriteAsset)
+void ImGuiAssetProperties::RenderSprite(Sprite& sprite)
 {
-    std::string name = spriteAsset.GetSprite().GetName() + " (Sprite)";
+    std::string name = sprite.GetName() + " (Sprite)";
     ImGui::Text(name.c_str());
 
-    std::string pathString = spriteAsset.GetTextureAsset().GetPath().string();
+    std::string pathString = sprite.GetImage()->GetPath().string();
 
     Texture* texture = nullptr;
     AssetManager& assetManager = Application::Get().GetAssetManager();
@@ -148,7 +148,6 @@ void ImGuiAssetProperties::RenderSpriteAsset(SpriteAsset& spriteAsset)
 
     if (texture != nullptr)
     {
-        Sprite& sprite = spriteAsset.GetSprite();
         ImGui::Text("pointer = %p", texture->GetRendererID());
         ImGui::Text("size = %d x %d", (int)sprite.GetWidth(), (int)sprite.GetHeight());
 

@@ -3,11 +3,11 @@
 #include <filesystem>
 #include <IconsFontAwesome6.h>
 #include "File/FileSystem.h"
-#include "ImGuiWindow.h"
+#include "ImGui_Window.h"
 #include "FSM/FiniteStateMachine.h"
 #include "Animations/AnimatorController.h"
 
-class ImGuiSelectAnimatorControllerWindow : public ImGuiWindow_
+class ImGuiSelectAnimatorControllerWindow : public ImGui_Window
 {
 public:
 	ImGuiSelectAnimatorControllerWindow(EditorLayer& editor, const std::filesystem::path& path);

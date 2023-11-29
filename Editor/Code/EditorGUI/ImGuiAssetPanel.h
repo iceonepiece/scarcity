@@ -4,15 +4,17 @@
 #include <filesystem>
 #include <functional>
 #include "Graphics/Texture.h"
-#include "Asset/TextureAsset.h"
+#include "Graphics/Image.h"
 #include "Asset/AudioAsset.h"
 #include "Asset/PrefabAsset.h"
 #include "Asset/NativeScriptAsset.h"
+#include "Animations/AnimatorController.h"
 
 class EditorLayer;
 
 using AssetEventFunction = std::function<void()>;
-using OnSelectSpriteFunction = std::function<void(SpriteAsset&)>;
+//using OnSelectSpriteFunction = std::function<void(SpriteAsset&)>;
+using OnSelectSpriteFunction = std::function<void(Sprite&, size_t)>;
 
 class ImGuiAssetPanel
 {
@@ -27,17 +29,24 @@ public:
 	}
 
 	void RenderPrefab(PrefabAsset& prefabAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
-	static void RenderTexture(TextureAsset& textureAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn = [](SpriteAsset&){}, const std::string& note = "");
+	static void RenderImage(Image& image, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn = [](Sprite&, size_t){}, const std::string& note = "");
 	static void RenderAudio(AudioAsset& audioAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
-	static void RenderAnimatorController(AnimatorControllerAsset& animControllerAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
+	void RenderAnimatorController(AnimatorController& animControllerAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
+	void RenderAnimationClip(AnimationClip& animClip, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderNativeScript(NativeScriptAsset& nativeScriptAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderFolder(const std::filesystem::path& path, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	void RenderUnsupportedFile(const std::filesystem::path& path);
 
 private:
+	void RightClickMenu(Asset& asset);
+	void RenderAddAssetButton();
+
 	std::filesystem::path m_selectedPath;
 	std::filesystem::path m_baseDirectory;
 	std::filesystem::path m_currentDirectory;
+
+	AssetType m_addingAssetType = AssetType::None;
+	std::string m_addingAssetName = "";
 
 	bool m_showDeleteModal = false;
 	Asset* m_onActionAsset = nullptr;

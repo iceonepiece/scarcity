@@ -4,7 +4,7 @@
 
 
 ImGuiSelectSpriteWindow::ImGuiSelectSpriteWindow(EditorLayer& editor, const std::filesystem::path& path)
-	: ImGuiWindow_(editor)
+	: ImGui_Window(editor)
 	, m_baseDirectory(path)
 	, m_currentDirectory(path)
 {
@@ -36,11 +36,12 @@ void ImGuiSelectSpriteWindow::Render()
 		}
 		else if (FileSystem::IsImageFile(path))
 		{
-			if (TextureAsset* asset = dynamic_cast<TextureAsset*>(EditorLayer::GetAsset(path)))
+			if (Image* image = dynamic_cast<Image*>(EditorLayer::GetAsset(path)))
 			{
-				ImGuiAssetPanel::RenderTexture(*asset, 0, [&](){}, [&](SpriteAsset& sprite)
+				ImGuiAssetPanel::RenderImage(*image, 0, [&](){}, [&](Sprite& sprite, size_t index)
 				{
-					m_selectedSprite = &sprite.GetSprite();
+					m_selectedSprite = &sprite;
+					m_spriteIndex = index;
 				});
 			}
 		}

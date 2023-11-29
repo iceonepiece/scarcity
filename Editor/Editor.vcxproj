@@ -145,16 +145,20 @@
     <ClCompile Include="Code\EditorGUI\ImGuiEntityProperties.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiHierarchy.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiMainMenuBar.cpp" />
-    <ClCompile Include="Code\EditorGUI\ImGuiNodeEditor.cpp" />
+    <ClCompile Include="Code\EditorGUI\ImGui_AnimatorPanel.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiAssetProperties.cpp" />
     <ClCompile Include="Code\EditorGUI\EditorSceneViewport.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiUtils.cpp" />
     <ClCompile Include="Code\EditorGUI\EditorViewport.cpp" />
+    <ClCompile Include="Code\EditorGUI\ImGui_InspectorPanel.cpp" />
+    <ClCompile Include="Code\EditorGUI\Inspectors\ImGui_AnimatorInspector.cpp" />
+    <ClCompile Include="Code\EditorGUI\Inspectors\ImGui_AssetInspector.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiPrefabEditorWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiTagEditorWindow.cpp" />
-    <ClCompile Include="Code\EditorGUI\Windows\ImGuiWindow.cpp" />
+    <ClCompile Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.cpp" />
+    <ClCompile Include="Code\EditorGUI\Windows\ImGui_Window.cpp" />
     <ClCompile Include="Code\GameLayer.cpp" />
     <ClCompile Include="Code\Gizmos\Gizmo.cpp" />
     <ClCompile Include="Code\Gizmos\GridGizmo.cpp" />
@@ -171,6 +175,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\Animator\ImGui_AnimatorState.h" />
     <ClInclude Include="Code\Commands\EditorCommand.h" />
     <ClInclude Include="Code\Commands\TranslateCommand.h" />
     <ClInclude Include="Code\EditorData.h" />
@@ -195,15 +200,18 @@
     <ClInclude Include="Code\EditorGUI\ImGuiHierarchy.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiAssetProperties.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiMainMenuBar.h" />
-    <ClInclude Include="Code\EditorGUI\ImGuiNodeEditor.h" />
+    <ClInclude Include="Code\EditorGUI\ImGui_AnimatorPanel.h" />
     <ClInclude Include="Code\EditorGUI\EditorSceneViewport.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiUtils.h" />
     <ClInclude Include="Code\EditorGUI\EditorViewport.h" />
+    <ClInclude Include="Code\EditorGUI\ImGui_InspectorPanel.h" />
+    <ClInclude Include="Code\EditorGUI\Inspectors\ImGui_AnimatorInspector.h" />
+    <ClInclude Include="Code\EditorGUI\Inspectors\ImGui_AssetInspector.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiPrefabEditorWIndow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiTagEditorWindow.h" />
-    <ClInclude Include="Code\EditorGUI\Windows\ImGuiViewportWindow.h" />
-    <ClInclude Include="Code\EditorGUI\Windows\ImGuiWindow.h" />
+    <ClInclude Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.h" />
+    <ClInclude Include="Code\EditorGUI\Windows\ImGui_Window.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.h" />
     <ClInclude Include="Code\GameLayer.h" />
     <ClInclude Include="Code\Gizmos\Actionable.h" />

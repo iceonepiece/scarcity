@@ -27,6 +27,7 @@ public:
 	static bool IsAudioFile(const std::filesystem::path& path);
 	static bool IsNativeScriptFile(const std::filesystem::path& path);
 	static bool IsAnimatorFile(const std::filesystem::path& path);
+	static bool IsAnimationFile(const std::filesystem::path& path);
 	static bool IsPrefabFile(const std::filesystem::path& path);
 
 	static bool ReadFile(const std::filesystem::path& path, HandleFileCallback callback);

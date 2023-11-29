@@ -158,7 +158,8 @@ void EditorSceneViewport::RenderTools()
 void EditorSceneViewport::Render()
 {
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
-    ImGui::Begin("Scene", NULL, ImGuiWindowFlags_MenuBar);
+
+    bool displayed = ImGui::Begin("Scene", NULL, ImGuiWindowFlags_MenuBar);
 
     ImGui::BeginMenuBar();
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 16, 8 });
@@ -204,13 +205,11 @@ void EditorSceneViewport::Render()
         ImGui::EndDragDropTarget();
     }
 
-    if (!m_editor.IsScenePlaying())
+    if (displayed && !m_editor.IsScenePlaying())
         RenderTools();
-
 
     ImGui::End();
     ImGui::PopStyleVar();
-
 }
 
 void EditorSceneViewport::OnMouseScrolled(MouseScrolledEvent& event)
