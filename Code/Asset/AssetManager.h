@@ -46,6 +46,7 @@ public:
 	void RemoveSprites(std::vector<Sprite>& sprites);
 
 	std::vector<Image*>& GetImages() { return m_images; }
+	std::vector<AnimationClip*>& GetAnimationClips() { return m_animClips; }
 
 	Asset* GetAssetByID(UniqueID id);
 	void AddAssetLink(AssetLinkFunction fn, UniqueID id)
@@ -69,6 +70,7 @@ protected:
 	std::map<std::string, std::unique_ptr<AnimatorController>> m_animControllerMap;
 
 	std::vector<Image*> m_images;
+	std::vector<AnimationClip*> m_animClips;
 
 	std::unordered_map<std::string, std::unique_ptr<Texture>> m_textures;
 };

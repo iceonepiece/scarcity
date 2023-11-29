@@ -146,6 +146,23 @@ void AnimationSerializer::Deserialize(AnimatorController& controller, const std:
 			state->m_speed = stateJson["speed"];
 			state->m_motion = nullptr;
 
+			AnimatorState& kState = *state;
+
+			if (stateJson["motion"].is_number_unsigned())
+			{
+				uint64_t motionID = stateJson["motion"].get<uint64_t>();
+				Application::Get().GetAssetManager().AddAssetLink(
+					[&](Asset* asset)
+					{
+						if (AnimationClip* clip = dynamic_cast<AnimationClip*>(asset))
+						{
+							kState.m_motion = clip;
+						}
+					}
+					, motionID
+				);
+			}
+
 			controller.AddState(state);
 			statesMap[name] = state;
 		}
@@ -203,6 +220,7 @@ void AnimationSerializer::Serialize(AnimationClip& clip, const std::filesystem::
 	{
 		json clipJson;
 
+		clipJson["ID"] = (uint64_t)clip.GetID();
 		clipJson["imageID"] = clip.m_image != nullptr ? (uint64_t)clip.m_image->GetID() : 0;
 
 		json spriteIndicesJson = json::array();
@@ -223,6 +241,9 @@ void AnimationSerializer::Deserialize(AnimationClip& clip, const std::filesystem
 	if (deserialzed.is_open())
 	{
 		json clipJson = json::parse(deserialzed);
+
+		if (clipJson["ID"].is_number_integer())
+			clip.SetID(clipJson["ID"].get<uint64_t>());
 
 		uint64_t imageID = clipJson["imageID"].get<uint64_t>();
 		clip.m_image = (Image*)Application::Get().GetAssetManager().GetAssetByID(imageID);

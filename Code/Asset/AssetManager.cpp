@@ -98,6 +98,15 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
 	{
 		std::cout << "[Animation Clip] : " << path << '\n';
 		m_assetMap.insert({ path.string(), std::make_unique<AnimationClip>(path) });
+
+		if (m_assetMap.find(path.string()) != m_assetMap.end())
+		{
+			if (AnimationClip* clipPtr = dynamic_cast<AnimationClip*>(m_assetMap[path.string()].get()))
+			{
+				m_animClips.push_back(clipPtr);
+				m_assetIDMap.insert({ clipPtr->GetID(), clipPtr });
+			}
+		}
 	}
     else if (FileSystem::IsAudioFile(path))
     {

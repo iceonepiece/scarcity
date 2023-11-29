@@ -4,29 +4,30 @@
 #include "../ImGuiUtils.h"
 #include <imgui/imgui_stdlib.h>
 #include <IconsFontAwesome6.h>
+#include "Core/Application.h"
+#include "Asset/AssetManager.h"
 
 void ImGui_AnimatorInspector::Render(AnimatorState& state)
 {
+	static unsigned int m_selectedMotionIndex = 0;
+
 	ImGui::InputText("Title", &state.m_name);
 
-	const char* motions[] = { "None", "Square", "Circle" };
-	int selectedIndex = 0;
+	auto& animClips = Application::Get().GetAssetManager().GetAnimationClips();
 
-	if (ImGui::BeginCombo("Shape Type", motions[selectedIndex]))
+	m_selectedMotionIndex = 0;
+
+	std::vector<std::string> m_availableMotions { "None" };
+	for (auto& clip : animClips)
 	{
-		for (int i = 0; i < 3; i++)
-		{
-			bool isSelected = i == selectedIndex;
-			if (ImGui::Selectable(motions[i], isSelected))
-			{
-			}
+		if (state.m_motion == clip)
+			m_selectedMotionIndex = m_availableMotions.size();
 
-			if (isSelected)
-				ImGui::SetItemDefaultFocus();
-		}
-
-		ImGui::EndCombo();
+		m_availableMotions.push_back(clip->GetName());
 	}
+
+	ImGuiUtils::RenderDropdownList("Motion", m_availableMotions, m_selectedMotionIndex);
+	state.m_motion = m_selectedMotionIndex == 0 ? nullptr : animClips[m_selectedMotionIndex - 1];
 
 	ImGui::InputFloat("Speed", &state.m_speed);
 
