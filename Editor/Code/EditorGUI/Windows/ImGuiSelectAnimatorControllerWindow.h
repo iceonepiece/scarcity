@@ -15,10 +15,10 @@ public:
 
 	inline std::filesystem::path GetSelectedPath() { return m_currentDirectory; }
 
-	inline std::string GetSelectedControllerName() { return m_selectedControllerName; }
+	inline AnimatorController* GetSelectedController() { return m_selectedController; }
 
 private:
-	std::string m_selectedControllerName;
+	AnimatorController* m_selectedController;
 	std::filesystem::path m_baseDirectory;
 	std::filesystem::path m_currentDirectory;
 };

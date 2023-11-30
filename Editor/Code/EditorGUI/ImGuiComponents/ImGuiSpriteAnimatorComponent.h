@@ -11,10 +11,12 @@ static void RenderImGui(SpriteAnimatorComponent& spriteAnimator)
 
 	ImGui::SameLine();
 	ImGui::PushItemWidth(180);
-	ImGui::Text(("Controller: " + spriteAnimator.controllerName).c_str());
+
+	std::string controllerName = spriteAnimator.prototypeController != nullptr ? spriteAnimator.prototypeController->GetName() : "";
+
+	ImGui::Text(("Controller: " + controllerName).c_str());
 	ImGui::PopItemWidth();
 
-	/*
 	if (ImGui::BeginPopupModal("Select AnimatorController"))
 	{
 		ImGuiSelectAnimatorControllerWindow* window = dynamic_cast<ImGuiSelectAnimatorControllerWindow*>(EditorLayer::GetImGuiWindow(ImGuiWindowType::SelectAnimatorController));
@@ -24,7 +26,7 @@ static void RenderImGui(SpriteAnimatorComponent& spriteAnimator)
 
 		if (ImGui::Button("OK", ImVec2(120, 0)))
 		{
-			spriteAnimator.controllerName = window->GetSelectedControllerName();
+			spriteAnimator.controller = window->GetSelectedController();
 			ImGui::CloseCurrentPopup();
 		}
 
@@ -36,6 +38,4 @@ static void RenderImGui(SpriteAnimatorComponent& spriteAnimator)
 
 		ImGui::EndPopup();
 	}
-
-	*/
 }

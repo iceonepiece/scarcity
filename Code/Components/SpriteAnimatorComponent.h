@@ -17,16 +17,21 @@ struct SpriteAnimatorComponent
 		return new AnimatorController();
 	}
 
+	AnimatorController* prototypeController = nullptr;
 	AnimatorController* controller = nullptr;
-	std::string controllerName;
 };
 
 static void DoSerialize(const SpriteAnimatorComponent& animator, json& entityJson)
 {
-	entityJson["SpriteAnimator"]["controllerName"] = animator.controllerName;
+	entityJson[SpriteAnimatorComponent::Name()]["controllerID"] = animator.prototypeController != nullptr ? (uint64_t)animator.prototypeController->GetID() : 0;
 }
 
 static void DoDeserialize(SpriteAnimatorComponent& animator, json& animatorJson)
 {
-	animator.controllerName = animatorJson["controllerName"];
+	if (animatorJson["controllerID"].is_number_unsigned())
+	{
+		uint64_t controllerID = animatorJson["controllerID"].get<uint64_t>();
+
+		animator.prototypeController = dynamic_cast<AnimatorController*>(Application::Get().GetAssetManager().GetAssetByID(controllerID));
+	}
 }

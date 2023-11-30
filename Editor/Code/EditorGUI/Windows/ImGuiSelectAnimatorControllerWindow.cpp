@@ -5,17 +5,19 @@ ImGuiSelectAnimatorControllerWindow::ImGuiSelectAnimatorControllerWindow(EditorL
 	: ImGui_Window(editor)
 	, m_baseDirectory(path)
 	, m_currentDirectory(path)
+	, m_selectedController(nullptr)
 {
 }
 
 void ImGuiSelectAnimatorControllerWindow::Render()
 {
-	auto& animControllerMap = Application::Get().GetAssetManager().GetAnimatorControllers();
+	auto& animControllers = Application::Get().GetAssetManager().GetAnimatorControllers();
 
-	for (auto& animController : animControllerMap)
+	for (auto& controller : animControllers)
 	{
-		if (ImGui::Selectable(animController.second->GetName().c_str(), m_selectedControllerName == animController.first, ImGuiSelectableFlags_DontClosePopups))
-			m_selectedControllerName = animController.first;
+		if (ImGui::Selectable(controller->GetName().c_str(), false, ImGuiSelectableFlags_DontClosePopups))
+		{
+			m_selectedController = controller;
+		}
 	}
-
 }

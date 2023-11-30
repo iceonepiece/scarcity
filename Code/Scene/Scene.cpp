@@ -85,8 +85,11 @@ void Scene::Start()
     {
         Entity myEntity{ &m_manager, entity };
 
-        AnimatorController* baseAnimator = m_app->GetAssetManager().GetAnimatorController(animator.controllerName);
-        animator.controller = baseAnimator != nullptr ? new AnimatorController(*baseAnimator) : nullptr;
+        if (animator.prototypeController != nullptr)
+        {
+            animator.controller = new AnimatorController();
+            AnimationSerializer::Deserialize(*animator.controller, animator.prototypeController->GetPath());
+        }
     }
 
     auto audioView = m_manager.m_registry.view<AudioSourceComponent>();
@@ -522,6 +525,12 @@ void Scene::Update(float deltaTime)
 
     for (auto& system : m_systems)
         system->Update(deltaTime);
+
+    auto animatorView = m_manager.m_registry.view<AnimatorController>();
+    for (auto [entity, animator] : animatorView.each())
+    {
+        animator.Process();
+    }
 
     //if (m_physics != nullptr && physicsActive)
     if (physicsActive)

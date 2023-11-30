@@ -90,9 +90,16 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
 	else if (FileSystem::IsAnimatorFile(path))
 	{
 		std::cout << "[Animator Controller] : " << path << '\n';
-		//m_animControllerMap.insert({ path.string(), std::make_unique<AnimatorControllerAsset>(path) });
-		std::unique_ptr<AnimatorController> animControllerAsset = std::make_unique<AnimatorController>(path);
-		m_assetMap.insert({ path.string(), std::move(animControllerAsset) });
+		m_assetMap.insert({ path.string(), std::make_unique<AnimatorController>(path) });
+
+		if (m_assetMap.find(path.string()) != m_assetMap.end())
+		{
+			if (AnimatorController* controllerPtr = dynamic_cast<AnimatorController*>(m_assetMap[path.string()].get()))
+			{
+				m_animControllers.push_back(controllerPtr);
+				m_assetIDMap.insert({ controllerPtr->GetID(), controllerPtr });
+			}
+		}
 	}
 	else if (FileSystem::IsAnimationFile(path))
 	{
@@ -200,13 +207,11 @@ void AssetManager::RemoveSprites(std::vector<Sprite>& sprites)
 
 AnimatorController* AssetManager::GetAnimatorController(const std::string& name)
 {
-    if (m_animControllerMap.find(name) != m_animControllerMap.end())
-        return m_animControllerMap[name].get();
+	for (auto& controller : m_animControllers)
+	{
+		if (controller->GetName() == name)
+			return controller;
+	}
 
     return nullptr;
-}
-
-std::map<std::string, std::unique_ptr<AnimatorController>>& AssetManager::GetAnimatorControllers()
-{
-	return m_animControllerMap;
 }

@@ -11,6 +11,7 @@ void AnimationSerializer::Serialize(AnimatorController& controller, const std::f
 	if (serialized.is_open())
 	{
 		json controllerJson;
+		controllerJson["ID"] = (uint64_t)controller.GetID();
 
 		json parametersJson = json::array();
 
@@ -114,6 +115,9 @@ void AnimationSerializer::Deserialize(AnimatorController& controller, const std:
 	if (deserialzed.is_open())
 	{
 		json controllerJson = json::parse(deserialzed);
+
+		if (controllerJson["ID"].is_number_integer())
+			controller.SetID(controllerJson["ID"].get<uint64_t>());
 
 		json parametersJson = controllerJson["parameters"];
 

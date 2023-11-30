@@ -54,27 +54,25 @@ void AnimatorController::AddTransition(const std::string& name, AnimatorTransiti
 
 void AnimatorController::Process()
 {
-    /*
-    if (m_states.find(m_currentStateName) == m_states.end())
+    if (m_currentState == nullptr)
         return;
 
-    std::vector<AnimatorTransition> checkingTransitions = m_anyStateTransitions;
-  
-    if (m_transitions.find(m_currentStateName) != m_transitions.end())
-        checkingTransitions.insert(checkingTransitions.end(), m_transitions[m_currentStateName].begin(), m_transitions[m_currentStateName].end());
+    std::vector<AnimatorTransition*> checkingTransitions = m_anyState->GetOutgoingTransitions();
+    std::vector<AnimatorTransition*> stateTransitions = m_currentState->GetOutgoingTransitions();
+
+    checkingTransitions.insert(checkingTransitions.end(), stateTransitions.begin(), stateTransitions.end());
 
     for (auto& t : checkingTransitions)
     {
-        if (t.CheckConditions(*this))
+        if (t->CheckConditions(*this))
         {
-            m_currentStateName = t.GetNextStateName();
+            m_currentState = t->GetNextState();
             break;
         }
     }
 
-    if (m_states.find(m_currentStateName) != m_states.end())
-        m_states[m_currentStateName].Process(*this);
-        */
+    if (m_currentState != nullptr)
+        m_currentState->Process(*this);
 }
 
 bool AnimatorController::ChangeParameterName(std::string oldName, std::string newName)
