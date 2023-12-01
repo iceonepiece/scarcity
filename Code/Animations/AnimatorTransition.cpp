@@ -42,15 +42,41 @@ bool AnimatorTransition::CheckConditions(AnimatorController& fsm)
     {
         AnimatorParameter* parameter = fsm.GetParameter(condition.parameter.name);
 
-        if (condition.mode == ConditionMode::True)
+        if (std::holds_alternative<int>(parameter->value))
         {
-            if (std::get<bool>(parameter->value) == false)
-                return false;
+            if (condition.mode == ConditionMode::Greater)
+            {
+                if (std::get<int>(parameter->value) <= std::get<int>(condition.parameter.value))
+                    return false;
+            }
+            else if (condition.mode == ConditionMode::Less)
+			{
+				if (std::get<int>(parameter->value) >= std::get<int>(condition.parameter.value))
+					return false;
+			}
+			else if (condition.mode == ConditionMode::Equals)
+			{
+				if (std::get<int>(parameter->value) != std::get<int>(condition.parameter.value))
+					return false;
+			}
+            else if (condition.mode == ConditionMode::NotEqual)
+			{
+				if (std::get<int>(parameter->value) == std::get<int>(condition.parameter.value))
+					return false;
+			}
         }
-        else if (condition.mode == ConditionMode::False)
+        else if (std::holds_alternative<bool>(parameter->value))
         {
-            if (std::get<bool>(parameter->value) == true)
-                return false;
+            if (condition.mode == ConditionMode::True)
+            {
+                if (std::get<bool>(parameter->value) == false)
+                    return false;
+            }
+            else if (condition.mode == ConditionMode::False)
+            {
+                if (std::get<bool>(parameter->value) == true)
+                    return false;
+            }
         }
     }
 
