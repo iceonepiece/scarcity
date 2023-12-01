@@ -3,6 +3,7 @@
 
 AnimatorController::AnimatorController(const std::filesystem::path& path)
 	: Asset(path, AssetType::AnimatorController)
+    , m_currentState(nullptr)
     , m_defaultState(nullptr)
     , m_anyState(new AnimatorState("Any State"))
 {
@@ -52,24 +53,49 @@ void AnimatorController::AddTransition(const std::string& name, AnimatorTransiti
     */
 }
 
+void AnimatorController::Initialize()
+{
+    if (m_defaultState != nullptr)
+		m_currentState = m_defaultState;
+}
+
 void AnimatorController::Process()
 {
     if (m_currentState == nullptr)
         return;
 
-    std::vector<AnimatorTransition*> checkingTransitions = m_anyState->GetOutgoingTransitions();
-    std::vector<AnimatorTransition*> stateTransitions = m_currentState->GetOutgoingTransitions();
+    std::vector<AnimatorTransition*> checkingTransitions;
 
-    checkingTransitions.insert(checkingTransitions.end(), stateTransitions.begin(), stateTransitions.end());
+    if (m_anyState != nullptr)
+    {
+        auto& anyTransitions = m_anyState->GetOutgoingTransitions();
 
-    for (auto& t : checkingTransitions)
+        for (auto transition : anyTransitions)
+		{
+			checkingTransitions.push_back(transition);
+		}
+    }
+
+    auto& stateTransitions = m_currentState->GetOutgoingTransitions();
+
+    for (auto transition : stateTransitions)
+    {
+        checkingTransitions.push_back(transition);
+    }
+
+    AnimatorState* nextState = nullptr;
+
+    for (auto t : checkingTransitions)
     {
         if (t->CheckConditions(*this))
         {
-            m_currentState = t->GetNextState();
+            nextState = t->GetNextState();
             break;
         }
     }
+
+    if (nextState != nullptr)
+        m_currentState = nextState;
 
     if (m_currentState != nullptr)
         m_currentState->Process(*this);

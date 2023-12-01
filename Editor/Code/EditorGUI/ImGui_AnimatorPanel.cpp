@@ -40,11 +40,23 @@ struct NameEditing
     bool changed = false;
 };
 
-void ImGui_AnimatorPanel::RenderAnimatorState(AnimatorState& state)
+void ImGui_AnimatorPanel::RenderAnimatorState(AnimatorState& state, bool defaultState)
 {
     static std::vector<ImNodes::Ez::SlotInfo> inputSlots{ {"In", 1} };
     static std::vector<ImNodes::Ez::SlotInfo> outputSlots{ {"Out", 1} };
 
+    ImVec4 bgColor = ImVec4(0.15f, 0.15f, 0.15f, 1.0f);
+    ImVec4 bgActiveColor = ImVec4(0.45f, 0.45f, 0.45f, 1.0f);
+
+    if (defaultState)
+    {
+        bgColor = ImVec4(0.45f, 0.15f, 0.15f, 1.0f);
+        bgActiveColor = ImVec4(0.75f, 0.3f, 0.3f, 1.0f);
+    }
+
+    ImNodes::Ez::PushStyleColor(ImNodesStyleCol_NodeTitleBarBg, bgColor);
+    ImNodes::Ez::PushStyleColor(ImNodesStyleCol_NodeTitleBarBgActive, bgActiveColor);
+    ImNodes::Ez::PushStyleColor(ImNodesStyleCol_NodeTitleBarBgHovered, bgActiveColor);
 	if (ImNodes::Ez::BeginNode(&state, state.GetName().c_str(), &state.m_position, &state.m_selected))
 	{
         std::vector<ImNodes::Ez::SlotInfo> inputSlots { {"In", 1} };
@@ -105,6 +117,7 @@ void ImGui_AnimatorPanel::RenderAnimatorState(AnimatorState& state)
 
 		ImNodes::Ez::EndNode();
 	}
+    ImNodes::Ez::PopStyleColor(3);
 
     if (state.m_selected)
     {
@@ -230,7 +243,8 @@ void ImGui_AnimatorPanel::Render()
         for (int i = 0; i < states.size(); i++)
         {
             AnimatorState* currentState = states[i];
-            RenderAnimatorState(*currentState);
+
+            RenderAnimatorState(*currentState, m_animController->GetDefaultState() == currentState);
 
             if (currentState->m_selected && ImGui::IsKeyPressed(ImGuiKey_Delete) && ImGui::IsWindowFocused())
             {

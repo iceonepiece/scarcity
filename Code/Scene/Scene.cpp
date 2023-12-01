@@ -87,8 +87,8 @@ void Scene::Start()
 
         if (animator.prototypeController != nullptr)
         {
-            animator.controller = new AnimatorController();
-            AnimationSerializer::Deserialize(*animator.controller, animator.prototypeController->GetPath());
+            animator.controller = new AnimatorController(animator.prototypeController->GetPath());
+            animator.controller->Initialize();
         }
     }
 
@@ -526,10 +526,10 @@ void Scene::Update(float deltaTime)
     for (auto& system : m_systems)
         system->Update(deltaTime);
 
-    auto animatorView = m_manager.m_registry.view<AnimatorController>();
+    auto animatorView = m_manager.m_registry.view<SpriteAnimatorComponent>();
     for (auto [entity, animator] : animatorView.each())
     {
-        animator.Process();
+        animator.controller->Process();
     }
 
     //if (m_physics != nullptr && physicsActive)

@@ -31,6 +31,9 @@ void ImGui_AnimatorInspector::Render(AnimatorState& state)
 
 	ImGui::InputFloat("Speed", &state.m_speed);
 
+	if (ImGui::Button("Set as Default"))
+		state.GetController()->SetDefaultState(&state);
+
 	ImGui::Separator();
 	ImGui::Text("Transitions");
 

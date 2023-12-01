@@ -90,7 +90,7 @@ public:
 
 	void Render();
 
-	void RenderAnimatorState(AnimatorState& state);
+	void RenderAnimatorState(AnimatorState& state, bool defaultState = false);
 
 	void ClearSelection();
 	void SetAnimatorController(AnimatorController* controller);

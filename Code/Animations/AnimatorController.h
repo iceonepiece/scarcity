@@ -46,11 +46,13 @@ public:
 
     void AddState(const std::string& name, AnimatorState state);
     void AddTransition(const std::string& name, AnimatorTransition transition);
+    void Initialize();
     void Process();
 
     AnimatorState& GetAnyState() { return *m_anyState; }
 
-
+    void SetDefaultState(AnimatorState* state) { m_defaultState = state; }
+    AnimatorState* GetDefaultState() { return m_defaultState; }
 
     inline AnimatorState* GetCurrentState()
     {

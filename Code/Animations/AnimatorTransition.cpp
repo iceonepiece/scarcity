@@ -34,11 +34,33 @@ void AnimatorTransition::RemoveCondition(size_t index)
 
 bool AnimatorTransition::CheckConditions(AnimatorController& fsm)
 {
+    if (m_nextState == nullptr)
+        return false;
+
+
+    for (auto& condition : m_conditions)
+    {
+        AnimatorParameter* parameter = fsm.GetParameter(condition.parameter.name);
+
+        if (condition.mode == ConditionMode::True)
+        {
+            if (std::get<bool>(parameter->value) == false)
+                return false;
+        }
+        else if (condition.mode == ConditionMode::False)
+        {
+            if (std::get<bool>(parameter->value) == true)
+                return false;
+        }
+    }
+
+    /*
     for (auto& function : m_conditionFunctions)
     {
         if (!function(fsm))
             return false;
     }
+    */
 
     return true;
 }

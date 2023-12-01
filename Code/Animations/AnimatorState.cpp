@@ -90,6 +90,7 @@ bool AnimatorState::RemoveIncomingTransition(AnimatorTransition* transition)
 
 void AnimatorState::Process(AnimatorController& fsm)
 {
+	std::cout << "AnimatorState::Process: " << m_name << "\n";
 	/*
 	m_spriteAnimation.timer += Timer::GetDeltaTime();
 

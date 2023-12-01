@@ -12,6 +12,7 @@ void AnimationSerializer::Serialize(AnimatorController& controller, const std::f
 	{
 		json controllerJson;
 		controllerJson["ID"] = (uint64_t)controller.GetID();
+		controllerJson["defaultState"] = controller.m_defaultState != nullptr ? controller.m_defaultState->m_name : "";
 
 		json parametersJson = json::array();
 
@@ -170,6 +171,8 @@ void AnimationSerializer::Deserialize(AnimatorController& controller, const std:
 			controller.AddState(state);
 			statesMap[name] = state;
 		}
+
+		controller.SetDefaultState(statesMap[controllerJson["defaultState"].get<std::string>()]);
 
 		json transitionsJson = controllerJson["transitions"];
 		for (auto& transitionJson : transitionsJson)
