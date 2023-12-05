@@ -61,6 +61,11 @@ public:
 		m_viewMatrix = view;
 	}
 
+	inline void CalculateViewProjectionMatrix()
+	{
+		m_viewProjectionMatrix = m_projectionMatrix * m_viewMatrix;
+	}
+
 protected:
 	Camera *m_camera;
 	CameraComponent m_cameraComponent;
@@ -68,6 +73,7 @@ protected:
 	glm::vec2 m_defaultScreenSize;
 	glm::mat4 m_viewMatrix;
 	glm::mat4 m_projectionMatrix;
+	glm::mat4 m_viewProjectionMatrix;
 
 	friend class RenderSystem;  
 };

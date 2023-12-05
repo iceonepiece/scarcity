@@ -173,9 +173,7 @@ void OpenGLRenderer::DrawLine(const glm::vec3& v1, const glm::vec3& v2, const gl
 {
     m_basicShader.Use();
 
-    m_basicShader.SetMatrix4("model", glm::mat4(1.0f));
-    m_basicShader.SetMatrix4("view", m_viewMatrix);
-    m_basicShader.SetMatrix4("projection", m_projectionMatrix);
+    m_basicShader.SetMatrix4("mvp", m_viewProjectionMatrix);
     m_basicShader.SetVector4f("color", color);
 
     glBindVertexArray(m_lineVAO);
@@ -199,14 +197,13 @@ void OpenGLRenderer::DrawLines(float lines[], int n, const glm::vec4& color)
     //projection = glm::perspective(glm::radians(45.0f), screenSize.x / screenSize.y, 0.1f, 100.0f);
     projection = m_camera->GetProjectionMatrix();
 
-    m_basicShader.SetMatrix4("model", glm::mat4(1));
+    //m_basicShader.SetMatrix4("model", glm::mat4(1));
 
     glm::mat4 view = glm::mat4(1.0f);
     if (m_camera != nullptr)
         view = m_camera->GetViewMatrix();
 
-    m_basicShader.SetMatrix4("view", view);
-    m_basicShader.SetMatrix4("projection", projection);
+    m_basicShader.SetMatrix4("mvp", projection * view);
     m_basicShader.SetVector4f("color", color);
     
     glBindVertexArray(m_lineVAO);
@@ -230,9 +227,7 @@ void OpenGLRenderer::DrawQuad(const glm::vec2& position, const glm::vec2& scale,
     model = glm::rotate(model, angle, glm::vec3(0, 0, 1));
     model = glm::scale(model, glm::vec3(scale.x, scale.y, 0.0f));
 
-    m_basicShader.SetMatrix4("model", model);
-    m_basicShader.SetMatrix4("view", m_camera->GetViewMatrix());
-    m_basicShader.SetMatrix4("projection", m_camera->GetProjectionMatrix());
+    m_basicShader.SetMatrix4("mvp", m_camera->GetProjectionMatrix() * m_camera->GetViewMatrix() * model);
     m_basicShader.SetVector4f("color", color);
 
     glBindVertexArray(m_quadVAO);
@@ -249,14 +244,7 @@ void OpenGLRenderer::DrawQuad2D(const glm::vec2& position, const glm::vec2& scal
     model = glm::rotate(model, angle, glm::vec3(0, 0, 1));
     model = glm::scale(model, glm::vec3(scale.x, scale.y, 0.0f));
 
-    //glm::mat4 view = m_camera->GetViewMatrix();
-    //glm::mat4 projection = m_camera->GetProjectionMatrix(CameraType::Orthographic);
-
-    m_basicShader.SetMatrix4("model", model);
-    //m_basicShader.SetMatrix4("view", view);
-    //m_basicShader.SetMatrix4("projection", projection);
-    m_basicShader.SetMatrix4("view", m_viewMatrix);
-    m_basicShader.SetMatrix4("projection", m_projectionMatrix);
+    m_basicShader.SetMatrix4("mvp", m_viewProjectionMatrix * model);
     m_basicShader.SetVector4f("color", color);
 
     glBindVertexArray(m_quadVAO);
@@ -273,14 +261,7 @@ void OpenGLRenderer::DrawQuad2D(const Quad2D& quad)
     model = glm::rotate(model, quad.angle, glm::vec3(0, 0, 1));
     model = glm::scale(model, glm::vec3(quad.scale.x, quad.scale.y, 0.0f));
 
-    glm::mat4 view = m_camera->GetViewMatrix();
-    glm::mat4 projection = m_camera->GetProjectionMatrix(CameraType::Orthographic);
-
-    m_basicShader.SetMatrix4("model", model);
-    //m_basicShader.SetMatrix4("view", view);
-    //m_basicShader.SetMatrix4("projection", projection);
-    m_basicShader.SetMatrix4("view", m_viewMatrix);
-    m_basicShader.SetMatrix4("projection", m_projectionMatrix);
+    m_basicShader.SetMatrix4("mvp", m_viewProjectionMatrix * model);
     m_basicShader.SetVector4f("color", quad.color);
 
     glBindVertexArray(m_quadVAO);

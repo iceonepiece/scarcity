@@ -92,6 +92,8 @@ void Scene::Start()
         }
     }
 
+    
+
     auto audioView = m_manager.m_registry.view<AudioSourceComponent>();
 
     for (auto [entity, audioSource] : audioView.each())
@@ -489,7 +491,8 @@ void Scene::Update(float deltaTime)
         if (nativeScript.instance != nullptr)
             nativeScript.instance->Update(deltaTime);
     }
-
+    
+    /*
     auto canvasAdjustView = m_manager.m_registry.view<TransformComponent, CanvasComponent>();
     for (auto [entity, transform, canvas] : canvasAdjustView.each())
     {
@@ -511,6 +514,7 @@ void Scene::Update(float deltaTime)
         canvas.position.x = x;
         canvas.position.y = y;
     }
+    */
 
     Input& input = m_app->GetInput();
 
@@ -656,6 +660,7 @@ void Scene::OnViewportResize()
 
         renderer.SetViewMatrix(glm::inverse(glm::translate(glm::mat4(1.0f), transform.position)));
         renderer.SetProjectionMatrix(glm::ortho(-width, width, -camera.size, camera.size));
+        renderer.CalculateViewProjectionMatrix();
     }
 }
 
@@ -666,6 +671,7 @@ void Scene::SetCamera(Camera& camera)
 
     renderer.SetViewMatrix(camera.GetViewMatrix());
     renderer.SetProjectionMatrix(camera.GetProjectionMatrix());
+    renderer.CalculateViewProjectionMatrix();
     renderer.SetCamera(&camera);
 }
 
@@ -794,9 +800,24 @@ void Scene::RenderUI()
     auto canvasView = m_manager.m_registry.view<TransformComponent, CanvasComponent>();
     for (auto [entity, transform, canvas] : canvasView.each())
     {
+        float x = transform.position.x;
+        float y = transform.position.y;
+
+        switch (canvas.horizontalAligment)
+        {
+            case Center: x += m_viewportWidth / 2.0f; break;
+            case Right: x += m_viewportWidth; break;
+        }
+
+        switch (canvas.verticalAlignment)
+        {
+            case Middle: y += m_viewportHeight / 2.0f; break;
+            case Bottom: y += m_viewportHeight; break;
+        }
+
         if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
         {
-            renderer.DrawQuadUI(canvas.position, canvas.size, button->color);
+            renderer.DrawQuadUI({ x, y }, canvas.size, button->color);
         }
     }
 }
