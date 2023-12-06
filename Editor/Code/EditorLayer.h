@@ -16,7 +16,6 @@
 #include "Graphics/Sprite.h"
 #include "EditorGUI/Windows/ImGui_Window.h"
 #include "EditorGUI/ImGuiMainMenuBar.h"
-#include "EditorGUI/ImGuiEntityProperties.h"
 #include "EditorGUI/ImGuiHierarchy.h"
 #include "EditorGUI/ImGuiAssetPanel.h"
 #include "EditorGUI/EditorSceneViewport.h"

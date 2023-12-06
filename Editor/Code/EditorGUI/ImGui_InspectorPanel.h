@@ -29,12 +29,6 @@ public:
 		return false;
 	}
 
-	template <typename T>
-	bool RenderAddUIComponent(entt::registry& registry, entt::entity entity)
-	{
-		return false;
-	}
-
 private:
 	EditorLayer& m_editor;
 	ImGui_AnimatorInspector m_animatorInspector;

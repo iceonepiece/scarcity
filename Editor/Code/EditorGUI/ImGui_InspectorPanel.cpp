@@ -62,7 +62,7 @@ void ImGui_InspectorPanel::Render()
             ImGui::Separator();
 
             std::apply([&](auto... componentTypes) {
-                (RenderAddUIComponent<decltype(componentTypes)>(registry, entity), ...);
+                (RenderAddComponent<decltype(componentTypes)>(registry, entity), ...);
                 }, ToAddUIComponents{});
 
             if (registry.try_get<GridComponent>(entity))
