@@ -301,6 +301,20 @@ void EditorLayer::OnKeyPressed(KeyPressedEvent& event)
         }
         break;
 
+        case Key::F:
+        {
+            if (m_selectedObject.type == EditorObjectType::Entity)
+            {
+                if (TransformComponent* transform = GetEntityTransform())
+                {
+                    Camera& camera = m_editorSceneViewport.GetCamera();
+                    camera.SetPosition({ transform->position.x, transform->position.y, camera.GetPosition().z });
+                    camera.SetZoom(1.0f);
+                }
+            }
+        }
+        break;
+
     }
 }
 
