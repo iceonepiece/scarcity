@@ -62,6 +62,8 @@ void AnimationSerializer::Serialize(AnimatorController& controller, const std::f
 				if (transition->m_nextState != nullptr)
 					transitionJson["nextState"] = transition->m_nextState->m_name;
 
+				transitionJson["hasExitTime"] = transition->m_hasExitTime;
+
 				json conditionsJson = json::array();
 				for (auto& condition : transition->m_conditions)
 				{
@@ -106,7 +108,7 @@ void AnimationSerializer::Serialize(AnimatorController& controller, const std::f
 	}
 }
 
-void AnimationSerializer::Deserialize(AnimatorController& controller, const std::filesystem::path& filepath)
+void AnimationSerializer::Deserialize(AnimatorController& controller, const std::filesystem::path& filepath, bool instant)
 {
 	std::cout << "Deserialize AnimatorController: " << filepath << std::endl;
 	std::ifstream deserialzed(filepath);
@@ -156,16 +158,30 @@ void AnimationSerializer::Deserialize(AnimatorController& controller, const std:
 			if (stateJson["motion"].is_number_unsigned())
 			{
 				uint64_t motionID = stateJson["motion"].get<uint64_t>();
-				Application::Get().GetAssetManager().AddAssetLink(
-					[&](Asset* asset)
+
+				if (instant)
+				{
+					if (Asset* asset = Application::Get().GetAssetManager().GetAssetByID(motionID))
 					{
 						if (AnimationClip* clip = dynamic_cast<AnimationClip*>(asset))
 						{
 							kState.m_motion = clip;
 						}
 					}
-					, motionID
-				);
+				}
+				else
+				{
+					Application::Get().GetAssetManager().AddAssetLink(
+						[&](Asset* asset)
+						{
+							if (AnimationClip* clip = dynamic_cast<AnimationClip*>(asset))
+							{
+								kState.m_motion = clip;
+							}
+						}
+						, motionID
+					);
+				}
 			}
 
 			controller.AddState(state);
@@ -184,6 +200,8 @@ void AnimationSerializer::Deserialize(AnimatorController& controller, const std:
 				continue;
 
 			AnimatorTransition* transition = new AnimatorTransition(statesMap[fromState], statesMap[nextState]);
+
+			transition->m_hasExitTime = transitionJson["hasExitTime"];
 
 			json conditionsJson = transitionJson["conditions"];
 			for (auto& conditionJson : conditionsJson)

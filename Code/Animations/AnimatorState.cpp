@@ -27,6 +27,13 @@ AnimatorState::AnimatorState(SpriteAnimation spriteAnimation)
 {
 }
 
+void AnimatorState::OnEnter(AnimatorController& controller)
+{
+	m_done = false;
+	m_frame = 0;
+	m_timer = 0.0f;
+}
+
 AnimatorState& AnimatorState::operator=(const AnimatorState& other)
 {
 	std::cout << "AnimatorState operator=\n";
@@ -34,6 +41,14 @@ AnimatorState& AnimatorState::operator=(const AnimatorState& other)
 	m_done = other.IsDone();
 
 	return *this;
+}
+
+Sprite* AnimatorState::GetSprite()
+{
+	if (m_frame >= m_motion->GetSpriteIndices().size() || m_motion->GetImage() == nullptr)
+		return nullptr;
+
+	return &m_motion->GetImage()->GetSprites()[m_motion->GetSpriteIndices()[m_frame]];
 }
 
 void AnimatorState::AddOutgoingTransition(AnimatorTransition* transition)
@@ -90,6 +105,24 @@ bool AnimatorState::RemoveIncomingTransition(AnimatorTransition* transition)
 
 void AnimatorState::Process(AnimatorController& fsm)
 {
+	if (m_motion == nullptr)
+		return;
+
+	m_timer += Timer::GetDeltaTime();
+
+	if (m_timer >= m_speed)
+	{
+		m_frame += 1;
+
+		if (m_frame == m_motion->GetSpriteIndices().size() - 1)
+		{
+			m_done = true;
+			m_frame = 0;
+		}
+
+		m_timer = 0.0f;
+	}
+
 	/*
 	m_spriteAnimation.timer += Timer::GetDeltaTime();
 

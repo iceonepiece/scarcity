@@ -20,6 +20,9 @@ public:
     void RemoveCondition(size_t index);
     bool CheckConditions(AnimatorController& fsm);
 
+    bool GetHasExitTime() { return m_hasExitTime; }
+    void SetHasExitTime(bool hasExitTime) { m_hasExitTime = hasExitTime; }
+
     AnimatorState* GetFromState() { return m_fromState; }
     AnimatorState* GetNextState() { return m_nextState; }
     void SetNextState(AnimatorState* state);
@@ -27,6 +30,8 @@ public:
     std::vector<AnimatorCondition>& GetConditions() { return m_conditions; }
 
 protected:
+    bool m_hasExitTime;
+
     std::vector<ConditionFunction> m_conditionFunctions;
     std::vector<AnimatorCondition> m_conditions;
 

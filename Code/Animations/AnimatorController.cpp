@@ -7,7 +7,6 @@ AnimatorController::AnimatorController(const std::filesystem::path& path)
     , m_defaultState(nullptr)
     , m_anyState(new AnimatorState("Any State"))
 {
-    AnimationSerializer::Deserialize(*this, path);
 }
 
 AnimatorController::~AnimatorController()
@@ -16,6 +15,11 @@ AnimatorController::~AnimatorController()
 
     for (auto& state : m_states)
         delete state;
+}
+
+void AnimatorController::DoDeserialize(bool instant)
+{
+    AnimationSerializer::Deserialize(*this, m_path, instant);
 }
 
 void AnimatorController::AddState(AnimatorState* state)
@@ -90,6 +94,7 @@ void AnimatorController::Process()
         if (t->CheckConditions(*this))
         {
             nextState = t->GetNextState();
+            nextState->OnEnter(*this);
             break;
         }
     }
@@ -139,7 +144,7 @@ void AnimatorController::RemoveParameter(const std::string& name)
 
 void AnimatorController::SetInt(std::string name, int value)
 {
-    AddParameter(name, value);
+    GetParameter(name)->value = value;
 }
 
 int AnimatorController::GetInt(std::string name)
@@ -152,7 +157,7 @@ int AnimatorController::GetInt(std::string name)
 
 void AnimatorController::SetBool(std::string name, bool value)
 {
-    AddParameter(name, value);
+    GetParameter(name)->value = value;
 }
 
 bool AnimatorController::GetBool(std::string name)
@@ -161,4 +166,15 @@ bool AnimatorController::GetBool(std::string name)
         return std::get<bool>(param->value);
 
     return false;
+}
+
+void AnimatorController::SetTrigger(const std::string& name)
+{
+    if (AnimatorParameter* param = GetParameter(name))
+    {
+        Trigger trigger;
+        trigger.value = true;
+
+        param->value = trigger;
+    }
 }

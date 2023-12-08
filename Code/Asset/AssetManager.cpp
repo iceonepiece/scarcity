@@ -96,6 +96,7 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
 		{
 			if (AnimatorController* controllerPtr = dynamic_cast<AnimatorController*>(m_assetMap[path.string()].get()))
 			{
+				controllerPtr->DoDeserialize(false);
 				m_animControllers.push_back(controllerPtr);
 				m_assetIDMap.insert({ controllerPtr->GetID(), controllerPtr });
 			}

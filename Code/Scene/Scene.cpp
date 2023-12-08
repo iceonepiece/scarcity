@@ -91,6 +91,7 @@ void Scene::Start()
         if (animator.prototypeController != nullptr)
         {
             animator.controller = new AnimatorController(animator.prototypeController->GetPath());
+            animator.controller->DoDeserialize(true);
             animator.controller->Initialize();
         }
     }
@@ -536,7 +537,8 @@ void Scene::Update(float deltaTime)
     auto animatorView = m_manager.m_registry.view<SpriteAnimatorComponent>();
     for (auto [entity, animator] : animatorView.each())
     {
-        animator.controller->Process();
+        if (animator.controller != nullptr)
+            animator.controller->Process();
     }
 
     //if (m_physics != nullptr && physicsActive)
@@ -700,12 +702,11 @@ void Scene::Render(RenderOptions renderOptions)
         SpriteAnimatorComponent* spriteAnimator = m_manager.m_registry.try_get<SpriteAnimatorComponent>(entity);
         if (spriteAnimator != nullptr && spriteAnimator->controller != nullptr)
         {
-            /*
-            AnimatorState* animState = spriteAnimator->controller->GetCurrentState();
-            SpriteAnimation spriteAnim = animState->GetSpriteAnimation();
-            Sprite sprite = spriteAnim.GetSprite();
-            renderer.DrawSprite(sprite, transform.position, transform.scale, transform.rotation.z);
-            */
+            if (AnimatorState* state = spriteAnimator->controller->GetCurrentState())
+			{
+                if (Sprite* sprite = state->GetSprite())
+					renderer.DrawSprite(*sprite, transform.position, transform.scale, transform.rotation.z);
+			}
         }
         else if (sprite.sprite != nullptr)
         {

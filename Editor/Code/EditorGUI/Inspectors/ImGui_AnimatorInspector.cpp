@@ -57,6 +57,10 @@ void ImGui_AnimatorInspector::Render(AnimatorState& state)
 		AnimatorController* controller = state.GetController();
 		auto& parameters = controller->GetParameters();
 
+		bool hasExitTime = m_selectedTransition->GetHasExitTime();
+		ImGui::Checkbox("Has Exit Time", &hasExitTime);
+		m_selectedTransition->SetHasExitTime(hasExitTime);
+
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(8, 16));
 		ImGui::BeginChild("Conditions", ImVec2(0, 0), true);
 

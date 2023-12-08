@@ -5,6 +5,7 @@
 AnimatorTransition::AnimatorTransition(AnimatorState* fromState, AnimatorState* nextState)
     : m_fromState(fromState)
     , m_nextState(nextState)
+    , m_hasExitTime(false)
 {
     if (m_fromState && m_nextState)
 		m_fromState->AddOutgoingTransition(this);
@@ -34,9 +35,11 @@ void AnimatorTransition::RemoveCondition(size_t index)
 
 bool AnimatorTransition::CheckConditions(AnimatorController& fsm)
 {
-    if (m_nextState == nullptr)
+    if (m_nextState == nullptr || fsm.GetCurrentState() == nullptr)
         return false;
 
+    if (m_hasExitTime && fsm.GetCurrentState()->IsDone())
+        return true;
 
     for (auto& condition : m_conditions)
     {
@@ -69,14 +72,25 @@ bool AnimatorTransition::CheckConditions(AnimatorController& fsm)
         {
             if (condition.mode == ConditionMode::True)
             {
-                if (std::get<bool>(parameter->value) == false)
-                    return false;
+                return std::get<bool>(parameter->value) == true;
             }
             else if (condition.mode == ConditionMode::False)
             {
-                if (std::get<bool>(parameter->value) == true)
-                    return false;
+                return std::get<bool>(parameter->value) == false;
             }
+        }
+        else if (std::holds_alternative<Trigger>(parameter->value))
+        {
+            Trigger trigger = std::get<Trigger>(parameter->value);
+            if (trigger.value == true)
+            {
+				trigger.value = false;
+                parameter->value = trigger;
+
+				return true;
+			}
+			else
+				return false;
         }
     }
 
@@ -88,7 +102,7 @@ bool AnimatorTransition::CheckConditions(AnimatorController& fsm)
     }
     */
 
-    return true;
+    return false;
 }
 
 void AnimatorTransition::SetNextState(AnimatorState* state)

@@ -9,7 +9,10 @@
 #include "AnimatorState.h"
 #include "AnimatorTransition.h"
 
-struct Trigger {};
+struct Trigger
+{
+    bool value = false;
+};
 
 using ParameterType = std::variant<float, int, bool, Trigger>;
 
@@ -41,6 +44,8 @@ public:
     AnimatorController(const std::filesystem::path& path = "");
     virtual ~AnimatorController();
 
+    void DoDeserialize(bool instant);
+
     void AddState(AnimatorState* state);
     void RemoveState(AnimatorState* state);
 
@@ -66,6 +71,8 @@ public:
 
     void SetInt(std::string name, int value);
     int GetInt(std::string name);
+
+    void SetTrigger(const std::string& name);
 
     void SetBool(std::string name, bool value);
     bool GetBool(std::string name);

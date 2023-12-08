@@ -19,6 +19,8 @@ public:
     void SetController(AnimatorController* controller) { m_controller = controller; }
     AnimatorController* GetController() { return m_controller; }
 
+    void OnEnter(AnimatorController& controller);
+
     /*
     AnimatorState(const AnimatorState& other)
         : m_spriteAnimation(other.m_spriteAnimation)
@@ -54,6 +56,10 @@ public:
     bool m_selected = false;
     AnimationClip* m_motion;
     float m_speed;
+    float m_timer = 0.0f;
+    int m_frame = 0;
+
+    Sprite* GetSprite();
 
     void AddOutgoingTransition(AnimatorTransition* transition);
     void AddIncomingTransition(AnimatorTransition* transition);
