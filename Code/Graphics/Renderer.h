@@ -46,10 +46,7 @@ public:
 	inline float GetScreenSizePercentage() { return m_screenSize.x / m_defaultScreenSize.x; }
 
 	void SetCamera(Camera* camera);
-	void SetCamera(CameraComponent camera)
-	{
-		m_cameraComponent = camera;
-	}
+	void SetCamera(CameraComponent camera);
 
 	inline void SetProjectionMatrix(const glm::mat4& projection)
 	{
@@ -59,6 +56,11 @@ public:
 	inline void SetViewMatrix(const glm::mat4& view)
 	{
 		m_viewMatrix = view;
+	}
+
+	inline void SetViewProjectionMatrix(const glm::mat4& viewProj)
+	{
+		m_viewProjectionMatrix = viewProj;
 	}
 
 	inline void CalculateViewProjectionMatrix()

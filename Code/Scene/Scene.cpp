@@ -11,6 +11,9 @@
 #include "Physics/EntityFixtureData.h"
 #include "Audio/Audio.h"
 #include "UI/UIManager.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 Scene::Scene(const std::string& name, const std::filesystem::path& path)
     : Asset(path, AssetType::Scene)
@@ -666,13 +669,7 @@ void Scene::OnViewportResize()
 
 void Scene::SetCamera(Camera& camera)
 {
-    Application& app = Application::Get();
-    Renderer& renderer = app.GetRenderer();
-
-    renderer.SetViewMatrix(camera.GetViewMatrix());
-    renderer.SetProjectionMatrix(camera.GetProjectionMatrix());
-    renderer.CalculateViewProjectionMatrix();
-    renderer.SetCamera(&camera);
+    Application::Get().GetRenderer().SetCamera(&camera);
 }
 
 void Scene::Render(RenderOptions renderOptions)
@@ -722,12 +719,14 @@ void Scene::Render(RenderOptions renderOptions)
     for (auto& system : m_systems)
         system->Render();
 
-    RenderUI();
-
     if (renderOptions.collisionVisible)
         RenderCollisionComponents();
 
     RenderTexts();
+
+    renderer.SetViewProjectionMatrix(glm::ortho(0.0f, (float)m_viewportWidth, 0.0f, (float)m_viewportHeight));
+
+    RenderUI();
 }
 
 void Scene::RenderEditor(RenderOptions renderOptions)
@@ -800,6 +799,7 @@ void Scene::RenderUI()
     auto canvasView = m_manager.m_registry.view<TransformComponent, CanvasComponent>();
     for (auto [entity, transform, canvas] : canvasView.each())
     {
+        /*
         float x = transform.position.x;
         float y = transform.position.y;
 
@@ -814,10 +814,11 @@ void Scene::RenderUI()
             case Middle: y += m_viewportHeight / 2.0f; break;
             case Bottom: y += m_viewportHeight; break;
         }
+        */
 
         if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
         {
-            renderer.DrawQuadUI({ x, y }, canvas.size, button->color);
+            renderer.DrawQuad2D(transform.position, canvas.size, 0.0f, button->color);
         }
     }
 }
