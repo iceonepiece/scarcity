@@ -3,7 +3,6 @@
 #include "Graphics/Texture.h"
 #include <iostream>
 #include "File/MetaSerializer.h"
-#include "ImGuiEntityProperties.h"
 #include "Audio/AudioSource.h"
 #include "ImGuiComponents/ImGuiComponentRenderer.h"
 

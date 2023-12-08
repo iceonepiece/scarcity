@@ -74,9 +74,15 @@ void ImGui_AssetInspector::RenderAnimationClip(AnimationClip& animClip)
 
     ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2{ 0.5f, 0.5f });
 
-    currentTexture = animClip.GetImage()->GetTexture();
-    auto& spriteIndices = animClip.GetSpriteIndices();
-    auto& sprites = animClip.GetImage()->GetSprites();
+    std::vector<size_t> spriteIndices;
+    std::vector<Sprite> sprites;
+
+    if (animClip.GetImage() != nullptr)
+    {
+        currentTexture = animClip.GetImage()->GetTexture();
+        spriteIndices = animClip.GetSpriteIndices();
+        sprites = animClip.GetImage()->GetSprites();
+    }
 
     ImGui::Text("Preview");
     ImGui::Text("Total Frames: %d", spriteIndices.size());

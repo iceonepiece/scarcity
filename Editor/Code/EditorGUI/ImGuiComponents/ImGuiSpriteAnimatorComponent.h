@@ -26,7 +26,7 @@ static void RenderImGui(SpriteAnimatorComponent& spriteAnimator)
 
 		if (ImGui::Button("OK", ImVec2(120, 0)))
 		{
-			spriteAnimator.controller = window->GetSelectedController();
+			spriteAnimator.prototypeController = window->GetSelectedController();
 			ImGui::CloseCurrentPopup();
 		}
 
