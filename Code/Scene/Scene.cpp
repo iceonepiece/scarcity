@@ -65,6 +65,7 @@ void Scene::DestroyEntity(entt::entity entity)
 {
     if (m_manager.m_registry.all_of<Rigidbody2DComponent>(entity))
     {
+        m_physics.DestroyPhysicsEntity(m_manager.m_registry.get<Rigidbody2DComponent>(entity));
         //DestroyPhysicsEntity(m_manager.m_registry.get<Rigidbody2DComponent>(entity));
     }
 
@@ -842,8 +843,9 @@ Entity Scene::InstantiateEntity(Entity entity, const glm::vec3& position, bool p
     {
         transform->position = position;
 
-        //if (Rigidbody2DComponent* rb2d = returnEntity.GetComponent<Rigidbody2DComponent>())
-          //  InitializePhysicsEntity(newEntity, *transform, *rb2d);
+        if (Rigidbody2DComponent* rb2d = returnEntity.GetComponent<Rigidbody2DComponent>())
+            m_physics.InitializePhysicsEntity(returnEntity, *transform, *rb2d);
+            //InitializePhysicsEntity(newEntity, *transform, *rb2d);
     }
 
     if (playing)
