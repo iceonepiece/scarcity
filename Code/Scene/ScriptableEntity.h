@@ -35,6 +35,12 @@ public:
 		return m_entity.GetComponent<T>();
 	}
 
+	template<typename T>
+	T& Get()
+	{
+		return m_entity.Get<T>();
+	}
+
 	virtual void OnCollisionEnter(Collision2D collision) {}
 	virtual void OnCollisionExit(Collision2D collision) {}
 

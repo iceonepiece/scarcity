@@ -42,6 +42,12 @@ public:
 		return m_manager->m_registry.try_get<T>(m_id);
 	}
 
+	template<typename T>
+	T& Get()
+	{
+		return m_manager->m_registry.get<T>(m_id);
+	}
+
 	void UpdateEntityAndChildren(UpdateEntityCallback callback)
 	{
 		callback(*this);
