@@ -27,6 +27,8 @@ ImGuiManager::ImGuiManager(Application& app)
 	icons_config.GlyphOffset = ImVec2(0.0f, 1.0f);
 	io.Fonts->AddFontFromFileTTF(FONT_ICON_FILE_NAME_FAS, iconFontSize, &icons_config, icons_ranges);
 
+	io.Fonts->AddFontFromFileTTF("Fonts/RobotoMono-Regular.ttf", 28.0f);
+
 	ImGui::StyleColorsDark();
 
 	GLFWwindow* window = static_cast<GLFWwindow*>(m_app.GetWindow().GetNativeWindow());

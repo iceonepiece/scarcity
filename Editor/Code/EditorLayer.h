@@ -21,6 +21,7 @@
 #include "EditorGUI/EditorSceneViewport.h"
 #include "EditorGUI/ImGui_AnimatorPanel.h"
 #include "EditorGUI/ImGui_InspectorPanel.h"
+#include "EditorGUI/ImGui_LuaEditorPanel.h"
 #include "GameLayer.h"
 #include "Commands/EditorCommand.h"
 #include "Graphics/Framebuffer.h"
@@ -225,6 +226,7 @@ private:
 	ImGuiAssetPanel m_assetPanel;
 	ImGui_AnimatorPanel m_animatorPanel;
 	ImGui_InspectorPanel m_inspectorPanel;
+	ImGui_LuaEditorPanel m_luaEditorPanel;
 
 	EditorSceneViewport m_editorSceneViewport;
 

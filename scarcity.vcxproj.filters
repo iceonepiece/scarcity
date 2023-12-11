@@ -73,6 +73,7 @@
     <ClCompile Include="Code\Animations\AnimationClip.cpp" />
     <ClCompile Include="Code\File\MetaSerializer.cpp" />
     <ClCompile Include="Code\Graphics\Sprite.cpp" />
+    <ClCompile Include="External\Include\ImGuiColorTextEdit\TextEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Animations\AnimationSerializer.h" />
@@ -614,6 +615,7 @@
     <ClInclude Include="External\Include\ImGuiNodes\ImNodes.h" />
     <ClInclude Include="External\Include\ImGuiNodes\ImNodesEz.h" />
     <ClInclude Include="Code\Animations\AnimationClip.h" />
+    <ClInclude Include="External\Include\ImGuiColorTextEdit\TextEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\awesomeface.png" />
