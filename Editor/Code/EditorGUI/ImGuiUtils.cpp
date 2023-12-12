@@ -40,7 +40,7 @@ void ImGuiUtils::RenderInputVec3(const std::string& name, glm::vec3& values, flo
     ImGui::PopItemWidth();
 }
 
-void ImGuiUtils::RenderDropdownList(const std::string& label, const std::vector<std::string>& keys, unsigned int& selectedIndex)
+void ImGuiUtils::RenderDropdownList(const std::string& label, const std::vector<std::string>& keys, size_t& selectedIndex)
 {
     if (keys.size() == 0)
         return;

@@ -6,6 +6,7 @@
 #include <iostream>
 #include "File/MetaSerializer.h"
 #include "Audio/AudioSource.h"
+#include "Audio/Audio.h"
 #include "Animations/AnimationClip.h"
 #include "../ImGuiComponents/ImGuiComponentRenderer.h"
 
@@ -17,11 +18,11 @@ void ImGui_AssetInspector::Render(Asset* asset)
     else if (Sprite* sprite = dynamic_cast<Sprite*>(asset))
         RenderSprite(*sprite);
 
-    else if (PrefabAsset* prefabAsset = dynamic_cast<PrefabAsset*>(asset))
-        RenderPrefabAsset(*prefabAsset);
+    else if (Prefab* prefab = dynamic_cast<Prefab*>(asset))
+        RenderPrefab(*prefab);
 
-    else if (AudioAsset* audioAsset = dynamic_cast<AudioAsset*>(asset))
-        RenderAudioAsset(*audioAsset);
+    else if (AudioClip* audioClip = dynamic_cast<AudioClip*>(asset))
+        RenderAudioClip(*audioClip);
 
     else if (AnimatorController* animatorAsset = dynamic_cast<AnimatorController*>(asset))
         RenderAnimatorController(*animatorAsset);
@@ -170,12 +171,12 @@ void ImGui_AssetInspector::RenderAnimationClip(AnimationClip& animClip)
     ImGui::EndChild();
 }
 
-void ImGui_AssetInspector::RenderPrefabAsset(PrefabAsset& prefabAsset)
+void ImGui_AssetInspector::RenderPrefab(Prefab& prefab)
 {
-    std::string name = prefabAsset.GetPath().stem().string() + " (Prefab)";
+    std::string name = prefab.GetPath().stem().string() + " (Prefab)";
     ImGui::Text(name.c_str());
 
-    Entity& entity = prefabAsset.GetEntity();
+    Entity& entity = prefab.GetEntity();
     auto& registry = entity.GetRegistry();
 
     ImGui::PushID((int)entity.GetEntity());
@@ -255,21 +256,17 @@ void ImGui_AssetInspector::RenderImage(Image& image)
     }
 }
 
-void ImGui_AssetInspector::RenderAudioAsset(AudioAsset& audioAsset)
+void ImGui_AssetInspector::RenderAudioClip(AudioClip& audioClip)
 {
-    std::string name = audioAsset.GetName() + " (Audio)";
+    std::string name = audioClip.GetName() + " (Audio)";
 
     ImGui::Text(name.c_str());
 
-    if (AudioClip* audioClip = audioAsset.GetAudioClip())
+    std::string durationText = "Seconds: " + std::to_string(audioClip.GetDuration());
+    ImGui::Text(durationText.c_str());
+    if (ImGui::Button("Play"))
     {
-        std::string durationText = "Seconds: " + std::to_string(audioClip->GetDuration());
-        ImGui::Text(durationText.c_str());
-        if (ImGui::Button("Play"))
-        {
-            Application::Get().GetAudio().PlaySound(audioClip);
-        }
-
+        Application::Get().GetAudio().PlaySound(&audioClip);
     }
 }
 

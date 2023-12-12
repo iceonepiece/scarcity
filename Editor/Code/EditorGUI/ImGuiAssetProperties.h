@@ -3,15 +3,15 @@
 #include "File/FileSystem.h"
 #include "Graphics/Image.h"
 #include "Graphics/Sprite.h"
-#include "Asset/PrefabAsset.h"
-#include "Asset/AudioAsset.h"
+#include "Entity/Prefab.h"
+#include "Audio/AudioClip.h"
 
 class ImGuiAssetProperties
 {
 public:
 	void Render(Asset* asset);
-	void RenderPrefabAsset(PrefabAsset& prefabAsset);
+	void RenderPrefab(Prefab& prefab);
 	void RenderImage(Image& image);
 	void RenderSprite(Sprite& sprite);
-	void RenderAudioAsset(AudioAsset& audioAsset);
+	void RenderAudioClip(AudioClip& audioClip);
 };

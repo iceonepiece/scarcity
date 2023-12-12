@@ -2,7 +2,6 @@
 
 #include <tuple>
 
-#include "AIComponent.h"
 #include "AudioSourceComponent.h"
 #include "BaseComponent.h"
 #include "BoxCollider2DComponent.h"

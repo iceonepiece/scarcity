@@ -28,13 +28,13 @@ static void RenderImGui(CanvasComponent& canvas)
 
     ImGui::PushItemWidth(100);
 
-    unsigned int verticalIndex = canvas.verticalAlignment;
+    size_t verticalIndex = canvas.verticalAlignment;
     ImGuiUtils::RenderDropdownList("##Vertical", verticalAlignments, verticalIndex);
     canvas.verticalAlignment = (VerticalAlignment)verticalIndex;
 
     ImGui::SameLine();
 
-    unsigned int horizontalIndex = canvas.horizontalAligment;
+    size_t horizontalIndex = canvas.horizontalAligment;
     ImGuiUtils::RenderDropdownList("##Horizontal", horizontalAlignments, horizontalIndex);
     canvas.horizontalAligment = (HorizontalAlignment)horizontalIndex;
 

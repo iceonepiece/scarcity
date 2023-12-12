@@ -62,8 +62,8 @@ void ImGui_AnimatorPanel::RenderAnimatorState(AnimatorState& state, bool default
         std::vector<ImNodes::Ez::SlotInfo> inputSlots { {"In", 1} };
         std::vector<ImNodes::Ez::SlotInfo> outputSlots { {"Out", 1} };
 
-        ImNodes::Ez::InputSlots(inputSlots.data(), inputSlots.size());
-        ImNodes::Ez::OutputSlots(outputSlots.data(), outputSlots.size());
+        ImNodes::Ez::InputSlots(inputSlots.data(), static_cast<int>(inputSlots.size()));
+        ImNodes::Ez::OutputSlots(outputSlots.data(), static_cast<int>(outputSlots.size()));
 
         Connection new_connection;
         if (ImNodes::GetNewConnection(&new_connection.InputNode, &new_connection.InputSlot,

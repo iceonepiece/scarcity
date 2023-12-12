@@ -42,7 +42,7 @@ void OpenGLFramebuffer::Unbind()
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void OpenGLFramebuffer::Rescale(float width, float height)
+void OpenGLFramebuffer::Rescale(unsigned int width, unsigned int height)
 {
     m_width = width;
     m_height = height;

@@ -1,7 +1,7 @@
 #pragma once
 #include <nlohmann/json.hpp>
 #include <imgui/imgui.h>
-#include "Core/Entity.h"
+#include "Entity/Entity.h"
 
 using json = nlohmann::json;
 

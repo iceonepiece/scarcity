@@ -4,7 +4,7 @@
 #include <functional>
 #include "Graphics/Renderer.h"
 #include "Components/TransformComponent.h"
-#include "Core/Entity.h"
+#include "Entity/Entity.h"
 
 enum TransformDepending
 {

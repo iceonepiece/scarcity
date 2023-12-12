@@ -21,7 +21,7 @@ public:
         std::uint8_t bitsPerSample;
         std::vector<char> soundData;
 
-        if (!load_wav(m_filePath.string(), channels, sampleRate, bitsPerSample, soundData))
+        if (!load_wav(m_path.string(), channels, sampleRate, bitsPerSample, soundData))
         {
             std::cerr << "ERROR: Could not load wav" << std::endl;
             return false;

@@ -3,7 +3,7 @@
 #include "Asset/Asset.h"
 #include "Graphics/Image.h"
 
-struct AnimationClip : public Asset
+class AnimationClip : public Asset
 {
 public:
 	AnimationClip(const std::filesystem::path& path);

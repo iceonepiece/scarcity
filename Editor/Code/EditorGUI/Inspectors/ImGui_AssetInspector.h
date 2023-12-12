@@ -2,18 +2,18 @@
 
 #include "Graphics/Image.h"
 #include "Graphics/Sprite.h"
-#include "Asset/PrefabAsset.h"
-#include "Asset/AudioAsset.h"
+#include "Entity/Prefab.h"
+#include "Audio/AudioClip.h"
 #include "Animations/AnimatorController.h"
 
 class ImGui_AssetInspector
 {
 public:
 	static void Render(Asset* asset);
-	static void RenderPrefabAsset(PrefabAsset& prefabAsset);
+	static void RenderPrefab(Prefab& prefab);
 	static void RenderImage(Image& image);
 	static void RenderSprite(Sprite& sprite);
-	static void RenderAudioAsset(AudioAsset& audioAsset);
+	static void RenderAudioClip(AudioClip& audioClip);
 	static void RenderAnimatorController(AnimatorController& animController);
 	static void RenderAnimationClip(AnimationClip& animClip);
 };

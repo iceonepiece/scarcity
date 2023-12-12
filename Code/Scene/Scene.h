@@ -3,7 +3,7 @@
 #include <memory>
 #include <functional>
 #include <filesystem>
-#include "Core/EntityManager.h"
+#include "Entity/EntityManager.h"
 #include "Graphics/Camera.h"
 #include "Physics/Physics.h"
 #include "Input/Input.h"

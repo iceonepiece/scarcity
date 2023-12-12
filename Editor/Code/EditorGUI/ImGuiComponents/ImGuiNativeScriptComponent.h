@@ -14,9 +14,9 @@ static void RenderImGui(NativeScriptComponent& script)
     {
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("NATIVE_SCRIPT_FILE"))
         {
-            NativeScriptAsset* nativeScriptAsset = (NativeScriptAsset*)payload->Data;
-            std::cout << "Drop native script name: " << nativeScriptAsset->GetPath() << std::endl;
-            script.className = nativeScriptAsset->GetPath().stem().string();
+            NativeScript* nativeScript = (NativeScript*)payload->Data;
+            std::cout << "Drop native script name: " << nativeScript->GetPath() << std::endl;
+            script.className = nativeScript->GetPath().stem().string();
         }
 
         ImGui::EndDragDropTarget();

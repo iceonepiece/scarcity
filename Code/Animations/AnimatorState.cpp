@@ -86,6 +86,8 @@ bool AnimatorState::RemoveTransition(AnimatorState* toState)
 			return true;
 		}
 	}
+
+	return false;
 }
 
 bool AnimatorState::RemoveIncomingTransition(AnimatorTransition* transition)

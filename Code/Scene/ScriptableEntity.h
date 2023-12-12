@@ -3,7 +3,7 @@
 #include <string>
 #include <memory>
 #include "Core/Application.h"
-#include "Core/Entity.h"
+#include "Entity/Entity.h"
 #include "Components/TransformComponent.h"
 #include "Scene.h"
 #include "Physics/Physics.h"

@@ -135,8 +135,8 @@ b2Body* Physics::CreateBodyWithFixture(b2Vec2 position, b2Vec2 size, FixtureData
 	fixtureDef.density = isSensor ? 0.0f : 1.0f;
 	fixtureDef.friction = 0.0f;
 	fixtureDef.isSensor = isSensor;
-	fixtureDef.filter.categoryBits = layer;
-	fixtureDef.filter.maskBits = m_maskMap[layer];
+	//fixtureDef.filter.categoryBits = layer;
+	//fixtureDef.filter.maskBits = m_maskMap[layer];
 	
 	if (fixtureData)
 	{

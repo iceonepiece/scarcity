@@ -1,6 +1,7 @@
 #include <imgui/imgui.h>
 #include "ImGuiAssetProperties.h"
 #include "Graphics/Texture.h"
+#include "Audio/Audio.h"
 #include <iostream>
 #include "File/MetaSerializer.h"
 #include "Audio/AudioSource.h"
@@ -15,19 +16,19 @@ void ImGuiAssetProperties::Render(Asset* asset)
     else if (Sprite* sprite = dynamic_cast<Sprite*>(asset))
         RenderSprite(*sprite);
 
-    else if (PrefabAsset* prefabAsset = dynamic_cast<PrefabAsset*>(asset))
-        RenderPrefabAsset(*prefabAsset);
+    else if (Prefab* prefab = dynamic_cast<Prefab*>(asset))
+        RenderPrefab(*prefab);
 
-    else if (AudioAsset* audioAsset = dynamic_cast<AudioAsset*>(asset))
-        RenderAudioAsset(*audioAsset);
+    else if (AudioClip* audioClip = dynamic_cast<AudioClip*>(asset))
+        RenderAudioClip(*audioClip);
 }
 
-void ImGuiAssetProperties::RenderPrefabAsset(PrefabAsset& prefabAsset)
+void ImGuiAssetProperties::RenderPrefab(Prefab& prefab)
 {
-    std::string name = prefabAsset.GetPath().stem().string() + " (Prefab)";
+    std::string name = prefab.GetPath().stem().string() + " (Prefab)";
     ImGui::Text(name.c_str());
 
-    Entity& entity = prefabAsset.GetEntity();
+    Entity& entity = prefab.GetEntity();
     auto& registry = entity.GetRegistry();
 
     ImGui::PushID((int)entity.GetEntity());
@@ -107,21 +108,17 @@ void ImGuiAssetProperties::RenderImage(Image& image)
     }
 }
 
-void ImGuiAssetProperties::RenderAudioAsset(AudioAsset& audioAsset)
+void ImGuiAssetProperties::RenderAudioClip(AudioClip& audioClip)
 {
-    std::string name = audioAsset.GetName() + " (Audio)";
+    std::string name = audioClip.GetName() + " (Audio)";
 
     ImGui::Text(name.c_str());
 
-    if (AudioClip* audioClip = audioAsset.GetAudioClip())
+    std::string durationText = "Seconds: " + std::to_string(audioClip.GetDuration());
+    ImGui::Text(durationText.c_str());
+    if (ImGui::Button("Play"))
     {
-        std::string durationText = "Seconds: " + std::to_string(audioClip->GetDuration());
-        ImGui::Text(durationText.c_str());
-        if (ImGui::Button("Play"))
-        {
-            Application::Get().GetAudio().PlaySound(audioClip);
-        }
-
+        Application::Get().GetAudio().PlaySound(&audioClip);
     }
 }
 

@@ -33,13 +33,13 @@ void ImGuiAssetPanel::RenderUnsupportedFile(const std::filesystem::path& path)
 	}
 }
 
-void ImGuiAssetPanel::RenderNativeScript(NativeScriptAsset& nativeScriptAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
+void ImGuiAssetPanel::RenderNativeScript(NativeScript& nativeScript, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
 {
 	std::string useIcon = (ICON_FA_FILE_CODE " ");
 
 	flags |= ImGuiTreeNodeFlags_Leaf;
 
-	bool opened = ImGui::TreeNodeEx(nativeScriptAsset.GetPath().string().c_str(), flags, (useIcon + nativeScriptAsset.GetName()).c_str());
+	bool opened = ImGui::TreeNodeEx(nativeScript.GetPath().string().c_str(), flags, (useIcon + nativeScript.GetName()).c_str());
 
 	if (opened)
 	{
@@ -48,7 +48,7 @@ void ImGuiAssetPanel::RenderNativeScript(NativeScriptAsset& nativeScriptAsset, I
 
 	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 	{
-		ImGui::SetDragDropPayload("NATIVE_SCRIPT_FILE", &nativeScriptAsset, sizeof(nativeScriptAsset));
+		ImGui::SetDragDropPayload("NATIVE_SCRIPT_FILE", &nativeScript, sizeof(nativeScript));
 
 		ImGui::EndDragDropSource();
 	}
@@ -68,29 +68,29 @@ void ImGuiAssetPanel::RightClickMenu(Asset& asset)
 	}
 }
 
-void ImGuiAssetPanel::RenderPrefab(PrefabAsset& prefabAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
+void ImGuiAssetPanel::RenderPrefab(Prefab& prefab, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
 {
 	std::string useIcon = ICON_FA_CUBE;
 
 	flags |= ImGuiTreeNodeFlags_Leaf;
 
 	ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(140, 200, 255, 255));
-	bool opened = ImGui::TreeNodeEx(prefabAsset.GetPath().string().c_str(), flags, useIcon.c_str());
+	bool opened = ImGui::TreeNodeEx(prefab.GetPath().string().c_str(), flags, useIcon.c_str());
 	ImGui::PopStyleColor();
 
 	callback();
 
 	if (ImGui::BeginDragDropSource())
 	{
-		ImGui::SetDragDropPayload("PREFAB_ASSET", &prefabAsset, sizeof(prefabAsset));
+		ImGui::SetDragDropPayload("PREFAB_ASSET", &prefab, sizeof(prefab));
 
 		ImGui::EndDragDropSource();
 	}
 
 	ImGui::SameLine();
-	ImGui::Text(prefabAsset.GetPath().filename().string().c_str());
+	ImGui::Text(prefab.GetPath().filename().string().c_str());
 
-	RightClickMenu(prefabAsset);
+	RightClickMenu(prefab);
 
 	if (opened)
 		ImGui::TreePop();
@@ -135,13 +135,13 @@ void ImGuiAssetPanel::RenderImage(Image& image, ImGuiTreeNodeFlags flags, AssetE
 	*/
 }
 
-void ImGuiAssetPanel::RenderAudio(AudioAsset& audioAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
+void ImGuiAssetPanel::RenderAudioClip(AudioClip& audioClip, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
 {
 	std::string useIcon = (ICON_FA_MUSIC " ");
 
 	flags |= ImGuiTreeNodeFlags_Leaf;
 
-	bool opened = ImGui::TreeNodeEx(audioAsset.GetPath().string().c_str(), flags, (useIcon + audioAsset.GetName()).c_str());
+	bool opened = ImGui::TreeNodeEx(audioClip.GetPath().string().c_str(), flags, (useIcon + audioClip.GetName()).c_str());
 
 	callback();
 
@@ -349,29 +349,29 @@ void ImGuiAssetPanel::Render()
 			}
 			else if (asset->GetType() == AssetType::Audio)
 			{
-				AudioAsset* audioAsset = static_cast<AudioAsset*>(asset);
-				RenderAudio(*audioAsset, flags, [&]()
+				AudioClip* audioClip = static_cast<AudioClip*>(asset);
+				RenderAudioClip(*audioClip, flags, [&]()
 				{
 					if (ImGui::IsItemClicked())
-						m_editor.SetSelectedObject(EditorObjectType::Asset, audioAsset);
+						m_editor.SetSelectedObject(EditorObjectType::Asset, audioClip);
 				});
 			}
 			else if (asset->GetType() == AssetType::NativeScript)
 			{
-				NativeScriptAsset* nativeScriptAsset = static_cast<NativeScriptAsset*>(asset);
-				RenderNativeScript(*nativeScriptAsset, flags, [&]()
+				NativeScript* nativeScript = static_cast<NativeScript*>(asset);
+				RenderNativeScript(*nativeScript, flags, [&]()
 				{
 					if (ImGui::IsItemClicked())
-						m_editor.SetSelectedObject(EditorObjectType::Asset, nativeScriptAsset);
+						m_editor.SetSelectedObject(EditorObjectType::Asset, nativeScript);
 				});
 			}
 			else if (asset->GetType() == AssetType::Prefab)
 			{
-				PrefabAsset* prefabAsset = static_cast<PrefabAsset*>(asset);
-				RenderPrefab(*prefabAsset, flags, [&]()
+				Prefab* prefab = static_cast<Prefab*>(asset);
+				RenderPrefab(*prefab, flags, [&]()
 				{
 					if (ImGui::IsItemClicked())
-						m_editor.SetSelectedObject(EditorObjectType::Asset, prefabAsset);
+						m_editor.SetSelectedObject(EditorObjectType::Asset, prefab);
 				});
 			}
 			else if (asset->GetType() == AssetType::AnimatorController)

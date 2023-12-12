@@ -17,9 +17,9 @@ private:
 
 	Image* m_selectedImage = nullptr;
 	AnimationClip* m_animationClip = nullptr;
-	unsigned int m_selectedImageIndex = 0;
+	size_t m_selectedImageIndex = 0;
 	int m_selectedSpriteIndex = -1;
-	std::set<unsigned int> m_selectedSprites;
+	std::set<size_t> m_selectedSprites;
 	Texture* m_currentTexture = nullptr;
 	bool m_isPlaying = false;
 	int m_currentFrame = 1;

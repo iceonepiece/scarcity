@@ -8,7 +8,7 @@
 
 #include "ImGuiComponent.h"
 #include "Events/Event.h"
-#include "Core/EntityManager.h"
+#include "Entity/EntityManager.h"
 
 class ImGuiLayer
 {

@@ -9,7 +9,7 @@
 
 void ImGui_AnimatorInspector::Render(AnimatorState& state)
 {
-	static unsigned int m_selectedMotionIndex = 0;
+	static size_t m_selectedMotionIndex = 0;
 
 	ImGui::InputText("Title", &state.m_name);
 
@@ -103,7 +103,7 @@ void ImGui_AnimatorInspector::Render(AnimatorState& state)
 				ImGui::TableNextRow();
 				ImGui::PushID(i);
 
-				unsigned int selectedIndex = (unsigned int&)conditions[i].mode;
+				size_t selectedIndex = (unsigned int&)conditions[i].mode;
 
 				ImGui::TableSetColumnIndex(0);
 

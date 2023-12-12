@@ -7,6 +7,6 @@ public:
 
 	virtual void Bind() = 0;
 	virtual void Unbind() = 0;
-	virtual void Rescale(float width, float height) = 0;
+	virtual void Rescale(unsigned int width, unsigned int height) = 0;
 	virtual unsigned int GetID() = 0;
 };

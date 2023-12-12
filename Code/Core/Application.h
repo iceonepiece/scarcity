@@ -11,7 +11,7 @@
 #include "Events/WindowEvent.h"
 #include "Input/Input.h"
 #include "Scene/Scene.h"
-#include "Core/EntityManager.h"
+#include "Entity/EntityManager.h"
 #include "Asset/AssetManager.h"
 #include "Core/TagManager.h"
 

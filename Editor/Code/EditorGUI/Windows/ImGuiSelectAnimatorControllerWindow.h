@@ -4,7 +4,6 @@
 #include <IconsFontAwesome6.h>
 #include "File/FileSystem.h"
 #include "ImGui_Window.h"
-#include "FSM/FiniteStateMachine.h"
 #include "Animations/AnimatorController.h"
 
 class ImGuiSelectAnimatorControllerWindow : public ImGui_Window
