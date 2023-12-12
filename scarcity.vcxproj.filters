@@ -74,6 +74,7 @@
     <ClCompile Include="Code\File\MetaSerializer.cpp" />
     <ClCompile Include="Code\Graphics\Sprite.cpp" />
     <ClCompile Include="External\Include\ImGuiColorTextEdit\TextEditor.cpp" />
+    <ClCompile Include="Code\Lua\LuaScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Animations\AnimationSerializer.h" />
@@ -616,6 +617,7 @@
     <ClInclude Include="External\Include\ImGuiNodes\ImNodesEz.h" />
     <ClInclude Include="Code\Animations\AnimationClip.h" />
     <ClInclude Include="External\Include\ImGuiColorTextEdit\TextEditor.h" />
+    <ClInclude Include="Code\Lua\LuaScript.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\awesomeface.png" />

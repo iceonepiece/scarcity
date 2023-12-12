@@ -28,6 +28,26 @@ void ImGui_AssetInspector::Render(Asset* asset)
 
     else if (AnimationClip* animation = dynamic_cast<AnimationClip*>(asset))
         RenderAnimationClip(*animation);
+
+    else if (NativeScriptAsset* nativeScript = dynamic_cast<NativeScriptAsset*>(asset))
+		RenderNativeScript(*nativeScript);
+
+    else if (LuaScript* luaScript = dynamic_cast<LuaScript*>(asset))
+		RenderLuaScript(*luaScript);
+}
+
+void ImGui_AssetInspector::RenderNativeScript(NativeScriptAsset& nativeScript)
+{
+    std::string name = nativeScript.GetPath().stem().string() + " (Native Script)";
+
+    ImGui::Text(name.c_str());
+}
+
+void ImGui_AssetInspector::RenderLuaScript(LuaScript& luaScript)
+{
+    std::string name = luaScript.GetPath().stem().string() + " (Lua Script)";
+
+    ImGui::Text(name.c_str());
 }
 
 void ImGui_AssetInspector::RenderAnimatorController(AnimatorController& animController)

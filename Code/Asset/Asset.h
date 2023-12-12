@@ -14,7 +14,8 @@ enum class AssetType
 	Sprite,
 	AnimatorController,
 	Audio,
-	AnimationClip
+	AnimationClip,
+	LuaScript,
 };
 
 class Asset

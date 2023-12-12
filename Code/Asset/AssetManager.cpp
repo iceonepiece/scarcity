@@ -4,6 +4,7 @@
 #include "Asset/PrefabAsset.h"
 #include "Scene/Scene.h"
 #include "Asset/NativeScriptAsset.h"
+#include "Lua/LuaScript.h"
 #include "Core/Application.h"
 #include <filesystem>
 #include <queue>
@@ -136,6 +137,12 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
         std::unique_ptr<NativeScriptAsset> nativeScritpAsset = std::make_unique<NativeScriptAsset>(path);
         m_assetMap.insert({ path.string(), std::move(nativeScritpAsset) });
     }
+	else if (FileSystem::IsLuaScriptFile(path))
+	{
+		std::cout << "[LuaScript] : " << path << '\n';
+		std::unique_ptr<LuaScript> luaScript = std::make_unique<LuaScript>(path);
+		m_assetMap.insert({ path.string(), std::move(luaScript) });
+	}
 
     return GetAsset(path);
 }

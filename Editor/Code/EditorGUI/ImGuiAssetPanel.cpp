@@ -35,11 +35,13 @@ void ImGuiAssetPanel::RenderUnsupportedFile(const std::filesystem::path& path)
 
 void ImGuiAssetPanel::RenderNativeScript(NativeScriptAsset& nativeScriptAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
 {
-	std::string useIcon = (ICON_FA_FILE_CODE " ");
+	std::string useIcon = (ICON_FA_CODE " ");
 
 	flags |= ImGuiTreeNodeFlags_Leaf;
 
 	bool opened = ImGui::TreeNodeEx(nativeScriptAsset.GetPath().string().c_str(), flags, (useIcon + nativeScriptAsset.GetName()).c_str());
+
+	callback();
 
 	if (opened)
 	{
@@ -51,6 +53,22 @@ void ImGuiAssetPanel::RenderNativeScript(NativeScriptAsset& nativeScriptAsset, I
 		ImGui::SetDragDropPayload("NATIVE_SCRIPT_FILE", &nativeScriptAsset, sizeof(nativeScriptAsset));
 
 		ImGui::EndDragDropSource();
+	}
+}
+
+void ImGuiAssetPanel::RenderLuaScript(LuaScript& luaScript, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
+{
+	std::string useIcon = (ICON_FA_CODE " ");
+
+	flags |= ImGuiTreeNodeFlags_Leaf;
+
+	bool opened = ImGui::TreeNodeEx(luaScript.GetPath().string().c_str(), flags, (useIcon + luaScript.GetName()).c_str());
+
+	callback();
+
+	if (opened)
+	{
+		ImGui::TreePop();
 	}
 }
 
@@ -225,6 +243,9 @@ void ImGuiAssetPanel::RenderAddAssetButton()
 		if (ImGui::Selectable("Animation Clip"))
 			m_addingAssetType = AssetType::AnimationClip;
 
+		if (ImGui::Selectable("Lua Script"))
+			m_addingAssetType = AssetType::LuaScript;
+
 		ImGui::EndPopup();
 	}
 
@@ -251,6 +272,11 @@ void ImGuiAssetPanel::RenderAddAssetButton()
 			{
 				AnimationClip animClip(m_addingAssetName);
 				AnimationSerializer::Serialize(animClip, m_currentDirectory / (m_addingAssetName + ".anim"));
+			}
+			else if (m_addingAssetType == AssetType::LuaScript)
+			{
+				std::ofstream file(m_currentDirectory / (m_addingAssetName + ".lua"));
+				file.close();
 			}
 
 			m_addingAssetType = AssetType::None;
@@ -363,6 +389,21 @@ void ImGuiAssetPanel::Render()
 				{
 					if (ImGui::IsItemClicked())
 						m_editor.SetSelectedObject(EditorObjectType::Asset, nativeScriptAsset);
+				});
+			}
+			else if (asset->GetType() == AssetType::LuaScript)
+			{
+				LuaScript* luaScript = static_cast<LuaScript*>(asset);
+				RenderLuaScript(*luaScript, flags, [&]()
+				{
+					if (ImGui::IsItemClicked())
+						m_editor.SetSelectedObject(EditorObjectType::Asset, luaScript);
+
+					if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+					{
+						auto& luaEditor = m_editor.GetLuaEditorPanel();
+						luaEditor.LoadScript(luaScript->GetPath().string());
+					}
 				});
 			}
 			else if (asset->GetType() == AssetType::Prefab)

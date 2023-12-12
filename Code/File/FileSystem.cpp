@@ -164,6 +164,11 @@ bool FileSystem::IsNativeScriptFile(const std::filesystem::path& path)
 	return false;
 }
 
+bool FileSystem::IsLuaScriptFile(const std::filesystem::path& path)
+{
+	return path.extension().generic_string() == ".lua";
+}
+
 bool FileSystem::IsIgnoreDirectory(const std::filesystem::path& path)
 {
 	const std::string pathName = path.filename().generic_string();

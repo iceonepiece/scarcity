@@ -163,6 +163,11 @@ public:
 		m_animatorPanel.SetAnimatorController(&animController);
 	}
 
+	ImGui_LuaEditorPanel& GetLuaEditorPanel()
+	{
+		return m_luaEditorPanel;
+	}
+
 private:
 	void OnWindowResize(WindowResizeEvent& event);
 	void OnMouseMoved(MouseMovedEvent& event);

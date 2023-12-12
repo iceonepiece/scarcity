@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <ImGuiColorTextEdit/TextEditor.h>
 
 class EditorLayer;
@@ -10,6 +11,7 @@ public:
 	ImGui_LuaEditorPanel(EditorLayer& editor);
 	~ImGui_LuaEditorPanel();
 
+	void LoadScript(const std::filesystem::path& filepath);
 	void Render();
 
 private:

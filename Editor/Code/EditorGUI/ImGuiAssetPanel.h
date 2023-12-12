@@ -8,6 +8,7 @@
 #include "Asset/AudioAsset.h"
 #include "Asset/PrefabAsset.h"
 #include "Asset/NativeScriptAsset.h"
+#include "Lua/LuaScript.h"
 #include "Animations/AnimatorController.h"
 
 class EditorLayer;
@@ -34,6 +35,7 @@ public:
 	void RenderAnimatorController(AnimatorController& animControllerAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	void RenderAnimationClip(AnimationClip& animClip, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderNativeScript(NativeScriptAsset& nativeScriptAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
+	static void RenderLuaScript(LuaScript& luaScript, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderFolder(const std::filesystem::path& path, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	void RenderUnsupportedFile(const std::filesystem::path& path);
 
