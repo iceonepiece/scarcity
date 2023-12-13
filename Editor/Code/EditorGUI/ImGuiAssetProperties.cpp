@@ -118,7 +118,7 @@ void ImGuiAssetProperties::RenderAudioClip(AudioClip& audioClip)
     ImGui::Text(durationText.c_str());
     if (ImGui::Button("Play"))
     {
-        Application::Get().GetAudio().PlaySound(&audioClip);
+        Audio::Get()->PlaySound(&audioClip);
     }
 }
 

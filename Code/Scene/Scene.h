@@ -6,15 +6,13 @@
 #include "Entity/EntityManager.h"
 #include "Graphics/Camera.h"
 #include "Physics/Physics.h"
-#include "Input/Input.h"
 #include "Core/System.h"
-#include "Components/TransformComponent.h"
-#include "Components/Rigidbody2DComponent.h"
 #include "Project/Project.h"
 #include "Asset/Asset.h"
 
 class Application;
 class Event;
+class ScriptableEntity;
 
 using InitializeFunction = std::function<void(Scene&)>;
 class NativeScriptEngine;
@@ -61,8 +59,6 @@ public:
 	virtual void Start();
 	virtual void Stop();
 
-	//void InitializePhysicsEntity(entt::entity entity, TransformComponent& transform, Rigidbody2DComponent& rb2d);
-	//void DestroyPhysicsEntity(Rigidbody2DComponent& rb2d);
 	void StartPhysics();
 	void StopPhysics();
 	void StartNativeScripts(NativeScriptEngine& scriptEngine);
@@ -128,14 +124,21 @@ public:
 	bool physicsActive = true;
 	bool particleActive = true;
 
+	ScriptableEntity* GetScriptableEntity(const std::string& name)
+	{
+		if (m_scriptableEntities.find(name) != m_scriptableEntities.end())
+			return m_scriptableEntities[name];
+
+		return nullptr;
+	}
+
+	std::unordered_map<std::string, ScriptableEntity*> m_scriptableEntities;
+
 	std::vector<std::unique_ptr<System>> m_systems;
 	Application *m_app;
 	
 	std::vector<entt::entity> m_toDestroyEntities;
 	std::unique_ptr<Camera> m_camera;
-
-	//std::unique_ptr<b2World> m_physics = nullptr;
-	//std::unique_ptr<b2ContactListener> m_contactListener;
 
 	Physics m_physics;
 

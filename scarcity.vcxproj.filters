@@ -39,7 +39,7 @@
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="Code\Scene\SceneManager.cpp" />
     <ClCompile Include="Code\Scene\SceneSerializer.cpp" />
-    <ClCompile Include="Code\Scene\ScriptableEntity.cpp" />
+    <ClCompile Include="Code\Entity\ScriptableEntity.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLTexture.cpp" />
     <ClCompile Include="Code\UI\UIButton.cpp" />
     <ClCompile Include="Code\UI\UIControl.cpp" />
@@ -109,7 +109,6 @@
     <ClInclude Include="Code\File\FileSystem.h" />
     <ClInclude Include="Code\File\MetaSerializer.h" />
     <ClInclude Include="Code\ImGui\ImGuiManager.h" />
-    <ClInclude Include="Code\Core\Input.h" />
     <ClInclude Include="Code\Core\Layer.h" />
     <ClInclude Include="Code\Events\KeyEvent.h" />
     <ClInclude Include="Code\Events\WindowEvent.h" />
@@ -136,7 +135,6 @@
     <ClInclude Include="Code\Entity\Entity.h" />
     <ClInclude Include="Code\Entity\EntityManager.h" />
     <ClInclude Include="Code\Graphics\Sprite.h" />
-    <ClInclude Include="Code\Animations\SpriteAnimation.h" />
     <ClInclude Include="Code\Core\Timer.h" />
     <ClInclude Include="Code\Core\Window.h" />
     <ClInclude Include="Code\Events\Event.h" />
@@ -159,7 +157,7 @@
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLShader.h" />
     <ClInclude Include="Code\Scene\SceneManager.h" />
     <ClInclude Include="Code\Scene\SceneSerializer.h" />
-    <ClInclude Include="Code\Scene\ScriptableEntity.h" />
+    <ClInclude Include="Code\Entity\ScriptableEntity.h" />
     <ClInclude Include="Code\Shapes\Shape2D.h" />
     <ClInclude Include="Code\UI\UIManager.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLTexture.h" />

@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 #include <imgui/imgui.h>
-#include "SpriteAnimation.h"
 #include "Animations/AnimationClip.h"
 #include "Animations/AnimationSerializer.h"
 #include "Animations/AnimatorTransition.h"
@@ -21,24 +20,7 @@ public:
 
     void OnEnter(AnimatorController& controller);
 
-    /*
-    AnimatorState(const AnimatorState& other)
-        : m_spriteAnimation(other.m_spriteAnimation)
-        , m_done(other.m_done)
-    {
-        std::cout << "AnimatorState Copy Constructor\n";
-    }
-    */
-
     AnimatorState& operator=(const AnimatorState& other);
-    AnimatorState(SpriteAnimation spriteAnimation);
-
-    /*
-    SpriteAnimation GetSpriteAnimation() const
-    {
-        return m_spriteAnimation;
-    }
-    */
 
     void Process(AnimatorController& fsm);
 
@@ -74,7 +56,6 @@ public:
 
 private:
     AnimatorController* m_controller;
-    //SpriteAnimation m_spriteAnimation;
     std::vector<AnimatorTransition*> m_outgoingTransitions;
     std::vector<AnimatorTransition*> m_incomingTransitions;
 

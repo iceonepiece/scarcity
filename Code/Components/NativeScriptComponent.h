@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <string>
-#include "Scene/ScriptableEntity.h"
+#include "Entity/ScriptableEntity.h"
 #include <nlohmann/json.hpp>
 #include <imgui/imgui.h>
 #include "imgui/imgui_stdlib.h"

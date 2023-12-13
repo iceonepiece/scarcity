@@ -4,9 +4,7 @@
 #include <memory>
 #include "Core/Application.h"
 #include "Entity/Entity.h"
-#include "Components/TransformComponent.h"
-#include "Scene.h"
-#include "Physics/Physics.h"
+#include "Scene/Scene.h"
 
 #define SERIALIZE_FIELD(type, name) type name;
 

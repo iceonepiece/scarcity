@@ -22,6 +22,7 @@
 #include "Platforms/OpenGL/OpenGLFramebuffer.h"
 #include <stack>
 #include "Physics/GridUtils.h"
+#include <iostream>
 
 EditorLayer* EditorLayer::s_instance = nullptr;
 
@@ -653,6 +654,7 @@ bool EditorLayer::SaveScene()
     if (m_activeScene->HasSaved())
     {
         std::cout << "Saving the Scene..." << std::endl;
+
         SceneSerializer::Serialize(*m_activeScene, m_activeScene->GetAbsolutePath());
     }
     else

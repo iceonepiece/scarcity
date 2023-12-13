@@ -4,7 +4,7 @@
 #include <functional>
 #include <string>
 #include "Asset/Asset.h"
-#include "Scene/ScriptableEntity.h"
+#include "Entity/ScriptableEntity.h"
 
 class NativeScript : public Asset
 {

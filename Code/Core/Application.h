@@ -20,7 +20,6 @@ class LuaEngine;
 class ImGuiManager;
 class Layer;
 class Renderer;
-class Audio;
 
 constexpr int TAG_SIZE = 8;
 
@@ -67,7 +66,6 @@ public:
 	inline Renderer& GetRenderer() { return *m_renderer; }
 	inline Window& GetWindow() { return *m_window; }
 	inline Input& GetInput() { return *m_input; }
-	inline Audio& GetAudio() { return *m_audio; }
 	inline AssetManager& GetAssetManager() { return *m_assetManager; }
 	inline EntityManager& GetPrefabManager() { return m_prefabManager; }
 	inline TagManager& GetTagManager() { return m_tagManager; }
@@ -90,7 +88,6 @@ protected:
 	std::unique_ptr<NativeScriptEngine> m_nativeScriptEngine;
 	std::unique_ptr<LuaEngine> m_luaEngine;
 	std::unique_ptr<Input> m_input;
-	std::unique_ptr<Audio> m_audio;
 	std::unique_ptr<AssetManager> m_assetManager;
 
 	EntityManager m_prefabManager;

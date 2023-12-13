@@ -10,7 +10,9 @@
 class Audio
 {
 public:
-	static std::unique_ptr<Audio> Create();
+	static Audio* Get() { return s_instance; }
+	static void Create();
+	static void Shutdown();
 
 	virtual void Initialize() = 0;
 	virtual void Destroy() = 0;
@@ -39,4 +41,7 @@ public:
 
 protected:
 	static std::unordered_map<std::string, std::unique_ptr<AudioSource>> s_audioSources;
+
+private:
+	static Audio* s_instance;
 };

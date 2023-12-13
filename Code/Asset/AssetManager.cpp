@@ -120,7 +120,7 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
     else if (FileSystem::IsAudioFile(path))
     {
         std::cout << "[Audio] : " << path << '\n';
-		std::unique_ptr<AudioClip> audioClip(Application::Get().GetAudio().LoadAudioClip(path));
+		std::unique_ptr<AudioClip> audioClip(Audio::Get()->LoadAudioClip(path));
         m_assetMap.insert({ path.string(), std::move(audioClip) });
     }
     else if (FileSystem::IsPrefabFile(path))

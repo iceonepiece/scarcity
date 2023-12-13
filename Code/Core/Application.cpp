@@ -21,8 +21,8 @@ Application::Application(const ApplicationConfigs& configs)
 	m_nativeScriptEngine = std::make_unique<NativeScriptEngine>();
 	m_luaEngine = std::make_unique<LuaEngine>();
 
-	m_audio = Audio::Create();
-	m_audio->Initialize();
+	Audio::Create();
+	Audio::Get()->Initialize();
 }
 
 Application::~Application()
@@ -31,7 +31,8 @@ Application::~Application()
 		layer->Shutdown();
 
 	m_nativeScriptEngine->ShutdownScriptableEntities();
-	m_audio->Destroy();
+	Audio::Get()->Destroy();
+	Audio::Shutdown();
 }
 
 void Application::AddLayer(std::unique_ptr<Layer> layer)

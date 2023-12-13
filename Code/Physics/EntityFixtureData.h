@@ -5,7 +5,7 @@
 #include <box2d/box2d.h>
 #include "../Entity/Entity.h"
 #include "FixtureData.h"
-#include "Scene/ScriptableEntity.h"
+#include "Entity/ScriptableEntity.h"
 #include "Components/NativeScriptComponent.h"
 #include "Components/BaseComponent.h"
 #include "Components/GroundDetectionComponent.h"
