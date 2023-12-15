@@ -3,6 +3,7 @@
 #include "Scene/SceneManager.h"
 #include "Lua/LuaEngine.h"
 #include "NativeScript/NativeScriptEngine.h"
+#include "Graphics/Renderer.h"
 
 GameLayer::GameLayer(Application& app, std::unique_ptr<Project> project)
 	: m_app(app)
@@ -106,10 +107,18 @@ void GameLayer::Shutdown()
 
 void GameLayer::Update(float deltaTime)
 {
-	std::cout << "GameLayer::Update()\n\n";
+	Application& app = Application::Get();
+	app.GetRenderer().Clear({ 0.2f, 0.2f, 0.2f, 1.0f });
 
 	if (m_sceneMap.find(m_currentSceneName) != m_sceneMap.end())
-		m_sceneMap[m_currentSceneName]->Update(deltaTime);
+	{
+		Scene* playingScene = m_sceneMap[m_currentSceneName];
+
+		playingScene->Update(deltaTime);
+		playingScene->SetViewportSize(1280, 720);
+		playingScene->OnViewportResize();
+		playingScene->Render();
+	}
 }
 
 void GameLayer::OnEvent(Event& event)
