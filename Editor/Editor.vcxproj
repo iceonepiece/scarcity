@@ -162,7 +162,6 @@
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiTagEditorWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_Window.cpp" />
-    <ClCompile Include="Code\GameLayer.cpp" />
     <ClCompile Include="Code\Gizmos\Gizmo.cpp" />
     <ClCompile Include="Code\Gizmos\GridGizmo.cpp" />
     <ClCompile Include="Code\Helpers\FileHandler.cpp" />

@@ -21,7 +21,7 @@
 #include "EditorGUI/EditorSceneViewport.h"
 #include "EditorGUI/ImGui_AnimatorPanel.h"
 #include "EditorGUI/ImGui_InspectorPanel.h"
-#include "GameLayer.h"
+#include "Game/GameLayer.h"
 #include "Commands/EditorCommand.h"
 #include "Graphics/Framebuffer.h"
 

@@ -5,11 +5,19 @@
 #include "NativeScript/NativeScriptEngine.h"
 #include "Graphics/Renderer.h"
 
+GameLayer::GameLayer(Application& app)
+	: m_app(app)
+{
+	std::cout << "GameLayer Constructor()\n\n";
+}
+
 GameLayer::GameLayer(Application& app, std::unique_ptr<Project> project)
 	: m_app(app)
 	, m_activeProject(std::move(project))
 {
 	std::cout << "GameLayer Constructor()\n\n";
+
+	m_app.GetTagManager().Deserialize(m_activeProject->GetDirectory() / "ProjectSettings" / "TagManager.asset");
 
 	std::filesystem::path luaFilePath = m_activeProject->GetDirectory() / (m_activeProject->GetName() + ".lua");
 
@@ -27,10 +35,11 @@ void GameLayer::Start()
 {
 	if (m_activeScene != nullptr)
 	{
+		m_activeScene->SetApplication(&m_app);
 		m_activeScene->StartNativeScripts(m_app.GetNativeScriptEngine());
 		m_activeScene->Start();
 
-		AddScene(m_activeScene->m_name, m_activeScene.get());
+		AddScene(m_activeScene->m_name, m_activeScene);
 		ChangeScene(m_activeScene->m_name);
 	}
 }
@@ -40,19 +49,14 @@ bool GameLayer::OpenScene(const std::filesystem::path& absolutePath)
 	std::cout << "OpenScene: " << absolutePath << std::endl;
 	bool success = true;
 
-	m_activeScene = m_activeProject->LoadScene(absolutePath);
-
-	if (m_activeScene == nullptr)
-	{
-		m_activeScene = SceneManager::CreateDefaultScene(m_activeProject->GetDirectory() / "Scenes");
-		success = false;
-	}
+	std::unique_ptr<Scene> loadedScene = m_activeProject->LoadScene(absolutePath);
+	m_activeScene = loadedScene.release();
 
 	SceneManager::ResolveUniqueIDs(*m_activeScene);
 	ReloadNativeScripts();
 
-	m_activeScene->SetApplication(&m_app);
-	m_activeScene->Initialize();
+	//m_activeScene->SetApplication(&m_app);
+	//m_activeScene->Initialize();
 
 	return success;
 }
@@ -107,6 +111,19 @@ void GameLayer::Shutdown()
 
 void GameLayer::Update(float deltaTime)
 {
+	if (m_onExit)
+	{
+		DestroyAllScenes();
+		m_app.Close();
+		return;
+	}
+
+	if (m_firstFrame)
+	{
+		m_firstFrame = false;
+		return;
+	}
+
 	Application& app = Application::Get();
 	app.GetRenderer().Clear({ 0.2f, 0.2f, 0.2f, 1.0f });
 
@@ -118,15 +135,15 @@ void GameLayer::Update(float deltaTime)
 		playingScene->SetViewportSize(1280, 720);
 		playingScene->OnViewportResize();
 		playingScene->Render();
+
+
 	}
 }
 
 void GameLayer::OnEvent(Event& event)
 {
 	if (event.GetType() == EventType::WindowClose)
-	{
-		m_app.Close();
-	}
+		m_onExit = true;
 }
 
 void GameLayer::ChangeScene(const std::string& name)
@@ -188,7 +205,7 @@ Scene* GameLayer::GetCurrentScene()
 
 void GameLayer::DestroyAllScenes()
 {
-	for (auto scene : m_sceneMap) {
+	for (auto& scene : m_sceneMap) {
 		scene.second->Stop();
 		delete scene.second;
 	}

@@ -10,6 +10,7 @@
 class GameLayer : public Layer
 {
 public:
+	GameLayer(Application& app);
 	GameLayer(Application& app, std::unique_ptr<Project> project);
 
 	void Start();
@@ -29,13 +30,15 @@ public:
 	Scene* LoadScene(const std::filesystem::path& filePath);
 
 private:
+	bool m_firstFrame = true;
+	bool m_onExit = false;
 	std::string m_currentSceneName;
 	std::map<std::string, Scene*> m_sceneMap;
 
 	Application& m_app;
 
 	std::unique_ptr<Project> m_activeProject;
-	std::unique_ptr<Scene> m_activeScene;
+	Scene* m_activeScene;
 
 	std::vector<std::string> m_nativeClassNames;
 };

@@ -15,7 +15,7 @@ int main()
 
 	GameApplication game(configs);
 	game.Initialize();
-	game.OpenProject("C:\\works\\BossFight-Demo\\BossFight Demo.bfproj");
+	game.OpenProject("C:\\study\\year2_1\\Advanced Project 1\\bossfight-demo\\BossFight Demo.bfproj");
 	game.Run();
 
 	//game.AddScene("menu", new MenuScene(game));
