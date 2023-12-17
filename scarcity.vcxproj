@@ -128,13 +128,7 @@
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="Assets\Animations\CatAnimation.json" />
-    <None Include="Assets\Examples\AnimatorControllerExample.controller" />
-    <None Include="Assets\Levels\Level1.lua" />
-    <None Include="Assets\Scripts\parameters.lua" />
-    <None Include="Assets\Scripts\particles.lua" />
-    <None Include="Assets\Scripts\Player.as" />
     <None Include="Assets\Scripts\premake5.lua" />
-    <None Include="Assets\Scripts\sample.lua" />
     <None Include="Assets\Shaders\basic.frag" />
     <None Include="Assets\Shaders\basic.vert" />
     <None Include="Assets\Shaders\circle.frag" />
@@ -890,10 +884,6 @@
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Assets\Images\awesomeface.png" />
-    <Image Include="Assets\Images\HeroKnight.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

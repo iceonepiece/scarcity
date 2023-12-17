@@ -26,7 +26,8 @@ void HubLayer::Update(float deltaTime)
 
 void HubLayer::OnEvent(Event& event)
 {
-
+    if (event.GetType() == EventType::WindowClose)
+        m_editor.Close();
 }
 
 void HubLayer::RenderImGui()
@@ -99,9 +100,6 @@ void HubLayer::RenderImGui()
 
         ImGui::EndPopup();
     }
-
-
-    ImGui::ShowDemoWindow();
 
     if (projectCreated)
     {

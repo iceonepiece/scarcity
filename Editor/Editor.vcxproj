@@ -115,7 +115,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)External\Library-Debug</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;lua54.lib;freetype.lib;OpenAL32.lib;angelscriptd.lib;box2d.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;lua54.lib;freetype.lib;OpenAL32.lib;box2d.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -228,7 +228,6 @@
     <ClInclude Include="Code\HubLayer.h" />
     <ClInclude Include="Code\ImGuiComponent.h" />
     <ClInclude Include="Code\ImGuiLayer.h" />
-    <ClInclude Include="Code\SampleScene.h" />
     <ClInclude Include="Code\Gizmos\TranslateGizmo.h" />
     <ClInclude Include="Code\EditorLayer.h" />
     <ClInclude Include="Code\ScriptManager.h" />
