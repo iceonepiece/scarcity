@@ -2,6 +2,7 @@
 #include "Core/Application.h"
 #include <IconsFontAwesome6.h>
 #include "imgui/imgui_stdlib.h"
+#include "Physics/Physics.h"
 
 ImGuiTagEditorWindow::ImGuiTagEditorWindow(EditorLayer& editor)
 	: ImGui_Window(editor)
@@ -91,4 +92,39 @@ void ImGuiTagEditorWindow::Render()
 
 		ImGui::TreePop();
 	}
+
+	auto& collisionLayers = Physics::GetLayers();
+
+	if (ImGui::TreeNodeEx("Layers", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		std::vector<uint8_t> availableLayers;
+
+		if (ImGui::BeginTable("##layers", 2, ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_BordersInnerV))
+		{
+			ImGui::TableSetupColumn("one", ImGuiTableColumnFlags_WidthFixed, 100.0f);
+
+			for (int i = 0; i < collisionLayers.size(); i++)
+			{
+				std::string num = "Layer " + std::to_string(i);
+				ImGui::TableNextRow();
+				ImGui::TableNextColumn();
+				ImGui::Text(num.c_str());
+				ImGui::TableNextColumn();
+
+				ImGui::PushID(i);
+				ImGui::InputText("##layer_name", &collisionLayers[i]);
+				ImGui::PopID();
+
+				if (collisionLayers[i].size() > 0)
+					availableLayers.push_back(i);
+			}
+
+			ImGui::EndTable();
+		}
+
+		ImGui::TreePop();
+	}
+
+	
+
 }

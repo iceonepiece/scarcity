@@ -101,6 +101,8 @@ void HubLayer::RenderImGui()
         ImGui::EndPopup();
     }
 
+    ImGui::ShowDemoWindow();
+
     if (projectCreated)
     {
         std::filesystem::path createdDirectory = directory;

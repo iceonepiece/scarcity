@@ -19,7 +19,7 @@
 #include "EditorGUI/ImGuiHierarchy.h"
 #include "EditorGUI/ImGuiAssetPanel.h"
 #include "EditorGUI/EditorSceneViewport.h"
-#include "EditorGUI/ImGui_AnimatorPanel.h"
+#include "EditorGUI/Windows/ImGui_AnimatorWindow.h"
 #include "EditorGUI/ImGui_InspectorPanel.h"
 #include "GameLayer.h"
 #include "Commands/EditorCommand.h"
@@ -157,10 +157,7 @@ public:
 		return m_gameLayer;
 	}
 
-	void SetAnimatorController(AnimatorController& animController)
-	{
-		m_animatorPanel.SetAnimatorController(&animController);
-	}
+	void SetAnimatorController(AnimatorController& animController);
 
 private:
 	void OnWindowResize(WindowResizeEvent& event);
@@ -223,7 +220,6 @@ private:
 	ImGuiMainMenuBar m_mainMenuBar;
 	ImGuiHierarchy m_hierarchy;
 	ImGuiAssetPanel m_assetPanel;
-	ImGui_AnimatorPanel m_animatorPanel;
 	ImGui_InspectorPanel m_inspectorPanel;
 
 	EditorSceneViewport m_editorSceneViewport;

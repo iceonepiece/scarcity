@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <set>
+#include <bitset>
 #include <vector>
 #include <box2d/box2d.h>
 #include "ContactListener.h"
@@ -38,6 +39,8 @@ struct CircleCollision2D : public Collision2D
 	float radius;
 };
 
+constexpr int MAX_COLLISION_LAYERS = 16;
+
 class Physics
 {
 public:
@@ -61,6 +64,9 @@ public:
 	void InitializePhysicsEntity(Entity& entity, TransformComponent& transform, Rigidbody2DComponent& rb2d);
 	void DestroyPhysicsEntity(Rigidbody2DComponent& rb2d);
 
+	static std::array<std::string, MAX_COLLISION_LAYERS>& GetLayers() { return s_layers; }
+	static std::array<std::bitset<MAX_COLLISION_LAYERS>, MAX_COLLISION_LAYERS>& GetCollisionMatrix() { return s_collisionMatrix; }
+
 private:
 	b2World m_world;
 	ContactListener m_contactListener;
@@ -70,4 +76,7 @@ private:
 	std::vector<FixtureData*> m_fixtureDatum;
 
 	std::unordered_map<PhysicsLayer, uint16_t> m_maskMap;
+
+	static std::array<std::bitset<MAX_COLLISION_LAYERS>, MAX_COLLISION_LAYERS> s_collisionMatrix;
+	static std::array<std::string, MAX_COLLISION_LAYERS> s_layers;
 };

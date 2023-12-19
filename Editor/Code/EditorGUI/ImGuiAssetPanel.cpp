@@ -383,6 +383,8 @@ void ImGuiAssetPanel::Render()
 					{
 						m_editor.SetSelectedObject(EditorObjectType::Asset, animControllerAsset);
 						m_editor.SetAnimatorController(*animControllerAsset);
+						ImGui_AnimatorWindow* animorWindow = static_cast<ImGui_AnimatorWindow*>(m_editor.GetImGuiWindow(ImGuiWindowType::Animator));
+						animorWindow->SetOpen(true);
 					}
 				});
 			}

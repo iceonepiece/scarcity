@@ -51,6 +51,26 @@ void ImGuiMainMenuBar::Render()
         ImGui::EndMenu();
     }
 
+    if (ImGui::BeginMenu("Edit"))
+    {
+        if (ImGui::MenuItem("Project Settings"))
+        {
+            m_editor.GetImGuiWindow(ImGuiWindowType::ProjectSettings)->SetOpen(true);
+        }
+
+        ImGui::EndMenu();
+    }
+
+    if (ImGui::BeginMenu("Window"))
+    {
+        if (ImGui::MenuItem("Animator"))
+        {
+            m_editor.GetImGuiWindow(ImGuiWindowType::Animator)->SetOpen(true);
+        }
+
+        ImGui::EndMenu();
+    }
+
     if (ImGui::MenuItem("Reload Native Scripts"))
     {
         m_editor.ReloadNativeScripts();

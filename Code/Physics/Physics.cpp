@@ -5,6 +5,9 @@
 #include "Components/CircleCollider2DComponent.h"
 #include "Components/GridComponent.h"
 
+std::array<std::string, MAX_COLLISION_LAYERS> Physics::s_layers = { "Default" };
+std::array<std::bitset<MAX_COLLISION_LAYERS>, MAX_COLLISION_LAYERS> Physics::s_collisionMatrix;
+
 Physics::Physics()
 	: m_world(b2Vec2(0.0f, -10.0f))
 	, m_velocityIterations(6)

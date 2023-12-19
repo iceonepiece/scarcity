@@ -148,7 +148,7 @@
     <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiBaseComponent.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiHierarchy.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiMainMenuBar.cpp" />
-    <ClCompile Include="Code\EditorGUI\ImGui_AnimatorPanel.cpp" />
+    <ClCompile Include="Code\EditorGUI\Windows\ImGui_AnimatorWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiAssetProperties.cpp" />
     <ClCompile Include="Code\EditorGUI\EditorSceneViewport.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiUtils.cpp" />
@@ -161,6 +161,7 @@
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiTagEditorWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.cpp" />
+    <ClCompile Include="Code\EditorGUI\Windows\ImGui_ProjectSettingsWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_Window.cpp" />
     <ClCompile Include="Code\GameLayer.cpp" />
     <ClCompile Include="Code\Gizmos\Gizmo.cpp" />
@@ -202,7 +203,7 @@
     <ClInclude Include="Code\EditorGUI\ImGuiHierarchy.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiAssetProperties.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiMainMenuBar.h" />
-    <ClInclude Include="Code\EditorGUI\ImGui_AnimatorPanel.h" />
+    <ClInclude Include="Code\EditorGUI\Windows\ImGui_AnimatorWindow.h" />
     <ClInclude Include="Code\EditorGUI\EditorSceneViewport.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiUtils.h" />
     <ClInclude Include="Code\EditorGUI\EditorViewport.h" />
@@ -213,6 +214,7 @@
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiTagEditorWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.h" />
+    <ClInclude Include="Code\EditorGUI\Windows\ImGui_ProjectSettingsWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_Window.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.h" />
     <ClInclude Include="Code\GameLayer.h" />

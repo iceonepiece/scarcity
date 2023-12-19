@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include "Animations/AnimatorController.h"
+#include "ImGui_Window.h"
 
 class EditorLayer;
 
@@ -81,14 +82,14 @@ struct Node
 		}
 	}
 };
-class ImGui_AnimatorPanel
+class ImGui_AnimatorWindow : public ImGui_Window
 {
 public:
 
-	ImGui_AnimatorPanel(EditorLayer& editor);
-	~ImGui_AnimatorPanel();
+	ImGui_AnimatorWindow(EditorLayer& editor);
+	~ImGui_AnimatorWindow();
 
-	void Render();
+	virtual void Render() override;
 
 	void RenderAnimatorState(AnimatorState& state, bool defaultState = false);
 
@@ -135,7 +136,6 @@ private:
 
 	AnimatorController* m_animController;
 	std::vector<Node*> nodes;
-	EditorLayer& m_editor;
 
 	size_t m_stateCount = 0;
 	AnimatorState* m_selectedState = nullptr;

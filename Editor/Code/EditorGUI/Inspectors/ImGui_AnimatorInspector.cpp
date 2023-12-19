@@ -1,5 +1,5 @@
 #include "ImGui_AnimatorInspector.h"
-#include "../ImGui_AnimatorPanel.h"
+#include "../Windows/ImGui_AnimatorWindow.h"
 #include "Animations/AnimatorState.h"
 #include "../ImGuiUtils.h"
 #include <imgui/imgui_stdlib.h>

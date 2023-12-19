@@ -1,10 +1,11 @@
-#include "ImGui_AnimatorPanel.h"
+#include "ImGui_AnimatorWindow.h"
 #include <iostream>
 #include <IconsFontAwesome6.h>
-#include "../EditorLayer.h"
+#include "../../EditorLayer.h"
+#include <ImGui/imgui_stdlib.h>
 
-ImGui_AnimatorPanel::ImGui_AnimatorPanel(EditorLayer& editor)
-    : m_editor(editor)
+ImGui_AnimatorWindow::ImGui_AnimatorWindow(EditorLayer& editor)
+    : ImGui_Window(editor, "Animator")
     , m_animController(nullptr)
 {
     s_animController = new AnimatorController("Untitled");
@@ -13,7 +14,7 @@ ImGui_AnimatorPanel::ImGui_AnimatorPanel(EditorLayer& editor)
 }
 
 
-ImGui_AnimatorPanel::~ImGui_AnimatorPanel()
+ImGui_AnimatorWindow::~ImGui_AnimatorWindow()
 {
     delete s_animController;
 
@@ -23,12 +24,12 @@ ImGui_AnimatorPanel::~ImGui_AnimatorPanel()
     ImNodes::Ez::FreeContext(m_context);
 }
 
-void ImGui_AnimatorPanel::SetAnimatorController(AnimatorController* animController)
+void ImGui_AnimatorWindow::SetAnimatorController(AnimatorController* animController)
 {
     m_animController = animController;
 }
 
-void ImGui_AnimatorPanel::ClearSelection()
+void ImGui_AnimatorWindow::ClearSelection()
 {
     m_toClear = true;
 }
@@ -40,7 +41,7 @@ struct NameEditing
     bool changed = false;
 };
 
-void ImGui_AnimatorPanel::RenderAnimatorState(AnimatorState& state, bool defaultState)
+void ImGui_AnimatorWindow::RenderAnimatorState(AnimatorState& state, bool defaultState)
 {
     static std::vector<ImNodes::Ez::SlotInfo> inputSlots{ {"In", 1} };
     static std::vector<ImNodes::Ez::SlotInfo> outputSlots{ {"Out", 1} };
@@ -126,7 +127,7 @@ void ImGui_AnimatorPanel::RenderAnimatorState(AnimatorState& state, bool default
     }
 }
 
-void ImGui_AnimatorPanel::Render()
+void ImGui_AnimatorWindow::Render()
 {
     static std::string currentNameEditing = "";
     static int selectedParameterType = -1;
@@ -137,7 +138,10 @@ void ImGui_AnimatorPanel::Render()
     bool openPopup = false;
     static int editingIndex = -1;
 
-    if (ImGui::Begin("Animator", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse))
+    if (!m_isOpen)
+        return;
+
+    if (ImGui::Begin("Animator", &m_isOpen, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse))
     {
         ImGui::BeginChild("Parameters", ImVec2(220, 0), false, 0);
 

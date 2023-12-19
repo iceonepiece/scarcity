@@ -5,7 +5,7 @@
 #include "Components/Components.h"
 #include "../EditorLayer.h"
 #include "imgui/imgui_stdlib.h"
-#include "ImGui_AnimatorPanel.h"
+#include "Windows/ImGui_AnimatorWindow.h"
 #include <string>
 
 ImGui_InspectorPanel::ImGui_InspectorPanel(EditorLayer& editor)

@@ -69,6 +69,7 @@
     <ClCompile Include="Code\Animations\AnimationClip.cpp" />
     <ClCompile Include="Code\File\MetaSerializer.cpp" />
     <ClCompile Include="Code\Graphics\Sprite.cpp" />
+    <ClCompile Include="Code\Physics\CollisionLayerManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Animations\AnimationSerializer.h" />
@@ -596,6 +597,7 @@
     <ClInclude Include="External\Include\ImGuiNodes\ImNodes.h" />
     <ClInclude Include="External\Include\ImGuiNodes\ImNodesEz.h" />
     <ClInclude Include="Code\Animations\AnimationClip.h" />
+    <ClInclude Include="Code\Physics\CollisionLayerManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />
