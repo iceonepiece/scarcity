@@ -8,6 +8,76 @@
 std::array<std::string, MAX_COLLISION_LAYERS> Physics::s_layers = { "Default" };
 std::array<std::bitset<MAX_COLLISION_LAYERS>, MAX_COLLISION_LAYERS> Physics::s_collisionMatrix;
 
+bool Physics::Serialize(const std::filesystem::path& path)
+{
+	std::ofstream serialized;
+	serialized.open(path);
+
+	if (serialized.is_open())
+	{
+		json physicsJson;
+		physicsJson["layers"] = json::array();;
+
+		for (auto& layerName : s_layers)
+			physicsJson["layers"].push_back(layerName);
+
+		physicsJson["collisionMatrix"] = json::array();
+
+		for (auto& collisionLayer : s_collisionMatrix)
+		{
+			physicsJson["collisionMatrix"].push_back(collisionLayer.to_string());
+		}
+
+		serialized << physicsJson.dump(4);
+	}
+	else
+	{
+		std::cout << "Error opening the file!" << std::endl;
+		return false;
+	}
+
+	serialized.close();
+
+	return true;
+}
+
+bool Physics::Deserialize(const std::filesystem::path& path)
+{
+	std::ifstream deserialzed(path);
+
+	if (deserialzed.is_open())
+	{
+		json physicsJson = json::parse(deserialzed);
+
+		if (physicsJson["layers"].is_array())
+		{
+			for (int i = 0; i < physicsJson["layers"].size(); i++)
+			{
+				s_layers[i] = physicsJson["layers"][i].get<std::string>();
+			}
+		}
+
+		s_collisionMatrix.fill(std::bitset<MAX_COLLISION_LAYERS>(0));
+
+		if (physicsJson["collisionMatrix"].is_array())
+		{
+			for (int i = 0; i < physicsJson["collisionMatrix"].size(); i++)
+			{
+				s_collisionMatrix[i] = std::bitset<MAX_COLLISION_LAYERS>(physicsJson["collisionMatrix"][i].get<std::string>());
+			}
+		}
+	}
+	else
+	{
+		std::cerr << "Error opening the file!" << std::endl;
+		return false;
+	}
+
+	deserialzed.close();
+
+	return true;
+}
+
 Physics::Physics()
 	: m_world(b2Vec2(0.0f, -10.0f))
 	, m_velocityIterations(6)

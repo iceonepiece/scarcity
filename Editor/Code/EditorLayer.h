@@ -157,6 +157,17 @@ public:
 		return m_gameLayer;
 	}
 
+	static Project* GetProject()
+	{
+		if (s_instance == nullptr)
+			return nullptr;
+
+		if (s_instance->m_activeProject == nullptr)
+			return nullptr;
+
+		return s_instance->m_activeProject.get();
+	}
+
 	void SetAnimatorController(AnimatorController& animController);
 
 private:

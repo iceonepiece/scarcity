@@ -3,6 +3,7 @@
 #include <IconsFontAwesome6.h>
 #include "imgui/imgui_stdlib.h"
 #include "Physics/Physics.h"
+#include "../../EditorLayer.h"
 
 ImGuiTagEditorWindow::ImGuiTagEditorWindow(EditorLayer& editor)
 	: ImGui_Window(editor)
@@ -15,7 +16,7 @@ void ImGuiTagEditorWindow::Render()
 	static std::string newTagName = "New tag";
 	static int selectedIndex = -1;
 
-	auto& tagManager = Application::Get().GetTagManager();
+	auto& tagManager = EditorLayer::GetProject()->GetTagManager();
 	auto& tags = tagManager.GetTags();
 
 	if (ImGui::TreeNodeEx("Tags", ImGuiTreeNodeFlags_DefaultOpen))

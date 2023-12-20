@@ -2,11 +2,23 @@
 #include "ProjectSerializer.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneSerializer.h"
+#include "File/FileSystem.h"
+#include "Constants/GameEngine.h"
 
 std::shared_ptr<Project> Project::New()
 {
 	s_activeProject = std::make_shared<Project>();
 	return s_activeProject;
+}
+
+bool Project::Save()
+{
+	if (!std::filesystem::is_directory(m_directory / "ProjectSettings"))
+		FileSystem::CreateFolder(m_directory / "ProjectSettings");
+
+	std::filesystem::path projFilePath = m_directory / (m_name + PROJECT_FILE_EXTENSION);
+
+	return ProjectSerializer::Serialize(*this, projFilePath);
 }
 
 std::unique_ptr<Scene> Project::LoadScene(const std::filesystem::path& relativePath)

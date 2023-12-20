@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <nlohmann/json.hpp>
+#include "Physics/Physics.h"
 
 using json = nlohmann::json;
 
@@ -22,6 +23,9 @@ bool ProjectSerializer::Serialize(Project& project, const std::filesystem::path&
 		projectJson["startScene"] = project.m_startScene.string();
 
 		serialized << projectJson.dump(4);
+
+		project.m_tagManager.Serialize(project.m_directory / "ProjectSettings" / "TagManager.asset");
+		Physics::Serialize(project.m_directory / "ProjectSettings" / "Physics.asset");
 	}
 	else
 	{
@@ -47,6 +51,9 @@ bool ProjectSerializer::Deserialize(Project& project, const std::filesystem::pat
 		project.m_absolutePath = filepath.parent_path();
 		project.m_directory = filepath.parent_path();
 		project.m_startScene = projectJson["startScene"].get<std::string>();
+
+		project.m_tagManager.Deserialize(project.m_directory / "ProjectSettings" / "TagManager.asset");
+		Physics::Deserialize(project.m_directory / "ProjectSettings" / "Physics.asset");
 	}
 	else
 	{

@@ -51,8 +51,6 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
         }
     );
 
-    m_app.GetTagManager().Deserialize(m_activeProject->GetDirectory() / "ProjectSettings" / "TagManager.asset");
-
     std::filesystem::path luaFilePath = m_activeProject->GetDirectory() / (m_activeProject->GetName() + ".lua");
 
     if (FileSystem::FileExists(luaFilePath))
@@ -713,15 +711,10 @@ bool EditorLayer::SaveSceneAs()
 
 bool EditorLayer::SaveProject()
 {
-    std::filesystem::path projectPath = m_activeProject->GetDirectory();
+    if (m_activeProject)
+        return m_activeProject->Save();
 
-    if (!std::filesystem::is_directory(projectPath / "ProjectSettings"))
-        FileSystem::CreateFolder(projectPath / "ProjectSettings");
-
-    if (!m_app.GetTagManager().Serialize(projectPath / "ProjectSettings" / "TagManager.asset"))
-        return false;
-
-    return true;
+    return false;
 }
 
 void EditorLayer::ReloadNativeScripts()

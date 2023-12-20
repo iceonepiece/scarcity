@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <filesystem>
 #include <set>
 #include <bitset>
 #include <vector>
@@ -63,6 +64,9 @@ public:
 
 	void InitializePhysicsEntity(Entity& entity, TransformComponent& transform, Rigidbody2DComponent& rb2d);
 	void DestroyPhysicsEntity(Rigidbody2DComponent& rb2d);
+
+	static bool Serialize(const std::filesystem::path& path);
+	static bool Deserialize(const std::filesystem::path& path);
 
 	static std::array<std::string, MAX_COLLISION_LAYERS>& GetLayers() { return s_layers; }
 	static std::array<std::bitset<MAX_COLLISION_LAYERS>, MAX_COLLISION_LAYERS>& GetCollisionMatrix() { return s_collisionMatrix; }

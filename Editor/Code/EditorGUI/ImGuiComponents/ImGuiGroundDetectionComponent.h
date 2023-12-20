@@ -2,14 +2,13 @@
 
 #include "Components/GroundDetectionComponent.h"
 #include "../ImGuiUtils.h"
+#include "../../EditorLayer.h"
 
 static void RenderImGui(GroundDetectionComponent& groundDetection)
 {
-	auto& tags = Application::Get().GetTagManager().GetTags();
-
 	ImGui::Text("Ground Tag: "); ImGui::SameLine();
 
-	auto& tagManager = Application::Get().GetTagManager();
+	auto& tagManager = EditorLayer::GetProject()->GetTagManager();
 
 	if (ImGui::BeginCombo("##Tag", groundDetection.groundTag.c_str()))
 	{

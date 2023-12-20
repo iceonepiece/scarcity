@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <filesystem>
+#include "Core/TagManager.h"
 
 class Scene;
 
@@ -16,6 +17,7 @@ public:
 		, m_directory(path)
 	{}
 
+	bool Save();
 	std::unique_ptr<Scene> LoadScene(const std::filesystem::path& relativePath);
 
 	inline void SetStartScene(std::filesystem::path path) { m_startScene = path; }
@@ -25,6 +27,8 @@ public:
 	inline std::string GetName() { return m_name; }
 	inline std::filesystem::path GetDirectory() { return m_directory; }
 	inline std::filesystem::path GetAbsolutePath() { return m_directory; }
+
+	inline TagManager& GetTagManager() { return m_tagManager; }
 
 	static std::shared_ptr<Project> New();
 	static std::shared_ptr<Project> Load(const std::filesystem::path& path);
@@ -37,6 +41,8 @@ private:
 	std::filesystem::path m_directory;
 	std::filesystem::path m_absolutePath;
 	std::filesystem::path m_startScene;
+
+	TagManager m_tagManager;
 
 	inline static std::shared_ptr<Project> s_activeProject;
 

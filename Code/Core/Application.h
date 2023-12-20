@@ -68,7 +68,6 @@ public:
 	inline Input& GetInput() { return *m_input; }
 	inline AssetManager& GetAssetManager() { return *m_assetManager; }
 	inline EntityManager& GetPrefabManager() { return m_prefabManager; }
-	inline TagManager& GetTagManager() { return m_tagManager; }
 
 	void AddPrefab(Entity entity);
 	Entity GetPrefabByName(const std::string& name);
@@ -91,7 +90,6 @@ protected:
 	std::unique_ptr<AssetManager> m_assetManager;
 
 	EntityManager m_prefabManager;
-	TagManager m_tagManager;
 
 	std::unordered_map<std::string, Entity> m_prefabMap;
 
