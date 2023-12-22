@@ -223,6 +223,34 @@ void Scene::RenderCollisionComponents()
 {
     Renderer& renderer = Application::Get().GetRenderer();
 
+    auto groupColliders = m_manager.m_registry.view<TransformComponent, Collider2DGroupComponent>();
+    for (auto [entity, transform, group] : groupColliders.each())
+    {
+        for (auto& collider : group.colliders)
+        {
+            glm::vec2 drawPosition{
+                transform.position.x + transform.scale.x * collider.offset.x,
+                transform.position.y + transform.scale.y * collider.offset.y
+            };
+
+            if (collider.type == ColliderType::Box)
+            {
+                glm::vec2 drawSize{ collider.size.x * transform.scale.x, collider.size.y * transform.scale.y };
+                renderer.DrawRect(drawPosition, drawSize, transform.rotation.z, { 0.0f, 1.0f, 0.0f, 1.0f }, 0.02f);
+            }
+            else if (collider.type == ColliderType::Circle)
+            {
+                Circle2D renderCircle;
+                renderCircle.position = drawPosition;
+                renderCircle.scale = transform.scale;
+                renderCircle.radius = collider.size.x;
+                renderCircle.color = { 0, 1, 0, 1 };
+
+                renderer.DrawCircle2D(renderCircle, 0.01f);
+            }
+        }
+    }
+
     auto box2dColliders = m_manager.m_registry.view<TransformComponent, BoxCollider2DComponent>();
 
     for (auto [entity, transform, box] : box2dColliders.each())

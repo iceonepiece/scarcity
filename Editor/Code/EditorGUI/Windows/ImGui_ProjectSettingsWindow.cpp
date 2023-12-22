@@ -49,6 +49,7 @@ void ImGui_ProjectSettingsWindow::Render()
 					bool checked = collisionMatrix[availableLayers[i]][availableLayers[j]];
 					ImGui::Checkbox("##layer_name", &checked);
 					collisionMatrix[availableLayers[i]][availableLayers[j]] = checked;
+					collisionMatrix[availableLayers[j]][availableLayers[i]] = checked;
 					ImGui::PopID();
 				}
 			}

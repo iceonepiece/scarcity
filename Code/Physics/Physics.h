@@ -55,7 +55,10 @@ public:
 	b2Body* CreateStaticBox(b2Vec2 position, b2Vec2 size, float angle, FixtureData* fixtureData);
 	void CreateFixtureDef(b2Body* body, b2Vec2 size, b2Vec2 offset, bool isSensor, FixtureData* fixtureData);
 	
-	b2FixtureDef CreateFixtureDef(b2Shape& shape, Collider2DComponent& collider);
+	b2FixtureDef CreateBoxFixtureDef();
+	b2FixtureDef CreateCircleFixtureDef();
+
+	b2FixtureDef CreateFixtureDef(b2Shape& shape, Collider2DComponent& collider, uint16_t layer = 0);
 	b2PolygonShape CreateBoxShape(TransformComponent& transform, BoxCollider2DComponent& bc2d);
 	b2CircleShape CreateCircleShape(TransformComponent& transform, CircleCollider2DComponent& cc2d);
 
@@ -64,6 +67,7 @@ public:
 	b2FixtureDef CreateBoxCollider2DFixture(Entity& entity, TransformComponent& transform, Rigidbody2DComponent& rb2d, BoxCollider2DComponent& bc2d);
 	b2FixtureDef CreateCircleCollider2DFixture(Entity& entity, TransformComponent& transform, Rigidbody2DComponent& rb2d, CircleCollider2DComponent& cc2d);
 
+	b2Body* CreateBody(TransformComponent& transform, Rigidbody2DComponent& rb2d);
 	void InitializePhysicsEntity(Entity& entity, TransformComponent& transform, Rigidbody2DComponent& rb2d);
 	void DestroyPhysicsEntity(Rigidbody2DComponent& rb2d);
 
@@ -82,6 +86,8 @@ private:
 	std::vector<FixtureData*> m_fixtureDatum;
 
 	std::unordered_map<PhysicsLayer, uint16_t> m_maskMap;
+
+	std::array<std::bitset<MAX_COLLISION_LAYERS>, MAX_COLLISION_LAYERS> m_collisionMatrix;
 
 	static std::array<std::bitset<MAX_COLLISION_LAYERS>, MAX_COLLISION_LAYERS> s_collisionMatrix;
 	static std::array<std::string, MAX_COLLISION_LAYERS> s_layers;

@@ -3,6 +3,7 @@
 #include "Physics/EntityFixtureData.h"
 #include "Components/BoxCollider2DComponent.h"
 #include "Components/CircleCollider2DComponent.h"
+#include "Components/Collider2DGroupComponent.h"
 #include "Components/GridComponent.h"
 
 std::array<std::string, MAX_COLLISION_LAYERS> Physics::s_layers = { "Default" };
@@ -89,6 +90,8 @@ Physics::Physics()
 	m_maskMap[Layer_Player] = Layer_Platform;
 	m_maskMap[Layer_Enemy] = Layer_Platform;
 	m_maskMap[Layer_Platform] = Layer_Player | Layer_Enemy;
+
+	m_collisionMatrix = s_collisionMatrix;
 }
 
 Physics::~Physics()
@@ -258,13 +261,16 @@ b2Body* Physics::CreateBoxBody(Entity& entity, float x, float y, float width, fl
 	return body;
 }
 
-b2FixtureDef Physics::CreateFixtureDef(b2Shape& shape, Collider2DComponent& collider)
+b2FixtureDef Physics::CreateFixtureDef(b2Shape& shape, Collider2DComponent& collider, uint16_t layer)
 {
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &shape;
 	fixtureDef.density = collider.density;
 	fixtureDef.friction = collider.friction;
 	fixtureDef.isSensor = collider.isTrigger;
+
+	fixtureDef.filter.categoryBits = 1 << layer;
+	fixtureDef.filter.maskBits = m_collisionMatrix[layer].to_ulong();
 
 	return fixtureDef;
 }
@@ -332,7 +338,7 @@ FixtureData* Physics::CreateFixtureData(Entity& entity)
 	return fixtureData;
 }
 
-void Physics::InitializePhysicsEntity(Entity& entity, TransformComponent& transform, Rigidbody2DComponent& rb2d)
+b2Body* Physics::CreateBody(TransformComponent& transform, Rigidbody2DComponent& rb2d)
 {
 	b2BodyDef bodyDef;
 	bodyDef.type = Rigidbody2DTypeToBox2DBody(rb2d.type);
@@ -342,7 +348,53 @@ void Physics::InitializePhysicsEntity(Entity& entity, TransformComponent& transf
 
 	b2Body* body = m_world.CreateBody(&bodyDef);
 	body->SetFixedRotation(rb2d.fixedRotation);
+
+	return body;
+}
+
+void Physics::InitializePhysicsEntity(Entity& entity, TransformComponent& transform, Rigidbody2DComponent& rb2d)
+{
+	b2Body* body = CreateBody(transform, rb2d);
 	rb2d.body = body;
+
+	if (Collider2DGroupComponent* group = entity.GetComponent<Collider2DGroupComponent>())
+	{
+		for (int i = 0; i < group->colliders.size(); i++)
+		{
+			if (group->colliders[i].type == ColliderType::Box)
+			{
+				BoxCollider2DComponent bc2d;
+				bc2d.isTrigger = group->colliders[i].isTrigger;
+				bc2d.size = group->colliders[i].size;
+				bc2d.offset = group->colliders[i].offset;
+
+				b2PolygonShape boxShape = CreateBoxShape(transform, bc2d);
+				b2FixtureDef fixtureDef = CreateFixtureDef(boxShape, bc2d, group->colliders[i].layer);
+				FixtureData* fixtureData = CreateFixtureData(entity);
+
+				fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
+				rb2d.fixtureData = fixtureData;
+
+				body->CreateFixture(&fixtureDef);
+			}
+			else if (group->colliders[i].type == ColliderType::Circle)
+			{
+				CircleCollider2DComponent cc2d;
+				cc2d.isTrigger = group->colliders[i].isTrigger;
+				cc2d.radius = group->colliders[i].size.x;
+				cc2d.offset = group->colliders[i].offset;
+
+				b2CircleShape circleShape = CreateCircleShape(transform, cc2d);
+				b2FixtureDef fixtureDef = CreateFixtureDef(circleShape, cc2d, group->colliders[i].layer);
+				FixtureData* fixtureData = CreateFixtureData(entity);
+
+				fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
+				rb2d.fixtureData = fixtureData;
+
+				body->CreateFixture(&fixtureDef);
+			}
+		}
+	}
 
 	if (BoxCollider2DComponent* bc2d = entity.GetComponent<BoxCollider2DComponent>())
 	{
