@@ -598,6 +598,7 @@
     <ClInclude Include="External\Include\ImGuiNodes\ImNodesEz.h" />
     <ClInclude Include="Code\Animations\AnimationClip.h" />
     <ClInclude Include="Code\Physics\CollisionLayerManager.h" />
+    <ClInclude Include="Code\Components\Collider2DGroupComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />

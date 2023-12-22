@@ -200,6 +200,8 @@
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteRendererComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiTextComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiTransformComponent.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGui_Collider2DGroupComponent.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGui_Rigidbody2DComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiHierarchy.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiAssetProperties.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiMainMenuBar.h" />

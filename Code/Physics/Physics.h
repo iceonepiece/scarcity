@@ -59,6 +59,8 @@ public:
 	b2PolygonShape CreateBoxShape(TransformComponent& transform, BoxCollider2DComponent& bc2d);
 	b2CircleShape CreateCircleShape(TransformComponent& transform, CircleCollider2DComponent& cc2d);
 
+	FixtureData* CreateFixtureData(Entity& entity);
+
 	b2FixtureDef CreateBoxCollider2DFixture(Entity& entity, TransformComponent& transform, Rigidbody2DComponent& rb2d, BoxCollider2DComponent& bc2d);
 	b2FixtureDef CreateCircleCollider2DFixture(Entity& entity, TransformComponent& transform, Rigidbody2DComponent& rb2d, CircleCollider2DComponent& cc2d);
 

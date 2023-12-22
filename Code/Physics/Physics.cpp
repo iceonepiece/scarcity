@@ -324,6 +324,14 @@ b2FixtureDef Physics::CreateCircleCollider2DFixture(Entity& entity, TransformCom
 	return fixtureDef;
 }
 
+FixtureData* Physics::CreateFixtureData(Entity& entity)
+{
+	FixtureData* fixtureData = new EntityFixtureData(entity);
+	fixtureData->m_tag = entity.GetComponent<BaseComponent>()->tag;
+
+	return fixtureData;
+}
+
 void Physics::InitializePhysicsEntity(Entity& entity, TransformComponent& transform, Rigidbody2DComponent& rb2d)
 {
 	b2BodyDef bodyDef;
@@ -336,30 +344,24 @@ void Physics::InitializePhysicsEntity(Entity& entity, TransformComponent& transf
 	body->SetFixedRotation(rb2d.fixedRotation);
 	rb2d.body = body;
 
-	if (BoxCollider2DComponent* ptr = entity.GetComponent<BoxCollider2DComponent>())
+	if (BoxCollider2DComponent* bc2d = entity.GetComponent<BoxCollider2DComponent>())
 	{
-		auto& bc2d = *ptr;
+		b2PolygonShape boxShape = CreateBoxShape(transform, *bc2d);
+		b2FixtureDef fixtureDef = CreateFixtureDef(boxShape, *bc2d);
+		FixtureData* fixtureData = CreateFixtureData(entity);
 
-		b2PolygonShape boxShape = CreateBoxShape(transform, bc2d);
-		b2FixtureDef fixtureDef = CreateFixtureDef(boxShape, bc2d);
-
-		FixtureData* fixtureData = new EntityFixtureData(entity);
-		fixtureData->m_tag = entity.GetComponent<BaseComponent>()->tag;
 		fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
 		rb2d.fixtureData = fixtureData;
 
 		body->CreateFixture(&fixtureDef);
 	}
 
-	if (CircleCollider2DComponent* ptr = entity.GetComponent<CircleCollider2DComponent>())
+	if (CircleCollider2DComponent* cc2d = entity.GetComponent<CircleCollider2DComponent>())
 	{
-		auto& cc2d = *ptr;
+		b2CircleShape circleShape = CreateCircleShape(transform, *cc2d);
+		b2FixtureDef fixtureDef = CreateFixtureDef(circleShape, *cc2d);
+		FixtureData* fixtureData = CreateFixtureData(entity);
 
-		b2CircleShape circleShape = CreateCircleShape(transform, cc2d);
-		b2FixtureDef fixtureDef = CreateFixtureDef(circleShape, cc2d);
-
-		FixtureData* fixtureData = new EntityFixtureData(entity);
-		fixtureData->m_tag = entity.GetComponent<BaseComponent>()->tag;
 		fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
 		rb2d.fixtureData = fixtureData;
 
@@ -414,8 +416,7 @@ void Physics::InitializePhysicsEntity(Entity& entity, TransformComponent& transf
 			fixtureDef.isSensor = false;
 			fixtureDef.shape = &chain;
 
-			FixtureData* fixtureData = new EntityFixtureData(entity);
-			fixtureData->m_tag = entity.GetComponent<BaseComponent>()->tag;
+			FixtureData* fixtureData = CreateFixtureData(entity);
 			fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
 			rb2d.fixtureData = fixtureData;
 

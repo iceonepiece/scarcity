@@ -10,8 +10,8 @@ using json = nlohmann::json;
 struct BoxCollider2DComponent : public Collider2DComponent
 {
 	static std::string Name() { return "BoxCollider2D"; }
+	virtual ColliderType GetType() const { return ColliderType::Box; }
 
-	glm::vec2 offset = { 0.0f, 0.0f };
 	glm::vec2 size = { 1.0f, 1.0f };
 };
 

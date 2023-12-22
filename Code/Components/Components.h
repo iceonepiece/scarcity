@@ -8,6 +8,7 @@
 #include "CameraComponent.h"
 #include "CircleCollider2DComponent.h"
 #include "Collider2DComponent.h"
+#include "Collider2DGroupComponent.h"
 #include "GridComponent.h"
 #include "GroundDetectionComponent.h"
 #include "IDComponent.h"
@@ -30,6 +31,7 @@
 	Rigidbody2DComponent, \
 	BoxCollider2DComponent, \
 	CircleCollider2DComponent, \
+	Collider2DGroupComponent, \
 	CameraComponent, \
 	GridComponent, \
 	GroundDetectionComponent, \
