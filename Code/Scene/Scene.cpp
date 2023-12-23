@@ -14,6 +14,14 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <algorithm>
+
+struct RenderCommand
+{
+    Sprite* sprite;
+    TransformComponent transform;
+    int order;
+};
 
 Scene::Scene(const std::string& name, const std::filesystem::path& path)
     : Asset(path, AssetType::Scene)
@@ -66,7 +74,6 @@ void Scene::DestroyEntity(entt::entity entity)
     if (m_manager.m_registry.all_of<Rigidbody2DComponent>(entity))
     {
         m_physics.DestroyPhysicsEntity(m_manager.m_registry.get<Rigidbody2DComponent>(entity));
-        //DestroyPhysicsEntity(m_manager.m_registry.get<Rigidbody2DComponent>(entity));
     }
 
     if (NativeScriptComponent* nativeScript = m_manager.m_registry.try_get<NativeScriptComponent>(entity))
@@ -536,6 +543,8 @@ void Scene::Render(RenderOptions renderOptions)
 
     auto transforms = m_manager.m_registry.view<TransformComponent, SpriteRendererComponent>();
 
+    std::vector<RenderCommand> renderCommands;
+
     for (auto [entity, transform, sprite] : transforms.each())
     {
         glm::vec2 position = transform.position;
@@ -558,16 +567,27 @@ void Scene::Render(RenderOptions renderOptions)
         if (spriteAnimator != nullptr && spriteAnimator->controller != nullptr)
         {
             if (AnimatorState* state = spriteAnimator->controller->GetCurrentState())
-			{
-                if (Sprite* sprite = state->GetSprite())
-					renderer.DrawSprite(*sprite, transform.position, transform.scale, transform.rotation.z);
-			}
+            {
+                if (Sprite* targetSprite = state->GetSprite())
+                    renderCommands.push_back({ targetSprite, transform, sprite.order });
+            }
         }
         else if (sprite.sprite != nullptr)
         {
             Sprite& targetSprite = sprite.image->GetSprites()[sprite.spriteIndex];
-            renderer.DrawSprite(targetSprite, transform.position, transform.scale, transform.rotation.z);
+            renderCommands.push_back({ &targetSprite, transform, sprite.order });
         }
+    }
+
+    std::sort(renderCommands.begin(), renderCommands.end(),
+    [](const RenderCommand& a, const RenderCommand& b)
+    {
+        return a.order < b.order;
+    });
+
+    for (auto& command : renderCommands)
+    {
+        renderer.DrawSprite(*command.sprite, command.transform.position, command.transform.scale, command.transform.rotation.z);
     }
 
     renderer.PostRender();
@@ -699,7 +719,6 @@ Entity Scene::InstantiateEntity(Entity entity, const glm::vec3& position, bool p
 
         if (Rigidbody2DComponent* rb2d = returnEntity.GetComponent<Rigidbody2DComponent>())
             m_physics.InitializePhysicsEntity(returnEntity, *transform, *rb2d);
-            //InitializePhysicsEntity(newEntity, *transform, *rb2d);
     }
 
     if (playing)
