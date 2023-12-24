@@ -7,6 +7,7 @@ ImGui_LuaEditorPanel::ImGui_LuaEditorPanel(EditorLayer& editor)
 	: m_editor(editor)
 {
 	m_textEditor.SetLanguageDefinition(TextEditor::LanguageDefinition::Lua());
+	m_textEditor.SetShowWhitespaces(false);
 	m_font = ImGui::GetIO().Fonts->Fonts[1];
 }
 
