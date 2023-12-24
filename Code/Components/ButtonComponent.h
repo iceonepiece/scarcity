@@ -5,7 +5,7 @@
 #include <vector>
 #include "Components/UIComponent.h"
 #include "Core/UniqueID.h"
-#include "Core/Entity.h"
+#include "Entity/Entity.h"
 #include "UI/EventHandler.h"
 
 struct ButtonComponent : public UIComponent
@@ -36,11 +36,6 @@ struct ButtonComponent : public UIComponent
 		};
 	}
 };
-
-static void AdjustCanvas(ButtonComponent& button, CanvasComponent* canvas)
-{
-	//button.instance.SetCanvas(canvas);
-}
 
 static void DoSerialize(const ButtonComponent& button, json& entityJson)
 {

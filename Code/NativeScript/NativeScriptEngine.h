@@ -4,7 +4,7 @@
 #include <string>
 #include <filesystem>
 #include <unordered_map>
-#include "Scene/ScriptableEntity.h"
+#include "Entity/ScriptableEntity.h"
 
 typedef void (*RegisterClassesFunction)();
 typedef ScriptableEntity* (*CreateInstanceFunction)(const std::string&);

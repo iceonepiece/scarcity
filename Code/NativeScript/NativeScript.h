@@ -3,7 +3,16 @@
 #include <unordered_map>
 #include <functional>
 #include <string>
-#include "Scene/ScriptableEntity.h"
+#include "Asset/Asset.h"
+#include "Entity/ScriptableEntity.h"
+
+class NativeScript : public Asset
+{
+public:
+    NativeScript(const std::filesystem::path& path)
+        : Asset(path, AssetType::NativeScript)
+    {}
+};
 
 typedef std::function<ScriptableEntity* ()> FactoryFunction;
 static std::unordered_map<std::string, FactoryFunction> classRegistry;

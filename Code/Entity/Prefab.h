@@ -1,18 +1,18 @@
 #pragma once
 
-#include "Asset.h"
+#include "Asset/Asset.h"
 #include <filesystem>
 #include "Components/ComponentSerializer.h"
-#include "Core/Entity.h"
+#include "Entity/Entity.h"
 #include "File/FileSystem.h"
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
 
-class PrefabAsset : public Asset
+class Prefab : public Asset
 {
 public:
-	PrefabAsset(const std::filesystem::path& path, Entity entity)
+	Prefab(const std::filesystem::path& path, Entity entity)
 		: Asset(path, AssetType::Prefab)
 		, m_entity(entity)
 	{

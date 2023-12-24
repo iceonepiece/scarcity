@@ -196,10 +196,10 @@ void EditorSceneViewport::Render()
     {
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PREFAB_ASSET"))
         {
-            if (PrefabAsset* prefabAsset = reinterpret_cast<PrefabAsset*>(payload->Data))
+            if (Prefab* prefab = reinterpret_cast<Prefab*>(payload->Data))
             {
                 glm::vec4 worldCursorPosition = m_camera->ScreenToWorldPosition(m_cursorPosition);
-                m_editor.GetScene()->InstantiateEntity(prefabAsset->GetEntity(), worldCursorPosition, false);
+                m_editor.GetScene()->InstantiateEntity(prefab->GetEntity(), worldCursorPosition, false);
             }
         }
         ImGui::EndDragDropTarget();

@@ -1,5 +1,4 @@
 #include "ScriptableEntity.h"
-#include "Scene.h"
 
 void ScriptableEntity::Destroy()
 {

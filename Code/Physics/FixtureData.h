@@ -2,7 +2,7 @@
 
 #include <string>
 #include <box2d/box2d.h>
-#include "../Core/Entity.h"
+#include "../Entity/Entity.h"
 
 class FixtureData
 {
@@ -26,7 +26,6 @@ public:
 	virtual void EndContact(FixtureData* other, b2Contact* contact, bool isA) {}
 	virtual void PreSolve(FixtureData* other, b2Contact* contact, const b2Manifold* oldManifold, bool isA) {}
 
-	int tag;
 	std::string m_tag;
 	Entity m_entity;
 };

@@ -1,12 +1,13 @@
 #pragma once
 
 #include <filesystem>
+#include "Asset/Asset.h"
 
-class AudioClip
+class AudioClip : public Asset
 {
 public:
-	AudioClip(const std::filesystem::path& filePath)
-		: m_filePath(filePath)
+	AudioClip(const std::filesystem::path& path)
+		: Asset(path, AssetType::Audio)
 		, m_duration(0)
 	{
 	}
@@ -21,6 +22,5 @@ public:
 	}
 
 protected:
-	std::filesystem::path m_filePath;
 	float m_duration;
 };

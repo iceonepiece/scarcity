@@ -34,6 +34,8 @@ static void RenderImGui(SpriteRendererComponent& spriteRenderer)
 	ImGui::Text(("Sprite: " + spriteRenderer.spriteName).c_str());
 	ImGui::PopItemWidth();
 
+	ImGui::InputInt("Order", &spriteRenderer.order);
+
 	if (ImGui::BeginPopupModal("Select Sprite"))
 	{
 		ImGuiSelectSpriteWindow* window = dynamic_cast<ImGuiSelectSpriteWindow*>(EditorLayer::GetImGuiWindow(ImGuiWindowType::SelectSprite));

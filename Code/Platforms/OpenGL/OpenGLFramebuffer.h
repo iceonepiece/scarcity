@@ -11,7 +11,7 @@ public:
 
 	virtual void Bind() override;
 	virtual void Unbind() override;
-	virtual void Rescale(float width, float height) override;
+	virtual void Rescale(unsigned int width, unsigned int height) override;
 
 	inline virtual unsigned int GetID() { return m_ID; }
 

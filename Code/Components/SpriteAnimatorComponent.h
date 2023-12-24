@@ -3,8 +3,8 @@
 #include <vector>
 #include <nlohmann/json.hpp>
 #include "Graphics/Sprite.h"
-#include "Animations/SpriteAnimation.h"
 #include "Animations/AnimatorController.h"
+#include "Core/Application.h"
 
 using json = nlohmann::json;
 

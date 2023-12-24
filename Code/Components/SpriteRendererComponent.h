@@ -22,6 +22,7 @@ struct SpriteRendererComponent
 	SpriteShape shape = Shape_None;
 	glm::vec4 color = glm::vec4 { 1.0f };
 	std::string spriteName = "";
+	int order = 0;
 
 	Image* image = nullptr;
 	size_t spriteIndex;
@@ -39,6 +40,7 @@ static void DoSerialize(const SpriteRendererComponent& sprite, json& entityJson)
 	colorJson.push_back(sprite.color.z);
 	colorJson.push_back(sprite.color.w);
 	entityJson[SpriteRendererComponent::Name()]["color"] = colorJson;
+	entityJson[SpriteRendererComponent::Name()]["order"] = sprite.order;
 
 	json spriteJson = json::object();
 	spriteJson["imageID"] = 0;
@@ -59,6 +61,11 @@ static void DoDeserialize(SpriteRendererComponent& sprite, json& spriteRendererJ
 
 	sprite.shape = spriteRendererJson["shape"].get<SpriteShape>();
 	sprite.color = color;
+
+	if (spriteRendererJson["order"].is_null())
+		sprite.order = 0;
+	else
+		sprite.order = spriteRendererJson["order"].get<int>();
 
 	UniqueID imageID = spriteRendererJson["sprite"]["imageID"].get<uint64_t>();
 	if (Image* image = dynamic_cast<Image*>(Application::Get().GetAssetManager().GetAssetByID(imageID)))

@@ -6,7 +6,7 @@
 #include "Math/Math.h"
 #include "Graphics/Renderer.h"
 #include "Components/UIComponents.h"
-#include "Scene/ScriptableEntity.h"
+#include "Entity/ScriptableEntity.h"
 
 class UIControl
 {

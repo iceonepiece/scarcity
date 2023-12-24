@@ -13,7 +13,7 @@ void RenderImGui(BaseComponent& base)
 	ImGui::Text("Name: "); ImGui::SameLine();
 	ImGui::InputText("##name", &(base.name));
 
-	auto& tagManager = Application::Get().GetTagManager();
+	auto& tagManager = EditorLayer::GetProject()->GetTagManager();
 	bool openPopup = false;
 
 	ImGui::Text("Tag: "); ImGui::SameLine();

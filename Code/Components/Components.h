@@ -2,13 +2,13 @@
 
 #include <tuple>
 
-#include "AIComponent.h"
 #include "AudioSourceComponent.h"
 #include "BaseComponent.h"
 #include "BoxCollider2DComponent.h"
 #include "CameraComponent.h"
 #include "CircleCollider2DComponent.h"
 #include "Collider2DComponent.h"
+#include "Collider2DGroupComponent.h"
 #include "GridComponent.h"
 #include "GroundDetectionComponent.h"
 #include "IDComponent.h"
@@ -31,6 +31,7 @@
 	Rigidbody2DComponent, \
 	BoxCollider2DComponent, \
 	CircleCollider2DComponent, \
+	Collider2DGroupComponent, \
 	CameraComponent, \
 	GridComponent, \
 	GroundDetectionComponent, \

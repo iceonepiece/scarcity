@@ -1,9 +1,15 @@
 #include "Audio.h"
 #include "OpenAL/OpenALAudio.h"
 
+Audio* Audio::s_instance = nullptr;
 std::unordered_map<std::string, std::unique_ptr<AudioSource>> Audio::s_audioSources;
 
-std::unique_ptr<Audio> Audio::Create()
+void Audio::Create()
 {
-	return std::make_unique<OpenALAudio>();
+	s_instance = new OpenALAudio();
+}
+
+void Audio::Shutdown()
+{
+	delete s_instance;
 }

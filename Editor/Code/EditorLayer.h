@@ -19,7 +19,7 @@
 #include "EditorGUI/ImGuiHierarchy.h"
 #include "EditorGUI/ImGuiAssetPanel.h"
 #include "EditorGUI/EditorSceneViewport.h"
-#include "EditorGUI/ImGui_AnimatorPanel.h"
+#include "EditorGUI/Windows/ImGui_AnimatorWindow.h"
 #include "EditorGUI/ImGui_InspectorPanel.h"
 #include "EditorGUI/ImGui_LuaEditorPanel.h"
 #include "GameLayer.h"
@@ -158,15 +158,23 @@ public:
 		return m_gameLayer;
 	}
 
-	void SetAnimatorController(AnimatorController& animController)
+	static Project* GetProject()
 	{
-		m_animatorPanel.SetAnimatorController(&animController);
+		if (s_instance == nullptr)
+			return nullptr;
+
+		if (s_instance->m_activeProject == nullptr)
+			return nullptr;
+
+		return s_instance->m_activeProject.get();
 	}
 
 	ImGui_LuaEditorPanel& GetLuaEditorPanel()
 	{
 		return m_luaEditorPanel;
 	}
+  
+	void SetAnimatorController(AnimatorController& animController);
 
 private:
 	void OnWindowResize(WindowResizeEvent& event);
@@ -229,7 +237,6 @@ private:
 	ImGuiMainMenuBar m_mainMenuBar;
 	ImGuiHierarchy m_hierarchy;
 	ImGuiAssetPanel m_assetPanel;
-	ImGui_AnimatorPanel m_animatorPanel;
 	ImGui_InspectorPanel m_inspectorPanel;
 	ImGui_LuaEditorPanel m_luaEditorPanel;
 

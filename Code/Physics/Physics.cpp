@@ -3,7 +3,81 @@
 #include "Physics/EntityFixtureData.h"
 #include "Components/BoxCollider2DComponent.h"
 #include "Components/CircleCollider2DComponent.h"
+#include "Components/Collider2DGroupComponent.h"
 #include "Components/GridComponent.h"
+
+std::array<std::string, MAX_COLLISION_LAYERS> Physics::s_layers = { "Default" };
+std::array<std::bitset<MAX_COLLISION_LAYERS>, MAX_COLLISION_LAYERS> Physics::s_collisionMatrix;
+
+bool Physics::Serialize(const std::filesystem::path& path)
+{
+	std::ofstream serialized;
+	serialized.open(path);
+
+	if (serialized.is_open())
+	{
+		json physicsJson;
+		physicsJson["layers"] = json::array();;
+
+		for (auto& layerName : s_layers)
+			physicsJson["layers"].push_back(layerName);
+
+		physicsJson["collisionMatrix"] = json::array();
+
+		for (auto& collisionLayer : s_collisionMatrix)
+		{
+			physicsJson["collisionMatrix"].push_back(collisionLayer.to_string());
+		}
+
+		serialized << physicsJson.dump(4);
+	}
+	else
+	{
+		std::cout << "Error opening the file!" << std::endl;
+		return false;
+	}
+
+	serialized.close();
+
+	return true;
+}
+
+bool Physics::Deserialize(const std::filesystem::path& path)
+{
+	std::ifstream deserialzed(path);
+
+	if (deserialzed.is_open())
+	{
+		json physicsJson = json::parse(deserialzed);
+
+		if (physicsJson["layers"].is_array())
+		{
+			for (int i = 0; i < physicsJson["layers"].size(); i++)
+			{
+				s_layers[i] = physicsJson["layers"][i].get<std::string>();
+			}
+		}
+
+		s_collisionMatrix.fill(std::bitset<MAX_COLLISION_LAYERS>(0));
+
+		if (physicsJson["collisionMatrix"].is_array())
+		{
+			for (int i = 0; i < physicsJson["collisionMatrix"].size(); i++)
+			{
+				s_collisionMatrix[i] = std::bitset<MAX_COLLISION_LAYERS>(physicsJson["collisionMatrix"][i].get<std::string>());
+			}
+		}
+	}
+	else
+	{
+		std::cerr << "Error opening the file!" << std::endl;
+		return false;
+	}
+
+	deserialzed.close();
+
+	return true;
+}
 
 Physics::Physics()
 	: m_world(b2Vec2(0.0f, -10.0f))
@@ -16,6 +90,8 @@ Physics::Physics()
 	m_maskMap[Layer_Player] = Layer_Platform;
 	m_maskMap[Layer_Enemy] = Layer_Platform;
 	m_maskMap[Layer_Platform] = Layer_Player | Layer_Enemy;
+
+	m_collisionMatrix = s_collisionMatrix;
 }
 
 Physics::~Physics()
@@ -135,8 +211,8 @@ b2Body* Physics::CreateBodyWithFixture(b2Vec2 position, b2Vec2 size, FixtureData
 	fixtureDef.density = isSensor ? 0.0f : 1.0f;
 	fixtureDef.friction = 0.0f;
 	fixtureDef.isSensor = isSensor;
-	fixtureDef.filter.categoryBits = layer;
-	fixtureDef.filter.maskBits = m_maskMap[layer];
+	//fixtureDef.filter.categoryBits = layer;
+	//fixtureDef.filter.maskBits = m_maskMap[layer];
 	
 	if (fixtureData)
 	{
@@ -185,13 +261,16 @@ b2Body* Physics::CreateBoxBody(Entity& entity, float x, float y, float width, fl
 	return body;
 }
 
-b2FixtureDef Physics::CreateFixtureDef(b2Shape& shape, Collider2DComponent& collider)
+b2FixtureDef Physics::CreateFixtureDef(b2Shape& shape, Collider2DComponent& collider, uint16_t layer)
 {
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &shape;
 	fixtureDef.density = collider.density;
 	fixtureDef.friction = collider.friction;
 	fixtureDef.isSensor = collider.isTrigger;
+
+	fixtureDef.filter.categoryBits = 1 << layer;
+	fixtureDef.filter.maskBits = m_collisionMatrix[layer].to_ulong();
 
 	return fixtureDef;
 }
@@ -251,7 +330,15 @@ b2FixtureDef Physics::CreateCircleCollider2DFixture(Entity& entity, TransformCom
 	return fixtureDef;
 }
 
-void Physics::InitializePhysicsEntity(Entity& entity, TransformComponent& transform, Rigidbody2DComponent& rb2d)
+FixtureData* Physics::CreateFixtureData(Entity& entity)
+{
+	FixtureData* fixtureData = new EntityFixtureData(entity);
+	fixtureData->m_tag = entity.GetComponent<BaseComponent>()->tag;
+
+	return fixtureData;
+}
+
+b2Body* Physics::CreateBody(TransformComponent& transform, Rigidbody2DComponent& rb2d)
 {
 	b2BodyDef bodyDef;
 	bodyDef.type = Rigidbody2DTypeToBox2DBody(rb2d.type);
@@ -261,32 +348,72 @@ void Physics::InitializePhysicsEntity(Entity& entity, TransformComponent& transf
 
 	b2Body* body = m_world.CreateBody(&bodyDef);
 	body->SetFixedRotation(rb2d.fixedRotation);
+
+	return body;
+}
+
+void Physics::InitializePhysicsEntity(Entity& entity, TransformComponent& transform, Rigidbody2DComponent& rb2d)
+{
+	b2Body* body = CreateBody(transform, rb2d);
 	rb2d.body = body;
 
-	if (BoxCollider2DComponent* ptr = entity.GetComponent<BoxCollider2DComponent>())
+	if (Collider2DGroupComponent* group = entity.GetComponent<Collider2DGroupComponent>())
 	{
-		auto& bc2d = *ptr;
+		for (int i = 0; i < group->colliders.size(); i++)
+		{
+			if (group->colliders[i].type == ColliderType::Box)
+			{
+				BoxCollider2DComponent bc2d;
+				bc2d.isTrigger = group->colliders[i].isTrigger;
+				bc2d.size = group->colliders[i].size;
+				bc2d.offset = group->colliders[i].offset;
 
-		b2PolygonShape boxShape = CreateBoxShape(transform, bc2d);
-		b2FixtureDef fixtureDef = CreateFixtureDef(boxShape, bc2d);
+				b2PolygonShape boxShape = CreateBoxShape(transform, bc2d);
+				b2FixtureDef fixtureDef = CreateFixtureDef(boxShape, bc2d, group->colliders[i].layer);
+				FixtureData* fixtureData = CreateFixtureData(entity);
 
-		FixtureData* fixtureData = new EntityFixtureData(entity);
-		fixtureData->m_tag = entity.GetComponent<BaseComponent>()->tag;
+				fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
+				rb2d.fixtureData = fixtureData;
+
+				body->CreateFixture(&fixtureDef);
+			}
+			else if (group->colliders[i].type == ColliderType::Circle)
+			{
+				CircleCollider2DComponent cc2d;
+				cc2d.isTrigger = group->colliders[i].isTrigger;
+				cc2d.radius = group->colliders[i].size.x;
+				cc2d.offset = group->colliders[i].offset;
+
+				b2CircleShape circleShape = CreateCircleShape(transform, cc2d);
+				b2FixtureDef fixtureDef = CreateFixtureDef(circleShape, cc2d, group->colliders[i].layer);
+				FixtureData* fixtureData = CreateFixtureData(entity);
+
+				fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
+				rb2d.fixtureData = fixtureData;
+
+				body->CreateFixture(&fixtureDef);
+			}
+		}
+	}
+
+	if (BoxCollider2DComponent* bc2d = entity.GetComponent<BoxCollider2DComponent>())
+	{
+		b2PolygonShape boxShape = CreateBoxShape(transform, *bc2d);
+		b2FixtureDef fixtureDef = CreateFixtureDef(boxShape, *bc2d);
+		FixtureData* fixtureData = CreateFixtureData(entity);
+
 		fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
 		rb2d.fixtureData = fixtureData;
 
 		body->CreateFixture(&fixtureDef);
 	}
 
-	if (CircleCollider2DComponent* ptr = entity.GetComponent<CircleCollider2DComponent>())
+	if (CircleCollider2DComponent* cc2d = entity.GetComponent<CircleCollider2DComponent>())
 	{
-		auto& cc2d = *ptr;
+		b2CircleShape circleShape = CreateCircleShape(transform, *cc2d);
+		b2FixtureDef fixtureDef = CreateFixtureDef(circleShape, *cc2d);
+		FixtureData* fixtureData = CreateFixtureData(entity);
 
-		b2CircleShape circleShape = CreateCircleShape(transform, cc2d);
-		b2FixtureDef fixtureDef = CreateFixtureDef(circleShape, cc2d);
-
-		FixtureData* fixtureData = new EntityFixtureData(entity);
-		fixtureData->m_tag = entity.GetComponent<BaseComponent>()->tag;
 		fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
 		rb2d.fixtureData = fixtureData;
 
@@ -341,8 +468,7 @@ void Physics::InitializePhysicsEntity(Entity& entity, TransformComponent& transf
 			fixtureDef.isSensor = false;
 			fixtureDef.shape = &chain;
 
-			FixtureData* fixtureData = new EntityFixtureData(entity);
-			fixtureData->m_tag = entity.GetComponent<BaseComponent>()->tag;
+			FixtureData* fixtureData = CreateFixtureData(entity);
 			fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
 			rb2d.fixtureData = fixtureData;
 

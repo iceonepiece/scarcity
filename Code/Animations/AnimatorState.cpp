@@ -22,11 +22,6 @@ AnimatorState::~AnimatorState()
 		delete transition;
 }
 
-AnimatorState::AnimatorState(SpriteAnimation spriteAnimation)
-	//: m_spriteAnimation(spriteAnimation)
-{
-}
-
 void AnimatorState::OnEnter(AnimatorController& controller)
 {
 	m_done = false;
@@ -86,6 +81,8 @@ bool AnimatorState::RemoveTransition(AnimatorState* toState)
 			return true;
 		}
 	}
+
+	return false;
 }
 
 bool AnimatorState::RemoveIncomingTransition(AnimatorTransition* transition)

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <imgui/imgui.h>
+#include <string>
 
 class EditorLayer;
 
@@ -11,12 +12,14 @@ enum class ImGuiWindowType
 	Tags,
 	SelectAnimatorController,
 	AnimationClip,
+	Animator,
+	ProjectSettings,
 };
 
 class ImGui_Window
 {
 public:
-	ImGui_Window(EditorLayer& editor);
+	ImGui_Window(EditorLayer& editor, const std::string& name = "");
 	virtual ~ImGui_Window() = default;
 	virtual void Render() = 0;
 
@@ -24,5 +27,7 @@ public:
 
 protected:
 	EditorLayer& m_editor;
+
+	std::string m_windowName;
 	bool m_isOpen = false;
 };

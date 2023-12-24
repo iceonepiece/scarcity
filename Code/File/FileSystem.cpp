@@ -1,7 +1,7 @@
 #include "FileSystem.h"
 #include "MetaSerializer.h"
 #include "Graphics/Image.h"
-#include "Asset/AudioAsset.h"
+#include "Audio/AudioClip.h"
 
 std::filesystem::path FileSystem::GetRelativePath(const std::filesystem::path& basePath, const std::filesystem::path& filePath)
 {
@@ -246,8 +246,6 @@ void FileSystem::GenerateAudioMetaFile(const std::filesystem::path& path)
 	if (!FileSystem::FileExists(path.string() + ".meta"))
 	{
 		std::cout << "Create meta file for " << path << std::endl;
-		AudioAsset audioAsset(path);
-		//MetaSerializer::SerializeImage(textureAsset, path);
 	}
 	else
 	{

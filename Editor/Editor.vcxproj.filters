@@ -45,7 +45,7 @@
     <ClCompile Include="Code\HubLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\EditorGUI\ImGui_AnimatorPanel.cpp">
+    <ClCompile Include="Code\EditorGUI\Windows\ImGui_AnimatorWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Helpers\FileHandler.cpp">
@@ -102,6 +102,9 @@
     <ClCompile Include="Code\EditorGUI\ImGui_LuaEditorPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Code\EditorGUI\Windows\ImGui_ProjectSettingsWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\ImGuiComponent.h">
@@ -134,9 +137,6 @@
     <ClInclude Include="Code\Gizmos\ViewGizmo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\SampleScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -164,7 +164,7 @@
     <ClInclude Include="Code\ScriptManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\EditorGUI\ImGui_AnimatorPanel.h">
+    <ClInclude Include="Code\EditorGUI\Windows\ImGui_AnimatorWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Helpers\FileHandler.h">
@@ -267,6 +267,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\EditorGUI\ImGui_LuaEditorPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\Windows\ImGui_ProjectSettingsWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGui_Collider2DGroupComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGui_Rigidbody2DComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

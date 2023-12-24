@@ -70,6 +70,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\Temp\</IntDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -111,7 +115,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)External\Library-Debug</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;lua54.lib;freetype.lib;OpenAL32.lib;angelscriptd.lib;box2d.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;lua54.lib;freetype.lib;OpenAL32.lib;box2d.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -144,7 +148,7 @@
     <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiBaseComponent.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiHierarchy.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiMainMenuBar.cpp" />
-    <ClCompile Include="Code\EditorGUI\ImGui_AnimatorPanel.cpp" />
+    <ClCompile Include="Code\EditorGUI\Windows\ImGui_AnimatorWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiAssetProperties.cpp" />
     <ClCompile Include="Code\EditorGUI\EditorSceneViewport.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiUtils.cpp" />
@@ -158,6 +162,7 @@
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiTagEditorWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.cpp" />
+    <ClCompile Include="Code\EditorGUI\Windows\ImGui_ProjectSettingsWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_Window.cpp" />
     <ClCompile Include="Code\GameLayer.cpp" />
     <ClCompile Include="Code\Gizmos\Gizmo.cpp" />
@@ -196,10 +201,12 @@
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteRendererComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiTextComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiTransformComponent.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGui_Collider2DGroupComponent.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGui_Rigidbody2DComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiHierarchy.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiAssetProperties.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiMainMenuBar.h" />
-    <ClInclude Include="Code\EditorGUI\ImGui_AnimatorPanel.h" />
+    <ClInclude Include="Code\EditorGUI\Windows\ImGui_AnimatorWindow.h" />
     <ClInclude Include="Code\EditorGUI\EditorSceneViewport.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiUtils.h" />
     <ClInclude Include="Code\EditorGUI\EditorViewport.h" />
@@ -211,6 +218,7 @@
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiTagEditorWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.h" />
+    <ClInclude Include="Code\EditorGUI\Windows\ImGui_ProjectSettingsWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_Window.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.h" />
     <ClInclude Include="Code\GameLayer.h" />
@@ -226,7 +234,6 @@
     <ClInclude Include="Code\HubLayer.h" />
     <ClInclude Include="Code\ImGuiComponent.h" />
     <ClInclude Include="Code\ImGuiLayer.h" />
-    <ClInclude Include="Code\SampleScene.h" />
     <ClInclude Include="Code\Gizmos\TranslateGizmo.h" />
     <ClInclude Include="Code\EditorLayer.h" />
     <ClInclude Include="Code\ScriptManager.h" />

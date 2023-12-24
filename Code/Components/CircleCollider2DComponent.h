@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <glm/gtc/type_ptr.hpp>
 #include <box2d/b2_body.h>
 #include "Components/Collider2DComponent.h"
@@ -7,8 +8,8 @@
 struct CircleCollider2DComponent : public Collider2DComponent
 {
 	static std::string Name() { return "CircleCollider2D"; }
+	virtual ColliderType GetType() const { return ColliderType::Circle; }
 
-	glm::vec2 offset = { 0.0f, 0.0f };
 	float radius = 0.5;
 };
 

@@ -15,6 +15,7 @@
 #include "EditorGUI/Windows/ImGuiSelectAnimatorControllerWindow.h"
 #include "EditorGUI/Windows/ImGuiTagEditorWindow.h"
 #include "EditorGUI/Windows/ImGui_AnimationClipWindow.h"
+#include "EditorGUI/Windows/ImGui_ProjectSettingsWindow.h"
 #include "Scene/SceneSerializer.h"
 #include "Scene/SceneManager.h"
 #include "Asset/AssetManager.h"
@@ -22,6 +23,7 @@
 #include "Platforms/OpenGL/OpenGLFramebuffer.h"
 #include <stack>
 #include "Physics/GridUtils.h"
+#include <iostream>
 
 EditorLayer* EditorLayer::s_instance = nullptr;
 
@@ -30,7 +32,6 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     , m_activeProject(std::move(project))
     , m_inspectorPanel(*this)
     , m_hierarchy(*this)
-    , m_animatorPanel(*this)
     , m_mainMenuBar(*this)
     , m_assetPanel(*this)
     , m_gameLayer(app)
@@ -51,8 +52,6 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
         }
     );
 
-    m_app.GetTagManager().Deserialize(m_activeProject->GetDirectory() / "ProjectSettings" / "TagManager.asset");
-
     std::filesystem::path luaFilePath = m_activeProject->GetDirectory() / (m_activeProject->GetName() + ".lua");
 
     if (FileSystem::FileExists(luaFilePath))
@@ -64,6 +63,8 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     m_imGuiWindowMap[ImGuiWindowType::SelectAnimatorController] = std::make_unique<ImGuiSelectAnimatorControllerWindow>(*this, m_activeProject->GetDirectory());
     m_imGuiWindowMap[ImGuiWindowType::Tags] = std::make_unique<ImGuiTagEditorWindow>(*this);
     m_imGuiWindowMap[ImGuiWindowType::AnimationClip] = std::make_unique<ImGui_AnimationClipWindow>(*this);
+    m_imGuiWindowMap[ImGuiWindowType::Animator] = std::make_unique<ImGui_AnimatorWindow>(*this);
+    m_imGuiWindowMap[ImGuiWindowType::ProjectSettings] = std::make_unique<ImGui_ProjectSettingsWindow>(*this);
 
     OpenScene(m_activeProject->GetStartScene());
 
@@ -161,7 +162,9 @@ void EditorLayer::CreatePrefab(entt::entity entity, const std::filesystem::path&
 void EditorLayer::SetPickedEntity(entt::entity picked)
 {
     UnselectObject();
-    m_animatorPanel.ClearSelection();
+
+    ImGui_AnimatorWindow* animatorWindow = static_cast<ImGui_AnimatorWindow*>(m_imGuiWindowMap[ImGuiWindowType::Animator].get());
+    animatorWindow->ClearSelection();
 
     m_selectedObject.type = EditorObjectType::Entity;
     m_selectedObject.entity = picked;
@@ -179,7 +182,10 @@ EditorObject& EditorLayer::SetSelectedObject(EditorObjectType type, void* object
 {
     UnselectObject();
     if (type != EditorObjectType::AnimatorState)
-        m_animatorPanel.ClearSelection();
+    {
+        ImGui_AnimatorWindow* animatorWindow = static_cast<ImGui_AnimatorWindow*>(m_imGuiWindowMap[ImGuiWindowType::Animator].get());
+        animatorWindow->ClearSelection();
+    }
 
     m_selectedObject.type = type;
     m_selectedObject.objectPtr = objectPtr;
@@ -465,11 +471,17 @@ void EditorLayer::RenderImGui()
 
     style.WindowMinSize.x = minWinSizeX;
 
+    if (GetImGuiWindow(ImGuiWindowType::ProjectSettings))
+        GetImGuiWindow(ImGuiWindowType::ProjectSettings)->Render();
+
     if (GetImGuiWindow(ImGuiWindowType::AnimationClip))
         GetImGuiWindow(ImGuiWindowType::AnimationClip)->Render();
 
     m_luaEditorPanel.Render();
-    m_animatorPanel.Render();
+
+    if (GetImGuiWindow(ImGuiWindowType::Animator))
+        GetImGuiWindow(ImGuiWindowType::Animator)->Render();
+
     m_editorSceneViewport.Render();
 
     if (!m_scenePlaying)
@@ -483,6 +495,13 @@ void EditorLayer::RenderImGui()
 
     ImGui::End();
 }
+
+void EditorLayer::SetAnimatorController(AnimatorController & animController)
+{
+    ImGui_AnimatorWindow* animatorWindow = static_cast<ImGui_AnimatorWindow*>(m_imGuiWindowMap[ImGuiWindowType::Animator].get());
+    animatorWindow->SetAnimatorController(&animController);
+}
+
 
 void EditorLayer::OnWindowResize(WindowResizeEvent& event)
 {
@@ -655,6 +674,7 @@ bool EditorLayer::SaveScene()
     if (m_activeScene->HasSaved())
     {
         std::cout << "Saving the Scene..." << std::endl;
+
         SceneSerializer::Serialize(*m_activeScene, m_activeScene->GetAbsolutePath());
     }
     else
@@ -694,12 +714,10 @@ bool EditorLayer::SaveSceneAs()
 
 bool EditorLayer::SaveProject()
 {
-    std::filesystem::path projectPath = m_activeProject->GetDirectory();
+    if (m_activeProject)
+        return m_activeProject->Save();
 
-    if (!m_app.GetTagManager().Serialize(projectPath / "ProjectSettings" / "TagManager.asset"))
-        return false;
-
-    return true;
+    return false;
 }
 
 void EditorLayer::ReloadNativeScripts()

@@ -5,9 +5,9 @@
 #include <functional>
 #include "Graphics/Texture.h"
 #include "Graphics/Image.h"
-#include "Asset/AudioAsset.h"
-#include "Asset/PrefabAsset.h"
-#include "Asset/NativeScriptAsset.h"
+#include "Audio/AudioClip.h"
+#include "Entity/Prefab.h"
+#include "NativeScript/NativeScript.h"
 #include "Lua/LuaScript.h"
 #include "Animations/AnimatorController.h"
 
@@ -29,12 +29,12 @@ public:
 		m_currentDirectory = path;
 	}
 
-	void RenderPrefab(PrefabAsset& prefabAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
+	void RenderPrefab(Prefab& prefab, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderImage(Image& image, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn = [](Sprite&, size_t){}, const std::string& note = "");
-	static void RenderAudio(AudioAsset& audioAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
+	static void RenderAudioClip(AudioClip& audioClip, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	void RenderAnimatorController(AnimatorController& animControllerAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	void RenderAnimationClip(AnimationClip& animClip, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
-	static void RenderNativeScript(NativeScriptAsset& nativeScriptAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
+	static void RenderNativeScript(NativeScript& nativeScript, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderLuaScript(LuaScript& luaScript, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	static void RenderFolder(const std::filesystem::path& path, ImGuiTreeNodeFlags flags, AssetEventFunction callback);
 	void RenderUnsupportedFile(const std::filesystem::path& path);
