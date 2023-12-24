@@ -99,6 +99,9 @@
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Code\EditorGUI\ImGui_LuaEditorPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_ProjectSettingsWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -261,6 +264,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\ImGui_LuaEditorPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_ProjectSettingsWindow.h">

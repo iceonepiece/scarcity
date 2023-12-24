@@ -312,6 +312,7 @@
     <ClCompile Include="Code\Events\WindowEvent.cpp" />
     <ClCompile Include="Code\Input\Input.cpp" />
     <ClCompile Include="Code\Lua\LuaEngine.cpp" />
+    <ClCompile Include="Code\Lua\LuaScript.cpp" />
     <ClCompile Include="Code\Math\Math.cpp" />
     <ClCompile Include="Code\NativeScript\NativeScriptEngine.cpp" />
     <ClCompile Include="Code\pch.cpp" />
@@ -343,6 +344,7 @@
     <ClCompile Include="External\Include\angelscript\scriptstdstring\scriptstdstring_utils.cpp" />
     <ClCompile Include="External\Include\glad\glad.c" />
     <ClCompile Include="External\Include\glm\detail\glm.cpp" />
+    <ClCompile Include="External\Include\ImGuiColorTextEdit\TextEditor.cpp" />
     <ClCompile Include="External\Include\ImGuiFileDialog\ImGuiFileDialog.cpp" />
     <ClCompile Include="External\Include\ImGuiNodeEditor\crude_json.cpp" />
     <ClCompile Include="External\Include\ImGuiNodeEditor\imgui_canvas.cpp" />
@@ -407,6 +409,7 @@
     <ClInclude Include="Code\Graphics\Texture.h" />
     <ClInclude Include="Code\Input\Input.h" />
     <ClInclude Include="Code\Lua\LuaEngine.h" />
+    <ClInclude Include="Code\Lua\LuaScript.h" />
     <ClInclude Include="Code\Math\Math.h" />
     <ClInclude Include="Code\NativeScript\NativeScriptEngine.h" />
     <ClInclude Include="Code\NativeScript\NativeScript.h" />
@@ -851,6 +854,7 @@
     <ClInclude Include="External\Include\glm\vec3.hpp" />
     <ClInclude Include="External\Include\glm\vec4.hpp" />
     <ClInclude Include="External\Include\glm\vector_relational.hpp" />
+    <ClInclude Include="External\Include\ImGuiColorTextEdit\TextEditor.h" />
     <ClInclude Include="External\Include\ImGuiFileDialog\dirent\dirent.h" />
     <ClInclude Include="External\Include\ImGuiFileDialog\ImGuiFileDialog.h" />
     <ClInclude Include="External\Include\ImGuiFileDialog\ImGuiFileDialogConfig.h" />

@@ -36,6 +36,7 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     , m_assetPanel(*this)
     , m_gameLayer(app)
     , m_editorSceneViewport(*this)
+    , m_luaEditorPanel(*this)
 {
     s_instance = this;
 
@@ -475,6 +476,8 @@ void EditorLayer::RenderImGui()
 
     if (GetImGuiWindow(ImGuiWindowType::AnimationClip))
         GetImGuiWindow(ImGuiWindowType::AnimationClip)->Render();
+
+    m_luaEditorPanel.Render();
 
     if (GetImGuiWindow(ImGuiWindowType::Animator))
         GetImGuiWindow(ImGuiWindowType::Animator)->Render();

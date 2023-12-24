@@ -21,6 +21,7 @@
 #include "EditorGUI/EditorSceneViewport.h"
 #include "EditorGUI/Windows/ImGui_AnimatorWindow.h"
 #include "EditorGUI/ImGui_InspectorPanel.h"
+#include "EditorGUI/ImGui_LuaEditorPanel.h"
 #include "GameLayer.h"
 #include "Commands/EditorCommand.h"
 #include "Graphics/Framebuffer.h"
@@ -168,6 +169,11 @@ public:
 		return s_instance->m_activeProject.get();
 	}
 
+	ImGui_LuaEditorPanel& GetLuaEditorPanel()
+	{
+		return m_luaEditorPanel;
+	}
+  
 	void SetAnimatorController(AnimatorController& animController);
 
 private:
@@ -232,6 +238,7 @@ private:
 	ImGuiHierarchy m_hierarchy;
 	ImGuiAssetPanel m_assetPanel;
 	ImGui_InspectorPanel m_inspectorPanel;
+	ImGui_LuaEditorPanel m_luaEditorPanel;
 
 	EditorSceneViewport m_editorSceneViewport;
 

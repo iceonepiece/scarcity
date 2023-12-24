@@ -69,6 +69,8 @@
     <ClCompile Include="Code\Animations\AnimationClip.cpp" />
     <ClCompile Include="Code\File\MetaSerializer.cpp" />
     <ClCompile Include="Code\Graphics\Sprite.cpp" />
+    <ClCompile Include="External\Include\ImGuiColorTextEdit\TextEditor.cpp" />
+    <ClCompile Include="Code\Lua\LuaScript.cpp" />
     <ClCompile Include="Code\Physics\CollisionLayerManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -597,6 +599,8 @@
     <ClInclude Include="External\Include\ImGuiNodes\ImNodes.h" />
     <ClInclude Include="External\Include\ImGuiNodes\ImNodesEz.h" />
     <ClInclude Include="Code\Animations\AnimationClip.h" />
+    <ClInclude Include="External\Include\ImGuiColorTextEdit\TextEditor.h" />
+    <ClInclude Include="Code\Lua\LuaScript.h" />
     <ClInclude Include="Code\Physics\CollisionLayerManager.h" />
     <ClInclude Include="Code\Components\Collider2DGroupComponent.h" />
   </ItemGroup>

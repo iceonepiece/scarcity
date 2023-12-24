@@ -5,6 +5,8 @@
 #include "Entity/Prefab.h"
 #include "Audio/AudioClip.h"
 #include "Animations/AnimatorController.h"
+#include "Asset/NativeScriptAsset.h"
+#include "Lua/LuaScript.h"
 
 class ImGui_AssetInspector
 {
@@ -16,4 +18,6 @@ public:
 	static void RenderAudioClip(AudioClip& audioClip);
 	static void RenderAnimatorController(AnimatorController& animController);
 	static void RenderAnimationClip(AnimationClip& animClip);
+	static void RenderNativeScript(NativeScriptAsset& nativeScript);
+	static void RenderLuaScript(LuaScript& luaScript);
 };
