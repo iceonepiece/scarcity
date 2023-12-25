@@ -18,6 +18,7 @@
 #include "ImGuiCircleCollider2DComponent.h"
 #include "ImGuiRectTransformComponent.h"
 #include "ImGuiTextComponent.h"
+#include "ImGui_Components.h"
 #include <IconsFontAwesome6.h>
 
 class ImGuiComponentRenderer

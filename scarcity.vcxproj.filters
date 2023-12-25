@@ -603,6 +603,7 @@
     <ClInclude Include="Code\Lua\LuaScript.h" />
     <ClInclude Include="Code\Physics\CollisionLayerManager.h" />
     <ClInclude Include="Code\Components\Collider2DGroupComponent.h" />
+    <ClInclude Include="Code\Components\LuaScriptComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />

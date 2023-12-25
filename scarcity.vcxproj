@@ -366,6 +366,7 @@
     <ClInclude Include="Code\Animations\AnimatorTransition.h" />
     <ClInclude Include="Code\Asset\AssetManager.h" />
     <ClInclude Include="Code\Components\Collider2DGroupComponent.h" />
+    <ClInclude Include="Code\Components\LuaScriptComponent.h" />
     <ClInclude Include="Code\Entity\Prefab.h" />
     <ClInclude Include="Code\Audio\AudioClip.h" />
     <ClInclude Include="Code\Audio\AudioSource.h" />

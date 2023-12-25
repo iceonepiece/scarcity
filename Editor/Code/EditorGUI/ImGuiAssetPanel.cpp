@@ -70,6 +70,13 @@ void ImGuiAssetPanel::RenderLuaScript(LuaScript& luaScript, ImGuiTreeNodeFlags f
 	{
 		ImGui::TreePop();
 	}
+
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	{
+		ImGui::SetDragDropPayload("LUA_SCRIPT_FILE", &luaScript, sizeof(luaScript));
+
+		ImGui::EndDragDropSource();
+	}
 }
 
 void ImGuiAssetPanel::RightClickMenu(Asset& asset)
@@ -387,7 +394,7 @@ void ImGuiAssetPanel::Render()
 				NativeScript* nativeScript = static_cast<NativeScript*>(asset);
 				RenderNativeScript(*nativeScript, flags, [&]()
 				{
-					if (ImGui::IsItemClicked())
+					if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Left))
 						m_editor.SetSelectedObject(EditorObjectType::Asset, nativeScript);
 				});
 			}
@@ -396,7 +403,7 @@ void ImGuiAssetPanel::Render()
 				LuaScript* luaScript = static_cast<LuaScript*>(asset);
 				RenderLuaScript(*luaScript, flags, [&]()
 				{
-					if (ImGui::IsItemClicked())
+					if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Left))
 						m_editor.SetSelectedObject(EditorObjectType::Asset, luaScript);
 
 					if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))

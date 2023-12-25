@@ -12,6 +12,7 @@
 #include "GridComponent.h"
 #include "GroundDetectionComponent.h"
 #include "IDComponent.h"
+#include "LuaScriptComponent.h"
 #include "MockComponent.h"
 #include "NativeScriptComponent.h"
 #include "PlayerComponent.h"
@@ -36,7 +37,8 @@
 	GridComponent, \
 	GroundDetectionComponent, \
 	NativeScriptComponent, \
-	AudioSourceComponent
+	AudioSourceComponent, \
+	LuaScriptComponent
 
 #define UIComponents CanvasComponent, \
 	ButtonComponent, \
