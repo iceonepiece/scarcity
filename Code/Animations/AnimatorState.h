@@ -18,6 +18,8 @@ public:
     void SetController(AnimatorController* controller) { m_controller = controller; }
     AnimatorController* GetController() { return m_controller; }
 
+    int GetCurrentFrame() { return m_frame; }
+
     void OnEnter(AnimatorController& controller);
 
     AnimatorState& operator=(const AnimatorState& other);

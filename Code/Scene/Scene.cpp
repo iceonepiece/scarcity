@@ -6,6 +6,7 @@
 #include "Components/Components.h"
 #include "File/FileSystem.h"
 #include "NativeScript/NativeScriptEngine.h"
+#include "Lua/LuaEngine.h"
 #include "Animations/AnimationSerializer.h"
 #include "Audio/Audio.h"
 #include "UI/UIManager.h"
@@ -351,11 +352,24 @@ bool Scene::HasSaved()
 void Scene::Update(float deltaTime)
 {
     auto nativeScriptUpdateView = m_manager.m_registry.view<NativeScriptComponent>();
-
     for (auto [entity, nativeScript] : nativeScriptUpdateView.each())
     {
         if (nativeScript.instance != nullptr)
             nativeScript.instance->Update(deltaTime);
+    }
+
+    LuaEngine& luaEngine = Application::Get().GetLuaEngine();
+
+
+    auto luaScriptView = m_manager.m_registry.view<LuaScriptComponent>();
+    for (auto [entity, luaScript] : luaScriptView.each())
+    {
+        if (luaScript.script != nullptr && FileSystem::FileExists(luaScript.script->GetPath()))
+        {
+            luaEngine.ReadScript(luaScript.script->GetPath().string());
+            sol::function updateFn = luaEngine.GetFunction("Update");
+            updateFn(deltaTime);
+        }
     }
     
     /*

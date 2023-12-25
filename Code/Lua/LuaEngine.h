@@ -9,6 +9,7 @@ public:
 	LuaEngine();
 
 	void ReadScript(const std::string& fileName);
+	sol::function GetFunction(const std::string& name);
 
 private:
 	sol::state m_state;
