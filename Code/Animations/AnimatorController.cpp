@@ -68,6 +68,8 @@ void AnimatorController::Process()
     if (m_currentState == nullptr)
         return;
 
+    m_currentState->Process(*this);
+
     std::vector<AnimatorTransition*> checkingTransitions;
 
     if (m_anyState != nullptr)
@@ -101,9 +103,6 @@ void AnimatorController::Process()
 
     if (nextState != nullptr)
         m_currentState = nextState;
-
-    if (m_currentState != nullptr)
-        m_currentState->Process(*this);
 }
 
 bool AnimatorController::ChangeParameterName(std::string oldName, std::string newName)

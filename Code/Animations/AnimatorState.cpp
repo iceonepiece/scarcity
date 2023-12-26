@@ -111,7 +111,7 @@ void AnimatorState::Process(AnimatorController& fsm)
 	{
 		m_frame += 1;
 
-		if (m_frame == m_motion->GetSpriteIndices().size() - 1)
+		if (m_frame == m_motion->GetSpriteIndices().size())
 		{
 			m_done = true;
 			m_frame = 0;
@@ -119,21 +119,4 @@ void AnimatorState::Process(AnimatorController& fsm)
 
 		m_timer = 0.0f;
 	}
-
-	/*
-	m_spriteAnimation.timer += Timer::GetDeltaTime();
-
-	if (m_spriteAnimation.timer > m_spriteAnimation.frameSpeed)
-	{
-		m_spriteAnimation.currentFrame += 1;
-
-		if (m_spriteAnimation.currentFrame == m_spriteAnimation.startFrame + m_spriteAnimation.maxFame)
-		{
-			m_done = true;
-			m_spriteAnimation.currentFrame = m_spriteAnimation.startFrame;
-		}
-
-		m_spriteAnimation.timer = 0.0f;
-	}
-	*/
 }
