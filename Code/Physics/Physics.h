@@ -24,6 +24,7 @@ struct Collision2D
 {
 	std::string name;
 	std::string tag;
+	uint16_t layer;
 	float x;
 	float y;
 	float lifetime = -1.0f;

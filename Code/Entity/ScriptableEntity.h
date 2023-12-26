@@ -42,6 +42,9 @@ public:
 	virtual void OnCollisionEnter(Collision2D collision) {}
 	virtual void OnCollisionExit(Collision2D collision) {}
 
+	virtual void OnTriggerEnter(Collision2D collision) {}
+	virtual void OnTriggerExit(Collision2D collision) {}
+
 	void SpawnCollision2D(Collision2D* collision)
 	{
 		if (collision)
