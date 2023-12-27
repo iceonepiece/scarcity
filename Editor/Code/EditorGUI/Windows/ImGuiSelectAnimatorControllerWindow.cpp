@@ -1,5 +1,6 @@
 #include "ImGuiSelectAnimatorControllerWindow.h"
 #include "Core/Application.h"
+#include "Project/Project.h"
 
 ImGuiSelectAnimatorControllerWindow::ImGuiSelectAnimatorControllerWindow(EditorLayer& editor, const std::filesystem::path& path)
 	: ImGui_Window(editor)
@@ -11,7 +12,7 @@ ImGuiSelectAnimatorControllerWindow::ImGuiSelectAnimatorControllerWindow(EditorL
 
 void ImGuiSelectAnimatorControllerWindow::Render()
 {
-	auto& animControllers = Application::Get().GetAssetManager().GetAnimatorControllers();
+	auto& animControllers = Project::GetActive()->GetAssetManager().GetAnimatorControllers();
 
 	for (auto& controller : animControllers)
 	{

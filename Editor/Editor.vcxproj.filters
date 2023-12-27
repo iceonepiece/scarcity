@@ -284,5 +284,11 @@
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGui_Components.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Code\Wrappers\SceneWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Wrappers\AssetWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

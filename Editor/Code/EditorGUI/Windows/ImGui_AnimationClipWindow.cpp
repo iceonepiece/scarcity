@@ -1,5 +1,6 @@
 #include "ImGui_AnimationClipWindow.h"
 #include "Core/Application.h"
+#include "Project/Project.h"
 #include <IconsFontAwesome6.h>
 #include "../ImGuiUtils.h"
 
@@ -49,7 +50,7 @@ void ImGui_AnimationClipWindow::Render()
 
 		ImGui::Text(m_animationClip->GetName().c_str());
 
-		auto& images = Application::Get().GetAssetManager().GetImages();
+		auto& images = Project::GetActive()->GetAssetManager().GetImages();
 		std::vector<std::string> imageNames{ "None" };
 
 		for (int i = 0; i < images.size(); i++)

@@ -27,7 +27,6 @@ EditorApplication::~EditorApplication()
 void EditorApplication::Initialize()
 {
     m_input = std::make_unique<GLFWInput>(*((GLFWwindow*)m_window->GetNativeWindow()));
-    m_assetManager = std::make_unique<OpenGLAssetManager>();
     m_imguiManager = std::make_unique<ImGuiManager>(*this);
 
     FileDialog::SetNativeWindow(m_window->GetNativeWindow());

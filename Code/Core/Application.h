@@ -66,11 +66,6 @@ public:
 	inline Renderer& GetRenderer() { return *m_renderer; }
 	inline Window& GetWindow() { return *m_window; }
 	inline Input& GetInput() { return *m_input; }
-	inline AssetManager& GetAssetManager() { return *m_assetManager; }
-	inline EntityManager& GetPrefabManager() { return m_prefabManager; }
-
-	void AddPrefab(Entity entity);
-	Entity GetPrefabByName(const std::string& name);
 
 protected:
 	virtual void ProcessInput() {}
@@ -87,11 +82,6 @@ protected:
 	std::unique_ptr<NativeScriptEngine> m_nativeScriptEngine;
 	std::unique_ptr<LuaEngine> m_luaEngine;
 	std::unique_ptr<Input> m_input;
-	std::unique_ptr<AssetManager> m_assetManager;
-
-	EntityManager m_prefabManager;
-
-	std::unordered_map<std::string, Entity> m_prefabMap;
 
 	std::vector<std::unique_ptr<Layer>> m_layers;
 };

@@ -5,10 +5,18 @@
 #include "File/FileSystem.h"
 #include "Constants/GameEngine.h"
 
-std::shared_ptr<Project> Project::New()
+
+void Project::AddPrefab(Entity entity)
 {
-	s_activeProject = std::make_shared<Project>();
-	return s_activeProject;
+	m_prefabMap.insert({ entity.GetName(), entity });
+}
+
+Entity Project::GetPrefabByName(const std::string& name)
+{
+	if (m_prefabMap.find(name) != m_prefabMap.end())
+		return m_prefabMap[name];
+
+	return Entity{};
 }
 
 bool Project::Save()
@@ -28,20 +36,6 @@ std::unique_ptr<Scene> Project::LoadScene(const std::filesystem::path& relativeP
 
 	if (SceneSerializer::Deserialize(*scene, relativePath))
 		return scene;
-
-	return nullptr;
-}
-
-std::shared_ptr<Project> Project::Load(const std::filesystem::path& path)
-{
-	std::shared_ptr<Project> project = std::make_shared<Project>();
-
-	if (ProjectSerializer::Deserialize(*project, path))
-	{
-		project->m_directory = path.parent_path();
-		s_activeProject = project;
-		return s_activeProject;
-	}
 
 	return nullptr;
 }

@@ -1,4 +1,5 @@
 #include "ProjectSerializer.h"
+#include "Project.h"
 #include <fstream>
 #include <iostream>
 #include <nlohmann/json.hpp>

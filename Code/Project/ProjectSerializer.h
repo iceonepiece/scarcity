@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Project.h"
+#include <filesystem>
+
+class Project;
 
 class ProjectSerializer
 {

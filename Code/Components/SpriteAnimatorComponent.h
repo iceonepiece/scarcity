@@ -32,6 +32,6 @@ static void DoDeserialize(SpriteAnimatorComponent& animator, json& animatorJson)
 	{
 		uint64_t controllerID = animatorJson["controllerID"].get<uint64_t>();
 
-		animator.prototypeController = dynamic_cast<AnimatorController*>(Application::Get().GetAssetManager().GetAssetByID(controllerID));
+		animator.prototypeController = dynamic_cast<AnimatorController*>(Project::GetActive()->GetAssetManager().GetAssetByID(controllerID));
 	}
 }

@@ -40,7 +40,7 @@ void GameLayer::ChangeScene(const std::string& name)
 
 	if (m_sceneMap.find(name) == m_sceneMap.end())
 	{
-		if (Scene* sceneBlueprint = Application::Get().GetAssetManager().GetScene(name))
+		if (Scene* sceneBlueprint = Project::GetActive()->GetAssetManager().GetScene(name))
 		{
 			std::unique_ptr<Scene> activeScene = SceneManager::LoadScene(sceneBlueprint->GetPath());
 

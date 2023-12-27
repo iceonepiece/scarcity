@@ -4,6 +4,7 @@
 #include <nlohmann/json.hpp>
 #include <imgui/imgui.h>
 #include "Core/Application.h"
+#include "Project/Project.h"
 #include "Graphics/Image.h"
 
 using json = nlohmann::json;
@@ -68,7 +69,7 @@ static void DoDeserialize(SpriteRendererComponent& sprite, json& spriteRendererJ
 		sprite.order = spriteRendererJson["order"].get<int>();
 
 	UniqueID imageID = spriteRendererJson["sprite"]["imageID"].get<uint64_t>();
-	if (Image* image = dynamic_cast<Image*>(Application::Get().GetAssetManager().GetAssetByID(imageID)))
+	if (Image* image = dynamic_cast<Image*>(Project::GetActive()->GetAssetManager().GetAssetByID(imageID)))
 	{
 		sprite.image = image;
 		sprite.spriteIndex = spriteRendererJson["sprite"]["index"].get<size_t>();

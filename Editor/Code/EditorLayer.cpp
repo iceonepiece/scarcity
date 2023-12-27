@@ -57,7 +57,7 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     if (FileSystem::FileExists(luaFilePath))
         m_app.GetLuaEngine().ReadScript(luaFilePath.string());
 
-    m_app.GetAssetManager().InitializeAssets(m_activeProject->GetDirectory());
+    m_activeProject->GetAssetManager().InitializeAssets(m_activeProject->GetDirectory());
 
     m_imGuiWindowMap[ImGuiWindowType::SelectSprite] = std::make_unique<ImGuiSelectSpriteWindow>(*this, m_activeProject->GetDirectory());
     m_imGuiWindowMap[ImGuiWindowType::SelectAnimatorController] = std::make_unique<ImGuiSelectAnimatorControllerWindow>(*this, m_activeProject->GetDirectory());
@@ -85,7 +85,7 @@ void EditorLayer::OnFileEvent(const FileEvent& event)
                 std::cout << "Handle Image File!!!\n";
                 FileSystem::GenerateImageMetaFile(event.path);
 
-                m_app.GetAssetManager().LoadTexture(event.path.string(), event.path.string().c_str(), true);
+                m_activeProject->GetAssetManager().LoadTexture(event.path.string(), event.path.string().c_str(), true);
             }
         }
         break;
@@ -93,7 +93,7 @@ void EditorLayer::OnFileEvent(const FileEvent& event)
         case filewatch::Event::removed:
         {
             std::cout << "File Removed at: " << event.path << std::endl;
-            m_app.GetAssetManager().RemoveTexture(event.path.string());
+            m_activeProject->GetAssetManager().RemoveTexture(event.path.string());
         }
         break;
     }
@@ -218,7 +218,7 @@ Asset* EditorLayer::GetAsset(const std::filesystem::path& path)
 {
     FileSystem::HandleMetaFile(path);
 
-    AssetManager& assetManager = s_instance->m_app.GetAssetManager();
+    AssetManager& assetManager = Project::GetActive()->GetAssetManager();
     
     Asset* asset = assetManager.GetAsset(path);
 

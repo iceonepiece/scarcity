@@ -3,19 +3,28 @@
 #include <memory>
 #include <filesystem>
 #include "Core/TagManager.h"
-
-class Scene;
+#include "Asset/AssetManager.h"
+#include "Entity/EntityManager.h"
+#include "Platforms/OpenGL/OpenGLAssetManager.h"
+#include "Scene/Scene.h"
 
 class Project
 {
 public:
-	Project() = default;
+	Project()
+	{
+		s_activeProject = this;
+		m_assetManager = std::make_unique<OpenGLAssetManager>();
+	}
 
 	Project(const std::string& name, const std::filesystem::path& path)
 		: m_name(name)
 		, m_absolutePath(path)
 		, m_directory(path)
-	{}
+	{
+		s_activeProject = this;
+		m_assetManager = std::make_unique<OpenGLAssetManager>();
+	}
 
 	bool Save();
 	std::unique_ptr<Scene> LoadScene(const std::filesystem::path& relativePath);
@@ -30,11 +39,14 @@ public:
 
 	inline TagManager& GetTagManager() { return m_tagManager; }
 
-	static std::shared_ptr<Project> New();
-	static std::shared_ptr<Project> Load(const std::filesystem::path& path);
-
 	static bool SaveActive();
-	static std::shared_ptr<Project> GetActive() { return s_activeProject; }
+	static Project* GetActive() { return s_activeProject; }
+
+	void AddPrefab(Entity entity);
+	Entity GetPrefabByName(const std::string& name);
+
+	inline AssetManager& GetAssetManager() { return *m_assetManager; }
+	inline EntityManager& GetPrefabManager() { return m_prefabManager; }
 
 private:
 	std::string m_name = "Untitled";
@@ -42,9 +54,13 @@ private:
 	std::filesystem::path m_absolutePath;
 	std::filesystem::path m_startScene;
 
+	std::unique_ptr<AssetManager> m_assetManager;
+	EntityManager m_prefabManager;
+	std::unordered_map<std::string, Entity> m_prefabMap;
+
 	TagManager m_tagManager;
 
-	inline static std::shared_ptr<Project> s_activeProject;
+	inline static Project* s_activeProject;
 
 	friend class ProjectSerializer;
 };

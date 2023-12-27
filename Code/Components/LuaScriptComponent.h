@@ -2,6 +2,7 @@
 
 #include "Lua/LuaScript.h"
 #include "Core/Application.h"
+#include "Project/Project.h"
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
@@ -27,7 +28,7 @@ static void DoDeserialize(LuaScriptComponent& luaScript, json& luaScriptJson)
 {
 	if (luaScriptJson["scriptPath"].is_string())
 	{
-		if (Asset* asset = Application::Get().GetAssetManager().GetAsset(luaScriptJson["scriptPath"]))
+		if (Asset* asset = Project::GetActive()->GetAssetManager().GetAsset(luaScriptJson["scriptPath"]))
 		{
 			luaScript.script = dynamic_cast<LuaScript*>(asset);
 		}

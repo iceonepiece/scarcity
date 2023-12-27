@@ -239,6 +239,8 @@
     <ClInclude Include="Code\Gizmos\TranslateGizmo.h" />
     <ClInclude Include="Code\EditorLayer.h" />
     <ClInclude Include="Code\ScriptManager.h" />
+    <ClInclude Include="Code\Wrappers\SceneWrapper.h" />
+    <ClInclude Include="Code\Wrappers\AssetWrapper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

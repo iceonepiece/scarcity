@@ -7,10 +7,10 @@
 #include "Graphics/Camera.h"
 #include "Physics/Physics.h"
 #include "Core/System.h"
-#include "Project/Project.h"
 #include "Asset/Asset.h"
 
 class Application;
+class Project;
 class Event;
 class ScriptableEntity;
 
@@ -44,7 +44,7 @@ public:
 
 	std::filesystem::path GetAbsolutePath();
 
-	inline void SetProject(Project* project) { m_project = project; }
+	void SetProject(Project* project);
 	void SetViewportSize(unsigned int width, unsigned int height);
 	void SetCamera(Camera& camera);
 	void OnViewportResize();

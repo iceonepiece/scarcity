@@ -1,5 +1,6 @@
 #include "LuaEngine.h"
 #include "Core/Application.h"
+#include "Project/Project.h"
 
 LuaEngine::LuaEngine()
 {
@@ -7,7 +8,7 @@ LuaEngine::LuaEngine()
 
 	m_state.set_function("LoadTexture", [&](const std::string& name, const char* filename, bool alpha)
 	{
-		return Application::Get().GetAssetManager().LoadTexture(name, filename, alpha);
+		return Project::GetActive()->GetAssetManager().LoadTexture(name, filename, alpha);
 	});
 }
 

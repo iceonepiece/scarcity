@@ -11,6 +11,7 @@
 #include "Audio/Audio.h"
 #include "UI/UIManager.h"
 #include "Input/Input.h"
+#include "Project/Project.h"
 #include "Entity/ScriptableEntity.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -31,6 +32,11 @@ Scene::Scene(const std::string& name, const std::filesystem::path& path)
         new Camera2D({ 0.0f, 0.0f, -14.0f }, { 0.5f, 0.25f }, { 1280, 720 })
     )
 {
+}
+
+void Scene::SetProject(Project* project)
+{
+    m_project = project;
 }
 
 void Scene::OnEvent(Event* e)

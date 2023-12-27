@@ -1,6 +1,7 @@
 #include "FileHandler.h"
 #include "File/FileSystem.h"
 #include "Core/Application.h"
+#include "Project/Project.h"
 
 void FileHandler::OnFileEvent(FileEvent& event)
 {
@@ -15,7 +16,7 @@ void FileHandler::OnFileEvent(FileEvent& event)
             {
                 std::cout << "Handle Image File!!!\n";
                 FileSystem::GenerateImageMetaFile(event.path);
-                Application::Get().GetAssetManager().LoadTexture(event.path.string(), event.path.string().c_str(), true);
+                Project::GetActive()->GetAssetManager().LoadTexture(event.path.string(), event.path.string().c_str(), true);
             }
         }
         break;
@@ -23,7 +24,7 @@ void FileHandler::OnFileEvent(FileEvent& event)
         case filewatch::Event::removed:
         {
             std::cout << "File Removed at: " << event.path << std::endl;
-            Application::Get().GetAssetManager().RemoveTexture(event.path.string());
+            Project::GetActive()->GetAssetManager().RemoveTexture(event.path.string());
         }
         break;
 

@@ -1,6 +1,7 @@
 #include "AnimationSerializer.h"
 #include "Animations/AnimatorState.h"
 #include "Animations/AnimatorController.h"
+#include "Project/Project.h"
 #include "Core/Application.h"
 
 void AnimationSerializer::Serialize(AnimatorController& controller, const std::filesystem::path& filePath)
@@ -161,7 +162,7 @@ void AnimationSerializer::Deserialize(AnimatorController& controller, const std:
 
 				if (instant)
 				{
-					if (Asset* asset = Application::Get().GetAssetManager().GetAssetByID(motionID))
+					if (Asset* asset = Project::GetActive()->GetAssetManager().GetAssetByID(motionID))
 					{
 						if (AnimationClip* clip = dynamic_cast<AnimationClip*>(asset))
 						{
@@ -171,7 +172,7 @@ void AnimationSerializer::Deserialize(AnimatorController& controller, const std:
 				}
 				else
 				{
-					Application::Get().GetAssetManager().AddAssetLink(
+					Project::GetActive()->GetAssetManager().AddAssetLink(
 						[&](Asset* asset)
 						{
 							if (AnimationClip* clip = dynamic_cast<AnimationClip*>(asset))
@@ -271,9 +272,9 @@ void AnimationSerializer::Deserialize(AnimationClip& clip, const std::filesystem
 			clip.SetID(clipJson["ID"].get<uint64_t>());
 
 		uint64_t imageID = clipJson["imageID"].get<uint64_t>();
-		clip.m_image = (Image*)Application::Get().GetAssetManager().GetAssetByID(imageID);
+		clip.m_image = (Image*)Project::GetActive()->GetAssetManager().GetAssetByID(imageID);
 
-		Application::Get().GetAssetManager().AddAssetLink(
+		Project::GetActive()->GetAssetManager().AddAssetLink(
 			[&](Asset* asset)
 			{
 				clip.m_image = dynamic_cast<Image*>(asset);

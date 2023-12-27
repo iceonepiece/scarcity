@@ -6,6 +6,7 @@
 #include <IconsFontAwesome6.h>
 #include "Core/Application.h"
 #include "Asset/AssetManager.h"
+#include "Project/Project.h"
 
 void ImGui_AnimatorInspector::Render(AnimatorState& state)
 {
@@ -13,7 +14,7 @@ void ImGui_AnimatorInspector::Render(AnimatorState& state)
 
 	ImGui::InputText("Title", &state.m_name);
 
-	auto& animClips = Application::Get().GetAssetManager().GetAnimationClips();
+	auto& animClips = Project::GetActive()->GetAssetManager().GetAnimationClips();
 
 	m_selectedMotionIndex = 0;
 
