@@ -5,6 +5,7 @@
 #include "Core/Application.h"
 #include "Entity/Entity.h"
 #include "Scene/Scene.h"
+#include "Project/Project.h"
 
 #define SERIALIZE_FIELD(type, name) type name;
 
@@ -62,7 +63,18 @@ public:
 		return std::vector<std::string>();
 	}
 
+	Input& GetInput()
+	{
+		return m_app->GetInput();
+	}
+
+	Entity GetPrefab(const std::string& name)
+	{
+		return m_project->GetPrefabByName(name);
+	}
+
 protected:
+	Project* m_project = nullptr;
 	Application* m_app = nullptr;
 	Entity m_entity;
 	Scene* m_scene = nullptr;

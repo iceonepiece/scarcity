@@ -204,6 +204,7 @@ void Scene::StartNativeScripts(NativeScriptEngine& scriptEngine)
         {
             std::cout << "Start Native Class: " << script.className << std::endl;
             script.instance->m_app = m_app;
+            script.instance->m_project = Project::GetActive();
             script.instance->m_scene = this;
             script.instance->m_entity = Entity { &m_manager, entity };
             m_scriptableEntities.insert({ base.name, script.instance });
