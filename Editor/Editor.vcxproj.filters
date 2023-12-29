@@ -108,6 +108,36 @@
     <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGui_LuaScriptComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Code\EditorCore\EditorAssetManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Wrappers\ImGui_WrapperManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Wrappers\ImGui_AudioClipWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Wrappers\ImGui_ImageWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Wrappers\ImGui_NativeScriptWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Wrappers\ImGui_LuaScriptWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Wrappers\ImGui_PrefabWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Wrappers\ImGui_AnimatorControllerWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Wrappers\ImGui_AnimationClipWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Wrappers\ImGui_SceneWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\ImGuiComponent.h">
@@ -284,10 +314,49 @@
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGui_Components.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Wrappers\SceneWrapper.h">
+    <ClInclude Include="Code\Wrappers\ImGui_SceneWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Wrappers\AssetWrapper.h">
+    <ClInclude Include="Code\Wrappers\ImGui_AssetWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorCore\EditorAssetManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorCore\EditorProject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorAsset\AudioClipAsset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Wrappers\ImGui_AudioClipWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorAsset\EditorAsset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Wrappers\ImGui_WrapperManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Wrappers\ImGui_NativeScriptWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Wrappers\ImGui_ImageWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Wrappers\ImGui_SpriteWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Wrappers\ImGui_AnimatorControllerWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Wrappers\ImGui_AnimationClipWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Wrappers\ImGui_LuaScriptWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Wrappers\ImGui_PrefabWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

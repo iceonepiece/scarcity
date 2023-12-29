@@ -1,5 +1,8 @@
 #include "OpenGLTexture.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 OpenGLTexture::OpenGLTexture()
     : m_width(0)
     , m_height(0)

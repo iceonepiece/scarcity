@@ -40,6 +40,7 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
 {
     s_instance = this;
 
+    m_activeProject->Initialize();
     //m_sceneFramebuffer = m_app.GetRenderer().CreateFramebuffer();
 
     m_fileWatcher = std::make_unique<filewatch::FileWatch<std::string>>(

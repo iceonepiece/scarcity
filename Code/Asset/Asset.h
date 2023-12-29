@@ -13,9 +13,10 @@ enum class AssetType
 	Image,
 	Sprite,
 	AnimatorController,
-	Audio,
+	AudioClip,
 	AnimationClip,
 	LuaScript,
+	Count
 };
 
 class Asset

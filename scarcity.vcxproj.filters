@@ -60,7 +60,6 @@
     <ClCompile Include="External\Include\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="External\Include\imgui\imgui_stdlib.cpp" />
     <ClCompile Include="Code\Project\ProjectSerializer.cpp" />
-    <ClCompile Include="Code\Platforms\OpenGL\OpenGLAssetManager.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLFramebuffer.cpp" />
     <ClCompile Include="Code\Core\TagManager.cpp" />
     <ClCompile Include="Code\Physics\GridUtils.cpp" />
@@ -590,7 +589,6 @@
     <ClInclude Include="External\Include\sol\sol.hpp" />
     <ClInclude Include="External\Include\stb_image.h" />
     <ClInclude Include="Code\Project\ProjectSerializer.h" />
-    <ClInclude Include="Code\Platforms\OpenGL\OpenGLAssetManager.h" />
     <ClInclude Include="Code\Graphics\Framebuffer.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLFramebuffer.h" />
     <ClInclude Include="Code\Components\GridComponent.h" />
@@ -604,6 +602,7 @@
     <ClInclude Include="Code\Physics\CollisionLayerManager.h" />
     <ClInclude Include="Code\Components\Collider2DGroupComponent.h" />
     <ClInclude Include="Code\Components\LuaScriptComponent.h" />
+    <ClInclude Include="Code\Project\RuntimeProject.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />

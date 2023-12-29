@@ -321,7 +321,6 @@
     <ClCompile Include="Code\Physics\GroundDetectionFixtureData.cpp" />
     <ClCompile Include="Code\Platforms\GLFW\GLFWInput.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLFramebuffer.cpp" />
-    <ClCompile Include="Code\Platforms\OpenGL\OpenGLAssetManager.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLFontSystem.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLWindow.cpp" />
     <ClCompile Include="Code\Core\Timer.cpp" />
@@ -420,7 +419,6 @@
     <ClInclude Include="Code\Physics\GridUtils.h" />
     <ClInclude Include="Code\Physics\GroundDetectionFixtureData.h" />
     <ClInclude Include="Code\Platforms\GLFW\GLFWInput.h" />
-    <ClInclude Include="Code\Platforms\OpenGL\OpenGLAssetManager.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLFontSystem.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLFramebuffer.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLWindow.h" />
@@ -442,6 +440,7 @@
     <ClInclude Include="Code\Project\Project.h" />
     <ClInclude Include="Code\Graphics\Image.h" />
     <ClInclude Include="Code\Asset\Asset.h" />
+    <ClInclude Include="Code\Project\RuntimeProject.h" />
     <ClInclude Include="Code\Scene\Scene.h" />
     <ClInclude Include="Code\Core\System.h" />
     <ClInclude Include="Code\Input\KeyCodes.h" />

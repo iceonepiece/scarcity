@@ -7,6 +7,7 @@
 #include "Lua/LuaScript.h"
 #include "NativeScript/NativeScript.h"
 #include "Core/Application.h"
+#include "Graphics/Renderer.h"
 #include <filesystem>
 #include <queue>
 
@@ -55,6 +56,19 @@ void AssetManager::LinkIDsToAssets()
 			link.linkFunction(asset);
 		}
 	}
+}
+
+Texture* AssetManager::LoadTexture(const std::string& name, const char* filename, bool alpha)
+{
+	std::unique_ptr<Texture> texture = Application::Get().GetRenderer().LoadTexture(name, filename, alpha);
+
+	if (texture != nullptr)
+	{
+		m_textures.emplace(name, std::move(texture));
+		return m_textures[name].get();
+	}
+
+	return nullptr;
 }
 
 Scene* AssetManager::GetScene(const std::string& name)

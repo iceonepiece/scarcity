@@ -6,6 +6,7 @@
 #include "../EditorLayer.h"
 #include "imgui/imgui_stdlib.h"
 #include "Windows/ImGui_AnimatorWindow.h"
+#include "../Wrappers/ImGui_WrapperManager.h"
 #include <string>
 
 ImGui_InspectorPanel::ImGui_InspectorPanel(EditorLayer& editor)
@@ -23,7 +24,7 @@ void ImGui_InspectorPanel::Render()
     if (m_editor.GetSelectedObject().type == EditorObjectType::Asset)
     {
         if (Asset* asset = m_editor.GetSelectedAsset())
-            ImGui_AssetInspector::Render(asset);
+            ImGui_WrapperManager::GetWrapper(*asset)->RenderInspector();
     }
     else if (m_editor.GetSelectedObject().type == EditorObjectType::AnimatorState)
     {

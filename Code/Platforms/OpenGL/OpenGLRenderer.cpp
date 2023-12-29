@@ -88,6 +88,17 @@ void OpenGLRenderer::Initialize()
     m_fontSystem.Init();
 }
 
+std::unique_ptr<Texture> OpenGLRenderer::LoadTexture(const std::string& name, const char* filename, bool alpha)
+{
+    OpenGLTexture* texture = new OpenGLTexture();
+
+    if (texture->Generate(filename, alpha))
+        return std::unique_ptr<OpenGLTexture>(texture);
+
+    delete texture;
+    return nullptr;
+}
+
 void OpenGLRenderer::Draw(Sprite& sprite, const glm::mat4& modelMatrix)
 {
     m_spriteShader.Use();

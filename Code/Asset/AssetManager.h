@@ -25,12 +25,13 @@ struct AssetLink
 class AssetManager
 {
 public:
-	void InitializeAssets(const std::filesystem::path& path);
+	virtual ~AssetManager() = default;
+	virtual void InitializeAssets(const std::filesystem::path& path);
 	void LinkIDsToAssets();
 
 	Scene* GetScene(const std::string& name);
 
-	virtual Texture* LoadTexture(const std::string& name, const char* filename, bool alpha = false) = 0;
+	virtual Texture* LoadTexture(const std::string& name, const char* filename, bool alpha = false);
 	void RemoveTexture(const std::string& name);
 
 	bool HasTexture(const std::string& name);

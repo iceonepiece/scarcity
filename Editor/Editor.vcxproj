@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Code\EditorApplication.cpp" />
+    <ClCompile Include="Code\EditorCore\EditorAssetManager.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiAssetPanel.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiBaseComponent.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGui_LuaScriptComponent.cpp" />
@@ -174,6 +175,15 @@
     <ClCompile Include="Code\ImGuiLayer.cpp" />
     <ClCompile Include="Code\Main.cpp" />
     <ClCompile Include="Code\EditorLayer.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_AnimationClipWrapper.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_AnimatorControllerWrapper.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_AudioClipWrapper.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_ImageWrapper.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_LuaScriptWrapper.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_NativeScriptWrapper.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_PrefabWrapper.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_SceneWrapper.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_WrapperManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\scarcity.vcxproj">
@@ -182,8 +192,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Animator\ImGui_AnimatorState.h" />
+    <ClInclude Include="Code\EditorAsset\AudioClipAsset.h" />
+    <ClInclude Include="Code\EditorAsset\EditorAsset.h" />
+    <ClInclude Include="Code\EditorCore\EditorAssetManager.h" />
     <ClInclude Include="Code\Commands\EditorCommand.h" />
     <ClInclude Include="Code\Commands\TranslateCommand.h" />
+    <ClInclude Include="Code\EditorCore\EditorProject.h" />
     <ClInclude Include="Code\EditorData.h" />
     <ClInclude Include="Code\EditorApplication.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiAssetPanel.h" />
@@ -239,8 +253,17 @@
     <ClInclude Include="Code\Gizmos\TranslateGizmo.h" />
     <ClInclude Include="Code\EditorLayer.h" />
     <ClInclude Include="Code\ScriptManager.h" />
-    <ClInclude Include="Code\Wrappers\SceneWrapper.h" />
-    <ClInclude Include="Code\Wrappers\AssetWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_AnimationClipWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_AnimatorControllerWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_AudioClipWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_ImageWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_LuaScriptWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_NativeScriptWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_PrefabWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_SceneWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_AssetWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_SpriteWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_WrapperManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

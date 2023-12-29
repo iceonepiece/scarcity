@@ -23,6 +23,8 @@ public:
 	virtual void DrawCircle2D(const Circle2D& circle, float thickness = 1.0f) override;
 	virtual void DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color) override;
 
+	virtual std::unique_ptr<Texture> LoadTexture(const std::string & name, const char* filename, bool alpha) override;
+
 	virtual void Clear(const glm::vec4& color) override;
 	virtual void PreRender(bool font = false) override;
 	virtual void PostRender(bool font = false) override;

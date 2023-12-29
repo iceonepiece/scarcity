@@ -5,7 +5,6 @@
 #include "Core/TagManager.h"
 #include "Asset/AssetManager.h"
 #include "Entity/EntityManager.h"
-#include "Platforms/OpenGL/OpenGLAssetManager.h"
 #include "Scene/Scene.h"
 
 class Project
@@ -14,7 +13,6 @@ public:
 	Project()
 	{
 		s_activeProject = this;
-		m_assetManager = std::make_unique<OpenGLAssetManager>();
 	}
 
 	Project(const std::string& name, const std::filesystem::path& path)
@@ -23,8 +21,11 @@ public:
 		, m_directory(path)
 	{
 		s_activeProject = this;
-		m_assetManager = std::make_unique<OpenGLAssetManager>();
 	}
+
+	virtual ~Project() = default;
+
+	virtual void Initialize() = 0;
 
 	bool Save();
 	std::unique_ptr<Scene> LoadScene(const std::filesystem::path& relativePath);
@@ -48,7 +49,7 @@ public:
 	inline AssetManager& GetAssetManager() { return *m_assetManager; }
 	inline EntityManager& GetPrefabManager() { return m_prefabManager; }
 
-private:
+protected:
 	std::string m_name = "Untitled";
 	std::filesystem::path m_directory;
 	std::filesystem::path m_absolutePath;

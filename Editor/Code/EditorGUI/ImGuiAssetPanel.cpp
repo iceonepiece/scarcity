@@ -2,10 +2,9 @@
 #include <IconsFontAwesome6.h>
 #include "ImGuiAssetPanel.h"
 #include <string>
-#include "Platforms/OpenGL/OpenGLTexture.h"
 #include "../EditorLayer.h"
-#include "Windows/ImGui_AnimationClipWindow.h"
 #include "Animations/AnimationClip.h"
+#include "../Wrappers/ImGui_WrapperManager.h"
 
 ImGuiAssetPanel::ImGuiAssetPanel(EditorLayer& editor)
 	: m_editor(editor)
@@ -361,111 +360,7 @@ void ImGuiAssetPanel::Render()
 		}
 		else if (Asset* asset = m_editor.GetAsset(path))
 		{
-			if (asset->GetType() == AssetType::Image)
-			{
-				Image* image = static_cast<Image*>(asset);
-				RenderImage(*image, flags,
-					[&]()
-					{
-						if (ImGui::IsItemClicked())
-							m_editor.SetSelectedObject(EditorObjectType::Asset, image);
-					},
-
-					//[&](SpriteAsset& spriteAsset)
-					[&](Sprite& sprite, size_t index)
-					{
-						EditorObject& editorObject = m_editor.SetSelectedObject(EditorObjectType::Asset, &sprite);
-						editorObject.note = sprite.GetName();
-					},
-					m_editor.GetSelectedObject().note
-				);
-			}
-			else if (asset->GetType() == AssetType::Audio)
-			{
-				AudioClip* audioClip = static_cast<AudioClip*>(asset);
-				RenderAudioClip(*audioClip, flags, [&]()
-				{
-					if (ImGui::IsItemClicked())
-						m_editor.SetSelectedObject(EditorObjectType::Asset, audioClip);
-				});
-			}
-			else if (asset->GetType() == AssetType::NativeScript)
-			{
-				NativeScript* nativeScript = static_cast<NativeScript*>(asset);
-				RenderNativeScript(*nativeScript, flags, [&]()
-				{
-					if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Left))
-						m_editor.SetSelectedObject(EditorObjectType::Asset, nativeScript);
-				});
-			}
-			else if (asset->GetType() == AssetType::LuaScript)
-			{
-				LuaScript* luaScript = static_cast<LuaScript*>(asset);
-				RenderLuaScript(*luaScript, flags, [&]()
-				{
-					if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Left))
-						m_editor.SetSelectedObject(EditorObjectType::Asset, luaScript);
-
-					if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-					{
-						auto& luaEditor = m_editor.GetLuaEditorPanel();
-						luaEditor.LoadScript(luaScript->GetPath().string());
-					}
-				});
-			}
-			else if (asset->GetType() == AssetType::Prefab)
-			{
-				Prefab* prefab = static_cast<Prefab*>(asset);
-				RenderPrefab(*prefab, flags, [&]()
-				{
-					if (ImGui::IsItemClicked())
-						m_editor.SetSelectedObject(EditorObjectType::Asset, prefab);
-				});
-			}
-			else if (asset->GetType() == AssetType::AnimatorController)
-			{
-				AnimatorController* animControllerAsset = static_cast<AnimatorController*>(asset);
-				RenderAnimatorController(*animControllerAsset, flags, [&]()
-				{
-					if (ImGui::IsItemClicked())
-					{
-						m_editor.SetSelectedObject(EditorObjectType::Asset, animControllerAsset);
-						m_editor.SetAnimatorController(*animControllerAsset);
-						ImGui_AnimatorWindow* animorWindow = static_cast<ImGui_AnimatorWindow*>(m_editor.GetImGuiWindow(ImGuiWindowType::Animator));
-						animorWindow->SetOpen(true);
-					}
-				});
-			}
-			else if (asset->GetType() == AssetType::AnimationClip)
-			{
-				AnimationClip* animClipAsset = static_cast<AnimationClip*>(asset);
-				RenderAnimationClip(*animClipAsset, flags, [&]()
-				{
-					if (ImGui::IsItemClicked())
-						m_editor.SetSelectedObject(EditorObjectType::Asset, animClipAsset);
-
-					if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-					{
-						ImGui_AnimationClipWindow* animClipWindow = static_cast<ImGui_AnimationClipWindow*>(m_editor.GetImGuiWindow(ImGuiWindowType::AnimationClip));
-						animClipWindow->SetAnimationClip(animClipAsset);
-						animClipWindow->SetOpen(true);
-					}
-				});
-			}
-			else if (asset->GetType() == AssetType::Scene)
-			{
-				flags |= ImGuiTreeNodeFlags_Leaf;
-
-				std::string useIcon = (ICON_FA_WINDOW_MAXIMIZE " ");
-
-				bool opened = ImGui::TreeNodeEx(path.string().c_str(), flags, (useIcon + path.filename().string()).c_str());
-
-				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
-					m_editor.OpenScene(path);
-
-				if (opened)
-					ImGui::TreePop();
-			}
+			ImGui_WrapperManager::GetWrapper(*asset)->RenderBrowser(m_editor);
 		}
 		else
 		{
