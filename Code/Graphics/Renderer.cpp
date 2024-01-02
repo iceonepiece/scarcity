@@ -81,8 +81,12 @@ void Renderer::DrawSprite(Sprite& sprite, const glm::vec2& position, const glm::
         m_textureIndex++;
     }
 
+    glm::vec2 ratio { 1.0f, 1.0f };
+
     if (texture != nullptr)
     {
+        ratio = sprite.GetRatio();
+
         float left = sprite.GetLeft();
         float right = sprite.GetRight();
         float bottom = sprite.GetBottom();
@@ -96,7 +100,7 @@ void Renderer::DrawSprite(Sprite& sprite, const glm::vec2& position, const glm::
 
     glm::mat4 transform = glm::translate(glm::mat4(1.0f), { position.x, position.y, 0.0f })
         * glm::rotate(glm::mat4(1.0f), angle, { 0.0f, 0.0f, 1.0f })
-        * glm::scale(glm::mat4(1.0f), { scale.x, scale.y, 1.0f });
+        * glm::scale(glm::mat4(1.0f), { scale.x * ratio.x, scale.y * ratio.y, 1.0f });
 
     for (size_t i = 0; i < quadVertexCount; i++)
     {
@@ -112,8 +116,6 @@ void Renderer::DrawSprite(Sprite& sprite, const glm::vec2& position, const glm::
 
 void Renderer::BeginFrame()
 {
-	m_quadShader->SetMatrix4("u_ViewProjection", m_camera->GetProjectionMatrix() * m_camera->GetViewMatrix());
-
     StartBatch();
 }
 
@@ -127,6 +129,7 @@ void Renderer::Flush()
     if (m_quadIndexCount)
     {
         m_quadShader->Use();
+        m_quadShader->SetMatrix4("u_ViewProjection", m_viewProjectionMatrix);
 
         uint32_t dataSize = (uint32_t)((uint8_t*)m_quadVertexBufferPtr - (uint8_t*)m_quadVertexBufferBase);
         m_quadVertexBuffer->SetData(m_quadVertexBufferBase, dataSize);
@@ -138,8 +141,6 @@ void Renderer::Flush()
         }
         
         DrawIndexed(m_quadVertexArray, m_quadIndexCount);
-        //m_quadShader->Bind();
-        //RenderCommand::DrawIndexed(m_quadVertexArray, m_quadIndexCount);
     }
 }
 

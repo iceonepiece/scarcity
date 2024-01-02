@@ -561,7 +561,6 @@ void Scene::Render(RenderOptions renderOptions)
 {
     Renderer& renderer = Application::Get().GetRenderer();
     renderer.PreRender();
-
     renderer.BeginFrame();
 
     auto transforms = m_manager.m_registry.view<TransformComponent, SpriteRendererComponent>();
@@ -613,6 +612,7 @@ void Scene::Render(RenderOptions renderOptions)
         renderer.DrawSprite(*command.sprite, command.transform.position, command.transform.scale, command.transform.rotation.z);
     }
 
+    renderer.EndFrame();
     renderer.PostRender();
 
     for (auto& system : m_systems)
@@ -623,18 +623,16 @@ void Scene::Render(RenderOptions renderOptions)
 
     RenderTexts();
 
-    renderer.SetViewProjectionMatrix(glm::ortho(0.0f, (float)m_viewportWidth, 0.0f, (float)m_viewportHeight));
+    //renderer.SetViewProjectionMatrix(glm::ortho(0.0f, (float)m_viewportWidth, 0.0f, (float)m_viewportHeight));
 
     RenderUI();
-
-    renderer.EndFrame();
 }
 
 void Scene::RenderEditor(RenderOptions renderOptions)
 {
     Renderer& renderer = Application::Get().GetRenderer();
-    renderer.BeginFrame();
     renderer.PreRender();
+    renderer.BeginFrame();
 
     auto transforms = m_manager.m_registry.view<TransformComponent, SpriteRendererComponent>();
 
@@ -688,8 +686,8 @@ void Scene::RenderEditor(RenderOptions renderOptions)
     RenderTexts();
     */
 
-
     renderer.EndFrame();
+    renderer.PostRender();
 }
 
 void Scene::RenderUI()
