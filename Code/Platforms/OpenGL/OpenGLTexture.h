@@ -13,11 +13,16 @@ public:
 	~OpenGLTexture();
 
 	bool Generate(const char* filename, bool alpha = false);
-	void Bind();
+	virtual void Bind(uint32_t slot = 0) override;
 
 	virtual int GetWidth() const override { return m_width; }
 	virtual int GetHeight() const override { return m_height; }
 	virtual uint64_t GetRendererID() const override { return m_id; }
+	
+	virtual bool operator==(const Texture& other) const override
+	{
+		return m_id == other.GetRendererID();
+	}
 
 private:
 	GLuint m_id;

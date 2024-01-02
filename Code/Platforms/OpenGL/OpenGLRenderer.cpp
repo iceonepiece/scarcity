@@ -9,6 +9,8 @@
 
 void OpenGLRenderer::Initialize()
 {
+    Renderer::Initialize();
+
     float vertices[] = {
          0.5f,   0.5f,   1.0f,   1.0f,
          0.5f,  -0.5f,   1.0f,   0.0f,
@@ -80,6 +82,9 @@ void OpenGLRenderer::Initialize()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+	m_quadShader = std::make_unique<OpenGLShader>();
+	m_quadShader->Compile("Shaders/quad.vert", "Shaders/quad.frag");
+
     m_basicShader.Compile("Shaders/basic.vert", "Shaders/basic.frag");
     m_spriteShader.Compile("Shaders/texture.vert", "Shaders/texture.frag");
     m_uiShader.Compile("Shaders/ui.vert", "Shaders/ui.frag");
@@ -135,6 +140,7 @@ void OpenGLRenderer::Draw(Sprite& sprite, const glm::mat4& modelMatrix)
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+/*
 void OpenGLRenderer::DrawSprite(Sprite& sprite, const glm::vec2& position, const glm::vec2& scale, float angle, glm::vec4 color)
 {
     m_spriteShader.Use();
@@ -179,6 +185,7 @@ void OpenGLRenderer::DrawSprite(Sprite& sprite, const glm::vec2& position, const
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
+*/
 
 void OpenGLRenderer::DrawLine(const glm::vec3& v1, const glm::vec3& v2, const glm::vec4& color)
 {
@@ -402,6 +409,13 @@ void OpenGLRenderer::DrawQuadUI(const glm::vec2& position, const glm::vec2& scal
 
     glBindVertexArray(m_quadVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+
+void OpenGLRenderer::DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray, uint32_t indexCount)
+{
+    vertexArray->Bind();
+    uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
+    glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 }
 
 void OpenGLRenderer::DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color)

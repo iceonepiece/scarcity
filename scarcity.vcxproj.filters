@@ -71,6 +71,10 @@
     <ClCompile Include="External\Include\ImGuiColorTextEdit\TextEditor.cpp" />
     <ClCompile Include="Code\Lua\LuaScript.cpp" />
     <ClCompile Include="Code\Physics\CollisionLayerManager.cpp" />
+    <ClCompile Include="Code\Graphics\Buffer.cpp" />
+    <ClCompile Include="Code\Platforms\OpenGL\OpenGLBuffer.cpp" />
+    <ClCompile Include="Code\Graphics\VertexArray.cpp" />
+    <ClCompile Include="Code\Platforms\OpenGL\OpenGLVertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Animations\AnimationSerializer.h" />
@@ -603,6 +607,10 @@
     <ClInclude Include="Code\Components\Collider2DGroupComponent.h" />
     <ClInclude Include="Code\Components\LuaScriptComponent.h" />
     <ClInclude Include="Code\Project\RuntimeProject.h" />
+    <ClInclude Include="Code\Graphics\Buffer.h" />
+    <ClInclude Include="Code\Platforms\OpenGL\OpenGLBuffer.h" />
+    <ClInclude Include="Code\Graphics\VertexArray.h" />
+    <ClInclude Include="Code\Platforms\OpenGL\OpenGLVertexArray.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />
@@ -766,5 +774,7 @@
     <None Include="LICENSE" />
     <None Include="Makefile" />
     <None Include="README.md" />
+    <None Include="Assets\Shaders\quad.vert" />
+    <None Include="Assets\Shaders\quad.frag" />
   </ItemGroup>
 </Project>

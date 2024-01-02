@@ -5,21 +5,40 @@
 #include "Graphics/Shader.h"
 #include "Graphics/Camera.h"
 #include "Graphics/Texture.h"
+#include "Graphics/Buffer.h"
 #include "Graphics/Framebuffer.h"
 #include "Graphics/Sprite.h"
+#include "Graphics/VertexArray.h"
 #include "Shapes/Shape2D.h"
 #include "Components/CameraComponent.h"
+
+struct QuadVertex
+{
+	glm::vec3 position;
+	glm::vec4 color;
+	glm::vec2 texCoord;
+	float texIndex;
+};
 
 class Renderer
 {
 public:
+	static const uint32_t MAX_QUADS = 1000;
+	static const uint32_t MAX_VERTICES = MAX_QUADS * 4;
+	static const uint32_t MAX_INDICES = MAX_QUADS * 6;
+	static const uint32_t MAX_TEXTURES = 32;
+
 	static std::unique_ptr<Renderer> Create();
 
-	virtual ~Renderer() = default;
+	virtual ~Renderer();
 
-	virtual void Initialize() = 0;
+	void BeginFrame();
+	void EndFrame();
+	void Flush();
+
+	virtual void Initialize();
 	virtual void Draw(Sprite& sprite, const glm::mat4& modelMatrix) = 0;
-	virtual void DrawSprite(Sprite& sprite, const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }) = 0;
+	virtual void DrawSprite(Sprite& sprite, const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f });
 	virtual void DrawQuad(const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }) = 0;
 	virtual void DrawQuad2D(const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }) = 0;
 	virtual void DrawQuad2D(const Quad2D& quad) = 0;
@@ -31,6 +50,8 @@ public:
 	virtual void DrawCircle(const glm::vec2& position, float radius) = 0;
 	virtual void DrawCircle2D(const Circle2D& circle, float thickness = 1.0f) = 0;
 	virtual void DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color) = 0;
+
+	virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray, uint32_t indexCount) = 0;
 
 	virtual std::unique_ptr<Texture> LoadTexture(const std::string& name, const char* filename, bool alpha) = 0;
 
@@ -70,7 +91,20 @@ public:
 		m_viewProjectionMatrix = m_projectionMatrix * m_viewMatrix;
 	}
 
+	static glm::vec4 s_quadVertices[4];
+
 protected:
+	std::unique_ptr<Shader> m_quadShader;
+	std::shared_ptr<VertexBuffer> m_quadVertexBuffer;
+	std::shared_ptr<VertexArray> m_quadVertexArray;
+
+	uint32_t m_quadIndexCount = 0;
+	QuadVertex* m_quadVertexBufferBase = nullptr;
+	QuadVertex* m_quadVertexBufferPtr = nullptr;
+
+	uint32_t m_textureIndex = 1;
+	std::array<Texture*, MAX_TEXTURES> m_textures;
+
 	Camera *m_camera;
 	CameraComponent m_cameraComponent;
 	glm::vec2 m_screenSize;
@@ -80,4 +114,8 @@ protected:
 	glm::mat4 m_viewProjectionMatrix;
 
 	friend class RenderSystem;  
+
+private:
+	void StartBatch();
+	void NextBatch();
 };

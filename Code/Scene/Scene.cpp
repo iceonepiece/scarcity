@@ -562,6 +562,8 @@ void Scene::Render(RenderOptions renderOptions)
     Renderer& renderer = Application::Get().GetRenderer();
     renderer.PreRender();
 
+    renderer.BeginFrame();
+
     auto transforms = m_manager.m_registry.view<TransformComponent, SpriteRendererComponent>();
 
     std::vector<RenderCommand> renderCommands;
@@ -624,11 +626,14 @@ void Scene::Render(RenderOptions renderOptions)
     renderer.SetViewProjectionMatrix(glm::ortho(0.0f, (float)m_viewportWidth, 0.0f, (float)m_viewportHeight));
 
     RenderUI();
+
+    renderer.EndFrame();
 }
 
 void Scene::RenderEditor(RenderOptions renderOptions)
 {
     Renderer& renderer = Application::Get().GetRenderer();
+    renderer.BeginFrame();
     renderer.PreRender();
 
     auto transforms = m_manager.m_registry.view<TransformComponent, SpriteRendererComponent>();
@@ -639,6 +644,7 @@ void Scene::RenderEditor(RenderOptions renderOptions)
         glm::vec2 scale = transform.scale;
         float angle = transform.rotation.z;
 
+        /*
         if (sprite.shape == SpriteShape::Shape_Square)
             renderer.DrawQuad2D(position, scale, angle, sprite.color);
         else if (sprite.shape == SpriteShape::Shape_Circle)
@@ -650,6 +656,7 @@ void Scene::RenderEditor(RenderOptions renderOptions)
 
             renderer.DrawCircle2D(circle);
         }
+        */
 
         if (sprite.sprite != nullptr)
         {
@@ -657,6 +664,7 @@ void Scene::RenderEditor(RenderOptions renderOptions)
         }
     }
 
+    /*
     auto gridView = m_manager.m_registry.view<GridComponent>();
 
     for (auto [entity, grid] : gridView.each())
@@ -678,6 +686,10 @@ void Scene::RenderEditor(RenderOptions renderOptions)
         RenderCollisionComponents();
 
     RenderTexts();
+    */
+
+
+    renderer.EndFrame();
 }
 
 void Scene::RenderUI()
