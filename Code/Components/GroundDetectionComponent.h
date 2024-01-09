@@ -17,7 +17,7 @@ struct GroundDetectionComponent
 	std::string groundTag = "Untagged";
 
 	int numGrounds = 0;
-	std::vector<FixtureData*> groundFixtures;
+	std::vector<b2Contact*> groundContacts;
 	FixtureData* fixtureData = nullptr;
 };
 

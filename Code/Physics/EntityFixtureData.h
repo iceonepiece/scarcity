@@ -33,8 +33,9 @@ public:
 
 				if (worldManifold.normal.x == 0 && worldManifold.normal.y == yTarget)
 				{
+					groundDetection->groundContacts.emplace_back(contact);
 					groundDetection->numGrounds++;
-					groundDetection->groundFixtures.emplace_back(other);
+
 					std::cout << "Num Grounds: " << groundDetection->numGrounds << "\n";
 				}
 			}
@@ -64,11 +65,11 @@ public:
 		{
 			std::cout << "GroundDetectionFixtureData >> EndContact\n";
 
-			auto iter = std::find(groundDetection->groundFixtures.begin(), groundDetection->groundFixtures.end(), other);
+			auto iter = std::find(groundDetection->groundContacts.begin(), groundDetection->groundContacts.end(), contact);
 
-			if (iter != groundDetection->groundFixtures.end())
+			if (iter != groundDetection->groundContacts.end())
 			{
-				groundDetection->groundFixtures.erase(iter);
+				groundDetection->groundContacts.erase(iter);
 				groundDetection->numGrounds--;
 
 				std::cout << "Num Grounds: " << groundDetection->numGrounds << "\n";
