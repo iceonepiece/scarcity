@@ -6,7 +6,7 @@
 #include "Entity/EntityManager.h"
 #include "Graphics/Camera.h"
 #include "Physics/Physics.h"
-#include "Core/System.h"
+#include "System/System.h"
 #include "Asset/Asset.h"
 
 class Application;
@@ -70,6 +70,8 @@ public:
 
 	void SetApplication(Application* app) { m_app = app; }
 	Application* GetApplication() { return m_app; }
+
+	Physics& GetPhysics() { return m_physics; }
 
 	template<typename Component>
 	static void CopyComponent(entt::registry& srcRegistry, entt::registry& destRegistry, entt::entity srcEntity, entt::entity destEntity)

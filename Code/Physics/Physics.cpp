@@ -265,8 +265,8 @@ b2FixtureDef Physics::CreateFixtureDef(b2Shape& shape, Collider2DComponent& coll
 {
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &shape;
-	fixtureDef.density = collider.density;
-	fixtureDef.friction = collider.friction;
+	fixtureDef.density = collider.isTrigger ? 0.0f : collider.density;
+	fixtureDef.friction = collider.isTrigger ? 0.0f : collider.friction;
 	fixtureDef.isSensor = collider.isTrigger;
 
 	fixtureDef.filter.categoryBits = 1 << layer;
@@ -399,7 +399,7 @@ void Physics::InitializePhysicsEntity(Entity& entity, TransformComponent& transf
 	if (BoxCollider2DComponent* bc2d = entity.GetComponent<BoxCollider2DComponent>())
 	{
 		b2PolygonShape boxShape = CreateBoxShape(transform, *bc2d);
-		b2FixtureDef fixtureDef = CreateFixtureDef(boxShape, *bc2d);
+		b2FixtureDef fixtureDef = CreateFixtureDef(boxShape, *bc2d, bc2d->layer);
 		FixtureData* fixtureData = CreateFixtureData(entity);
 
 		fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);
@@ -411,7 +411,7 @@ void Physics::InitializePhysicsEntity(Entity& entity, TransformComponent& transf
 	if (CircleCollider2DComponent* cc2d = entity.GetComponent<CircleCollider2DComponent>())
 	{
 		b2CircleShape circleShape = CreateCircleShape(transform, *cc2d);
-		b2FixtureDef fixtureDef = CreateFixtureDef(circleShape, *cc2d);
+		b2FixtureDef fixtureDef = CreateFixtureDef(circleShape, *cc2d, cc2d->layer);
 		FixtureData* fixtureData = CreateFixtureData(entity);
 
 		fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(fixtureData);

@@ -18,7 +18,7 @@
     <ClCompile Include="Code\ImGui\ImGuiManager.cpp" />
     <ClCompile Include="Code\Graphics\Camera2D.cpp" />
     <ClCompile Include="Code\Entity\EntityManager.cpp" />
-    <ClCompile Include="Code\Core\System.cpp" />
+    <ClCompile Include="Code\System\System.cpp" />
     <ClCompile Include="Code\Events\MouseEvent.cpp" />
     <ClCompile Include="Code\Events\WindowEvent.cpp" />
     <ClCompile Include="Code\Input\Input.cpp" />
@@ -69,7 +69,6 @@
     <ClCompile Include="Code\Graphics\Sprite.cpp" />
     <ClCompile Include="External\Include\ImGuiColorTextEdit\TextEditor.cpp" />
     <ClCompile Include="Code\Lua\LuaScript.cpp" />
-    <ClCompile Include="Code\Physics\CollisionLayerManager.cpp" />
     <ClCompile Include="Code\Graphics\Buffer.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="Code\Graphics\VertexArray.cpp" />
@@ -148,7 +147,7 @@
     <ClInclude Include="Code\Graphics\Image.h" />
     <ClInclude Include="Code\Asset\Asset.h" />
     <ClInclude Include="Code\Scene\Scene.h" />
-    <ClInclude Include="Code\Core\System.h" />
+    <ClInclude Include="Code\System\System.h" />
     <ClInclude Include="Code\Input\KeyCodes.h" />
     <ClInclude Include="Code\Input\MouseCodes.h" />
     <ClInclude Include="Code\Physics\ContactListener.h" />
@@ -601,7 +600,6 @@
     <ClInclude Include="Code\Animations\AnimationClip.h" />
     <ClInclude Include="External\Include\ImGuiColorTextEdit\TextEditor.h" />
     <ClInclude Include="Code\Lua\LuaScript.h" />
-    <ClInclude Include="Code\Physics\CollisionLayerManager.h" />
     <ClInclude Include="Code\Components\Collider2DGroupComponent.h" />
     <ClInclude Include="Code\Components\LuaScriptComponent.h" />
     <ClInclude Include="Code\Project\RuntimeProject.h" />
@@ -609,6 +607,10 @@
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="Code\Graphics\VertexArray.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLVertexArray.h" />
+    <ClInclude Include="Code\System\LuaScriptSystem.h" />
+    <ClInclude Include="Code\System\NativeScriptSystem.h" />
+    <ClInclude Include="Code\System\PhysicsSystem.h" />
+    <ClInclude Include="Code\System\AnimatorSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />

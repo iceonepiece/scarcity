@@ -7,7 +7,6 @@
 #include "File/FileSystem.h"
 #include "NativeScript/NativeScriptEngine.h"
 #include "Lua/LuaEngine.h"
-#include "Animations/AnimationSerializer.h"
 #include "Audio/Audio.h"
 #include "UI/UIManager.h"
 #include "Input/Input.h"
@@ -17,6 +16,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <algorithm>
+#include "System/NativeScriptSystem.h"
+#include "System/LuaScriptSystem.h"
+#include "System/PhysicsSystem.h"
+#include "System/AnimatorSystem.h"
 
 struct RenderCommand
 {
@@ -32,6 +35,10 @@ Scene::Scene(const std::string& name, const std::filesystem::path& path)
         new Camera2D({ 0.0f, 0.0f, -14.0f }, { 0.5f, 0.25f }, { 1280, 720 })
     )
 {
+    m_systems.push_back(std::make_unique<NativeScriptSystem>(*this));
+    m_systems.push_back(std::make_unique<LuaScriptSystem>(*this));
+    m_systems.push_back(std::make_unique<PhysicsSystem>(*this));
+    m_systems.push_back(std::make_unique<AnimatorSystem>(*this));
 }
 
 void Scene::SetProject(Project* project)
@@ -358,25 +365,10 @@ bool Scene::HasSaved()
 
 void Scene::Update(float deltaTime)
 {
-    auto nativeScriptUpdateView = m_manager.m_registry.view<NativeScriptComponent>();
-    for (auto [entity, nativeScript] : nativeScriptUpdateView.each())
+    for (auto& system : m_systems)
     {
-        if (nativeScript.instance != nullptr)
-            nativeScript.instance->Update(deltaTime);
-    }
-
-    LuaEngine& luaEngine = Application::Get().GetLuaEngine();
-
-
-    auto luaScriptView = m_manager.m_registry.view<LuaScriptComponent>();
-    for (auto [entity, luaScript] : luaScriptView.each())
-    {
-        if (luaScript.script != nullptr && FileSystem::FileExists(luaScript.script->GetPath()))
-        {
-            luaEngine.ReadScript(luaScript.script->GetPath().string());
-            sol::function updateFn = luaEngine.GetFunction("Update");
-            updateFn(deltaTime);
-        }
+        if (system->IsActive())
+            system->Update(deltaTime);
     }
     
     /*
@@ -411,38 +403,6 @@ void Scene::Update(float deltaTime)
         if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
         {
             UIManager::HandleInput(canvas, *button, input);
-        }
-    }
-
-    for (auto& system : m_systems)
-        system->Update(deltaTime);
-
-    auto animatorView = m_manager.m_registry.view<SpriteAnimatorComponent>();
-    for (auto [entity, animator] : animatorView.each())
-    {
-        if (animator.controller != nullptr)
-            animator.controller->Process();
-    }
-
-    //if (m_physics != nullptr && physicsActive)
-    if (physicsActive)
-    {
-        /*
-        const int32_t velocityIterations = 6;
-        const int32_t positionIterations = 2;
-        m_physics->Step(deltaTime, velocityIterations, positionIterations);
-        */
-        m_physics.Update(deltaTime);
-
-        auto view = m_manager.m_registry.view<TransformComponent, Rigidbody2DComponent>();
-        for (auto [entity, transform, rb2d] : view.each())
-        {
-            b2Body* body = (b2Body*)rb2d.body;
-
-            const auto& position = body->GetPosition();
-            transform.position.x = position.x;
-            transform.position.y = position.y;
-            transform.rotation.z = body->GetAngle();
         }
     }
 
@@ -662,7 +622,6 @@ void Scene::RenderEditor(RenderOptions renderOptions)
         }
     }
 
-    /*
     auto gridView = m_manager.m_registry.view<GridComponent>();
 
     for (auto [entity, grid] : gridView.each())
@@ -684,7 +643,6 @@ void Scene::RenderEditor(RenderOptions renderOptions)
         RenderCollisionComponents();
 
     RenderTexts();
-    */
 
     renderer.EndFrame();
     renderer.PostRender();

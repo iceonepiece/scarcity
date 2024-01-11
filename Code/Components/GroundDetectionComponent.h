@@ -5,7 +5,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <nlohmann/json.hpp>
 #include "Physics/FixtureData.h"
-#include "Physics/GroundDetectionFixtureData.h"
 #include "Components/GroundDetectionComponent.h"
 
 using json = nlohmann::json;

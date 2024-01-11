@@ -311,7 +311,7 @@
     <ClCompile Include="Code\ImGui\ImGuiManager.cpp" />
     <ClCompile Include="Code\Graphics\Camera2D.cpp" />
     <ClCompile Include="Code\Entity\EntityManager.cpp" />
-    <ClCompile Include="Code\Core\System.cpp" />
+    <ClCompile Include="Code\System\System.cpp" />
     <ClCompile Include="Code\Events\MouseEvent.cpp" />
     <ClCompile Include="Code\Events\WindowEvent.cpp" />
     <ClCompile Include="Code\Input\Input.cpp" />
@@ -320,7 +320,6 @@
     <ClCompile Include="Code\Math\Math.cpp" />
     <ClCompile Include="Code\NativeScript\NativeScriptEngine.cpp" />
     <ClCompile Include="Code\pch.cpp" />
-    <ClCompile Include="Code\Physics\CollisionLayerManager.cpp" />
     <ClCompile Include="Code\Physics\GridUtils.cpp" />
     <ClCompile Include="Code\Platforms\GLFW\GLFWInput.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLBuffer.cpp" />
@@ -421,7 +420,6 @@
     <ClInclude Include="Code\NativeScript\NativeScriptEngine.h" />
     <ClInclude Include="Code\NativeScript\NativeScript.h" />
     <ClInclude Include="Code\pch.h" />
-    <ClInclude Include="Code\Physics\CollisionLayerManager.h" />
     <ClInclude Include="Code\Physics\EntityFixtureData.h" />
     <ClInclude Include="Code\Physics\GridUtils.h" />
     <ClInclude Include="Code\Platforms\GLFW\GLFWInput.h" />
@@ -450,7 +448,10 @@
     <ClInclude Include="Code\Asset\Asset.h" />
     <ClInclude Include="Code\Project\RuntimeProject.h" />
     <ClInclude Include="Code\Scene\Scene.h" />
-    <ClInclude Include="Code\Core\System.h" />
+    <ClInclude Include="Code\System\AnimatorSystem.h" />
+    <ClInclude Include="Code\System\NativeScriptSystem.h" />
+    <ClInclude Include="Code\System\PhysicsSystem.h" />
+    <ClInclude Include="Code\System\System.h" />
     <ClInclude Include="Code\Input\KeyCodes.h" />
     <ClInclude Include="Code\Input\MouseCodes.h" />
     <ClInclude Include="Code\Physics\ContactListener.h" />
@@ -465,6 +466,7 @@
     <ClInclude Include="Code\Scene\SceneSerializer.h" />
     <ClInclude Include="Code\Entity\ScriptableEntity.h" />
     <ClInclude Include="Code\Shapes\Shape2D.h" />
+    <ClInclude Include="Code\System\LuaScriptSystem.h" />
     <ClInclude Include="Code\UI\UIManager.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="Code\UI\EventHandler.h" />
