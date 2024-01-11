@@ -32,52 +32,6 @@ void ImGuiAssetPanel::RenderUnsupportedFile(const std::filesystem::path& path)
 	}
 }
 
-void ImGuiAssetPanel::RenderNativeScript(NativeScript& nativeScript, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
-{
-	std::string useIcon = (ICON_FA_CODE " ");
-
-	flags |= ImGuiTreeNodeFlags_Leaf;
-
-	bool opened = ImGui::TreeNodeEx(nativeScript.GetPath().string().c_str(), flags, (useIcon + nativeScript.GetName()).c_str());
-
-	callback();
-
-	if (opened)
-	{
-		ImGui::TreePop();
-	}
-
-	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
-	{
-		ImGui::SetDragDropPayload("NATIVE_SCRIPT_FILE", &nativeScript, sizeof(nativeScript));
-
-		ImGui::EndDragDropSource();
-	}
-}
-
-void ImGuiAssetPanel::RenderLuaScript(LuaScript& luaScript, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
-{
-	std::string useIcon = (ICON_FA_CODE " ");
-
-	flags |= ImGuiTreeNodeFlags_Leaf;
-
-	bool opened = ImGui::TreeNodeEx(luaScript.GetPath().string().c_str(), flags, (useIcon + luaScript.GetName()).c_str());
-
-	callback();
-
-	if (opened)
-	{
-		ImGui::TreePop();
-	}
-
-	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
-	{
-		ImGui::SetDragDropPayload("LUA_SCRIPT_FILE", &luaScript, sizeof(luaScript));
-
-		ImGui::EndDragDropSource();
-	}
-}
-
 void ImGuiAssetPanel::RightClickMenu(Asset& asset)
 {
 	if (ImGui::BeginPopupContextItem(asset.GetPath().filename().string().c_str()))
@@ -90,34 +44,6 @@ void ImGuiAssetPanel::RightClickMenu(Asset& asset)
 
 		ImGui::EndPopup();
 	}
-}
-
-void ImGuiAssetPanel::RenderPrefab(Prefab& prefab, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
-{
-	std::string useIcon = ICON_FA_CUBE;
-
-	flags |= ImGuiTreeNodeFlags_Leaf;
-
-	ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(140, 200, 255, 255));
-	bool opened = ImGui::TreeNodeEx(prefab.GetPath().string().c_str(), flags, useIcon.c_str());
-	ImGui::PopStyleColor();
-
-	callback();
-
-	if (ImGui::BeginDragDropSource())
-	{
-		ImGui::SetDragDropPayload("PREFAB_ASSET", &prefab, sizeof(prefab));
-
-		ImGui::EndDragDropSource();
-	}
-
-	ImGui::SameLine();
-	ImGui::Text(prefab.GetPath().filename().string().c_str());
-
-	RightClickMenu(prefab);
-
-	if (opened)
-		ImGui::TreePop();
 }
 
 void ImGuiAssetPanel::RenderImage(Image& image, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn, const std::string& note)
@@ -157,58 +83,6 @@ void ImGuiAssetPanel::RenderImage(Image& image, ImGuiTreeNodeFlags flags, AssetE
 		ImGui::EndDragDropSource();
 	}
 	*/
-}
-
-void ImGuiAssetPanel::RenderAudioClip(AudioClip& audioClip, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
-{
-	std::string useIcon = (ICON_FA_MUSIC " ");
-
-	flags |= ImGuiTreeNodeFlags_Leaf;
-
-	bool opened = ImGui::TreeNodeEx(audioClip.GetPath().string().c_str(), flags, (useIcon + audioClip.GetName()).c_str());
-
-	callback();
-
-	if (opened)
-	{
-		ImGui::TreePop();
-	}
-}
-
-void ImGuiAssetPanel::RenderAnimatorController(AnimatorController& animControllerAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
-{
-	std::string useIcon = (ICON_FA_CIRCLE_NODES " ");
-
-	flags |= ImGuiTreeNodeFlags_Leaf;
-
-	bool opened = ImGui::TreeNodeEx(animControllerAsset.GetPath().string().c_str(), flags, (useIcon + animControllerAsset.GetName()).c_str());
-
-	callback();
-
-	RightClickMenu(animControllerAsset);
-
-	if (opened)
-	{
-		ImGui::TreePop();
-	}
-}
-
-void ImGuiAssetPanel::RenderAnimationClip(AnimationClip& animClip, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
-{
-	std::string useIcon = ICON_FA_PERSON_RUNNING;
-
-	flags |= ImGuiTreeNodeFlags_Leaf;
-
-	bool opened = ImGui::TreeNodeEx(animClip.GetPath().string().c_str(), flags, (useIcon + animClip.GetName()).c_str());
-
-	callback();
-
-	RightClickMenu(animClip);
-
-	if (opened)
-	{
-		ImGui::TreePop();
-	}
 }
 
 
