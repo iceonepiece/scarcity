@@ -5,6 +5,7 @@
 #include "Components/CircleCollider2DComponent.h"
 #include "Components/Collider2DGroupComponent.h"
 #include "Components/GridComponent.h"
+#include "Components/Rigidbody2DComponent.h"
 
 std::array<std::string, MAX_COLLISION_LAYERS> Physics::s_layers = { "Default" };
 std::array<std::bitset<MAX_COLLISION_LAYERS>, MAX_COLLISION_LAYERS> Physics::s_collisionMatrix;

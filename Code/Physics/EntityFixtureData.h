@@ -48,9 +48,9 @@ public:
 				BaseComponent* base = other->m_entity.GetComponent<BaseComponent>();
 				if (base)
 				{
-					Collision2D collsion2D{ base->name, base->tag, contact->GetFixtureA()->GetFilterData().categoryBits };
+					Collision2D collsion2D{ base->name, base->tag, contact->GetFixtureB()->GetFilterData().categoryBits };
 
-					if (contact->GetFixtureB()->IsSensor())
+					if (contact->GetFixtureA()->IsSensor() || contact->GetFixtureB()->IsSensor())
 						nativeScript->instance->OnTriggerEnter(collsion2D);
 					else
 						nativeScript->instance->OnCollisionEnter(collsion2D);
@@ -82,9 +82,9 @@ public:
 			{
 				BaseComponent* base = other->m_entity.GetComponent<BaseComponent>();
 
-				Collision2D collsion2D{ base->name, base->tag, contact->GetFixtureA()->GetFilterData().categoryBits };
+				Collision2D collsion2D{ base->name, base->tag, contact->GetFixtureB()->GetFilterData().categoryBits };
 
-				if (contact->GetFixtureB()->IsSensor())
+				if (contact->GetFixtureA()->IsSensor() || contact->GetFixtureB()->IsSensor())
 					nativeScript->instance->OnTriggerExit(collsion2D);
 				else
 					nativeScript->instance->OnCollisionExit(collsion2D);

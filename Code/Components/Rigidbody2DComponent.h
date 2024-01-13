@@ -2,6 +2,8 @@
 #include <nlohmann/json.hpp>
 #include <imgui/imgui.h>
 #include "Physics/FixtureData.h"
+#include "Collider2DGroupComponent.h"
+#include "Physics/Physics.h"
 
 using json = nlohmann::json;
 
@@ -33,7 +35,10 @@ struct Rigidbody2DComponent
 	float gravityScale = 1.0f;
 
 	void* body = nullptr;
+	void* flippedBody = nullptr;
 	FixtureData* fixtureData = nullptr;
+
+	Physics* physics = nullptr;
 
 	float GetVelocityX()
 	{
@@ -62,6 +67,13 @@ struct Rigidbody2DComponent
 		if (b2Body* b = (b2Body*)body)
 			b->ApplyLinearImpulse(b2Vec2(x, y), b->GetWorldCenter(), true);
 	}
+
+	void RemoveFixture(void* fixture)
+	{
+		((b2Body*)body)->DestroyFixture((b2Fixture*)fixture);
+	}
+
+	void* AddFixture(Physics& physics, TransformComponent transform, Collider2DData data, Entity entity);
 };
 
 static void DoSerialize(const Rigidbody2DComponent& rb2d, json& entityJson)

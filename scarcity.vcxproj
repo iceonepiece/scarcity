@@ -293,6 +293,7 @@
     <ClCompile Include="Code\Animations\AnimatorController.cpp" />
     <ClCompile Include="Code\Animations\AnimatorState.cpp" />
     <ClCompile Include="Code\Animations\AnimatorTransition.cpp" />
+    <ClCompile Include="Code\Components\Rigidbody2DComponent.cpp" />
     <ClCompile Include="Code\Graphics\Buffer.cpp" />
     <ClCompile Include="Code\Graphics\Sprite.cpp" />
     <ClCompile Include="Code\Asset\AssetManager.cpp" />
@@ -449,6 +450,7 @@
     <ClInclude Include="Code\Project\RuntimeProject.h" />
     <ClInclude Include="Code\Scene\Scene.h" />
     <ClInclude Include="Code\System\AnimatorSystem.h" />
+    <ClInclude Include="Code\System\HierarchySystem.h" />
     <ClInclude Include="Code\System\NativeScriptSystem.h" />
     <ClInclude Include="Code\System\PhysicsSystem.h" />
     <ClInclude Include="Code\System\System.h" />

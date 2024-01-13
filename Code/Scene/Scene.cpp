@@ -19,6 +19,7 @@
 #include "System/NativeScriptSystem.h"
 #include "System/LuaScriptSystem.h"
 #include "System/PhysicsSystem.h"
+#include "System/HierarchySystem.h"
 #include "System/AnimatorSystem.h"
 
 struct RenderCommand
@@ -38,6 +39,7 @@ Scene::Scene(const std::string& name, const std::filesystem::path& path)
     m_systems.push_back(std::make_unique<NativeScriptSystem>(*this));
     m_systems.push_back(std::make_unique<LuaScriptSystem>(*this));
     m_systems.push_back(std::make_unique<PhysicsSystem>(*this));
+    m_systems.push_back(std::make_unique<HierarchySystem>(*this));
     m_systems.push_back(std::make_unique<AnimatorSystem>(*this));
 }
 
@@ -245,6 +247,69 @@ void Scene::RenderCollisionComponents()
 {
     Renderer& renderer = Application::Get().GetRenderer();
 
+    auto rb2dView = m_manager.m_registry.view<TransformComponent, Rigidbody2DComponent>();
+
+    for (auto [entity, transform, rb2d] : rb2dView.each())
+    {
+        b2Body* body = (b2Body*)rb2d.body;
+
+        if (!body)
+            continue;
+
+        b2Fixture* fixture = body->GetFixtureList();
+
+        while (fixture)
+        {
+            if (fixture->GetFilterData().categoryBits > 0 && fixture->GetShape()->GetType() == b2Shape::e_polygon)
+            {
+				b2PolygonShape* shape = (b2PolygonShape*)fixture->GetShape();
+
+                if (shape->m_count == 4)
+                {
+                    float width = shape->m_vertices[1].x - shape->m_vertices[0].x;
+                    float height = shape->m_vertices[2].y - shape->m_vertices[0].y;
+
+					float posX = transform.position.x + shape->m_centroid.x;
+                    float posY = transform.position.y + shape->m_centroid.y;
+
+                    renderer.DrawRect({ posX, posY }, {width, height}, transform.rotation.z, {0.0f, 1.0f, 0.0f, 1.0f}, 0.02f);
+                }
+            }
+
+            fixture = fixture->GetNext();
+        }
+
+
+        if (rb2d.flippedBody != nullptr)
+        {
+            b2Body* body = (b2Body*)rb2d.flippedBody;
+
+            b2Fixture* fixture = body->GetFixtureList();
+
+            while (fixture)
+            {
+                if (fixture->GetShape()->GetType() == b2Shape::e_polygon)
+                {
+                    b2PolygonShape* shape = (b2PolygonShape*)fixture->GetShape();
+
+                    if (shape->m_count == 4)
+                    {
+                        float width = shape->m_vertices[1].x - shape->m_vertices[0].x;
+                        float height = shape->m_vertices[2].y - shape->m_vertices[0].y;
+
+                        float posX = transform.position.x + shape->m_centroid.x;
+                        float posY = transform.position.y + shape->m_centroid.y;
+
+                        renderer.DrawRect({ posX, posY }, { width, height }, transform.rotation.z, { 0.0f, 1.0f, 0.0f, 1.0f }, 0.02f);
+                    }
+                }
+
+                fixture = fixture->GetNext();
+            }
+        }
+    }
+
+    /*
     auto groupColliders = m_manager.m_registry.view<TransformComponent, Collider2DGroupComponent>();
     for (auto [entity, transform, group] : groupColliders.each())
     {
@@ -302,6 +367,7 @@ void Scene::RenderCollisionComponents()
 
         renderer.DrawCircle2D(renderCircle, 0.01f);
     }
+    */
 
     auto gridColliders = m_manager.m_registry.view<TransformComponent, GridComponent, Rigidbody2DComponent>();
 

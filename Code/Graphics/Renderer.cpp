@@ -98,9 +98,17 @@ void Renderer::DrawSprite(Sprite& sprite, const glm::vec2& position, const glm::
 		textureCoords[3] = { left, top };
     }
 
+
+    /*
     glm::mat4 transform = glm::translate(glm::mat4(1.0f), { position.x, position.y, 0.0f })
         * glm::rotate(glm::mat4(1.0f), angle, { 0.0f, 0.0f, 1.0f })
         * glm::scale(glm::mat4(1.0f), { scale.x * ratio.x, scale.y * ratio.y, 1.0f });
+     */
+
+    glm::mat4 transform = glm::translate(glm::mat4(1.0f), { position.x, position.y, 0.0f })
+        * glm::mat4(glm::quat({ 0.0f, 0.0f, angle }))
+        * glm::scale(glm::mat4(1.0f), { scale.x * ratio.x, scale.y * ratio.y, 1.0f });
+
 
     for (size_t i = 0; i < quadVertexCount; i++)
     {

@@ -73,6 +73,7 @@
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="Code\Graphics\VertexArray.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLVertexArray.cpp" />
+    <ClCompile Include="Code\Components\Rigidbody2DComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Animations\AnimationSerializer.h" />
@@ -611,6 +612,7 @@
     <ClInclude Include="Code\System\NativeScriptSystem.h" />
     <ClInclude Include="Code\System\PhysicsSystem.h" />
     <ClInclude Include="Code\System\AnimatorSystem.h" />
+    <ClInclude Include="Code\System\HierarchySystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />
