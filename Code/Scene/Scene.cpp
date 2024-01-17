@@ -102,7 +102,12 @@ void Scene::DestroyEntity(entt::entity entity)
 
 void Scene::Start()
 {
-    StartPhysics();
+    //StartPhysics();
+
+    for (auto& system : m_systems)
+    {
+        system->OnStart();
+    }
 
     std::cout << "Scene::Start()\n";
     auto view = m_manager.m_registry.view<SpriteAnimatorComponent>();
@@ -178,7 +183,11 @@ void Scene::Start()
 
 void Scene::Stop()
 {
-    StopPhysics();
+    //StopPhysics();
+    for (auto& system : m_systems)
+    {
+        system->OnStop();
+    }
 
     auto view = m_manager.m_registry.view<NativeScriptComponent>();
     for (auto [entity, script] : view.each())

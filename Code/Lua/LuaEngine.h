@@ -10,6 +10,7 @@ public:
 
 	void ReadScript(const std::string& fileName);
 	sol::function GetFunction(const std::string& name);
+	sol::object GetValue(const std::string& name);
 
 private:
 	sol::state m_state;

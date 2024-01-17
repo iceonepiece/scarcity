@@ -5,6 +5,27 @@
 #include "File/FileSystem.h"
 #include "Constants/GameEngine.h"
 
+void Project::StartRunning()
+{
+	std::filesystem::path globalLuaPath = m_absolutePath / (m_name + ".lua");
+
+	if (FileSystem::FileExists(globalLuaPath))
+		m_globalLuaEngine.ReadScript(globalLuaPath.string());
+
+	for (auto& luaScript : m_luaScripts)
+	{
+		if (m_luaEngineMap.find(luaScript->GetPath().string()) == m_luaEngineMap.end())
+		{
+			m_luaEngineMap[luaScript->GetPath().string()] = {};
+			m_luaEngineMap[luaScript->GetPath().string()].ReadScript(luaScript->GetPath().string());
+		}
+	}
+}
+
+void Project::StopRunning()
+{
+	m_luaEngineMap.clear();
+}
 
 void Project::AddPrefab(Entity entity)
 {

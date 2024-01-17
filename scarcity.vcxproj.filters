@@ -613,6 +613,7 @@
     <ClInclude Include="Code\System\PhysicsSystem.h" />
     <ClInclude Include="Code\System\AnimatorSystem.h" />
     <ClInclude Include="Code\System\HierarchySystem.h" />
+    <ClInclude Include="Code\Lua\LuaEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />

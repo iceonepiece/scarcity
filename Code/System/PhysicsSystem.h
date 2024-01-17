@@ -10,6 +10,23 @@ public:
         : System(scene)
     {}
 
+    virtual void OnStart() override
+    {
+        auto view = m_registry.view<TransformComponent, Rigidbody2DComponent>();
+        for (auto [entity, transform, rb2d] : view.each())
+        {
+            Entity _entity{ &m_scene.GetEntityManager(), entity };
+            m_scene.GetPhysics().InitializePhysicsEntity(_entity, transform, rb2d);
+        }
+    }
+
+    virtual void OnStop() override
+    {
+        auto view = m_registry.view<Rigidbody2DComponent>();
+        for (auto [entity, rb2d] : view.each())
+            m_scene.GetPhysics().DestroyPhysicsEntity(rb2d);
+    }
+
     virtual void Update(float deltaTime) override
     {
 		m_scene.GetPhysics().Update(deltaTime);

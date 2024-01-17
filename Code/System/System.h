@@ -10,6 +10,9 @@ public:
 	System(Scene& scene);
 	virtual ~System() = default;
 
+	virtual void OnStart() {}
+	virtual void OnStop() {}
+
 	virtual void Update(float deltaTime) = 0;
 	virtual void Render() {}
 

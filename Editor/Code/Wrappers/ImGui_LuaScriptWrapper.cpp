@@ -27,7 +27,7 @@ void ImGui_LuaScriptWrapper::RenderBrowser(EditorLayer& editor)
 
 	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 	{
-		ImGui::SetDragDropPayload("LUA_SCRIPT_FILE", m_luaScript, sizeof(m_luaScript));
+		ImGui::SetDragDropPayload("LUA_SCRIPT_FILE", m_luaScript, sizeof(LuaScript));
 
 		ImGui::EndDragDropSource();
 	}
