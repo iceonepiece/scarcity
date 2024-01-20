@@ -19,7 +19,4 @@ private:
 	GLuint m_ID;
 	GLuint m_FBO;
 	GLuint m_RBO;
-
-	unsigned int m_width;
-	unsigned int m_height;
 };

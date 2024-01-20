@@ -614,6 +614,8 @@
     <ClInclude Include="Code\System\AnimatorSystem.h" />
     <ClInclude Include="Code\System\HierarchySystem.h" />
     <ClInclude Include="Code\Lua\LuaEntity.h" />
+    <ClInclude Include="Code\System\UISystem.h" />
+    <ClInclude Include="Code\UI\UIComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />

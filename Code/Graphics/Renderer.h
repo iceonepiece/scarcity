@@ -66,29 +66,16 @@ public:
 		m_screenSize = { width, height };
 	}
 
+	inline glm::vec2 GetScreenSize() const { return m_screenSize; }
+
 	inline float GetScreenSizePercentage() { return m_screenSize.x / m_defaultScreenSize.x; }
 
-	void SetCamera(Camera* camera);
+	void SetCamera(const Camera& camera);
 	void SetCamera(CameraComponent camera);
-
-	inline void SetProjectionMatrix(const glm::mat4& projection)
-	{
-		m_projectionMatrix = projection;
-	}
-
-	inline void SetViewMatrix(const glm::mat4& view)
-	{
-		m_viewMatrix = view;
-	}
 
 	inline void SetViewProjectionMatrix(const glm::mat4& viewProj)
 	{
 		m_viewProjectionMatrix = viewProj;
-	}
-
-	inline void CalculateViewProjectionMatrix()
-	{
-		m_viewProjectionMatrix = m_projectionMatrix * m_viewMatrix;
 	}
 
 	static glm::vec4 s_quadVertices[4];
@@ -109,8 +96,6 @@ protected:
 	CameraComponent m_cameraComponent;
 	glm::vec2 m_screenSize;
 	glm::vec2 m_defaultScreenSize;
-	glm::mat4 m_viewMatrix;
-	glm::mat4 m_projectionMatrix;
 	glm::mat4 m_viewProjectionMatrix;
 
 	friend class RenderSystem;  

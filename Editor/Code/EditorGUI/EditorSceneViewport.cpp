@@ -36,6 +36,7 @@ EditorSceneViewport::EditorSceneViewport(EditorLayer& editor)
 void EditorSceneViewport::Update(float deltaTime)
 {
     Application& app = Application::Get();
+	Renderer& renderer = app.GetRenderer();
 
     if (m_width > 0.0f && m_height > 0.0f)
     {
@@ -45,15 +46,14 @@ void EditorSceneViewport::Update(float deltaTime)
 
     m_framebuffer->Bind();
 
-    app.GetRenderer().Clear({0.2f, 0.2f, 0.2f, 1.0f});
+    renderer.SetScreenSize(m_width, m_height);
+    renderer.Clear({0.2f, 0.2f, 0.2f, 1.0f});
 
     if (m_editor.IsScenePlaying())
     {
         if (Scene* playingScene = m_editor.GetGameLayer().GetCurrentScene())
         {
             playingScene->Update(deltaTime);
-            playingScene->SetViewportSize(m_width, m_height);
-            playingScene->OnViewportResize();
             playingScene->Render(m_renderOptions);
         }
     }
@@ -63,8 +63,7 @@ void EditorSceneViewport::Update(float deltaTime)
 
         if (Scene* activeScene = m_editor.GetScene())
         {
-            activeScene->SetCamera(*m_camera);
-            activeScene->SetViewportSize(m_width, m_height);
+            renderer.SetCamera(*m_camera);
             activeScene->RenderEditor(m_renderOptions);
 
             if (m_editor.GetCurrentMode() != EditorMode::ViewMode && m_editor.GetSelectedObject().type == EditorObjectType::Entity)

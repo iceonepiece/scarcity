@@ -165,13 +165,9 @@ void Renderer::NextBatch()
     StartBatch();
 }
 
-void Renderer::SetCamera(Camera *camera)
+void Renderer::SetCamera(const Camera& camera)
 {
-    m_camera = camera;
-
-    m_viewMatrix = camera->GetViewMatrix();
-    m_projectionMatrix = camera->GetProjectionMatrix();
-    m_viewProjectionMatrix = m_projectionMatrix * m_viewMatrix;
+    m_viewProjectionMatrix = camera.GetProjectionMatrix() * camera.GetViewMatrix();
 }
 
 void Renderer::SetCamera(CameraComponent cameraComponent)

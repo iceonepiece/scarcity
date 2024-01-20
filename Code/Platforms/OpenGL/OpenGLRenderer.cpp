@@ -109,11 +109,11 @@ void OpenGLRenderer::Draw(Sprite& sprite, const glm::mat4& modelMatrix)
     m_spriteShader.Use();
 
     m_spriteShader.SetMatrix4("model", modelMatrix);
-    //m_spriteShader.SetMatrix4("view", m_camera->GetViewMatrix());
-    //m_spriteShader.SetMatrix4("projection", m_camera->GetProjectionMatrix());
+    m_spriteShader.SetMatrix4("view", m_camera->GetViewMatrix());
+    m_spriteShader.SetMatrix4("projection", m_camera->GetProjectionMatrix());
 
-    m_spriteShader.SetMatrix4("view", m_viewMatrix);
-    m_spriteShader.SetMatrix4("projection", m_projectionMatrix);
+    //m_spriteShader.SetMatrix4("view", m_viewMatrix);
+    //m_spriteShader.SetMatrix4("projection", m_projectionMatrix);
 
     glActiveTexture(GL_TEXTURE0);
     OpenGLTexture *texture = static_cast<OpenGLTexture*>(sprite.GetTexture());
@@ -245,7 +245,8 @@ void OpenGLRenderer::DrawQuad(const glm::vec2& position, const glm::vec2& scale,
     model = glm::rotate(model, angle, glm::vec3(0, 0, 1));
     model = glm::scale(model, glm::vec3(scale.x, scale.y, 0.0f));
 
-    m_basicShader.SetMatrix4("mvp", m_camera->GetProjectionMatrix() * m_camera->GetViewMatrix() * model);
+    //m_basicShader.SetMatrix4("mvp", m_camera->GetProjectionMatrix() * m_camera->GetViewMatrix() * model);
+    m_basicShader.SetMatrix4("mvp", m_viewProjectionMatrix);
     m_basicShader.SetVector4f("color", color);
 
     glBindVertexArray(m_quadVAO);
@@ -382,10 +383,10 @@ void OpenGLRenderer::DrawCircle2D(const Circle2D& circle, float thickness)
     model = glm::scale(model, glm::vec3(circle.radius * 2 * circle.scale.x, circle.radius * 2 * circle.scale.y, 0.0f));
 
     m_circleShader.SetMatrix4("model", model);
-    //m_circleShader.SetMatrix4("view", m_camera->GetViewMatrix());
+    m_circleShader.SetMatrix4("viewProjection", m_viewProjectionMatrix);
     //m_circleShader.SetMatrix4("projection", m_camera->GetProjectionMatrix(CameraType::Orthographic));
-    m_circleShader.SetMatrix4("view", m_viewMatrix);
-    m_circleShader.SetMatrix4("projection", m_projectionMatrix);
+    //m_circleShader.SetMatrix4("view", m_viewMatrix);
+    //m_circleShader.SetMatrix4("projection", m_projectionMatrix);
     m_circleShader.SetVector4f("color", circle.color);
     m_circleShader.SetFloat("minRadius", 1.0f - thickness);
 

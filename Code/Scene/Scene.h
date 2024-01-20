@@ -45,9 +45,7 @@ public:
 	std::filesystem::path GetAbsolutePath();
 
 	void SetProject(Project* project);
-	void SetViewportSize(unsigned int width, unsigned int height);
 	void SetCamera(Camera& camera);
-	void OnViewportResize();
 	
 	bool HasSaved();
 

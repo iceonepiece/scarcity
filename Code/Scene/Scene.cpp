@@ -240,7 +240,7 @@ void Scene::StartNativeScripts(NativeScriptEngine& scriptEngine)
 void Scene::RenderTexts()
 {
     Renderer& renderer = Application::Get().GetRenderer();
-    renderer.SetScreenSize(m_viewportWidth, m_viewportHeight);
+    //renderer.SetScreenSize(m_viewportWidth, m_viewportHeight);
     renderer.PreRender(true);
 
     auto textView = m_manager.m_registry.view<TransformComponent, CanvasComponent, TextComponent>();
@@ -440,12 +440,38 @@ bool Scene::HasSaved()
 
 void Scene::Update(float deltaTime)
 {
+    Renderer& renderer = m_app->GetRenderer();
+    glm::vec2 screenSize = renderer.GetScreenSize();
+
+    UIManager::m_objects.clear();
+
     for (auto& system : m_systems)
     {
         if (system->IsActive())
             system->Update(deltaTime);
     }
-    
+
+    std::unique_ptr<LuaEngine> luaEngine = std::make_unique<LuaEngine>();
+
+    auto luaScriptView = m_manager.m_registry.view<LuaScriptComponent>();
+    for (auto [entity, luaScript] : luaScriptView.each())
+    {
+        if (luaScript.script != nullptr && FileSystem::FileExists(luaScript.script->GetPath()))
+        {
+            luaEngine->ReadScript(luaScript.script->GetPath().string());
+            sol::function updateFn = luaEngine->GetFunction("Update");
+            updateFn(deltaTime);
+        }
+    }
+
+    for (auto& uiObject : UIManager::m_objects)
+    {
+        if (uiObject.type == UIType_Box)
+            renderer.DrawQuadUI(uiObject.position, uiObject.scale, uiObject.color);
+        else if (uiObject.type == UIType_Text)
+            renderer.DrawText(uiObject.text, uiObject.position, uiObject.fontSize, uiObject.color);
+    }
+
     /*
     auto canvasAdjustView = m_manager.m_registry.view<TransformComponent, CanvasComponent>();
     for (auto [entity, transform, canvas] : canvasAdjustView.each())
@@ -537,11 +563,23 @@ void Scene::Update(float deltaTime)
         if (nativeScript.instance != nullptr)
             nativeScript.instance->LateUpdate(deltaTime);
     }
+
+    auto view = m_manager.m_registry.view<TransformComponent, CameraComponent>();
+    for (auto [entity, transform, camera] : view.each())
+    {
+        float ratio = screenSize.x / (float)screenSize.y;
+        float width = camera.size * ratio;
+
+        glm::mat4 viewMatrix = glm::inverse(glm::translate(glm::mat4(1.0f), transform.position));
+        glm::mat4 projectionMatirx = glm::ortho(-width, width, -camera.size, camera.size);
+
+        renderer.SetViewProjectionMatrix(projectionMatirx * viewMatrix);
+    }
 }
 
 void Scene::Enter()
 {
-   Application::Get().GetRenderer().SetCamera(m_camera.get());
+   Application::Get().GetRenderer().SetCamera(*m_camera);
 }
 
 void Scene::Exit()
@@ -565,31 +603,29 @@ void Scene::UpdateUI(float deltaTime)
     */
 }
 
-void Scene::SetViewportSize(unsigned int width, unsigned int height)
-{
-    m_viewportWidth = width;
-    m_viewportHeight = height;
-}
-
+/*
 void Scene::OnViewportResize()
 {
     Renderer& renderer = m_app->GetRenderer();
+    glm::vec2 screenSize  = renderer.GetScreenSize();
 
     auto view = m_manager.m_registry.view<TransformComponent, CameraComponent>();
     for (auto [entity, transform, camera] : view.each())
     {
-        float ratio = m_viewportWidth / (float)m_viewportHeight;
+        float ratio = screenSize.x / (float)screenSize.y;
         float width = camera.size * ratio;
 
-        renderer.SetViewMatrix(glm::inverse(glm::translate(glm::mat4(1.0f), transform.position)));
-        renderer.SetProjectionMatrix(glm::ortho(-width, width, -camera.size, camera.size));
-        renderer.CalculateViewProjectionMatrix();
+        glm::mat4 viewMatrix = glm::inverse(glm::translate(glm::mat4(1.0f), transform.position));
+        glm::mat4 projectionMatirx = glm::ortho(-width, width, -camera.size, camera.size);
+
+        renderer.SetViewProjectionMatrix(projectionMatirx * viewMatrix);
     }
 }
+*/
 
 void Scene::SetCamera(Camera& camera)
 {
-    Application::Get().GetRenderer().SetCamera(&camera);
+    Application::Get().GetRenderer().SetCamera(camera);
 }
 
 void Scene::Render(RenderOptions renderOptions)
@@ -726,7 +762,7 @@ void Scene::RenderEditor(RenderOptions renderOptions)
 void Scene::RenderUI()
 {
     Renderer& renderer = Application::Get().GetRenderer();
-    renderer.SetScreenSize(m_viewportWidth, m_viewportHeight);
+    //renderer.SetScreenSize(m_viewportWidth, m_viewportHeight);
 
     /*
     auto canvas = m_manager.m_registry.view<TransformComponent, CanvasComponent, ButtonComponent>();

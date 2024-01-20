@@ -12,6 +12,7 @@ public:
 
     virtual void Update(float deltaTime) override
     {
+        /*
         LuaEngine& luaEngine = Application::Get().GetLuaEngine();
 
         auto luaScriptView = m_registry.view<LuaScriptComponent>();
@@ -24,5 +25,6 @@ public:
                 updateFn(deltaTime);
             }
         }
+        */
     }
 };
