@@ -9,6 +9,7 @@
 #include "System/System.h"
 #include "Asset/Asset.h"
 
+class LuaEngine;
 class Application;
 class Project;
 class Event;
@@ -150,4 +151,6 @@ public:
 	InitializeFunction m_initializeFunction;
 
 	Project* m_project;
+
+	std::unique_ptr<LuaEngine> m_luaEngine;
 };

@@ -30,7 +30,7 @@ LuaEngine::LuaEngine()
 		sol::table uiTable = m_state["ui"];
 
 		UIRect screenRect = { {0, 0}, screenSize, 0 };
-		unsigned int index = 0;
+		unsigned int index = 1;
 
 		while (true)
 		{

@@ -9,6 +9,7 @@
 #include "Graphics/Framebuffer.h"
 #include "Graphics/Sprite.h"
 #include "Graphics/VertexArray.h"
+#include "Graphics/FontSystem.h"
 #include "Shapes/Shape2D.h"
 #include "Components/CameraComponent.h"
 
@@ -18,6 +19,14 @@ struct QuadVertex
 	glm::vec4 color;
 	glm::vec2 texCoord;
 	float texIndex;
+};
+
+struct DrawTextCommand
+{
+	std::string text;
+	glm::vec2 position;
+	float size;
+	glm::vec4 color;
 };
 
 class Renderer
@@ -49,7 +58,8 @@ public:
 	virtual void DrawRect(const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }, float thickness = 1.0f) = 0;
 	virtual void DrawCircle(const glm::vec2& position, float radius) = 0;
 	virtual void DrawCircle2D(const Circle2D& circle, float thickness = 1.0f) = 0;
-	virtual void DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color) = 0;
+	
+	void DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color);
 
 	virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray, uint32_t indexCount) = 0;
 
@@ -81,9 +91,12 @@ public:
 	static glm::vec4 s_quadVertices[4];
 
 protected:
+	std::unique_ptr<FontSystem> m_fontSystem;
 	std::unique_ptr<Shader> m_quadShader;
 	std::shared_ptr<VertexBuffer> m_quadVertexBuffer;
 	std::shared_ptr<VertexArray> m_quadVertexArray;
+
+	std::vector<DrawTextCommand> m_drawTextCommands;
 
 	uint32_t m_quadIndexCount = 0;
 	QuadVertex* m_quadVertexBufferBase = nullptr;

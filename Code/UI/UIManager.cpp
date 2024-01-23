@@ -2,7 +2,7 @@
 #include "Math/Math.h"
 #include <iostream>
 
-std::vector<UIObject> UIManager::m_objects;
+std::vector<std::unique_ptr<UIObject>> UIManager::m_objects;
 
 void UIManager::ProcessButton(ButtonComponent& button, Input& input)
 {
@@ -51,6 +51,16 @@ bool UIManager::HandleInput(CanvasComponent& canvas, ButtonComponent& button, In
 	return false;
 }
 
+void UIManager::Clear()
+{
+	for (auto& object : m_objects)
+	{
+		object.reset();
+	}
+
+	m_objects.clear();
+}
+
 void UIManager::CreateUIComponent(sol::table& uiComponent, const UIRect& parentRect)
 {
 	float x = uiComponent["x"].get<float>();
@@ -65,27 +75,52 @@ void UIManager::CreateUIComponent(sol::table& uiComponent, const UIRect& parentR
 		uiComponent["color"][4]
 	};
 
-	UIObject object;
-	object.type = (UIType)uiComponent["class"].get<int>();
-	object.position = { x + parentRect.position.x, y + parentRect.position.y, 0 };
-	object.scale = { w,  h, 0 };
-	object.color = color;
-	object.flags = (UIFlag)uiComponent["flags"].get<int>();
+	UIObject* object = nullptr;
 
-	if (object.flags & UIFlag_HorizontalCenter)
+	UIType uiType = (UIType)uiComponent["class"].get<int>();
+
+	if (uiType == UIType_Button)
 	{
-		object.position.x += (parentRect.scale.x / 2) + parentRect.position.x;
+		object = new UIButtonObject();
+		object->onHoverFunction = uiComponent["onHover"];
+	}
+	else
+	{
+		object = new UIObject();
 	}
 
-	if (object.flags & UIFlag_VerticalCenter)
+	object->type = uiType;
+	object->position = { x + parentRect.position.x, y + parentRect.position.y, 0 };
+	object->scale = { w,  h, 0 };
+	object->color = color;
+	object->flags = (UIFlag)uiComponent["flags"].get<int>();
+
+	if (uiType == UIType_Text)
 	{
-		object.position.y += (parentRect.scale.y / 2) + parentRect.position.y;
+		glm::vec4 fontColor = {
+			uiComponent["fontColor"][1],
+			uiComponent["fontColor"][2],
+			uiComponent["fontColor"][3],
+			uiComponent["fontColor"][4]
+		};
+
+		object->fontColor = fontColor;
 	}
 
-	if (object.type == UIType_Text)
+	if (object->flags & UIFlag_HorizontalCenter)
 	{
-		object.text = uiComponent["text"].get<std::string>();
-		object.fontSize = uiComponent["fontSize"].get<int>();
+		object->position.x += (parentRect.scale.x / 2) + parentRect.position.x;
+	}
+
+	if (object->flags & UIFlag_VerticalCenter)
+	{
+		object->position.y += (parentRect.scale.y / 2) + parentRect.position.y;
+	}
+
+	if (object->type == UIType_Text)
+	{
+		object->text = uiComponent["text"].get<std::string>();
+		object->fontSize = uiComponent["fontSize"].get<int>();
 	}
 
 	UIManager::AddObject(object);
@@ -97,9 +132,9 @@ void UIManager::CreateUIComponent(sol::table& uiComponent, const UIRect& parentR
 
 	sol::table children = uiComponent["children"];
 
-	unsigned int index = 0;
+	unsigned int index = 1;
 
-	UIRect currentRect = { object.position, object.scale, 0.0f };
+	UIRect currentRect = { object->position, object->scale, 0.0f };
 
 	while (true)
 	{

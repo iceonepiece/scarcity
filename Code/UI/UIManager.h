@@ -13,10 +13,12 @@ public:
 	static bool HandleInput(CanvasComponent& canvas, ButtonComponent& button, Input& input);
 	static void CreateUIComponent(sol::table& uiComponent, const UIRect& parentRect = {});
 
-	static void AddObject(const UIObject& object)
+	static void Clear();
+
+	static void AddObject(UIObject* object)
 	{
-		m_objects.push_back(object);
+		m_objects.emplace_back(object);
 	}
 
-	static std::vector<UIObject> m_objects;
+	static std::vector<std::unique_ptr<UIObject>> m_objects;
 };

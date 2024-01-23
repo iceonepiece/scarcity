@@ -21,7 +21,7 @@ public:
 	virtual void DrawRect(const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }, float thickness = 1.0f) override;
 	virtual void DrawCircle(const glm::vec2& position, float radius) override;
 	virtual void DrawCircle2D(const Circle2D& circle, float thickness = 1.0f) override;
-	virtual void DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color) override;
+	//virtual void DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color) override;
 
 	virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray, uint32_t indexCount) override;
 

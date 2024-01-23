@@ -41,6 +41,8 @@ Scene::Scene(const std::string& name, const std::filesystem::path& path)
     m_systems.push_back(std::make_unique<PhysicsSystem>(*this));
     m_systems.push_back(std::make_unique<HierarchySystem>(*this));
     m_systems.push_back(std::make_unique<AnimatorSystem>(*this));
+
+    m_luaEngine = std::make_unique<LuaEngine>();
 }
 
 void Scene::SetProject(Project* project)
@@ -443,34 +445,35 @@ void Scene::Update(float deltaTime)
     Renderer& renderer = m_app->GetRenderer();
     glm::vec2 screenSize = renderer.GetScreenSize();
 
-    UIManager::m_objects.clear();
-
     for (auto& system : m_systems)
     {
         if (system->IsActive())
             system->Update(deltaTime);
     }
 
-    std::unique_ptr<LuaEngine> luaEngine = std::make_unique<LuaEngine>();
-
     auto luaScriptView = m_manager.m_registry.view<LuaScriptComponent>();
     for (auto [entity, luaScript] : luaScriptView.each())
     {
         if (luaScript.script != nullptr && FileSystem::FileExists(luaScript.script->GetPath()))
         {
-            luaEngine->ReadScript(luaScript.script->GetPath().string());
-            sol::function updateFn = luaEngine->GetFunction("Update");
+            m_luaEngine->ReadScript(luaScript.script->GetPath().string());
+            sol::function updateFn = m_luaEngine->GetFunction("Update");
             updateFn(deltaTime);
         }
     }
 
     for (auto& uiObject : UIManager::m_objects)
     {
-        if (uiObject.type == UIType_Box)
-            renderer.DrawQuadUI(uiObject.position, uiObject.scale, uiObject.color);
-        else if (uiObject.type == UIType_Text)
-            renderer.DrawText(uiObject.text, uiObject.position, uiObject.fontSize, uiObject.color);
+        uiObject->HandleInput(Application::Get().GetInput());
+
+        renderer.DrawQuadUI(uiObject->position, uiObject->scale, uiObject->color);
+
+        if (uiObject->type == UIType_Text)
+            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor);
     }
+
+
+    UIManager::Clear();
 
     /*
     auto canvasAdjustView = m_manager.m_registry.view<TransformComponent, CanvasComponent>();
@@ -692,11 +695,11 @@ void Scene::Render(RenderOptions renderOptions)
     if (renderOptions.collisionVisible)
         RenderCollisionComponents();
 
-    RenderTexts();
+    //RenderTexts();
 
     //renderer.SetViewProjectionMatrix(glm::ortho(0.0f, (float)m_viewportWidth, 0.0f, (float)m_viewportHeight));
 
-    RenderUI();
+   // RenderUI();
 }
 
 void Scene::RenderEditor(RenderOptions renderOptions)

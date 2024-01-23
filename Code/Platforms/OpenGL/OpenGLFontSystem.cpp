@@ -1,7 +1,7 @@
 #include "OpenGLFontSystem.h"
 #include "OpenGLRenderer.h"
 
-int OpenGLFontSystem::Init()
+int OpenGLFontSystem::Initialize()
 {
     shader.Compile("Shaders/font.vert", "Shaders/font.frag");
 
@@ -105,7 +105,7 @@ void OpenGLFontSystem::RenderText(const std::string& text, const glm::vec2& posi
     glBindVertexArray(VAO);
 
     float x = position.x;
-    float y = position.y;
+    float y = viewportSize.y - position.y;
 
     //float screenSizePercentage = Renderer::GetScreenSizePercentage();
     float screenSizePercentage = 1.0f;

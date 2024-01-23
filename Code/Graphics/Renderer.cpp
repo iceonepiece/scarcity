@@ -44,12 +44,20 @@ void Renderer::Initialize()
     m_quadVertexArray->SetIndexBuffer(quadIB);
     delete[] quadIndices;
 
+    m_fontSystem = std::make_unique<OpenGLFontSystem>();
+    m_fontSystem->Initialize();
+
 }
 
 Renderer::~Renderer()
 {
     delete[] m_quadVertexBufferBase;
 };
+
+void Renderer::DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color)
+{
+    m_drawTextCommands.push_back({ text, position, scale, color });
+}
 
 void Renderer::DrawSprite(Sprite& sprite, const glm::vec2& position, const glm::vec2& scale, float angle, glm::vec4 color)
 {
@@ -150,6 +158,12 @@ void Renderer::Flush()
         
         DrawIndexed(m_quadVertexArray, m_quadIndexCount);
     }
+
+    for (auto& drawCommand : m_drawTextCommands)
+    {
+        m_fontSystem->RenderText(drawCommand.text, drawCommand.position, drawCommand.size, drawCommand.color, m_screenSize);
+    }
+    m_drawTextCommands.clear();
 }
 
 void Renderer::StartBatch()

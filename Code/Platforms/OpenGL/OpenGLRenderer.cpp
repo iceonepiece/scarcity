@@ -90,7 +90,7 @@ void OpenGLRenderer::Initialize()
     m_uiShader.Compile("Shaders/ui.vert", "Shaders/ui.frag");
     m_circleShader.Compile("Shaders/circle.vert", "Shaders/circle.frag");
 
-    m_fontSystem.Init();
+    //m_fontSystem->Initialize();
 }
 
 std::unique_ptr<Texture> OpenGLRenderer::LoadTexture(const std::string& name, const char* filename, bool alpha)
@@ -419,10 +419,12 @@ void OpenGLRenderer::DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray
     glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 }
 
+/*
 void OpenGLRenderer::DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color)
 {
     m_fontSystem.RenderText(text, position, scale, color, m_screenSize);
 }
+*/
 
 void OpenGLRenderer::Clear(const glm::vec4& color)
 {
