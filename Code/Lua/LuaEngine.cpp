@@ -1,8 +1,8 @@
 #include "LuaEngine.h"
 #include "Core/Application.h"
 #include "Project/Project.h"
-#include "UI/UIManager.h"
 #include "Graphics/Renderer.h"
+#include "LuaUI.h"
 
 LuaEngine::LuaEngine()
 {
@@ -13,40 +13,38 @@ LuaEngine::LuaEngine()
 		return Project::GetActive()->GetGlobalLuaEngine().GetValue(name);
 	});
 
+	m_state.set_function("GetTable", [&](const std::string& name)
+	{
+		return Project::GetActive()->GetGlobalLuaEngine().GetTable(name);
+	});
+
+	m_state.set_function("SetInt", [&](const std::string& name, int value)
+	{
+		return Project::GetActive()->GetGlobalLuaEngine().SetInt(name, value);
+	});
+
 	m_state.set_function("GetKey", [&](const std::string& name)
 	{
 		return Application::Get().GetInput().GetKey(Key::Space);
 	});
 
-	m_state.set_function("CreateUI", [&]()
+	m_state.set_function("GetKeyDown", [&](const std::string& name)
 	{
-		glm::vec2 screenSize = Application::Get().GetRenderer().GetScreenSize();
+		KeyCode key = Key::Enter;
 
-		sol::optional<sol::table> uiTableExist = m_state["ui"];
+		if (name == "left")
+			key = Key::Left;
+		else if (name == "right")
+			key = Key::Right;
+		else if (name == "up")
+			key = Key::Up;
+		else if (name == "down")
+			key = Key::Down;
 
-		if (uiTableExist == sol::nullopt)
-			return;
-
-		sol::table uiTable = m_state["ui"];
-
-		UIRect screenRect = { {0, 0}, screenSize, 0 };
-		unsigned int index = 1;
-
-		while (true)
-		{
-			sol::optional<sol::table> uiComponentExist = uiTable[index];
-
-			if (uiComponentExist == sol::nullopt)
-				return;
-
-			sol::table uiComponent = uiTable[index];
-
-			UIManager::CreateUIComponent(uiComponent, screenRect);
-			index++;
-		}
-
-		std::cout << "UI Table exist\n";
+		return Application::Get().GetInput().GetKeyDown(key);
 	});
+
+	BindLuaUI(m_state);
 }
 
 void LuaEngine::ReadScript(const std::string& fileName)
@@ -62,4 +60,14 @@ sol::function LuaEngine::GetFunction(const std::string& name)
 sol::object LuaEngine::GetValue(const std::string& name)
 {
 	return m_state["gameData"][name];
+}
+
+sol::table LuaEngine::GetTable(const std::string& name)
+{
+	return m_state["gameData"][name];
+}
+
+void LuaEngine::SetInt(const std::string& name, int value)
+{
+	m_state["gameData"][name] = value;
 }

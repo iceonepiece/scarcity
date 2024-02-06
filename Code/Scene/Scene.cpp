@@ -128,6 +128,18 @@ void Scene::Start()
     }
 
     
+    auto luaView = m_manager.m_registry.view<LuaScriptComponent>();
+
+    for (auto [entity, luaScript] : luaView.each())
+    {
+        luaScript.engine = new LuaEngine();
+
+        if (luaScript.script != nullptr && FileSystem::FileExists(luaScript.script->GetPath()))
+        {
+            luaScript.engine->ReadScript(luaScript.script->GetPath().string());
+        }
+    }
+
 
     auto audioView = m_manager.m_registry.view<AudioSourceComponent>();
 
@@ -189,6 +201,13 @@ void Scene::Stop()
     for (auto& system : m_systems)
     {
         system->OnStop();
+    }
+
+    auto luaView = m_manager.m_registry.view<LuaScriptComponent>();
+
+    for (auto [entity, luaScript] : luaView.each())
+    {
+        delete luaScript.engine;
     }
 
     auto view = m_manager.m_registry.view<NativeScriptComponent>();
@@ -456,8 +475,10 @@ void Scene::Update(float deltaTime)
     {
         if (luaScript.script != nullptr && FileSystem::FileExists(luaScript.script->GetPath()))
         {
-            m_luaEngine->ReadScript(luaScript.script->GetPath().string());
-            sol::function updateFn = m_luaEngine->GetFunction("Update");
+            //m_luaEngine->ReadScript(luaScript.script->GetPath().string());
+            //sol::function updateFn = m_luaEngine->GetFunction("Update");
+            //luaScript.engine->ReadScript(luaScript.script->GetPath().string());
+            sol::function updateFn = luaScript.engine->GetFunction("Update");
             updateFn(deltaTime);
         }
     }
@@ -466,10 +487,15 @@ void Scene::Update(float deltaTime)
     {
         uiObject->HandleInput(Application::Get().GetInput());
 
-        renderer.DrawQuadUI(uiObject->position, uiObject->scale, uiObject->color);
-
         if (uiObject->type == UIType_Text)
             renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor);
+        else if (uiObject->type == UIType_Button)
+        {
+            renderer.DrawQuadUI(uiObject->position, uiObject->scale, uiObject->color);
+            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor);
+        }
+        else
+            renderer.DrawQuadUI(uiObject->position, uiObject->scale, uiObject->color);
     }
 
 

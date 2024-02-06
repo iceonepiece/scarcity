@@ -35,10 +35,12 @@ class UIObject
 public:
 	~UIObject() = default;
 
+	bool active = false;
+
 	UIType type = UIType_Box;
-	glm::vec3 position;
-	glm::vec3 scale;
-	glm::vec3 rotation;
+	glm::vec3 position { 0.0f };
+	glm::vec3 scale { 1.0f };
+	glm::vec3 rotation { 0.0f, 0.0f, 1.0f };
 	glm::vec4 color { 1.0f, 1.0f, 1.0f, 1.0f };
 	glm::vec4 fontColor{ 0.1f, 0.1f, 0.1f, 1.0f };
 
@@ -52,6 +54,7 @@ public:
 	glm::vec3 absoluteRotation;
 
 	sol::function onHoverFunction;
+	sol::function onClickFunction;
 
 	virtual void HandleInput(Input& input) {}
 };
@@ -67,6 +70,12 @@ public:
 		{
 			if (onHoverFunction.valid())
 				onHoverFunction();
+
+			if (input.GetMouseButtonDown(Mouse::ButtonLeft))
+			{
+				if (onClickFunction.valid())
+					onClickFunction();
+			}
 		}
 	}
 };
