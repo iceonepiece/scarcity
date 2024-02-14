@@ -2,8 +2,6 @@
 #include "Math/Math.h"
 #include <iostream>
 
-std::vector<std::unique_ptr<UIObject>> UIManager::m_objects;
-
 void UIManager::ProcessButton(ButtonComponent& button, Input& input)
 {
 

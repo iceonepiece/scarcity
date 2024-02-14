@@ -72,12 +72,18 @@ bool NativeScriptEngine::LoadNativeScripts(std::filesystem::path dllPath, std::v
                 GetProcAddress(dllHandle, "CreateInstance")
                 );
 
+            StartGameFunction startGame = reinterpret_cast<StartGameFunction>(
+                GetProcAddress(dllHandle, "StartGame")
+                );
+
             if (registerClasses && createInstance)
             {
                 std::cout << "Load function Success" << std::endl;
                 success = true;
                 registerClasses();
             }
+
+            m_startGameFunction = startGame ? startGame : nullptr;
 
             m_createInstance = createInstance;
             m_dllHandle = dllHandle;

@@ -33,7 +33,7 @@ struct UIRect
 class UIObject
 {
 public:
-	~UIObject() = default;
+	virtual ~UIObject() = default;
 
 	bool active = false;
 

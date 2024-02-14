@@ -20,6 +20,7 @@ Application::Application(const ApplicationConfigs& configs)
 
 	m_nativeScriptEngine = std::make_unique<NativeScriptEngine>();
 	m_luaEngine = std::make_unique<LuaEngine>();
+	m_uiManager = std::make_unique<UIManager>();
 
 	Audio::Create();
 	Audio::Get()->Initialize();
@@ -31,8 +32,19 @@ Application::~Application()
 		layer->Shutdown();
 
 	m_nativeScriptEngine->ShutdownScriptableEntities();
+
+	ClearGlobalVariables();
+
 	Audio::Get()->Destroy();
 	Audio::Shutdown();
+}
+
+void Application::ClearGlobalVariables()
+{
+	for (auto& variable : m_globalVariables)
+		delete variable.second;
+
+	m_globalVariables.clear();
 }
 
 void Application::AddLayer(std::unique_ptr<Layer> layer)

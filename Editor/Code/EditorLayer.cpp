@@ -512,6 +512,8 @@ void EditorLayer::PlayScene()
     {
         m_activeProject->StartRunning();
 
+        m_app.GetNativeScriptEngine().RunStartGameFunction();
+
         Scene* playingScene = SceneManager::Copy(*m_activeScene);
         playingScene->SetApplication(&m_app);
         playingScene->StartNativeScripts(m_app.GetNativeScriptEngine());
@@ -528,6 +530,9 @@ void EditorLayer::StopScene()
 {
     m_gameLayer.DestroyAllScenes();
     m_activeProject->StopRunning();
+
+    m_app.ClearGlobalVariables();
+
     m_scenePlaying = false;
 }
 

@@ -483,7 +483,7 @@ void Scene::Update(float deltaTime)
         }
     }
 
-    for (auto& uiObject : UIManager::m_objects)
+    for (auto& uiObject : m_app->GetUIManager().m_objects)
     {
         uiObject->HandleInput(Application::Get().GetInput());
 
@@ -498,8 +498,7 @@ void Scene::Update(float deltaTime)
             renderer.DrawQuadUI(uiObject->position, uiObject->scale, uiObject->color);
     }
 
-
-    UIManager::Clear();
+    m_app->GetUIManager().Clear();
 
     /*
     auto canvasAdjustView = m_manager.m_registry.view<TransformComponent, CanvasComponent>();
@@ -532,7 +531,7 @@ void Scene::Update(float deltaTime)
     {
         if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
         {
-            UIManager::HandleInput(canvas, *button, input);
+            m_app->GetUIManager().HandleInput(canvas, *button, input);
         }
     }
 

@@ -12,6 +12,8 @@ void Project::StartRunning()
 	if (FileSystem::FileExists(globalLuaPath))
 		m_globalLuaEngine.ReadScript(globalLuaPath.string());
 
+
+	/*
 	for (auto& luaScript : m_luaScripts)
 	{
 		if (m_luaEngineMap.find(luaScript->GetPath().string()) == m_luaEngineMap.end())
@@ -20,6 +22,7 @@ void Project::StartRunning()
 			m_luaEngineMap[luaScript->GetPath().string()].ReadScript(luaScript->GetPath().string());
 		}
 	}
+	*/
 }
 
 void Project::StopRunning()

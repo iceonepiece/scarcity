@@ -112,6 +112,11 @@ public:
 		T(entity, this, std::forward<Args>(args)...);
 	}
 
+	LuaEngine& GetLuaEngine()
+	{
+		return *m_luaEngine;
+	}
+
 	EntityManager& GetEntityManager();
 
 	std::vector<SpawnCommand> m_spawnCommands;

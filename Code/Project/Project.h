@@ -9,6 +9,32 @@
 #include "Lua/LuaScript.h"
 #include "Lua/LuaEngine.h"
 
+class NativeValue
+{
+public:
+	virtual ~NativeValue() = default;
+};
+
+class NativeInt : public NativeValue
+{
+public:
+	NativeInt(int value)
+		: value(value)
+	{
+
+	}
+	int value;
+};
+
+class NativeBool : public NativeValue
+{
+public:
+
+	bool value;
+};
+
+
+
 class Project
 {
 public:
@@ -59,6 +85,23 @@ public:
 	inline std::vector<LuaScript*>& GetLuaScripts() { return m_luaScripts; }
 	inline LuaEngine& GetGlobalLuaEngine() { return m_globalLuaEngine; }
 
+	inline NativeValue* GetNativeValue(const std::string& name)
+	{
+		if (m_nativeValueMap.find(name) != m_nativeValueMap.end())
+			return m_nativeValueMap[name].get();
+
+		return nullptr;
+	}
+
+
+	void SetNativeInt(const std::string& name, int value)
+	{
+		if (m_nativeValueMap.find(name) != m_nativeValueMap.end())
+			m_nativeValueMap[name].reset();
+
+		m_nativeValueMap[name] = std::make_unique<NativeInt>(value);
+	}
+
 protected:
 	std::string m_name = "Untitled";
 	std::filesystem::path m_directory;
@@ -73,6 +116,7 @@ protected:
 
 	std::vector<LuaScript*> m_luaScripts;
 	std::unordered_map<std::string, LuaEngine> m_luaEngineMap;
+	std::unordered_map<std::string, std::unique_ptr<NativeValue>> m_nativeValueMap;
 
 	TagManager m_tagManager;
 

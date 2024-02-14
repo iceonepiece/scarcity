@@ -63,6 +63,8 @@ public:
 		return std::vector<std::string>();
 	}
 
+	void RunLuaScript(const std::string& fileName, const std::string& functionName, sol::object data);
+
 	Input& GetInput()
 	{
 		return m_app->GetInput();

@@ -6,7 +6,13 @@
 
 LuaEngine::LuaEngine()
 {
+	m_app = &Application::Get();
 	m_state.open_libraries(sol::lib::base);
+
+	m_state.set_function("DB_SetInt", [&](const std::string& name, int value)
+	{
+		return Project::GetActive()->SetNativeInt(name, value);
+	});
 
 	m_state.set_function("Get", [&](const std::string& name)
 	{
@@ -44,7 +50,7 @@ LuaEngine::LuaEngine()
 		return Application::Get().GetInput().GetKeyDown(key);
 	});
 
-	BindLuaUI(m_state);
+	BindLuaUI(*this);
 }
 
 void LuaEngine::ReadScript(const std::string& fileName)

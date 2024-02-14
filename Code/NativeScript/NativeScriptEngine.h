@@ -7,6 +7,7 @@
 #include "Entity/ScriptableEntity.h"
 
 typedef void (*RegisterClassesFunction)();
+typedef void (*StartGameFunction)(Application& app);
 typedef ScriptableEntity* (*CreateInstanceFunction)(const std::string&);
 
 class NativeScriptEngine
@@ -20,6 +21,12 @@ public:
     void InitializeScriptableEntities();
     void ShutdownScriptableEntities();
 
+    void RunStartGameFunction()
+    {
+        if (m_startGameFunction != nullptr)
+            m_startGameFunction(Application::Get());
+    }
+
     inline void SetClassNames(std::vector<std::string> classNames)
     {
         m_classNames = classNames;
@@ -28,6 +35,8 @@ public:
 private:
     void* m_dllHandle = nullptr;
     CreateInstanceFunction m_createInstance = nullptr;
+    StartGameFunction m_startGameFunction = nullptr;
+
     std::vector<std::string> m_classNames;
     std::unordered_map<std::string, ScriptableEntity*> m_scriptableInstanceMap;
 };
