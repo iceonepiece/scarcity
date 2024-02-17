@@ -7,19 +7,14 @@ layout(location = 3) in float a_TexIndex;
 
 uniform mat4 u_ViewProjection;
 
-struct VertexOutput
-{
-	vec4 Color;
-	vec2 TexCoord;
-};
-
-layout (location = 0) out VertexOutput Output;
-layout (location = 3) out float v_TexIndex;
+out vec4 Color;
+out vec2 TexCoord;
+out float v_TexIndex;
 
 void main()
 {
-	Output.Color = a_Color;
-	Output.TexCoord = a_TexCoord;
+	Color = a_Color;
+	TexCoord = a_TexCoord;
 	v_TexIndex = a_TexIndex;
 
 	gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
