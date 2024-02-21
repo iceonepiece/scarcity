@@ -23,6 +23,7 @@ enum PhysicsLayer : uint16_t
 
 struct Collision2D
 {
+	Entity entity;
 	std::string name;
 	std::string tag;
 	uint16_t layer;
