@@ -140,6 +140,7 @@ void Scene::Start()
         }
     }
 
+    m_app->GetUIManager().m_rectStack.clear();
 
     auto audioView = m_manager.m_registry.view<AudioSourceComponent>();
 
@@ -483,58 +484,6 @@ void Scene::Update(float deltaTime)
         }
     }
 
-    for (auto& uiObject : m_app->GetUIManager().m_objects)
-    {
-        uiObject->HandleInput(Application::Get().GetInput());
-
-        if (uiObject->type == UIType_Text)
-            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor);
-        else if (uiObject->type == UIType_Button)
-        {
-            renderer.DrawQuadUI(uiObject->position, uiObject->scale, uiObject->color);
-            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor);
-        }
-        else
-            renderer.DrawQuadUI(uiObject->position, uiObject->scale, uiObject->color);
-    }
-
-    m_app->GetUIManager().Clear();
-
-    /*
-    auto canvasAdjustView = m_manager.m_registry.view<TransformComponent, CanvasComponent>();
-    for (auto [entity, transform, canvas] : canvasAdjustView.each())
-    {
-        float x = transform.position.x;
-        float y = transform.position.y;
-
-        switch (canvas.horizontalAligment)
-        {
-            case Center: x += m_viewportWidth / 2.0f; break;
-            case Right: x += m_viewportWidth; break;
-        }
-
-        switch (canvas.verticalAlignment)
-        {
-            case Middle: y += m_viewportHeight / 2.0f; break;
-            case Bottom: y += m_viewportHeight; break;
-        }
-
-        canvas.position.x = x;
-        canvas.position.y = y;
-    }
-    */
-
-    Input& input = m_app->GetInput();
-
-    auto canvasHandleInputView = m_manager.m_registry.view<CanvasComponent>();
-    for (auto [entity, canvas] : canvasHandleInputView.each())
-    {
-        if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
-        {
-            m_app->GetUIManager().HandleInput(canvas, *button, input);
-        }
-    }
-
     m_camera->Update();
 
     for (auto& command : m_spawnCommands)
@@ -720,11 +669,28 @@ void Scene::Render(RenderOptions renderOptions)
     if (renderOptions.collisionVisible)
         RenderCollisionComponents();
 
-    //RenderTexts();
+    renderer.PreRender();
+    renderer.BeginFrame();
 
-    //renderer.SetViewProjectionMatrix(glm::ortho(0.0f, (float)m_viewportWidth, 0.0f, (float)m_viewportHeight));
+    for (auto& uiObject : m_app->GetUIManager().m_objects)
+    {
+        uiObject->HandleInput(Application::Get().GetInput());
 
-   // RenderUI();
+        if (uiObject->type == UIType_Text)
+            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor);
+        else if (uiObject->type == UIType_Button)
+        {
+            renderer.DrawQuadUI(uiObject->position, uiObject->scale, uiObject->color);
+            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor);
+        }
+        else
+            renderer.DrawQuadUI(uiObject->position, uiObject->scale, uiObject->color);
+    }
+
+    renderer.EndFrame();
+    renderer.PostRender();
+
+    m_app->GetUIManager().Clear();
 }
 
 void Scene::RenderEditor(RenderOptions renderOptions)

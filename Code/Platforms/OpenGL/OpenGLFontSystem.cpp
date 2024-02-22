@@ -139,6 +139,24 @@ void OpenGLFontSystem::RenderText(const std::string& text, const glm::vec2& posi
     }
     */
 
+
+    float leftX = x;
+    float rightX = leftX;
+    float _x = x;
+    std::string::const_iterator i;
+    for (i = text.begin(); i != text.end(); i++)
+    {
+        Character ch = Characters[*i];
+
+        float xpos = _x + ch.Bearing.x * realScale;
+        float w = ch.Size.x * realScale;
+        _x += (ch.Advance >> 6) * realScale;
+        rightX = xpos + w;
+    }
+    xOffset = (rightX - leftX) / 2;
+
+    //y += scale / 2;
+    
     // iterate through all characters
     std::string::const_iterator c;
     for (c = text.begin(); c != text.end(); c++)
@@ -160,6 +178,7 @@ void OpenGLFontSystem::RenderText(const std::string& text, const glm::vec2& posi
             { xpos + w, ypos,       1.0f, 1.0f },
             { xpos + w, ypos + h,   1.0f, 0.0f }
         };
+
         // render glyph texture over quad
         glBindTexture(GL_TEXTURE_2D, ch.TextureID);
         // update content of VBO memory

@@ -14,13 +14,13 @@
 #include "Entity/EntityManager.h"
 #include "Asset/AssetManager.h"
 #include "Core/TagManager.h"
-#include "UI/UIManager.h"
 
 class NativeScriptEngine;
 class LuaEngine;
 class ImGuiManager;
 class Layer;
 class Renderer;
+class UIManager;
 
 constexpr int TAG_SIZE = 8;
 

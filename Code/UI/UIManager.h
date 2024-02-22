@@ -3,8 +3,9 @@
 #include "Components/UIComponents.h"
 #include "Components/ButtonComponent.h"
 #include "Input/Input.h"
-#include "UIComponent.h"
+#include "UI/UIComponent.h"
 #include <sol/sol.hpp>
+#include <vector>
 
 class UIManager
 {
@@ -24,4 +25,5 @@ public:
 
 	glm::vec4 s_backgroundColor = glm::vec4(1.0f);
 	glm::vec4 s_fontColor = glm::vec4(0.0f);float s_fontSize = 32.0f;
+	std::vector<UIRect> m_rectStack;
 };

@@ -5,6 +5,7 @@
 #include "Graphics/Renderer.h"
 #include "NativeScript/NativeScriptEngine.h"
 #include "Lua/LuaEngine.h"
+#include "UI/UIManager.h"
 #include "Audio/Audio.h"
 
 Application* Application::s_instance = nullptr;
