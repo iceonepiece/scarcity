@@ -40,7 +40,7 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
 {
     s_instance = this;
 
-    m_activeProject->Initialize();
+    //m_activeProject->Initialize();
     //m_sceneFramebuffer = m_app.GetRenderer().CreateFramebuffer();
 
     m_fileWatcher = std::make_unique<filewatch::FileWatch<std::string>>(
@@ -53,12 +53,7 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
         }
     );
 
-    std::filesystem::path luaFilePath = m_activeProject->GetDirectory() / (m_activeProject->GetName() + ".lua");
-
-    if (FileSystem::FileExists(luaFilePath))
-        m_app.GetLuaEngine().ReadScript(luaFilePath.string());
-
-    m_activeProject->GetAssetManager().InitializeAssets(m_activeProject->GetDirectory());
+    //m_activeProject->GetAssetManager().InitializeAssets(m_activeProject->GetDirectory());
 
     m_imGuiWindowMap[ImGuiWindowType::SelectSprite] = std::make_unique<ImGuiSelectSpriteWindow>(*this, m_activeProject->GetDirectory());
     m_imGuiWindowMap[ImGuiWindowType::SelectAnimatorController] = std::make_unique<ImGuiSelectAnimatorControllerWindow>(*this, m_activeProject->GetDirectory());
@@ -515,6 +510,10 @@ void EditorLayer::PlayScene()
 {
     if (m_activeScene != nullptr)
     {
+        m_activeProject->StartRunning();
+
+        m_app.GetNativeScriptEngine().RunStartGameFunction();
+
         Scene* playingScene = SceneManager::Copy(*m_activeScene);
         playingScene->SetApplication(&m_app);
         playingScene->StartNativeScripts(m_app.GetNativeScriptEngine());
@@ -530,6 +529,10 @@ void EditorLayer::PlayScene()
 void EditorLayer::StopScene()
 {
     m_gameLayer.DestroyAllScenes();
+    m_activeProject->StopRunning();
+
+    m_app.ClearGlobalVariables();
+
     m_scenePlaying = false;
 }
 

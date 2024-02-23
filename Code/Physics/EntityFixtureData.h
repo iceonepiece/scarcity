@@ -33,8 +33,9 @@ public:
 
 				if (worldManifold.normal.x == 0 && worldManifold.normal.y == yTarget)
 				{
+					groundDetection->groundContacts.emplace_back(contact);
 					groundDetection->numGrounds++;
-					groundDetection->groundFixtures.emplace_back(other);
+
 					std::cout << "Num Grounds: " << groundDetection->numGrounds << "\n";
 				}
 			}
@@ -47,9 +48,10 @@ public:
 				BaseComponent* base = other->m_entity.GetComponent<BaseComponent>();
 				if (base)
 				{
-					Collision2D collsion2D{ base->name, base->tag, contact->GetFixtureA()->GetFilterData().categoryBits };
+					b2Fixture* otherFixture = isA ? contact->GetFixtureB() : contact->GetFixtureA();
+					Collision2D collsion2D{ other->m_entity, base->name, base->tag, otherFixture->GetFilterData().categoryBits };
 
-					if (contact->GetFixtureB()->IsSensor())
+					if (contact->GetFixtureA()->IsSensor() || contact->GetFixtureB()->IsSensor())
 						nativeScript->instance->OnTriggerEnter(collsion2D);
 					else
 						nativeScript->instance->OnCollisionEnter(collsion2D);
@@ -64,11 +66,11 @@ public:
 		{
 			std::cout << "GroundDetectionFixtureData >> EndContact\n";
 
-			auto iter = std::find(groundDetection->groundFixtures.begin(), groundDetection->groundFixtures.end(), other);
+			auto iter = std::find(groundDetection->groundContacts.begin(), groundDetection->groundContacts.end(), contact);
 
-			if (iter != groundDetection->groundFixtures.end())
+			if (iter != groundDetection->groundContacts.end())
 			{
-				groundDetection->groundFixtures.erase(iter);
+				groundDetection->groundContacts.erase(iter);
 				groundDetection->numGrounds--;
 
 				std::cout << "Num Grounds: " << groundDetection->numGrounds << "\n";
@@ -81,9 +83,10 @@ public:
 			{
 				BaseComponent* base = other->m_entity.GetComponent<BaseComponent>();
 
-				Collision2D collsion2D{ base->name, base->tag, contact->GetFixtureA()->GetFilterData().categoryBits };
+				b2Fixture* otherFixture = isA ? contact->GetFixtureB() : contact->GetFixtureA();
+				Collision2D collsion2D{ other->m_entity, base->name, base->tag, otherFixture->GetFilterData().categoryBits };
 
-				if (contact->GetFixtureB()->IsSensor())
+				if (contact->GetFixtureA()->IsSensor() || contact->GetFixtureB()->IsSensor())
 					nativeScript->instance->OnTriggerExit(collsion2D);
 				else
 					nativeScript->instance->OnCollisionExit(collsion2D);

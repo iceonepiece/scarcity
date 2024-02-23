@@ -31,11 +31,9 @@ void ImGui_LuaEditorPanel::Render()
 
 	if (ImGui::Button("Save"))
 	{
-		Asset* asset = m_editor.GetSelectedAsset();
-
-		if (asset->GetType() == AssetType::LuaScript)
+		if (LuaScript* script = (LuaScript*)m_editor.GetSelectedAsset())
 		{
-			FileSystem::WriteFile(asset->GetPath(), [&](std::fstream& fs)
+			FileSystem::WriteFile(script->GetPath(), [&](std::fstream& fs)
 			{
 				fs << m_textEditor.GetText();
 			});

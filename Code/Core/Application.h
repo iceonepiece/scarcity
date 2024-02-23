@@ -20,6 +20,7 @@ class LuaEngine;
 class ImGuiManager;
 class Layer;
 class Renderer;
+class UIManager;
 
 constexpr int TAG_SIZE = 8;
 
@@ -66,6 +67,25 @@ public:
 	inline Renderer& GetRenderer() { return *m_renderer; }
 	inline Window& GetWindow() { return *m_window; }
 	inline Input& GetInput() { return *m_input; }
+	inline UIManager& GetUIManager() { return *m_uiManager; }
+
+	inline ScriptableEntity* GetGlobalVariable(const std::string& name)
+	{
+		if (m_globalVariables.find(name) != m_globalVariables.end())
+			return m_globalVariables[name];
+
+		return nullptr;
+	}
+
+	inline void AddGlobalVariable(const std::string& name, ScriptableEntity* data)
+	{
+		if (m_globalVariables.find(name) != m_globalVariables.end())
+			delete m_globalVariables[name];
+
+		m_globalVariables[name] = data;
+	}
+
+	void ClearGlobalVariables();
 
 protected:
 	virtual void ProcessInput() {}
@@ -82,6 +102,9 @@ protected:
 	std::unique_ptr<NativeScriptEngine> m_nativeScriptEngine;
 	std::unique_ptr<LuaEngine> m_luaEngine;
 	std::unique_ptr<Input> m_input;
+	std::unique_ptr<UIManager> m_uiManager;
+
+	std::unordered_map<std::string, ScriptableEntity*> m_globalVariables;
 
 	std::vector<std::unique_ptr<Layer>> m_layers;
 };

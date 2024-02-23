@@ -9,6 +9,8 @@
 
 void OpenGLRenderer::Initialize()
 {
+    Renderer::Initialize();
+
     float vertices[] = {
          0.5f,   0.5f,   1.0f,   1.0f,
          0.5f,  -0.5f,   1.0f,   0.0f,
@@ -80,12 +82,15 @@ void OpenGLRenderer::Initialize()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+	m_quadShader = std::make_unique<OpenGLShader>();
+	m_quadShader->Compile("Shaders/quad.vert", "Shaders/quad.frag");
+
     m_basicShader.Compile("Shaders/basic.vert", "Shaders/basic.frag");
     m_spriteShader.Compile("Shaders/texture.vert", "Shaders/texture.frag");
     m_uiShader.Compile("Shaders/ui.vert", "Shaders/ui.frag");
     m_circleShader.Compile("Shaders/circle.vert", "Shaders/circle.frag");
 
-    m_fontSystem.Init();
+    //m_fontSystem->Initialize();
 }
 
 std::unique_ptr<Texture> OpenGLRenderer::LoadTexture(const std::string& name, const char* filename, bool alpha)
@@ -104,11 +109,11 @@ void OpenGLRenderer::Draw(Sprite& sprite, const glm::mat4& modelMatrix)
     m_spriteShader.Use();
 
     m_spriteShader.SetMatrix4("model", modelMatrix);
-    //m_spriteShader.SetMatrix4("view", m_camera->GetViewMatrix());
-    //m_spriteShader.SetMatrix4("projection", m_camera->GetProjectionMatrix());
+    m_spriteShader.SetMatrix4("view", m_camera->GetViewMatrix());
+    m_spriteShader.SetMatrix4("projection", m_camera->GetProjectionMatrix());
 
-    m_spriteShader.SetMatrix4("view", m_viewMatrix);
-    m_spriteShader.SetMatrix4("projection", m_projectionMatrix);
+    //m_spriteShader.SetMatrix4("view", m_viewMatrix);
+    //m_spriteShader.SetMatrix4("projection", m_projectionMatrix);
 
     glActiveTexture(GL_TEXTURE0);
     OpenGLTexture *texture = static_cast<OpenGLTexture*>(sprite.GetTexture());
@@ -135,6 +140,7 @@ void OpenGLRenderer::Draw(Sprite& sprite, const glm::mat4& modelMatrix)
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+/*
 void OpenGLRenderer::DrawSprite(Sprite& sprite, const glm::vec2& position, const glm::vec2& scale, float angle, glm::vec4 color)
 {
     m_spriteShader.Use();
@@ -179,6 +185,7 @@ void OpenGLRenderer::DrawSprite(Sprite& sprite, const glm::vec2& position, const
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
+*/
 
 void OpenGLRenderer::DrawLine(const glm::vec3& v1, const glm::vec3& v2, const glm::vec4& color)
 {
@@ -238,7 +245,8 @@ void OpenGLRenderer::DrawQuad(const glm::vec2& position, const glm::vec2& scale,
     model = glm::rotate(model, angle, glm::vec3(0, 0, 1));
     model = glm::scale(model, glm::vec3(scale.x, scale.y, 0.0f));
 
-    m_basicShader.SetMatrix4("mvp", m_camera->GetProjectionMatrix() * m_camera->GetViewMatrix() * model);
+    //m_basicShader.SetMatrix4("mvp", m_camera->GetProjectionMatrix() * m_camera->GetViewMatrix() * model);
+    m_basicShader.SetMatrix4("mvp", m_viewProjectionMatrix);
     m_basicShader.SetVector4f("color", color);
 
     glBindVertexArray(m_quadVAO);
@@ -375,10 +383,10 @@ void OpenGLRenderer::DrawCircle2D(const Circle2D& circle, float thickness)
     model = glm::scale(model, glm::vec3(circle.radius * 2 * circle.scale.x, circle.radius * 2 * circle.scale.y, 0.0f));
 
     m_circleShader.SetMatrix4("model", model);
-    //m_circleShader.SetMatrix4("view", m_camera->GetViewMatrix());
+    m_circleShader.SetMatrix4("viewProjection", m_viewProjectionMatrix);
     //m_circleShader.SetMatrix4("projection", m_camera->GetProjectionMatrix(CameraType::Orthographic));
-    m_circleShader.SetMatrix4("view", m_viewMatrix);
-    m_circleShader.SetMatrix4("projection", m_projectionMatrix);
+    //m_circleShader.SetMatrix4("view", m_viewMatrix);
+    //m_circleShader.SetMatrix4("projection", m_projectionMatrix);
     m_circleShader.SetVector4f("color", circle.color);
     m_circleShader.SetFloat("minRadius", 1.0f - thickness);
 
@@ -404,10 +412,19 @@ void OpenGLRenderer::DrawQuadUI(const glm::vec2& position, const glm::vec2& scal
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+void OpenGLRenderer::DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray, uint32_t indexCount)
+{
+    vertexArray->Bind();
+    uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
+    glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+}
+
+/*
 void OpenGLRenderer::DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color)
 {
     m_fontSystem.RenderText(text, position, scale, color, m_screenSize);
 }
+*/
 
 void OpenGLRenderer::Clear(const glm::vec4& color)
 {

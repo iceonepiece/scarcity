@@ -8,4 +8,8 @@ class ImGui_ProjectSettingsWindow : public ImGui_Window
 public:
 	ImGui_ProjectSettingsWindow(EditorLayer& editor);
 	virtual void Render() override;
+
+private:
+	void RenderPhysics();
+	void RenderLuaScripts();
 };

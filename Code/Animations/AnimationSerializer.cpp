@@ -2,7 +2,6 @@
 #include "Animations/AnimatorState.h"
 #include "Animations/AnimatorController.h"
 #include "Project/Project.h"
-#include "Core/Application.h"
 
 void AnimationSerializer::Serialize(AnimatorController& controller, const std::filesystem::path& filePath)
 {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
@@ -12,6 +13,8 @@ struct TransformComponent
 	glm::vec3 position;
 	glm::vec3 rotation;
 	glm::vec3 scale;
+
+	glm::mat4 world = glm::mat4(1.0f);
 
 	TransformComponent(const glm::vec3& p, const glm::vec3& r, const glm::vec3& s)
 		: position(p)
@@ -25,6 +28,13 @@ struct TransformComponent
 		, rotation(0)
 		, scale(1)
 	{}
+
+	glm::mat4 GetLocalMatrix() const
+	{
+		return glm::translate(glm::mat4(1.0f), position)
+			* glm::mat4(glm::quat(rotation))
+			* glm::scale(glm::mat4(1.0f), scale);
+	}
 };
 
 static void DoSerialize(const TransformComponent& transform, json& entityJson)

@@ -9,8 +9,9 @@
 #include "ContactListener.h"
 #include "Components/TransformComponent.h"
 #include "Components/BoxCollider2DComponent.h"
-#include "Components/Rigidbody2dComponent.h"
 #include "Components/CircleCollider2DComponent.h"
+
+struct Rigidbody2DComponent;
 
 enum PhysicsLayer : uint16_t
 {
@@ -22,6 +23,7 @@ enum PhysicsLayer : uint16_t
 
 struct Collision2D
 {
+	Entity entity;
 	std::string name;
 	std::string tag;
 	uint16_t layer;
@@ -60,10 +62,10 @@ public:
 	b2FixtureDef CreateCircleFixtureDef();
 
 	b2FixtureDef CreateFixtureDef(b2Shape& shape, Collider2DComponent& collider, uint16_t layer = 0);
-	b2PolygonShape CreateBoxShape(TransformComponent& transform, BoxCollider2DComponent& bc2d);
-	b2CircleShape CreateCircleShape(TransformComponent& transform, CircleCollider2DComponent& cc2d);
+	static b2PolygonShape CreateBoxShape(TransformComponent& transform, BoxCollider2DComponent& bc2d);
+	static b2CircleShape CreateCircleShape(TransformComponent& transform, CircleCollider2DComponent& cc2d);
 
-	FixtureData* CreateFixtureData(Entity& entity);
+	static FixtureData* CreateFixtureData(Entity& entity);
 
 	b2FixtureDef CreateBoxCollider2DFixture(Entity& entity, TransformComponent& transform, Rigidbody2DComponent& rb2d, BoxCollider2DComponent& bc2d);
 	b2FixtureDef CreateCircleCollider2DFixture(Entity& entity, TransformComponent& transform, Rigidbody2DComponent& rb2d, CircleCollider2DComponent& cc2d);

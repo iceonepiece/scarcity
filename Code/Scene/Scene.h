@@ -6,9 +6,10 @@
 #include "Entity/EntityManager.h"
 #include "Graphics/Camera.h"
 #include "Physics/Physics.h"
-#include "Core/System.h"
+#include "System/System.h"
 #include "Asset/Asset.h"
 
+class LuaEngine;
 class Application;
 class Project;
 class Event;
@@ -45,9 +46,7 @@ public:
 	std::filesystem::path GetAbsolutePath();
 
 	void SetProject(Project* project);
-	void SetViewportSize(unsigned int width, unsigned int height);
 	void SetCamera(Camera& camera);
-	void OnViewportResize();
 	
 	bool HasSaved();
 
@@ -70,6 +69,8 @@ public:
 
 	void SetApplication(Application* app) { m_app = app; }
 	Application* GetApplication() { return m_app; }
+
+	Physics& GetPhysics() { return m_physics; }
 
 	template<typename Component>
 	static void CopyComponent(entt::registry& srcRegistry, entt::registry& destRegistry, entt::entity srcEntity, entt::entity destEntity)
@@ -111,6 +112,11 @@ public:
 		T(entity, this, std::forward<Args>(args)...);
 	}
 
+	LuaEngine& GetLuaEngine()
+	{
+		return *m_luaEngine;
+	}
+
 	EntityManager& GetEntityManager();
 
 	std::vector<SpawnCommand> m_spawnCommands;
@@ -150,4 +156,6 @@ public:
 	InitializeFunction m_initializeFunction;
 
 	Project* m_project;
+
+	std::unique_ptr<LuaEngine> m_luaEngine;
 };

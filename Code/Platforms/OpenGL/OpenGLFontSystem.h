@@ -12,6 +12,7 @@
 
 #include "Platforms/OpenGL/OpenGLShader.h"
 #include "Components/UIComponents.h"
+#include "Graphics/FontSystem.h"
 
 class UIText;
 
@@ -22,12 +23,11 @@ struct Character {
     unsigned int Advance;   // Horizontal offset to advance to next glyph
 };
 
-class OpenGLFontSystem
+class OpenGLFontSystem : public FontSystem
 {
 public:
-	int Init();
-
-    void RenderText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, const glm::vec2& viewportSize);
+    virtual int Initialize() override;
+    virtual void RenderText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, const glm::vec2& viewportSize) override;
 
 private:
     const uint8_t FONT_PIXEL_HEIGHT = 128;

@@ -71,7 +71,8 @@ OpenGLTexture::~OpenGLTexture()
 
 }
 
-void OpenGLTexture::Bind()
+void OpenGLTexture::Bind(uint32_t slot)
 {
+	glActiveTexture(GL_TEXTURE0 + slot);
     glBindTexture(GL_TEXTURE_2D, m_id);
 }

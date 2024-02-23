@@ -5,7 +5,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <nlohmann/json.hpp>
 #include "Physics/FixtureData.h"
-#include "Physics/GroundDetectionFixtureData.h"
 #include "Components/GroundDetectionComponent.h"
 
 using json = nlohmann::json;
@@ -17,7 +16,7 @@ struct GroundDetectionComponent
 	std::string groundTag = "Untagged";
 
 	int numGrounds = 0;
-	std::vector<FixtureData*> groundFixtures;
+	std::vector<b2Contact*> groundContacts;
 	FixtureData* fixtureData = nullptr;
 };
 

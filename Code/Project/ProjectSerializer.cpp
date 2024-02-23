@@ -23,6 +23,15 @@ bool ProjectSerializer::Serialize(Project& project, const std::filesystem::path&
 		projectJson["name"] = project.m_name;
 		projectJson["startScene"] = project.m_startScene.string();
 
+		json luaScriptJson = json::array();
+
+		for (const auto& luaScript : project.m_luaScripts)
+		{
+			luaScriptJson.push_back(luaScript->GetPath().string());
+		}
+
+		projectJson["luaScripts"] = luaScriptJson;
+
 		serialized << projectJson.dump(4);
 
 		project.m_tagManager.Serialize(project.m_directory / "ProjectSettings" / "TagManager.asset");
@@ -49,9 +58,19 @@ bool ProjectSerializer::Deserialize(Project& project, const std::filesystem::pat
 		json projectJson = json::parse(deserialzed);
 
 		project.m_name = projectJson["name"];
-		project.m_absolutePath = filepath.parent_path();
-		project.m_directory = filepath.parent_path();
 		project.m_startScene = projectJson["startScene"].get<std::string>();
+
+		if (projectJson["luaScripts"].is_array())
+		{
+			for (auto& luaScriptJson : projectJson["luaScripts"])
+			{
+				std::filesystem::path absoluteScriptPath = project.m_absolutePath / luaScriptJson.get<std::string>();
+				if (Asset* asset = project.m_assetManager->GetAsset(absoluteScriptPath))
+				{
+					project.m_luaScripts.push_back(dynamic_cast<LuaScript*>(asset));
+				}
+			}
+		}
 
 		project.m_tagManager.Deserialize(project.m_directory / "ProjectSettings" / "TagManager.asset");
 		Physics::Deserialize(project.m_directory / "ProjectSettings" / "Physics.asset");

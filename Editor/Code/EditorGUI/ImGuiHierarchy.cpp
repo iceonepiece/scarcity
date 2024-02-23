@@ -78,6 +78,7 @@ void ImGuiHierarchy::RenderEntity(EntityManager& manager, entt::entity entity)
         ImGui::TreePop();
     }
 
+
     if (entityDeleted)
         m_editor.DeleteEntity(entity);
 }
@@ -91,7 +92,10 @@ void ImGuiHierarchy::Render()
     std::string sceneHeader = "Scene: " + m_editor.GetScene()->m_name;
 
     ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, 0.0f);
-    if (ImGui::TreeNodeEx(sceneHeader.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+    bool opened = ImGui::TreeNodeEx(sceneHeader.c_str(), ImGuiTreeNodeFlags_DefaultOpen);
+    ImGui::PopStyleVar();
+
+    if (opened)
     {
         registry.each([&](entt::entity entity) {
             if (!registry.try_get<ParentComponent>(entity))
@@ -118,6 +122,5 @@ void ImGuiHierarchy::Render()
         ImGui::TreePop();
     }
 
-    ImGui::PopStyleVar();
     ImGui::End();
 }

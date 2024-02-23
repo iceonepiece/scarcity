@@ -12,6 +12,7 @@ struct LuaScriptComponent
 	static std::string Name() { return "LuaScript"; }
 
 	LuaScript* script = nullptr;
+	LuaEngine* engine = nullptr;
 };
 
 static void DoSerialize(const LuaScriptComponent& luaScript, json& entityJson)

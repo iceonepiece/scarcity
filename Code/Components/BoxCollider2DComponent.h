@@ -17,22 +17,27 @@ struct BoxCollider2DComponent : public Collider2DComponent
 
 static void DoSerialize(const BoxCollider2DComponent& box, json& entityJson)
 {
+	entityJson[box.Name()]["layer"] = box.layer;
+	entityJson[box.Name()]["isTrigger"] = box.isTrigger;
+
 	json offset = json::object();
 	offset["x"] = box.offset.x;
 	offset["y"] = box.offset.y;
 
-	entityJson["BoxCollider2D"]["offset"] = offset;
+	entityJson[box.Name()]["offset"] = offset;
 
 	json size = json::object();
 	size["x"] = box.size.x;
 	size["y"] = box.size.y;
 
-	entityJson["BoxCollider2D"]["size"] = size;
-	entityJson["BoxCollider2D"]["isTrigger"] = box.isTrigger;
+	entityJson[box.Name()]["size"] = size;
 }
 
 static void DoDeserialize(BoxCollider2DComponent& box, json& boxJson)
 {
+	box.layer = boxJson["layer"].get<uint16_t>();
+	box.isTrigger = boxJson["isTrigger"].get<bool>();
+
 	auto& offsetJson = boxJson["offset"];
 	glm::vec2 offset { offsetJson["x"].get<float>(), offsetJson["y"].get<float>() };
 
@@ -41,5 +46,4 @@ static void DoDeserialize(BoxCollider2DComponent& box, json& boxJson)
 
 	box.offset = offset;
 	box.size = size;
-	box.isTrigger = boxJson["isTrigger"].get<bool>();
 }

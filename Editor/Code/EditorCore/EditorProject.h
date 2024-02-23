@@ -6,7 +6,9 @@
 class EditorProject : public Project
 {
 public:
-	EditorProject() = default;
+	EditorProject(const std::filesystem::path filepath)
+		: Project(filepath)
+	{}
 
 	EditorProject(const std::string& name, const std::filesystem::path& path)
 		: Project(name, path)
@@ -15,5 +17,6 @@ public:
 	virtual void Initialize() override
 	{
 		m_assetManager = std::make_unique<EditorAssetManager>();
+		m_assetManager->InitializeAssets(m_directory);
 	}
 };

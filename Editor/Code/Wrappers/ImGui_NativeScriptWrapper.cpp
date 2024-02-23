@@ -21,7 +21,7 @@ void ImGui_NativeScriptWrapper::RenderBrowser(EditorLayer& editor)
 
 	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 	{
-		ImGui::SetDragDropPayload("NATIVE_SCRIPT_FILE", m_nativeScript, sizeof(m_nativeScript));
+		ImGui::SetDragDropPayload("NATIVE_SCRIPT_FILE", m_nativeScript, sizeof(NativeScript));
 
 		ImGui::EndDragDropSource();
 	}

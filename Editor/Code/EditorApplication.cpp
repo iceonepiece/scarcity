@@ -80,7 +80,8 @@ void EditorApplication::OpenProject(std::filesystem::path path)
     std::cout << "Open Project: " << path << std::endl;
     std::cout << "Relative: " << path.parent_path().filename() << std::endl;
    
-    std::unique_ptr<Project> project = std::make_unique<EditorProject>();
+    std::unique_ptr<Project> project = std::make_unique<EditorProject>(path);
+    project->Initialize();
 
     if (ProjectSerializer::Deserialize(*project, path))
     {

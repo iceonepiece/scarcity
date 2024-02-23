@@ -20,8 +20,10 @@ void RenderImGui(LuaScriptComponent&  luaScript)
     {
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LUA_SCRIPT_FILE"))
         {
-            LuaScript* script = (LuaScript*)(payload->Data);
-            luaScript.script = (LuaScript*)Project::GetActive()->GetAssetManager().GetAsset(script->GetPath());
+			if (LuaScript* script = (LuaScript*)payload->Data)
+			{
+                luaScript.script = (LuaScript*)Project::GetActive()->GetAssetManager().GetAsset(script->GetPath());
+			}
         }
 
         ImGui::EndDragDropTarget();
