@@ -22,7 +22,7 @@
 #include "EditorGUI/Windows/ImGui_AnimatorWindow.h"
 #include "EditorGUI/ImGui_InspectorPanel.h"
 #include "EditorGUI/ImGui_LuaEditorPanel.h"
-#include "GameLayer.h"
+#include "Game/GameLayer.h"
 #include "Commands/EditorCommand.h"
 #include "Graphics/Framebuffer.h"
 

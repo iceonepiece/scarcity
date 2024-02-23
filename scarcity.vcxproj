@@ -293,6 +293,8 @@
     <ClCompile Include="Code\Animations\AnimatorController.cpp" />
     <ClCompile Include="Code\Animations\AnimatorState.cpp" />
     <ClCompile Include="Code\Animations\AnimatorTransition.cpp" />
+    <ClCompile Include="Code\Game\GameApplication.cpp" />
+    <ClCompile Include="Code\Game\GameLayer.cpp" />
     <ClCompile Include="Code\Components\Rigidbody2DComponent.cpp" />
     <ClCompile Include="Code\Graphics\Buffer.cpp" />
     <ClCompile Include="Code\Graphics\Sprite.cpp" />
@@ -396,6 +398,8 @@
     <ClInclude Include="Code\Components\UIComponents.h" />
     <ClInclude Include="Code\Constants\GameEngine.h" />
     <ClInclude Include="Code\Core\TagManager.h" />
+    <ClInclude Include="Code\Game\GameApplication.h" />
+    <ClInclude Include="Code\Game\GameLayer.h" />
     <ClInclude Include="Code\Graphics\Buffer.h" />
     <ClInclude Include="Code\Graphics\Camera.h" />
     <ClInclude Include="Code\Animations\Animation2D.h" />
