@@ -1,5 +1,8 @@
 #include "OpenGLTexture.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 OpenGLTexture::OpenGLTexture()
     : m_width(0)
     , m_height(0)
@@ -68,7 +71,8 @@ OpenGLTexture::~OpenGLTexture()
 
 }
 
-void OpenGLTexture::Bind()
+void OpenGLTexture::Bind(uint32_t slot)
 {
+	glActiveTexture(GL_TEXTURE0 + slot);
     glBindTexture(GL_TEXTURE_2D, m_id);
 }

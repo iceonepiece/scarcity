@@ -2,10 +2,9 @@
 #include <IconsFontAwesome6.h>
 #include "ImGuiAssetPanel.h"
 #include <string>
-#include "Platforms/OpenGL/OpenGLTexture.h"
 #include "../EditorLayer.h"
-#include "Windows/ImGui_AnimationClipWindow.h"
 #include "Animations/AnimationClip.h"
+#include "../Wrappers/ImGui_WrapperManager.h"
 
 ImGuiAssetPanel::ImGuiAssetPanel(EditorLayer& editor)
 	: m_editor(editor)
@@ -33,27 +32,6 @@ void ImGuiAssetPanel::RenderUnsupportedFile(const std::filesystem::path& path)
 	}
 }
 
-void ImGuiAssetPanel::RenderNativeScript(NativeScript& nativeScript, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
-{
-	std::string useIcon = (ICON_FA_FILE_CODE " ");
-
-	flags |= ImGuiTreeNodeFlags_Leaf;
-
-	bool opened = ImGui::TreeNodeEx(nativeScript.GetPath().string().c_str(), flags, (useIcon + nativeScript.GetName()).c_str());
-
-	if (opened)
-	{
-		ImGui::TreePop();
-	}
-
-	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
-	{
-		ImGui::SetDragDropPayload("NATIVE_SCRIPT_FILE", &nativeScript, sizeof(nativeScript));
-
-		ImGui::EndDragDropSource();
-	}
-}
-
 void ImGuiAssetPanel::RightClickMenu(Asset& asset)
 {
 	if (ImGui::BeginPopupContextItem(asset.GetPath().filename().string().c_str()))
@@ -66,34 +44,6 @@ void ImGuiAssetPanel::RightClickMenu(Asset& asset)
 
 		ImGui::EndPopup();
 	}
-}
-
-void ImGuiAssetPanel::RenderPrefab(Prefab& prefab, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
-{
-	std::string useIcon = ICON_FA_CUBE;
-
-	flags |= ImGuiTreeNodeFlags_Leaf;
-
-	ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(140, 200, 255, 255));
-	bool opened = ImGui::TreeNodeEx(prefab.GetPath().string().c_str(), flags, useIcon.c_str());
-	ImGui::PopStyleColor();
-
-	callback();
-
-	if (ImGui::BeginDragDropSource())
-	{
-		ImGui::SetDragDropPayload("PREFAB_ASSET", &prefab, sizeof(prefab));
-
-		ImGui::EndDragDropSource();
-	}
-
-	ImGui::SameLine();
-	ImGui::Text(prefab.GetPath().filename().string().c_str());
-
-	RightClickMenu(prefab);
-
-	if (opened)
-		ImGui::TreePop();
 }
 
 void ImGuiAssetPanel::RenderImage(Image& image, ImGuiTreeNodeFlags flags, AssetEventFunction callback, OnSelectSpriteFunction selectSpriteFn, const std::string& note)
@@ -135,58 +85,6 @@ void ImGuiAssetPanel::RenderImage(Image& image, ImGuiTreeNodeFlags flags, AssetE
 	*/
 }
 
-void ImGuiAssetPanel::RenderAudioClip(AudioClip& audioClip, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
-{
-	std::string useIcon = (ICON_FA_MUSIC " ");
-
-	flags |= ImGuiTreeNodeFlags_Leaf;
-
-	bool opened = ImGui::TreeNodeEx(audioClip.GetPath().string().c_str(), flags, (useIcon + audioClip.GetName()).c_str());
-
-	callback();
-
-	if (opened)
-	{
-		ImGui::TreePop();
-	}
-}
-
-void ImGuiAssetPanel::RenderAnimatorController(AnimatorController& animControllerAsset, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
-{
-	std::string useIcon = (ICON_FA_CIRCLE_NODES " ");
-
-	flags |= ImGuiTreeNodeFlags_Leaf;
-
-	bool opened = ImGui::TreeNodeEx(animControllerAsset.GetPath().string().c_str(), flags, (useIcon + animControllerAsset.GetName()).c_str());
-
-	callback();
-
-	RightClickMenu(animControllerAsset);
-
-	if (opened)
-	{
-		ImGui::TreePop();
-	}
-}
-
-void ImGuiAssetPanel::RenderAnimationClip(AnimationClip& animClip, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
-{
-	std::string useIcon = ICON_FA_PERSON_RUNNING;
-
-	flags |= ImGuiTreeNodeFlags_Leaf;
-
-	bool opened = ImGui::TreeNodeEx(animClip.GetPath().string().c_str(), flags, (useIcon + animClip.GetName()).c_str());
-
-	callback();
-
-	RightClickMenu(animClip);
-
-	if (opened)
-	{
-		ImGui::TreePop();
-	}
-}
-
 
 void ImGuiAssetPanel::RenderFolder(const std::filesystem::path& path, ImGuiTreeNodeFlags flags, AssetEventFunction callback)
 {
@@ -225,6 +123,9 @@ void ImGuiAssetPanel::RenderAddAssetButton()
 		if (ImGui::Selectable("Animation Clip"))
 			m_addingAssetType = AssetType::AnimationClip;
 
+		if (ImGui::Selectable("Lua Script"))
+			m_addingAssetType = AssetType::LuaScript;
+
 		ImGui::EndPopup();
 	}
 
@@ -251,6 +152,11 @@ void ImGuiAssetPanel::RenderAddAssetButton()
 			{
 				AnimationClip animClip(m_addingAssetName);
 				AnimationSerializer::Serialize(animClip, m_currentDirectory / (m_addingAssetName + ".anim"));
+			}
+			else if (m_addingAssetType == AssetType::LuaScript)
+			{
+				std::ofstream file(m_currentDirectory / (m_addingAssetName + ".lua"));
+				file.close();
 			}
 
 			m_addingAssetType = AssetType::None;
@@ -328,94 +234,7 @@ void ImGuiAssetPanel::Render()
 		}
 		else if (Asset* asset = m_editor.GetAsset(path))
 		{
-			if (asset->GetType() == AssetType::Image)
-			{
-				Image* image = static_cast<Image*>(asset);
-				RenderImage(*image, flags,
-					[&]()
-					{
-						if (ImGui::IsItemClicked())
-							m_editor.SetSelectedObject(EditorObjectType::Asset, image);
-					},
-
-					//[&](SpriteAsset& spriteAsset)
-					[&](Sprite& sprite, size_t index)
-					{
-						EditorObject& editorObject = m_editor.SetSelectedObject(EditorObjectType::Asset, &sprite);
-						editorObject.note = sprite.GetName();
-					},
-					m_editor.GetSelectedObject().note
-				);
-			}
-			else if (asset->GetType() == AssetType::Audio)
-			{
-				AudioClip* audioClip = static_cast<AudioClip*>(asset);
-				RenderAudioClip(*audioClip, flags, [&]()
-				{
-					if (ImGui::IsItemClicked())
-						m_editor.SetSelectedObject(EditorObjectType::Asset, audioClip);
-				});
-			}
-			else if (asset->GetType() == AssetType::NativeScript)
-			{
-				NativeScript* nativeScript = static_cast<NativeScript*>(asset);
-				RenderNativeScript(*nativeScript, flags, [&]()
-				{
-					if (ImGui::IsItemClicked())
-						m_editor.SetSelectedObject(EditorObjectType::Asset, nativeScript);
-				});
-			}
-			else if (asset->GetType() == AssetType::Prefab)
-			{
-				Prefab* prefab = static_cast<Prefab*>(asset);
-				RenderPrefab(*prefab, flags, [&]()
-				{
-					if (ImGui::IsItemClicked())
-						m_editor.SetSelectedObject(EditorObjectType::Asset, prefab);
-				});
-			}
-			else if (asset->GetType() == AssetType::AnimatorController)
-			{
-				AnimatorController* animControllerAsset = static_cast<AnimatorController*>(asset);
-				RenderAnimatorController(*animControllerAsset, flags, [&]()
-				{
-					if (ImGui::IsItemClicked())
-					{
-						m_editor.SetSelectedObject(EditorObjectType::Asset, animControllerAsset);
-						m_editor.SetAnimatorController(*animControllerAsset);
-					}
-				});
-			}
-			else if (asset->GetType() == AssetType::AnimationClip)
-			{
-				AnimationClip* animClipAsset = static_cast<AnimationClip*>(asset);
-				RenderAnimationClip(*animClipAsset, flags, [&]()
-				{
-					if (ImGui::IsItemClicked())
-						m_editor.SetSelectedObject(EditorObjectType::Asset, animClipAsset);
-
-					if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-					{
-						ImGui_AnimationClipWindow* animClipWindow = static_cast<ImGui_AnimationClipWindow*>(m_editor.GetImGuiWindow(ImGuiWindowType::AnimationClip));
-						animClipWindow->SetAnimationClip(animClipAsset);
-						animClipWindow->SetOpen(true);
-					}
-				});
-			}
-			else if (asset->GetType() == AssetType::Scene)
-			{
-				flags |= ImGuiTreeNodeFlags_Leaf;
-
-				std::string useIcon = (ICON_FA_WINDOW_MAXIMIZE " ");
-
-				bool opened = ImGui::TreeNodeEx(path.string().c_str(), flags, (useIcon + path.filename().string()).c_str());
-
-				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
-					m_editor.OpenScene(path);
-
-				if (opened)
-					ImGui::TreePop();
-			}
+			ImGui_WrapperManager::GetWrapper(*asset)->RenderBrowser(m_editor);
 		}
 		else
 		{

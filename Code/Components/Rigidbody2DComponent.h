@@ -2,6 +2,8 @@
 #include <nlohmann/json.hpp>
 #include <imgui/imgui.h>
 #include "Physics/FixtureData.h"
+#include "Collider2DGroupComponent.h"
+#include "Physics/Physics.h"
 
 using json = nlohmann::json;
 
@@ -33,7 +35,10 @@ struct Rigidbody2DComponent
 	float gravityScale = 1.0f;
 
 	void* body = nullptr;
+	void* flippedBody = nullptr;
 	FixtureData* fixtureData = nullptr;
+
+	Physics* physics = nullptr;
 
 	float GetVelocityX()
 	{
@@ -62,6 +67,13 @@ struct Rigidbody2DComponent
 		if (b2Body* b = (b2Body*)body)
 			b->ApplyLinearImpulse(b2Vec2(x, y), b->GetWorldCenter(), true);
 	}
+
+	void RemoveFixture(void* fixture)
+	{
+		((b2Body*)body)->DestroyFixture((b2Fixture*)fixture);
+	}
+
+	void* AddFixture(Physics& physics, TransformComponent transform, Collider2DData data, Entity entity);
 };
 
 static void DoSerialize(const Rigidbody2DComponent& rb2d, json& entityJson)
@@ -76,30 +88,4 @@ static void DoDeserialize(Rigidbody2DComponent& rb2d, json& rb2dJson)
 	rb2d.type = rb2dJson["type"].get<BodyType>();
 	rb2d.fixedRotation = rb2dJson["fixedRotation"].get<bool>();
 	rb2d.gravityScale = rb2dJson["gravityScale"].get<float>();
-}
-
-static void RenderImGui(Rigidbody2DComponent& rb2d)
-{
-    const char* bodyTypeStrings[] = { "Static", "Dynamic", "Kinematic" };
-    const char* currentBodyTypeString = bodyTypeStrings[(int)rb2d.type];
-    if (ImGui::BeginCombo("Body Type", currentBodyTypeString))
-    {
-        for (int i = 0; i < 2; i++)
-        {
-            bool isSelected = currentBodyTypeString == bodyTypeStrings[i];
-            if (ImGui::Selectable(bodyTypeStrings[i], isSelected))
-            {
-                currentBodyTypeString = bodyTypeStrings[i];
-				rb2d.type = (BodyType)i;
-            }
-
-            if (isSelected)
-                ImGui::SetItemDefaultFocus();
-        }
-
-        ImGui::EndCombo();
-    }
-
-    ImGui::Checkbox("Fixed Rotation", &rb2d.fixedRotation);
-	ImGui::InputFloat("Gravity Scale", &rb2d.gravityScale);
 }

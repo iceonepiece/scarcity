@@ -6,14 +6,28 @@
 #include "Components/Components.h"
 #include "File/FileSystem.h"
 #include "NativeScript/NativeScriptEngine.h"
-#include "Animations/AnimationSerializer.h"
+#include "Lua/LuaEngine.h"
 #include "Audio/Audio.h"
 #include "UI/UIManager.h"
 #include "Input/Input.h"
+#include "Project/Project.h"
 #include "Entity/ScriptableEntity.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <algorithm>
+#include "System/NativeScriptSystem.h"
+#include "System/LuaScriptSystem.h"
+#include "System/PhysicsSystem.h"
+#include "System/HierarchySystem.h"
+#include "System/AnimatorSystem.h"
+
+struct RenderCommand
+{
+    Sprite* sprite;
+    TransformComponent transform;
+    int order;
+};
 
 Scene::Scene(const std::string& name, const std::filesystem::path& path)
     : Asset(path, AssetType::Scene)
@@ -22,6 +36,18 @@ Scene::Scene(const std::string& name, const std::filesystem::path& path)
         new Camera2D({ 0.0f, 0.0f, -14.0f }, { 0.5f, 0.25f }, { 1280, 720 })
     )
 {
+    m_systems.push_back(std::make_unique<NativeScriptSystem>(*this));
+    m_systems.push_back(std::make_unique<LuaScriptSystem>(*this));
+    m_systems.push_back(std::make_unique<PhysicsSystem>(*this));
+    m_systems.push_back(std::make_unique<HierarchySystem>(*this));
+    m_systems.push_back(std::make_unique<AnimatorSystem>(*this));
+
+    m_luaEngine = std::make_unique<LuaEngine>();
+}
+
+void Scene::SetProject(Project* project)
+{
+    m_project = project;
 }
 
 void Scene::OnEvent(Event* e)
@@ -66,7 +92,6 @@ void Scene::DestroyEntity(entt::entity entity)
     if (m_manager.m_registry.all_of<Rigidbody2DComponent>(entity))
     {
         m_physics.DestroyPhysicsEntity(m_manager.m_registry.get<Rigidbody2DComponent>(entity));
-        //DestroyPhysicsEntity(m_manager.m_registry.get<Rigidbody2DComponent>(entity));
     }
 
     if (NativeScriptComponent* nativeScript = m_manager.m_registry.try_get<NativeScriptComponent>(entity))
@@ -79,7 +104,12 @@ void Scene::DestroyEntity(entt::entity entity)
 
 void Scene::Start()
 {
-    StartPhysics();
+    //StartPhysics();
+
+    for (auto& system : m_systems)
+    {
+        system->OnStart();
+    }
 
     std::cout << "Scene::Start()\n";
     auto view = m_manager.m_registry.view<SpriteAnimatorComponent>();
@@ -98,6 +128,19 @@ void Scene::Start()
     }
 
     
+    auto luaView = m_manager.m_registry.view<LuaScriptComponent>();
+
+    for (auto [entity, luaScript] : luaView.each())
+    {
+        luaScript.engine = new LuaEngine();
+
+        if (luaScript.script != nullptr && FileSystem::FileExists(luaScript.script->GetPath()))
+        {
+            luaScript.engine->ReadScript(luaScript.script->GetPath().string());
+        }
+    }
+
+    m_app->GetUIManager().m_rectStack.clear();
 
     auto audioView = m_manager.m_registry.view<AudioSourceComponent>();
 
@@ -155,7 +198,18 @@ void Scene::Start()
 
 void Scene::Stop()
 {
-    StopPhysics();
+    //StopPhysics();
+    for (auto& system : m_systems)
+    {
+        system->OnStop();
+    }
+
+    auto luaView = m_manager.m_registry.view<LuaScriptComponent>();
+
+    for (auto [entity, luaScript] : luaView.each())
+    {
+        delete luaScript.engine;
+    }
 
     auto view = m_manager.m_registry.view<NativeScriptComponent>();
     for (auto [entity, script] : view.each())
@@ -190,6 +244,7 @@ void Scene::StartNativeScripts(NativeScriptEngine& scriptEngine)
         {
             std::cout << "Start Native Class: " << script.className << std::endl;
             script.instance->m_app = m_app;
+            script.instance->m_project = Project::GetActive();
             script.instance->m_scene = this;
             script.instance->m_entity = Entity { &m_manager, entity };
             m_scriptableEntities.insert({ base.name, script.instance });
@@ -207,7 +262,7 @@ void Scene::StartNativeScripts(NativeScriptEngine& scriptEngine)
 void Scene::RenderTexts()
 {
     Renderer& renderer = Application::Get().GetRenderer();
-    renderer.SetScreenSize(m_viewportWidth, m_viewportHeight);
+    //renderer.SetScreenSize(m_viewportWidth, m_viewportHeight);
     renderer.PreRender(true);
 
     auto textView = m_manager.m_registry.view<TransformComponent, CanvasComponent, TextComponent>();
@@ -222,6 +277,97 @@ void Scene::RenderTexts()
 void Scene::RenderCollisionComponents()
 {
     Renderer& renderer = Application::Get().GetRenderer();
+
+    auto rb2dView = m_manager.m_registry.view<TransformComponent, Rigidbody2DComponent>();
+
+    for (auto [entity, transform, rb2d] : rb2dView.each())
+    {
+        b2Body* body = (b2Body*)rb2d.body;
+
+        if (!body)
+            continue;
+
+        b2Fixture* fixture = body->GetFixtureList();
+
+        while (fixture)
+        {
+            if (fixture->GetFilterData().categoryBits > 0 && fixture->GetShape()->GetType() == b2Shape::e_polygon)
+            {
+				b2PolygonShape* shape = (b2PolygonShape*)fixture->GetShape();
+
+                if (shape->m_count == 4)
+                {
+                    float width = shape->m_vertices[1].x - shape->m_vertices[0].x;
+                    float height = shape->m_vertices[2].y - shape->m_vertices[0].y;
+
+					float posX = transform.position.x + shape->m_centroid.x;
+                    float posY = transform.position.y + shape->m_centroid.y;
+
+                    renderer.DrawRect({ posX, posY }, {width, height}, transform.rotation.z, {0.0f, 1.0f, 0.0f, 1.0f}, 0.02f);
+                }
+            }
+
+            fixture = fixture->GetNext();
+        }
+
+
+        if (rb2d.flippedBody != nullptr)
+        {
+            b2Body* body = (b2Body*)rb2d.flippedBody;
+
+            b2Fixture* fixture = body->GetFixtureList();
+
+            while (fixture)
+            {
+                if (fixture->GetShape()->GetType() == b2Shape::e_polygon)
+                {
+                    b2PolygonShape* shape = (b2PolygonShape*)fixture->GetShape();
+
+                    if (shape->m_count == 4)
+                    {
+                        float width = shape->m_vertices[1].x - shape->m_vertices[0].x;
+                        float height = shape->m_vertices[2].y - shape->m_vertices[0].y;
+
+                        float posX = transform.position.x + shape->m_centroid.x;
+                        float posY = transform.position.y + shape->m_centroid.y;
+
+                        renderer.DrawRect({ posX, posY }, { width, height }, transform.rotation.z, { 0.0f, 1.0f, 0.0f, 1.0f }, 0.02f);
+                    }
+                }
+
+                fixture = fixture->GetNext();
+            }
+        }
+    }
+
+    /*
+    auto groupColliders = m_manager.m_registry.view<TransformComponent, Collider2DGroupComponent>();
+    for (auto [entity, transform, group] : groupColliders.each())
+    {
+        for (auto& collider : group.colliders)
+        {
+            glm::vec2 drawPosition{
+                transform.position.x + transform.scale.x * collider.offset.x,
+                transform.position.y + transform.scale.y * collider.offset.y
+            };
+
+            if (collider.type == ColliderType::Box)
+            {
+                glm::vec2 drawSize{ collider.size.x * transform.scale.x, collider.size.y * transform.scale.y };
+                renderer.DrawRect(drawPosition, drawSize, transform.rotation.z, { 0.0f, 1.0f, 0.0f, 1.0f }, 0.02f);
+            }
+            else if (collider.type == ColliderType::Circle)
+            {
+                Circle2D renderCircle;
+                renderCircle.position = drawPosition;
+                renderCircle.scale = transform.scale;
+                renderCircle.radius = collider.size.x;
+                renderCircle.color = { 0, 1, 0, 1 };
+
+                renderer.DrawCircle2D(renderCircle, 0.01f);
+            }
+        }
+    }
 
     auto box2dColliders = m_manager.m_registry.view<TransformComponent, BoxCollider2DComponent>();
 
@@ -252,6 +398,7 @@ void Scene::RenderCollisionComponents()
 
         renderer.DrawCircle2D(renderCircle, 0.01f);
     }
+    */
 
     auto gridColliders = m_manager.m_registry.view<TransformComponent, GridComponent, Rigidbody2DComponent>();
 
@@ -315,78 +462,25 @@ bool Scene::HasSaved()
 
 void Scene::Update(float deltaTime)
 {
-    auto nativeScriptUpdateView = m_manager.m_registry.view<NativeScriptComponent>();
-
-    for (auto [entity, nativeScript] : nativeScriptUpdateView.each())
-    {
-        if (nativeScript.instance != nullptr)
-            nativeScript.instance->Update(deltaTime);
-    }
-    
-    /*
-    auto canvasAdjustView = m_manager.m_registry.view<TransformComponent, CanvasComponent>();
-    for (auto [entity, transform, canvas] : canvasAdjustView.each())
-    {
-        float x = transform.position.x;
-        float y = transform.position.y;
-
-        switch (canvas.horizontalAligment)
-        {
-            case Center: x += m_viewportWidth / 2.0f; break;
-            case Right: x += m_viewportWidth; break;
-        }
-
-        switch (canvas.verticalAlignment)
-        {
-            case Middle: y += m_viewportHeight / 2.0f; break;
-            case Bottom: y += m_viewportHeight; break;
-        }
-
-        canvas.position.x = x;
-        canvas.position.y = y;
-    }
-    */
-
-    Input& input = m_app->GetInput();
-
-    auto canvasHandleInputView = m_manager.m_registry.view<CanvasComponent>();
-    for (auto [entity, canvas] : canvasHandleInputView.each())
-    {
-        if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
-        {
-            UIManager::HandleInput(canvas, *button, input);
-        }
-    }
+    Renderer& renderer = m_app->GetRenderer();
+    glm::vec2 screenSize = renderer.GetScreenSize();
 
     for (auto& system : m_systems)
-        system->Update(deltaTime);
-
-    auto animatorView = m_manager.m_registry.view<SpriteAnimatorComponent>();
-    for (auto [entity, animator] : animatorView.each())
     {
-        if (animator.controller != nullptr)
-            animator.controller->Process();
+        if (system->IsActive())
+            system->Update(deltaTime);
     }
 
-    //if (m_physics != nullptr && physicsActive)
-    if (physicsActive)
+    auto luaScriptView = m_manager.m_registry.view<LuaScriptComponent>();
+    for (auto [entity, luaScript] : luaScriptView.each())
     {
-        /*
-        const int32_t velocityIterations = 6;
-        const int32_t positionIterations = 2;
-        m_physics->Step(deltaTime, velocityIterations, positionIterations);
-        */
-        m_physics.Update(deltaTime);
-
-        auto view = m_manager.m_registry.view<TransformComponent, Rigidbody2DComponent>();
-        for (auto [entity, transform, rb2d] : view.each())
+        if (luaScript.script != nullptr && FileSystem::FileExists(luaScript.script->GetPath()))
         {
-            b2Body* body = (b2Body*)rb2d.body;
-
-            const auto& position = body->GetPosition();
-            transform.position.x = position.x;
-            transform.position.y = position.y;
-            transform.rotation.z = body->GetAngle();
+            //m_luaEngine->ReadScript(luaScript.script->GetPath().string());
+            //sol::function updateFn = m_luaEngine->GetFunction("Update");
+            //luaScript.engine->ReadScript(luaScript.script->GetPath().string());
+            sol::function updateFn = luaScript.engine->GetFunction("Update");
+            updateFn(deltaTime);
         }
     }
 
@@ -446,11 +540,23 @@ void Scene::Update(float deltaTime)
         if (nativeScript.instance != nullptr)
             nativeScript.instance->LateUpdate(deltaTime);
     }
+
+    auto view = m_manager.m_registry.view<TransformComponent, CameraComponent>();
+    for (auto [entity, transform, camera] : view.each())
+    {
+        float ratio = screenSize.x / (float)screenSize.y;
+        float width = camera.size * ratio;
+
+        glm::mat4 viewMatrix = glm::inverse(glm::translate(glm::mat4(1.0f), transform.position));
+        glm::mat4 projectionMatirx = glm::ortho(-width, width, -camera.size, camera.size);
+
+        renderer.SetViewProjectionMatrix(projectionMatirx * viewMatrix);
+    }
 }
 
 void Scene::Enter()
 {
-   Application::Get().GetRenderer().SetCamera(m_camera.get());
+   Application::Get().GetRenderer().SetCamera(*m_camera);
 }
 
 void Scene::Exit()
@@ -474,39 +580,40 @@ void Scene::UpdateUI(float deltaTime)
     */
 }
 
-void Scene::SetViewportSize(unsigned int width, unsigned int height)
-{
-    m_viewportWidth = width;
-    m_viewportHeight = height;
-}
-
+/*
 void Scene::OnViewportResize()
 {
     Renderer& renderer = m_app->GetRenderer();
+    glm::vec2 screenSize  = renderer.GetScreenSize();
 
     auto view = m_manager.m_registry.view<TransformComponent, CameraComponent>();
     for (auto [entity, transform, camera] : view.each())
     {
-        float ratio = m_viewportWidth / (float)m_viewportHeight;
+        float ratio = screenSize.x / (float)screenSize.y;
         float width = camera.size * ratio;
 
-        renderer.SetViewMatrix(glm::inverse(glm::translate(glm::mat4(1.0f), transform.position)));
-        renderer.SetProjectionMatrix(glm::ortho(-width, width, -camera.size, camera.size));
-        renderer.CalculateViewProjectionMatrix();
+        glm::mat4 viewMatrix = glm::inverse(glm::translate(glm::mat4(1.0f), transform.position));
+        glm::mat4 projectionMatirx = glm::ortho(-width, width, -camera.size, camera.size);
+
+        renderer.SetViewProjectionMatrix(projectionMatirx * viewMatrix);
     }
 }
+*/
 
 void Scene::SetCamera(Camera& camera)
 {
-    Application::Get().GetRenderer().SetCamera(&camera);
+    Application::Get().GetRenderer().SetCamera(camera);
 }
 
 void Scene::Render(RenderOptions renderOptions)
 {
     Renderer& renderer = Application::Get().GetRenderer();
     renderer.PreRender();
+    renderer.BeginFrame();
 
     auto transforms = m_manager.m_registry.view<TransformComponent, SpriteRendererComponent>();
+
+    std::vector<RenderCommand> renderCommands;
 
     for (auto [entity, transform, sprite] : transforms.each())
     {
@@ -530,18 +637,30 @@ void Scene::Render(RenderOptions renderOptions)
         if (spriteAnimator != nullptr && spriteAnimator->controller != nullptr)
         {
             if (AnimatorState* state = spriteAnimator->controller->GetCurrentState())
-			{
-                if (Sprite* sprite = state->GetSprite())
-					renderer.DrawSprite(*sprite, transform.position, transform.scale, transform.rotation.z);
-			}
+            {
+                if (Sprite* targetSprite = state->GetSprite())
+                    renderCommands.push_back({ targetSprite, transform, sprite.order });
+            }
         }
         else if (sprite.sprite != nullptr)
         {
             Sprite& targetSprite = sprite.image->GetSprites()[sprite.spriteIndex];
-            renderer.DrawSprite(targetSprite, transform.position, transform.scale, transform.rotation.z);
+            renderCommands.push_back({ &targetSprite, transform, sprite.order });
         }
     }
 
+    std::sort(renderCommands.begin(), renderCommands.end(),
+    [](const RenderCommand& a, const RenderCommand& b)
+    {
+        return a.order < b.order;
+    });
+
+    for (auto& command : renderCommands)
+    {
+        renderer.DrawSprite(*command.sprite, command.transform.position, command.transform.scale, command.transform.rotation.z);
+    }
+
+    renderer.EndFrame();
     renderer.PostRender();
 
     for (auto& system : m_systems)
@@ -550,17 +669,35 @@ void Scene::Render(RenderOptions renderOptions)
     if (renderOptions.collisionVisible)
         RenderCollisionComponents();
 
-    RenderTexts();
+    renderer.PreRender();
+    renderer.BeginFrame();
 
-    renderer.SetViewProjectionMatrix(glm::ortho(0.0f, (float)m_viewportWidth, 0.0f, (float)m_viewportHeight));
+    for (auto& uiObject : m_app->GetUIManager().m_objects)
+    {
+        uiObject->HandleInput(Application::Get().GetInput());
 
-    RenderUI();
+        if (uiObject->type == UIType_Text)
+            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor);
+        else if (uiObject->type == UIType_Button)
+        {
+            renderer.DrawQuadUI(uiObject->position, uiObject->scale, uiObject->color);
+            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor);
+        }
+        else
+            renderer.DrawQuadUI(uiObject->position, uiObject->scale, uiObject->color);
+    }
+
+    renderer.EndFrame();
+    renderer.PostRender();
+
+    m_app->GetUIManager().Clear();
 }
 
 void Scene::RenderEditor(RenderOptions renderOptions)
 {
     Renderer& renderer = Application::Get().GetRenderer();
     renderer.PreRender();
+    renderer.BeginFrame();
 
     auto transforms = m_manager.m_registry.view<TransformComponent, SpriteRendererComponent>();
 
@@ -570,6 +707,7 @@ void Scene::RenderEditor(RenderOptions renderOptions)
         glm::vec2 scale = transform.scale;
         float angle = transform.rotation.z;
 
+        /*
         if (sprite.shape == SpriteShape::Shape_Square)
             renderer.DrawQuad2D(position, scale, angle, sprite.color);
         else if (sprite.shape == SpriteShape::Shape_Circle)
@@ -581,6 +719,7 @@ void Scene::RenderEditor(RenderOptions renderOptions)
 
             renderer.DrawCircle2D(circle);
         }
+        */
 
         if (sprite.sprite != nullptr)
         {
@@ -609,12 +748,15 @@ void Scene::RenderEditor(RenderOptions renderOptions)
         RenderCollisionComponents();
 
     RenderTexts();
+
+    renderer.EndFrame();
+    renderer.PostRender();
 }
 
 void Scene::RenderUI()
 {
     Renderer& renderer = Application::Get().GetRenderer();
-    renderer.SetScreenSize(m_viewportWidth, m_viewportHeight);
+    //renderer.SetScreenSize(m_viewportWidth, m_viewportHeight);
 
     /*
     auto canvas = m_manager.m_registry.view<TransformComponent, CanvasComponent, ButtonComponent>();
@@ -671,7 +813,6 @@ Entity Scene::InstantiateEntity(Entity entity, const glm::vec3& position, bool p
 
         if (Rigidbody2DComponent* rb2d = returnEntity.GetComponent<Rigidbody2DComponent>())
             m_physics.InitializePhysicsEntity(returnEntity, *transform, *rb2d);
-            //InitializePhysicsEntity(newEntity, *transform, *rb2d);
     }
 
     if (playing)

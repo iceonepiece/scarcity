@@ -4,8 +4,10 @@
 #include "Audio/AudioClip.h"
 #include "Entity/Prefab.h"
 #include "Scene/Scene.h"
+#include "Lua/LuaScript.h"
 #include "NativeScript/NativeScript.h"
 #include "Core/Application.h"
+#include "Graphics/Renderer.h"
 #include <filesystem>
 #include <queue>
 
@@ -54,6 +56,19 @@ void AssetManager::LinkIDsToAssets()
 			link.linkFunction(asset);
 		}
 	}
+}
+
+Texture* AssetManager::LoadTexture(const std::string& name, const char* filename, bool alpha)
+{
+	std::unique_ptr<Texture> texture = Application::Get().GetRenderer().LoadTexture(name, filename, alpha);
+
+	if (texture != nullptr)
+	{
+		m_textures.emplace(name, std::move(texture));
+		return m_textures[name].get();
+	}
+
+	return nullptr;
 }
 
 Scene* AssetManager::GetScene(const std::string& name)
@@ -126,9 +141,9 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
     else if (FileSystem::IsPrefabFile(path))
     {
         std::cout << "[Prefab] : " << path << '\n';
-		Entity entity = Application::Get().GetPrefabManager().CreateEntity();
+		Entity entity = Project::GetActive()->GetPrefabManager().CreateEntity();
 		std::unique_ptr<Prefab> prefab = std::make_unique<Prefab>(path, entity);
-		Application::Get().AddPrefab(entity);
+		Project::GetActive()->AddPrefab(entity);
         m_assetMap.insert({ path.string(), std::move(prefab) });
     }
     else if (FileSystem::IsNativeScriptFile(path))
@@ -137,6 +152,12 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
         std::unique_ptr<NativeScript> nativeScritpAsset = std::make_unique<NativeScript>(path);
         m_assetMap.insert({ path.string(), std::move(nativeScritpAsset) });
     }
+	else if (FileSystem::IsLuaScriptFile(path))
+	{
+		std::cout << "[LuaScript] : " << path << '\n';
+		std::unique_ptr<LuaScript> luaScript = std::make_unique<LuaScript>(path);
+		m_assetMap.insert({ path.string(), std::move(luaScript) });
+	}
 
     return GetAsset(path);
 }

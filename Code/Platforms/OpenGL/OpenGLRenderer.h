@@ -10,7 +10,7 @@ class OpenGLRenderer : public Renderer
 public:
 	virtual void Initialize() override;
 	virtual void Draw(Sprite& sprite, const glm::mat4& modelMatrix) override;
-	virtual void DrawSprite(Sprite& sprite, const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }) override;
+	//virtual void DrawSprite(Sprite& sprite, const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }) override;
 	virtual void DrawQuad(const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }) override;
 	virtual void DrawQuad2D(const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }) override;
 	virtual void DrawQuad2D(const Quad2D& quad) override;
@@ -21,7 +21,11 @@ public:
 	virtual void DrawRect(const glm::vec2& position, const glm::vec2& scale, float angle = 0.0f, glm::vec4 color = glm::vec4{ 1.0f }, float thickness = 1.0f) override;
 	virtual void DrawCircle(const glm::vec2& position, float radius) override;
 	virtual void DrawCircle2D(const Circle2D& circle, float thickness = 1.0f) override;
-	virtual void DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color) override;
+	//virtual void DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color) override;
+
+	virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray, uint32_t indexCount) override;
+
+	virtual std::unique_ptr<Texture> LoadTexture(const std::string & name, const char* filename, bool alpha) override;
 
 	virtual void Clear(const glm::vec4& color) override;
 	virtual void PreRender(bool font = false) override;

@@ -1,4 +1,5 @@
 #include "MetaSerializer.h"
+#include "Project/Project.h"
 
 bool MetaSerializer::SerializeImage(Image& image, const std::filesystem::path & path)
 {
@@ -63,7 +64,7 @@ bool MetaSerializer::DeserializeImage(Image& image, const std::filesystem::path&
 		//ResourceManager* resourceManager = ResourceAPI::GetResourceManager();
 		//resourceManager->RemoveSpriteAssets(image.m_spriteAssets);
 
-		AssetManager& assetManager = Application::Get().GetAssetManager();
+		AssetManager& assetManager = Project::GetActive()->GetAssetManager();
 		//assetManager.RemoveSpriteAssets(image.m_spriteAssets);
 		assetManager.RemoveSprites(image.m_sprites);
 

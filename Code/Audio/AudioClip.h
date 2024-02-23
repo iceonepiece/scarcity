@@ -7,7 +7,7 @@ class AudioClip : public Asset
 {
 public:
 	AudioClip(const std::filesystem::path& path)
-		: Asset(path, AssetType::Audio)
+		: Asset(path, AssetType::AudioClip)
 		, m_duration(0)
 	{
 	}

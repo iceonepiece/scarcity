@@ -20,6 +20,7 @@ class LuaEngine;
 class ImGuiManager;
 class Layer;
 class Renderer;
+class UIManager;
 
 constexpr int TAG_SIZE = 8;
 
@@ -66,12 +67,25 @@ public:
 	inline Renderer& GetRenderer() { return *m_renderer; }
 	inline Window& GetWindow() { return *m_window; }
 	inline Input& GetInput() { return *m_input; }
-	inline AssetManager& GetAssetManager() { return *m_assetManager; }
-	inline EntityManager& GetPrefabManager() { return m_prefabManager; }
-	inline TagManager& GetTagManager() { return m_tagManager; }
+	inline UIManager& GetUIManager() { return *m_uiManager; }
 
-	void AddPrefab(Entity entity);
-	Entity GetPrefabByName(const std::string& name);
+	inline ScriptableEntity* GetGlobalVariable(const std::string& name)
+	{
+		if (m_globalVariables.find(name) != m_globalVariables.end())
+			return m_globalVariables[name];
+
+		return nullptr;
+	}
+
+	inline void AddGlobalVariable(const std::string& name, ScriptableEntity* data)
+	{
+		if (m_globalVariables.find(name) != m_globalVariables.end())
+			delete m_globalVariables[name];
+
+		m_globalVariables[name] = data;
+	}
+
+	void ClearGlobalVariables();
 
 protected:
 	virtual void ProcessInput() {}
@@ -88,12 +102,9 @@ protected:
 	std::unique_ptr<NativeScriptEngine> m_nativeScriptEngine;
 	std::unique_ptr<LuaEngine> m_luaEngine;
 	std::unique_ptr<Input> m_input;
-	std::unique_ptr<AssetManager> m_assetManager;
+	std::unique_ptr<UIManager> m_uiManager;
 
-	EntityManager m_prefabManager;
-	TagManager m_tagManager;
-
-	std::unordered_map<std::string, Entity> m_prefabMap;
+	std::unordered_map<std::string, ScriptableEntity*> m_globalVariables;
 
 	std::vector<std::unique_ptr<Layer>> m_layers;
 };

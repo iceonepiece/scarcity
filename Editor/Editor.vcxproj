@@ -115,7 +115,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)External\Library-Debug</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;lua54.lib;freetype.lib;OpenAL32.lib;angelscriptd.lib;box2d.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;lua54.lib;freetype.lib;OpenAL32.lib;box2d.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -144,16 +144,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Code\EditorApplication.cpp" />
+    <ClCompile Include="Code\EditorCore\EditorAssetManager.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiAssetPanel.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiBaseComponent.cpp" />
+    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGui_LuaScriptComponent.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiHierarchy.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiMainMenuBar.cpp" />
-    <ClCompile Include="Code\EditorGUI\ImGui_AnimatorPanel.cpp" />
+    <ClCompile Include="Code\EditorGUI\Windows\ImGui_AnimatorWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiAssetProperties.cpp" />
     <ClCompile Include="Code\EditorGUI\EditorSceneViewport.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiUtils.cpp" />
     <ClCompile Include="Code\EditorGUI\EditorViewport.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGui_InspectorPanel.cpp" />
+    <ClCompile Include="Code\EditorGUI\ImGui_LuaEditorPanel.cpp" />
     <ClCompile Include="Code\EditorGUI\Inspectors\ImGui_AnimatorInspector.cpp" />
     <ClCompile Include="Code\EditorGUI\Inspectors\ImGui_AssetInspector.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiPrefabEditorWindow.cpp" />
@@ -161,6 +164,7 @@
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiTagEditorWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.cpp" />
+    <ClCompile Include="Code\EditorGUI\Windows\ImGui_ProjectSettingsWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_Window.cpp" />
     <ClCompile Include="Code\Gizmos\Gizmo.cpp" />
     <ClCompile Include="Code\Gizmos\GridGizmo.cpp" />
@@ -170,6 +174,15 @@
     <ClCompile Include="Code\ImGuiLayer.cpp" />
     <ClCompile Include="Code\Main.cpp" />
     <ClCompile Include="Code\EditorLayer.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_AnimationClipWrapper.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_AnimatorControllerWrapper.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_AudioClipWrapper.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_ImageWrapper.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_LuaScriptWrapper.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_NativeScriptWrapper.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_PrefabWrapper.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_SceneWrapper.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_WrapperManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\scarcity.vcxproj">
@@ -178,8 +191,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Animator\ImGui_AnimatorState.h" />
+    <ClInclude Include="Code\EditorAsset\AudioClipAsset.h" />
+    <ClInclude Include="Code\EditorAsset\EditorAsset.h" />
+    <ClInclude Include="Code\EditorCore\EditorAssetManager.h" />
     <ClInclude Include="Code\Commands\EditorCommand.h" />
     <ClInclude Include="Code\Commands\TranslateCommand.h" />
+    <ClInclude Include="Code\EditorCore\EditorProject.h" />
     <ClInclude Include="Code\EditorData.h" />
     <ClInclude Include="Code\EditorApplication.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiAssetPanel.h" />
@@ -198,20 +215,25 @@
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteRendererComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiTextComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiTransformComponent.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGui_Collider2DGroupComponent.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGui_Components.h" />
+    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGui_Rigidbody2DComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiHierarchy.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiAssetProperties.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiMainMenuBar.h" />
-    <ClInclude Include="Code\EditorGUI\ImGui_AnimatorPanel.h" />
+    <ClInclude Include="Code\EditorGUI\Windows\ImGui_AnimatorWindow.h" />
     <ClInclude Include="Code\EditorGUI\EditorSceneViewport.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiUtils.h" />
     <ClInclude Include="Code\EditorGUI\EditorViewport.h" />
     <ClInclude Include="Code\EditorGUI\ImGui_InspectorPanel.h" />
+    <ClInclude Include="Code\EditorGUI\ImGui_LuaEditorPanel.h" />
     <ClInclude Include="Code\EditorGUI\Inspectors\ImGui_AnimatorInspector.h" />
     <ClInclude Include="Code\EditorGUI\Inspectors\ImGui_AssetInspector.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiPrefabEditorWIndow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiTagEditorWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.h" />
+    <ClInclude Include="Code\EditorGUI\Windows\ImGui_ProjectSettingsWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_Window.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.h" />
     <ClInclude Include="Code\GameLayer.h" />
@@ -227,10 +249,20 @@
     <ClInclude Include="Code\HubLayer.h" />
     <ClInclude Include="Code\ImGuiComponent.h" />
     <ClInclude Include="Code\ImGuiLayer.h" />
-    <ClInclude Include="Code\SampleScene.h" />
     <ClInclude Include="Code\Gizmos\TranslateGizmo.h" />
     <ClInclude Include="Code\EditorLayer.h" />
     <ClInclude Include="Code\ScriptManager.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_AnimationClipWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_AnimatorControllerWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_AudioClipWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_ImageWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_LuaScriptWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_NativeScriptWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_PrefabWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_SceneWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_AssetWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_SpriteWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_WrapperManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

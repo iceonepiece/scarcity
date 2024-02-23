@@ -88,7 +88,7 @@ void ImGuiAssetProperties::RenderImage(Image& image)
 
     Texture* texture = nullptr;
 
-    AssetManager& assetManager = Application::Get().GetAssetManager();
+    AssetManager& assetManager = Project::GetActive()->GetAssetManager();
 
     if (assetManager.HasTexture(pathString))
     {
@@ -130,7 +130,7 @@ void ImGuiAssetProperties::RenderSprite(Sprite& sprite)
     std::string pathString = sprite.GetImage()->GetPath().string();
 
     Texture* texture = nullptr;
-    AssetManager& assetManager = Application::Get().GetAssetManager();
+    AssetManager& assetManager = Project::GetActive()->GetAssetManager();
 
     if (assetManager.HasTexture(pathString))
     {

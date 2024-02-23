@@ -5,6 +5,7 @@
 #include "Graphics/Renderer.h"
 #include "NativeScript/NativeScriptEngine.h"
 #include "Lua/LuaEngine.h"
+#include "UI/UIManager.h"
 #include "Audio/Audio.h"
 
 Application* Application::s_instance = nullptr;
@@ -20,6 +21,7 @@ Application::Application(const ApplicationConfigs& configs)
 
 	m_nativeScriptEngine = std::make_unique<NativeScriptEngine>();
 	m_luaEngine = std::make_unique<LuaEngine>();
+	m_uiManager = std::make_unique<UIManager>();
 
 	Audio::Create();
 	Audio::Get()->Initialize();
@@ -31,8 +33,19 @@ Application::~Application()
 		layer->Shutdown();
 
 	m_nativeScriptEngine->ShutdownScriptableEntities();
+
+	ClearGlobalVariables();
+
 	Audio::Get()->Destroy();
 	Audio::Shutdown();
+}
+
+void Application::ClearGlobalVariables()
+{
+	for (auto& variable : m_globalVariables)
+		delete variable.second;
+
+	m_globalVariables.clear();
 }
 
 void Application::AddLayer(std::unique_ptr<Layer> layer)
@@ -85,20 +98,6 @@ void Application::Run()
 		m_window->Render();
 	}
 }
-
-void Application::AddPrefab(Entity entity)
-{
-	m_prefabMap.insert({ entity.GetName(), entity });
-}
-
-Entity Application::GetPrefabByName(const std::string& name)
-{
-	if (m_prefabMap.find(name) != m_prefabMap.end())
-		return m_prefabMap[name];
-
-	return Entity{};
-}
-
 
 void Application::Close()
 {

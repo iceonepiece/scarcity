@@ -1,11 +1,12 @@
 #include "ImGui_AnimatorInspector.h"
-#include "../ImGui_AnimatorPanel.h"
+#include "../Windows/ImGui_AnimatorWindow.h"
 #include "Animations/AnimatorState.h"
 #include "../ImGuiUtils.h"
 #include <imgui/imgui_stdlib.h>
 #include <IconsFontAwesome6.h>
 #include "Core/Application.h"
 #include "Asset/AssetManager.h"
+#include "Project/Project.h"
 
 void ImGui_AnimatorInspector::Render(AnimatorState& state)
 {
@@ -13,7 +14,7 @@ void ImGui_AnimatorInspector::Render(AnimatorState& state)
 
 	ImGui::InputText("Title", &state.m_name);
 
-	auto& animClips = Application::Get().GetAssetManager().GetAnimationClips();
+	auto& animClips = Project::GetActive()->GetAssetManager().GetAnimationClips();
 
 	m_selectedMotionIndex = 0;
 

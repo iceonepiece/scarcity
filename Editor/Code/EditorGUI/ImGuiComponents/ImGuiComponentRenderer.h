@@ -2,6 +2,8 @@
 
 #include <string>
 #include <entt/entt.hpp>
+#include "ImGui_Collider2DGroupComponent.h"
+#include "ImGui_Rigidbody2DComponent.h"
 #include "ImGuiAudioSourceComponent.h"
 #include "ImGuiBaseComponent.h"
 #include "ImGuiBoxCollider2DComponent.h"
@@ -16,6 +18,7 @@
 #include "ImGuiCircleCollider2DComponent.h"
 #include "ImGuiRectTransformComponent.h"
 #include "ImGuiTextComponent.h"
+#include "ImGui_Components.h"
 #include <IconsFontAwesome6.h>
 
 class ImGuiComponentRenderer

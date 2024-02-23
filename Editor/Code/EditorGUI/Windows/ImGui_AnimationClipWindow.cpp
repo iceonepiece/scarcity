@@ -1,10 +1,11 @@
 #include "ImGui_AnimationClipWindow.h"
 #include "Core/Application.h"
+#include "Project/Project.h"
 #include <IconsFontAwesome6.h>
 #include "../ImGuiUtils.h"
 
 ImGui_AnimationClipWindow::ImGui_AnimationClipWindow(EditorLayer& editor)
-	: ImGui_Window(editor)
+	: ImGui_Window(editor, "Animation Clip")
 {}
 
 void ImGui_AnimationClipWindow::SetAnimationClip(AnimationClip* animationClip)
@@ -38,7 +39,7 @@ void ImGui_AnimationClipWindow::Render()
 	if (m_animationClip == nullptr || !m_isOpen)
 		return;
 
-	if (ImGui::Begin("Animation Clip", &m_isOpen, ImGuiWindowFlags_NoScrollbar))
+	if (ImGui::Begin(m_windowName.c_str(), &m_isOpen, ImGuiWindowFlags_NoScrollbar))
 	{
 		if (!m_isOpen)
 		{
@@ -49,7 +50,7 @@ void ImGui_AnimationClipWindow::Render()
 
 		ImGui::Text(m_animationClip->GetName().c_str());
 
-		auto& images = Application::Get().GetAssetManager().GetImages();
+		auto& images = Project::GetActive()->GetAssetManager().GetImages();
 		std::vector<std::string> imageNames{ "None" };
 
 		for (int i = 0; i < images.size(); i++)

@@ -13,7 +13,7 @@
 #include "Scene/SceneManager.h"
 #include "ScriptManager.h"
 #include "Platforms/GLFW/GLFWInput.h"
-#include "Platforms/OpenGL/OpenGLAssetManager.h"
+#include "EditorCore/EditorProject.h"
 
 EditorApplication::EditorApplication(const ApplicationConfigs& configs)
     : Application(configs)
@@ -27,7 +27,6 @@ EditorApplication::~EditorApplication()
 void EditorApplication::Initialize()
 {
     m_input = std::make_unique<GLFWInput>(*((GLFWwindow*)m_window->GetNativeWindow()));
-    m_assetManager = std::make_unique<OpenGLAssetManager>();
     m_imguiManager = std::make_unique<ImGuiManager>(*this);
 
     FileDialog::SetNativeWindow(m_window->GetNativeWindow());
@@ -52,7 +51,7 @@ bool EditorApplication::NewProject(const std::string& name, std::filesystem::pat
 
     if (FileSystem::CreateFolder(directory))
     {
-        Project project(name, directory);
+        EditorProject project(name, directory);
         FileSystem::CreateFolder(directory / "Scenes");
         FileSystem::CreateFolder(directory / "Scripts");
 
@@ -81,7 +80,8 @@ void EditorApplication::OpenProject(std::filesystem::path path)
     std::cout << "Open Project: " << path << std::endl;
     std::cout << "Relative: " << path.parent_path().filename() << std::endl;
    
-    std::unique_ptr<Project> project = std::make_unique<Project>();
+    std::unique_ptr<Project> project = std::make_unique<EditorProject>(path);
+    project->Initialize();
 
     if (ProjectSerializer::Deserialize(*project, path))
     {

@@ -5,6 +5,7 @@
 #include "Core/Application.h"
 #include "Entity/Entity.h"
 #include "Scene/Scene.h"
+#include "Project/Project.h"
 
 #define SERIALIZE_FIELD(type, name) type name;
 
@@ -42,6 +43,9 @@ public:
 	virtual void OnCollisionEnter(Collision2D collision) {}
 	virtual void OnCollisionExit(Collision2D collision) {}
 
+	virtual void OnTriggerEnter(Collision2D collision) {}
+	virtual void OnTriggerExit(Collision2D collision) {}
+
 	void SpawnCollision2D(Collision2D* collision)
 	{
 		if (collision)
@@ -59,7 +63,20 @@ public:
 		return std::vector<std::string>();
 	}
 
+	void RunLuaScript(const std::string& fileName, const std::string& functionName, sol::object data);
+
+	Input& GetInput()
+	{
+		return m_app->GetInput();
+	}
+
+	Entity GetPrefab(const std::string& name)
+	{
+		return m_project->GetPrefabByName(name);
+	}
+
 protected:
+	Project* m_project = nullptr;
 	Application* m_app = nullptr;
 	Entity m_entity;
 	Scene* m_scene = nullptr;
