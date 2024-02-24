@@ -41,6 +41,7 @@ OpenGLWindow::OpenGLWindow(Application* app, std::string title, int width, int h
     {
         Application& app = *(Application*)glfwGetWindowUserPointer(window);
         WindowResizeEvent event(width, height);
+
         app.OnEvent(event);
     });
 
@@ -134,6 +135,8 @@ void OpenGLWindow::ProcessInput()
 
 void OpenGLWindow::PreRender()
 {
+    glfwGetWindowSize(m_glfwWindow, &m_width, &m_height);
+
     int rawWidth;int rawHeight;
 
     glfwGetFramebufferSize(m_glfwWindow, &rawWidth, &rawHeight);

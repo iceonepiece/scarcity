@@ -15,16 +15,10 @@ GameLayer::GameLayer(Application& app, std::unique_ptr<Project> project)
 	: m_app(app)
 	, m_activeProject(std::move(project))
 {
-	std::cout << "GameLayer Constructor()\n\n";
-
-	m_app.GetTagManager().Deserialize(m_activeProject->GetDirectory() / "ProjectSettings" / "TagManager.asset");
-
 	std::filesystem::path luaFilePath = m_activeProject->GetDirectory() / (m_activeProject->GetName() + ".lua");
 
 	if (FileSystem::FileExists(luaFilePath))
 		m_app.GetLuaEngine().ReadScript(luaFilePath.string());
-
-	m_app.GetAssetManager().InitializeAssets(m_activeProject->GetDirectory());
 
 	OpenScene(m_activeProject->GetStartScene());
 
@@ -35,6 +29,9 @@ void GameLayer::Start()
 {
 	if (m_activeScene != nullptr)
 	{
+		m_activeProject->StartRunning();
+		m_app.GetNativeScriptEngine().RunStartGameFunction();
+
 		m_activeScene->SetApplication(&m_app);
 		m_activeScene->StartNativeScripts(m_app.GetNativeScriptEngine());
 		m_activeScene->Start();
@@ -125,18 +122,15 @@ void GameLayer::Update(float deltaTime)
 	}
 
 	Application& app = Application::Get();
-	app.GetRenderer().Clear({ 0.2f, 0.2f, 0.2f, 1.0f });
+	app.GetWindow().PreRender();
+	app.GetRenderer().SetScreenSize(app.GetWindow().GetWidth(), app.GetWindow().GetHeight());
 
 	if (m_sceneMap.find(m_currentSceneName) != m_sceneMap.end())
 	{
 		Scene* playingScene = m_sceneMap[m_currentSceneName];
 
 		playingScene->Update(deltaTime);
-		playingScene->SetViewportSize(1280, 720);
-		playingScene->OnViewportResize();
-		playingScene->Render();
-
-
+		playingScene->Render({ false });
 	}
 }
 
@@ -144,6 +138,12 @@ void GameLayer::OnEvent(Event& event)
 {
 	if (event.GetType() == EventType::WindowClose)
 		m_onExit = true;
+
+	if (event.GetType() == EventType::MouseMoved)
+	{
+		MouseMovedEvent mouseMovedEvent = static_cast<MouseMovedEvent&>(event);
+		m_app.GetInput().SetCursorPosition(mouseMovedEvent.GetX(), mouseMovedEvent.GetY());
+	}
 }
 
 void GameLayer::ChangeScene(const std::string& name)
@@ -152,7 +152,7 @@ void GameLayer::ChangeScene(const std::string& name)
 
 	if (m_sceneMap.find(name) == m_sceneMap.end())
 	{
-		if (Scene* sceneBlueprint = Application::Get().GetAssetManager().GetScene(name))
+		if (Scene* sceneBlueprint = Project::GetActive()->GetAssetManager().GetScene(name))
 		{
 			std::unique_ptr<Scene> activeScene = SceneManager::LoadScene(sceneBlueprint->GetPath());
 

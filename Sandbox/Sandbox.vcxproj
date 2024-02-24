@@ -140,6 +140,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BuildSerializer.h" />
     <ClInclude Include="Stages\MenuScene.h" />
     <ClInclude Include="Stages\MyLevel.h" />
     <ClInclude Include="Stages\SampleScene.h" />

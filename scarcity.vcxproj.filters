@@ -789,5 +789,6 @@
     <None Include="README.md" />
     <None Include="Assets\Shaders\quad.vert" />
     <None Include="Assets\Shaders\quad.frag" />
+    <None Include="Assets\build.json" />
   </ItemGroup>
 </Project>

@@ -2,27 +2,25 @@
 #include <cstdlib>
 #include <crtdbg.h>
 
+#include <filesystem>
 #include "Game/GameApplication.h"
+#include "BuildSerializer.h"
 
 int main()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	ApplicationConfigs configs;
-	configs.name = "Bossfight Sandbox";
-	configs.width = 1280;
-	configs.height = 720;
+	BuildConfigs configs = Load(std::filesystem::current_path() / "build.json");
 
-	GameApplication game(configs);
+	GameApplication game({
+		configs.name,
+		configs.width,
+		configs.height,
+	});
+
 	game.Initialize();
-	game.OpenProject("C:\\study\\year2_1\\Advanced Project 1\\bossfight-demo\\BossFight Demo.bfproj");
+	game.OpenProject(configs.path);
 	game.Run();
-
-	//game.AddScene("menu", new MenuScene(game));
-	//game.AddScene("level1", new MyLevel());
-	//game.AddScene("sample", new SampleScene());
-	//game.LoadScenes();
-	//game.ChangeScene("level1");
 
 	//_CrtDumpMemoryLeaks();
 

@@ -1,0 +1,9 @@
+{
+  "name": "Tomato Dragon",
+  "width": 1280,
+  "height": 720,
+  "path": "C:\\works\\my-demo\\BossFight Demo.bfproj",
+  "renderOptions": {
+    "collision": false
+  }
+}
