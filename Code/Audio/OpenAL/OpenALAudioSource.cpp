@@ -31,3 +31,8 @@ void OpenALAudioSource::Destroy()
 {
 	alDeleteSources(1, &m_source);
 }
+
+void OpenALAudioSource::SetLooping(bool looping)
+{
+    alSourcei(m_source, AL_LOOPING, looping ? 1 : 0);
+}

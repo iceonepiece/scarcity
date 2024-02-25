@@ -21,6 +21,7 @@ class ImGuiManager;
 class Layer;
 class Renderer;
 class UIManager;
+class Audio;
 
 constexpr int TAG_SIZE = 8;
 
@@ -68,6 +69,7 @@ public:
 	inline Window& GetWindow() { return *m_window; }
 	inline Input& GetInput() { return *m_input; }
 	inline UIManager& GetUIManager() { return *m_uiManager; }
+	inline Audio& GetAudio() { return *m_audio; }
 
 	inline ScriptableEntity* GetGlobalVariable(const std::string& name)
 	{
@@ -103,6 +105,7 @@ protected:
 	std::unique_ptr<LuaEngine> m_luaEngine;
 	std::unique_ptr<Input> m_input;
 	std::unique_ptr<UIManager> m_uiManager;
+	std::unique_ptr<Audio> m_audio;
 
 	std::unordered_map<std::string, ScriptableEntity*> m_globalVariables;
 

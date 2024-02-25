@@ -9,10 +9,11 @@ using json = nlohmann::json;
 struct AudioSourceComponent
 {
 	static std::string Name() { return "AudioSource"; }
+	inline static NullAudioSource s_nullAudioSource;
 
 	float volume = 1.0f;
 	std::string audioClipPath = "";
-	AudioSource* audioSource = nullptr;
+	AudioSource* audioSource = &s_nullAudioSource;
 
 	void Play(AudioClip* clip)
 	{

@@ -227,6 +227,7 @@ void Scene::Stop()
     auto audioView = m_manager.m_registry.view<AudioSourceComponent>();
     for (auto [entity, audioSource] : audioView.each())
     {
+        audioSource.audioSource->Destroy();
         delete audioSource.audioSource;
     }
 }
