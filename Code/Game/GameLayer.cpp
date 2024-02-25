@@ -160,6 +160,9 @@ void GameLayer::ChangeScene(const std::string& name)
 			{
 				activeScene->SetApplication(&m_app);
 				activeScene->Initialize();
+				activeScene->StartNativeScripts(m_app.GetNativeScriptEngine());
+				activeScene->Start();
+
 				m_sceneMap.insert({ name, activeScene.release() });
 				m_currentSceneName = name;
 

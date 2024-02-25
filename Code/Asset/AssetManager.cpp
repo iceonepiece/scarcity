@@ -74,7 +74,7 @@ Texture* AssetManager::LoadTexture(const std::string& name, const char* filename
 Scene* AssetManager::GetScene(const std::string& name)
 {
 	if (m_sceneMap.find(name) != m_sceneMap.end())
-		return m_sceneMap[name].get();
+		return m_sceneMap[name];
 
 	return nullptr;
 }
@@ -102,6 +102,11 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
 		std::unique_ptr<Scene> scene = std::make_unique<Scene>(path.stem().string(), path);
 		//m_sceneMap.insert({ path.stem().string(),std::move(scene) });
 		m_assetMap.insert({ path.string(), std::move(scene) });
+
+		if (Scene* myScene = dynamic_cast<Scene*>(m_assetMap[path.string()].get()))
+		{
+			m_sceneMap.insert({ path.stem().string(), myScene });
+		}
 	}
 	else if (FileSystem::IsAnimatorFile(path))
 	{

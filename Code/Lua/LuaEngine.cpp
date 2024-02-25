@@ -50,6 +50,11 @@ LuaEngine::LuaEngine()
 		return Application::Get().GetInput().GetKeyDown(key);
 	});
 
+	m_state.set_function("ChangeScene", [&](const std::string& name)
+	{
+		Application::Get().ChangeScene(name);
+	});
+
 	BindLuaUI(*this);
 }
 

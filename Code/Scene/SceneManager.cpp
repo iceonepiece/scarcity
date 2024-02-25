@@ -27,6 +27,7 @@ Scene* SceneManager::Copy(Scene& sourceScene)
 std::unique_ptr<Scene> SceneManager::LoadScene(const std::filesystem::path& filePath)
 {
     std::unique_ptr<Scene> scene = std::make_unique<Scene>();
+    scene->m_project = Project::GetActive();
 
 	if (SceneSerializer::Deserialize(*scene, filePath))
 		return scene;

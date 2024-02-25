@@ -62,7 +62,7 @@ public:
 protected:
 	std::vector<AssetLink> m_assetLinks;
 
-	std::map<std::string, std::unique_ptr<Scene>> m_sceneMap;
+	std::map<std::string, Scene*> m_sceneMap;
 	std::map<std::string, std::unique_ptr<Asset>> m_assetMap;
 	std::map<UniqueID, Asset*> m_assetIDMap;
 	//std::map<std::string, SpriteAsset*> m_spriteAssetMap;

@@ -38,3 +38,15 @@ void GameApplication::OpenProject(std::filesystem::path path)
         AddLayer(std::make_unique<GameLayer>(*this, std::move(project)));
     }
 }
+
+void GameApplication::ChangeScene(std::string name)
+{
+    for (auto& layer : m_layers)
+    {
+        if (GameLayer* gameLayer = dynamic_cast<GameLayer*>(layer.get()))
+        {
+            gameLayer->ChangeScene(name);
+        }
+    }
+
+}
