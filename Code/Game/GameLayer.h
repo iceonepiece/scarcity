@@ -29,6 +29,8 @@ public:
 
 	Scene* LoadScene(const std::filesystem::path& filePath);
 
+	static GameLayer* Get() { return s_instance; }
+
 private:
 	bool m_firstFrame = true;
 	bool m_onExit = false;
@@ -41,4 +43,6 @@ private:
 	Scene* m_activeScene;
 
 	std::vector<std::string> m_nativeClassNames;
+
+	inline static GameLayer* s_instance = nullptr;
 };

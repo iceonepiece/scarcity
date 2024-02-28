@@ -3,6 +3,15 @@
 #include "Project/Project.h"
 #include "Graphics/Renderer.h"
 #include "LuaUI.h"
+#include "Game/GameLayer.h"
+
+std::unordered_map<std::string, KeyCode> keyMap{
+	{"left", Key::Left },
+	{"right", Key::Right },
+	{"up", Key::Up },
+	{"down", Key::Down },
+	{"escape", Key::Escape }
+};
 
 LuaEngine::LuaEngine()
 {
@@ -36,23 +45,22 @@ LuaEngine::LuaEngine()
 
 	m_state.set_function("GetKeyDown", [&](const std::string& name)
 	{
-		KeyCode key = Key::Enter;
+		if (keyMap.find(name) != keyMap.end())
+		{
+			return Application::Get().GetInput().GetKeyDown(keyMap[name]);
+		}
 
-		if (name == "left")
-			key = Key::Left;
-		else if (name == "right")
-			key = Key::Right;
-		else if (name == "up")
-			key = Key::Up;
-		else if (name == "down")
-			key = Key::Down;
-
-		return Application::Get().GetInput().GetKeyDown(key);
+		return false;
 	});
 
 	m_state.set_function("ChangeScene", [&](const std::string& name)
 	{
 		Application::Get().ChangeScene(name);
+	});
+
+	m_state.set_function("Shutdown", [&]()
+	{
+		m_app->StopGame();
 	});
 
 	BindLuaUI(*this);

@@ -405,13 +405,18 @@ TransformComponent* EditorLayer::GetEntityTransform()
 
 void EditorLayer::Update(float deltaTime)
 {
-    std::lock_guard<std::mutex> lock(m_fileEventMutex);
+    if (m_stopGameThisFrame)
+        StopScene();
+    else
+    {
+        std::lock_guard<std::mutex> lock(m_fileEventMutex);
 
-    for (auto& e : m_fileEvents)
-        m_fileHandler.OnFileEvent(e);
-    m_fileEvents.clear();
+        for (auto& e : m_fileEvents)
+            m_fileHandler.OnFileEvent(e);
+        m_fileEvents.clear();
 
-    m_editorSceneViewport.Update(deltaTime);
+        m_editorSceneViewport.Update(deltaTime);
+    }
 }
 
 
@@ -522,6 +527,7 @@ void EditorLayer::PlayScene()
         m_gameLayer.AddScene(m_activeScene->m_name, playingScene);
         m_gameLayer.ChangeScene(m_activeScene->m_name);
 
+        m_stopGameThisFrame = false;
         m_scenePlaying = true;
     }
 }
@@ -534,6 +540,7 @@ void EditorLayer::StopScene()
     m_app.ClearGlobalVariables();
 
     m_scenePlaying = false;
+    m_stopGameThisFrame = false;
 }
 
 void EditorLayer::OnMouseScrolled(MouseScrolledEvent& event)

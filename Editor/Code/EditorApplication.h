@@ -20,6 +20,8 @@ public:
 	void OpenProject(std::filesystem::path path);
 	void SaveProject();
 
+	virtual void StopGame() override;
+
 private:
 
 };

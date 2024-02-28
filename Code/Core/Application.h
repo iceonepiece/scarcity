@@ -44,6 +44,8 @@ public:
 	void Run();
 	void Close();
 
+	virtual void StopGame() = 0;
+
 	virtual void OnEvent(Event& e);
 
 	void AddLayer(std::unique_ptr<Layer> layer);

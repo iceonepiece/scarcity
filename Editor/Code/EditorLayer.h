@@ -173,6 +173,8 @@ public:
 	{
 		return m_luaEditorPanel;
 	}
+
+	bool m_stopGameThisFrame = false;
   
 	void SetAnimatorController(AnimatorController& animController);
 
@@ -219,6 +221,7 @@ private:
 	std::unique_ptr<Scene> m_activeScene;
 
 	bool m_mouseActive = false;
+
 	std::vector<std::unique_ptr<Gizmo>> m_gizmos;
 	
 	EditorApplication& m_app;

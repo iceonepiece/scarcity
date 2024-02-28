@@ -45,6 +45,18 @@ void EditorApplication::ChangeScene(std::string name)
 
 }
 
+void EditorApplication::StopGame()
+{
+    for (auto& layer : m_layers)
+    {
+        if (EditorLayer* editorLayer = dynamic_cast<EditorLayer*>(layer.get()))
+        {
+            //editorLayer->StopScene();
+            editorLayer->m_stopGameThisFrame = true;
+        }
+    }
+}
+
 bool EditorApplication::NewProject(const std::string& name, std::filesystem::path location)
 {
     std::filesystem::path directory = location / name;

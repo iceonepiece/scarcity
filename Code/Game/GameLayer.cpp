@@ -8,6 +8,7 @@
 GameLayer::GameLayer(Application& app)
 	: m_app(app)
 {
+	s_instance = this;
 	std::cout << "GameLayer Constructor()\n\n";
 }
 
@@ -15,6 +16,8 @@ GameLayer::GameLayer(Application& app, std::unique_ptr<Project> project)
 	: m_app(app)
 	, m_activeProject(std::move(project))
 {
+	s_instance = this;
+
 	std::filesystem::path luaFilePath = m_activeProject->GetDirectory() / (m_activeProject->GetName() + ".lua");
 
 	if (FileSystem::FileExists(luaFilePath))
@@ -104,6 +107,7 @@ void GameLayer::Initialize()
 void GameLayer::Shutdown()
 {
 	std::cout << "GameLayer Shutdown()\n\n";
+	m_onExit = true;
 }
 
 void GameLayer::Update(float deltaTime)
@@ -137,7 +141,7 @@ void GameLayer::Update(float deltaTime)
 void GameLayer::OnEvent(Event& event)
 {
 	if (event.GetType() == EventType::WindowClose)
-		m_onExit = true;
+		Shutdown();
 
 	if (event.GetType() == EventType::MouseMoved)
 	{

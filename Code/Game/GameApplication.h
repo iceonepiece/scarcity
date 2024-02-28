@@ -10,5 +10,5 @@ public:
 	virtual void Initialize() override;
 
 	virtual void ChangeScene(std::string name) override;
-
+	virtual void StopGame() override;
 };

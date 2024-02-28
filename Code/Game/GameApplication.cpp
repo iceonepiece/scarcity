@@ -50,3 +50,14 @@ void GameApplication::ChangeScene(std::string name)
     }
 
 }
+
+void GameApplication::StopGame()
+{
+    for (auto& layer : m_layers)
+    {
+        if (GameLayer* gameLayer = dynamic_cast<GameLayer*>(layer.get()))
+        {
+            gameLayer->Shutdown();
+        }
+    }
+}
