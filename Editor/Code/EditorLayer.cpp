@@ -662,6 +662,7 @@ bool EditorLayer::NewScene()
     m_activeScene = SceneManager::CreateDefaultScene("");
     m_activeScene->SetApplication(&m_app);
     m_activeScene->Initialize();
+    m_activeScene->SetProject(m_activeProject.get());
 
     return true;
 }
