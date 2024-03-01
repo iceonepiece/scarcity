@@ -154,7 +154,7 @@ void BindLuaUI(LuaEngine& engine)
 		uiManager.AddObject(uiObject);
 	});
 
-	m_state.set_function("UI_Image", [&](const std::string& imagePath, const std::string& hoverImagePath, float x, float y, float width, float height, float scaleX, float scaleY, sol::function callback)
+	m_state.set_function("UI_Image", [&](const std::string& imagePath, const std::string& hoverImagePath, float x, float y, float width, float height, float scaleX, float scaleY, float alpha, sol::function callback)
 	{
 		UIRect offsetRect = GetOffsetRect(uiManager, engine);
 
@@ -179,6 +179,7 @@ void BindLuaUI(LuaEngine& engine)
 		uiObject->backgroundColor = uiManager.s_backgroundColor;
 		uiObject->fontSize = uiManager.s_fontSize;
 		uiObject->fontColor = uiManager.s_fontColor;
+		uiObject->color.a = alpha;
 		uiObject->onClickFunction = callback;
 		uiManager.AddObject(uiObject);
 	});

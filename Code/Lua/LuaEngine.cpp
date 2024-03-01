@@ -16,7 +16,7 @@ std::unordered_map<std::string, KeyCode> keyMap{
 LuaEngine::LuaEngine()
 {
 	m_app = &Application::Get();
-	m_state.open_libraries(sol::lib::base);
+	m_state.open_libraries(sol::lib::base, sol::lib::math);
 
 	m_state.set_function("DB_SetInt", [&](const std::string& name, int value)
 	{
