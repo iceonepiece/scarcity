@@ -5,6 +5,19 @@
 #include "LuaEngine.h"
 #include "Graphics/Renderer.h"
 
+UIRect GetOffsetRect(UIManager& uiManager, LuaEngine& engine)
+{
+	if (!uiManager.m_rectStack.empty())
+		return uiManager.m_rectStack.back();
+
+	UIRect offsetRect;
+	glm::vec2 screenSize = engine.GetApplication().GetRenderer().GetScreenSize();
+	offsetRect.scale = screenSize;
+	offsetRect.position = { screenSize.x / 2, screenSize.y / 2 };
+
+	return offsetRect;
+}
+
 glm::vec2 GetAbsolutePosition(const UIRect& offsetRect, float width, float height, UIFlag flags)
 {
 	glm::vec2 topLeft = offsetRect.position;
@@ -31,6 +44,30 @@ glm::vec2 GetAbsolutePosition(const UIRect& offsetRect, float width, float heigh
 		{
 			absolutePosition.x += offsetRect.scale.x / 2;
 		}
+
+		if (flags & UIFlag::UIFlag_Right)
+		{
+			absolutePosition.x = offsetRect.scale.x;
+			absolutePosition.x -= width / 2;
+		}
+
+		if (flags & UIFlag::UIFlag_Bottom)
+		{
+			absolutePosition.y = offsetRect.scale.y;
+			absolutePosition.y -= height / 2;
+		}
+
+		if (flags & UIFlag::UIFlag_Left)
+		{
+			absolutePosition.x = topLeft.x;
+			absolutePosition.x += width / 2;
+		}
+
+		if (flags & UIFlag::UIFlag_Top)
+		{
+			absolutePosition.y = topLeft.y;
+			absolutePosition.y += height / 2;
+		}
 	}
 
 
@@ -45,13 +82,7 @@ void BindLuaUI(LuaEngine& engine)
 
 	m_state.set_function("UI_Begin", [&](float x, float y, float width, float height, int flags)
 	{
-		UIRect offsetRect;
-		glm::vec2 screenSize = engine.GetApplication().GetRenderer().GetScreenSize();
-		offsetRect.scale = screenSize;
-		offsetRect.position = { screenSize.x / 2, screenSize.y / 2 };
-
-		if (!uiManager.m_rectStack.empty())
-			offsetRect = uiManager.m_rectStack.back();
+		UIRect offsetRect = GetOffsetRect(uiManager, engine);
 
 		glm::vec2 absolutePosition = GetAbsolutePosition(offsetRect, width, height, (UIFlag)flags);
 
@@ -104,13 +135,7 @@ void BindLuaUI(LuaEngine& engine)
 
 	m_state.set_function("UI_Button", [&](float x, float y, float width, float height, std::string text, sol::function callback)
 	{
-		UIRect offsetRect;
-		glm::vec2 screenSize = engine.GetApplication().GetRenderer().GetScreenSize();
-		offsetRect.scale = screenSize;
-		offsetRect.position = { screenSize.x / 2, screenSize.y / 2 };
-
-		if (!uiManager.m_rectStack.empty())
-			offsetRect = uiManager.m_rectStack.back();
+		UIRect offsetRect = GetOffsetRect(uiManager, engine);
 
 		glm::vec2 absolutePosition = GetAbsolutePosition(offsetRect, width, height, UIFlag::UIFlag_None);
 
@@ -125,6 +150,35 @@ void BindLuaUI(LuaEngine& engine)
 		uiObject->fontSize = uiManager.s_fontSize;
 		uiObject->fontColor = uiManager.s_fontColor;
 		uiObject->text = text;
+		uiObject->onClickFunction = callback;
+		uiManager.AddObject(uiObject);
+	});
+
+	m_state.set_function("UI_Image", [&](const std::string& imagePath, const std::string& hoverImagePath, float x, float y, float width, float height, float scaleX, float scaleY, sol::function callback)
+	{
+		UIRect offsetRect = GetOffsetRect(uiManager, engine);
+
+		glm::vec2 absolutePosition = GetAbsolutePosition(offsetRect, width, height, UIFlag::UIFlag_None);
+
+		absolutePosition.x += x;
+		absolutePosition.y += y;
+
+		UIImageObject* uiObject = new UIImageObject();
+		uiObject->type = UIType::UIType_Image;
+
+		if (Image* image = dynamic_cast<Image*>(Project::GetActive()->GetAssetManager().GetAsset(Project::GetActive()->GetAbsolutePath() / imagePath)))
+			uiObject->image = image;
+
+		if (Image* image = dynamic_cast<Image*>(Project::GetActive()->GetAssetManager().GetAsset(Project::GetActive()->GetAbsolutePath() / hoverImagePath)))
+			uiObject->hoverImage = image;
+
+		uiObject->imageSize.x = scaleX;
+		uiObject->imageSize.y = scaleY;
+		uiObject->position = glm::vec3{ absolutePosition.x, absolutePosition.y, 0.0f };
+		uiObject->scale = glm::vec3{ width, height, 1 };
+		uiObject->backgroundColor = uiManager.s_backgroundColor;
+		uiObject->fontSize = uiManager.s_fontSize;
+		uiObject->fontColor = uiManager.s_fontColor;
 		uiObject->onClickFunction = callback;
 		uiManager.AddObject(uiObject);
 	});
@@ -148,13 +202,7 @@ void BindLuaUI(LuaEngine& engine)
 
 	m_state.set_function("UI_Text", [&](std::string text, float x, float y, float size)
 	{
-		UIRect offsetRect;
-		glm::vec2 screenSize = engine.GetApplication().GetRenderer().GetScreenSize();
-		offsetRect.scale = screenSize;
-		offsetRect.position = { screenSize.x / 2, screenSize.y / 2 };
-
-		if (!uiManager.m_rectStack.empty())
-			offsetRect = uiManager.m_rectStack.back();
+		UIRect offsetRect = GetOffsetRect(uiManager, engine);
 
 		glm::vec2 absolutePosition = offsetRect.position;
 

@@ -3,7 +3,9 @@
 #include <glm/glm.hpp>
 #include <sol/sol.hpp>
 #include "Input/Input.h"
+#include "Graphics/Image.h"
 #include "Math/Math.h"
+#include "Graphics/Renderer.h"
 
 enum UIFlag
 {
@@ -21,6 +23,7 @@ enum UIType
 	UIType_Box,
 	UIType_Text,
 	UIType_Button,
+	UIType_Image
 };
 
 struct UIRect
@@ -34,6 +37,8 @@ class UIObject
 {
 public:
 	virtual ~UIObject() = default;
+
+	virtual void Render(Renderer& renderer) {}
 
 	bool active = false;
 
@@ -59,7 +64,53 @@ public:
 	sol::function onHoverFunction;
 	sol::function onClickFunction;
 
+	Image* image = nullptr;
+
 	virtual void HandleInput(Input& input) { color = backgroundColor; }
+};
+
+class UIImageObject : public UIObject
+{
+public:
+	~UIImageObject() = default;
+
+	Image* currentImage = nullptr;
+	Image* hoverImage = nullptr;
+	glm::vec2 imageSize{ 1.0f, 1.0f };
+
+	virtual void Render(Renderer& renderer) override
+	{
+		glm::vec2 screenSize = renderer.GetScreenSize();
+		if (currentImage != nullptr)
+		{
+			glm::vec2 imagePos = position;
+			imagePos.y = screenSize.y - position.y;
+
+			glm::vec2 imageScale = scale;
+			imageScale.x *= imageSize.x;
+			imageScale.y *= imageSize.y;
+			renderer.DrawSprite(currentImage->GetSprites()[0], imagePos, imageScale);
+		}
+	}
+
+	virtual void HandleInput(Input& input) override
+	{
+		currentImage = image;
+		if (Math::Contains(position, scale, input.GetCursorPosition()))
+		{
+			if (hoverImage != nullptr)
+				currentImage = hoverImage;
+
+			if (onHoverFunction.valid())
+				onHoverFunction();
+
+			if (input.GetMouseButtonDown(Mouse::ButtonLeft))
+			{
+				if (onClickFunction.valid())
+					onClickFunction();
+			}
+		}
+	}
 };
 
 class UIButtonObject : public UIObject

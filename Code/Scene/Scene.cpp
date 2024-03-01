@@ -673,6 +673,10 @@ void Scene::Render(RenderOptions renderOptions)
     renderer.PreRender();
     renderer.BeginFrame();
 
+    glm::vec2 screenSize = renderer.GetScreenSize();
+    glm::mat4 viewProj = glm::ortho(0.0f, screenSize.x, 0.0f, screenSize.y);
+    renderer.SetViewProjectionMatrix(viewProj);
+
     for (auto& uiObject : m_app->GetUIManager().m_objects)
     {
         uiObject->HandleInput(Application::Get().GetInput());
@@ -683,6 +687,10 @@ void Scene::Render(RenderOptions renderOptions)
         {
             renderer.DrawQuadUI(uiObject->position, uiObject->scale, uiObject->color);
             renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor);
+        }
+        else if (uiObject->type == UIType_Image)
+        {
+            uiObject->Render(renderer);
         }
         else
             renderer.DrawQuadUI(uiObject->position, uiObject->scale, uiObject->color);

@@ -12,6 +12,7 @@ void Project::StartRunning()
 	if (FileSystem::FileExists(globalLuaPath))
 		m_globalLuaEngine.ReadScript(globalLuaPath.string());
 
+	m_nativeValueMap.clear();
 
 	/*
 	for (auto& luaScript : m_luaScripts)
@@ -28,6 +29,7 @@ void Project::StartRunning()
 void Project::StopRunning()
 {
 	m_luaEngineMap.clear();
+	m_nativeValueMap.clear();
 }
 
 void Project::AddPrefab(Entity entity)
