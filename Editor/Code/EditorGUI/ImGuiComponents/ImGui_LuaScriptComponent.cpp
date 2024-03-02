@@ -22,7 +22,7 @@ void RenderImGui(LuaScriptComponent&  luaScript)
         {
 			if (LuaScript* script = (LuaScript*)payload->Data)
 			{
-                luaScript.script = (LuaScript*)Project::GetActive()->GetAssetManager().GetAsset(script->GetPath());
+                luaScript.script = (LuaScript*)Project::GetActive()->GetAsset(script->GetPath());
 			}
         }
 

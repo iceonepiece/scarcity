@@ -66,6 +66,11 @@ std::unique_ptr<Scene> Project::LoadScene(const std::filesystem::path& relativeP
 	return nullptr;
 }
 
+Asset* Project::GetAsset(const std::filesystem::path& filePath)
+{
+	return m_assetManager->GetAsset(m_directory / filePath);
+}
+
 bool Project::SaveActive()
 {
 	return true;

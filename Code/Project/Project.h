@@ -79,6 +79,7 @@ public:
 	void AddPrefab(Entity entity);
 	Entity GetPrefabByName(const std::string& name);
 
+	Asset* GetAsset(const std::filesystem::path& filePath);
 	inline AssetManager& GetAssetManager() { return *m_assetManager; }
 	inline EntityManager& GetPrefabManager() { return m_prefabManager; }
 

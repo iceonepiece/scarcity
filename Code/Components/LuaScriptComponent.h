@@ -17,19 +17,21 @@ struct LuaScriptComponent
 
 static void DoSerialize(const LuaScriptComponent& luaScript, json& entityJson)
 {
-	std::string scriptPath = "";
+	std::filesystem::path scriptPath = "";
 
 	if (luaScript.script != nullptr)
-		scriptPath = luaScript.script->GetPath().string();
+	{
+		scriptPath = std::filesystem::relative(luaScript.script->GetPath(), Project::GetActive()->GetDirectory());
+	}
 
-	entityJson[LuaScriptComponent::Name()]["scriptPath"] = scriptPath;
+	entityJson[LuaScriptComponent::Name()]["scriptPath"] = scriptPath.string();
 }
 
 static void DoDeserialize(LuaScriptComponent& luaScript, json& luaScriptJson)
 {
 	if (luaScriptJson["scriptPath"].is_string())
 	{
-		if (Asset* asset = Project::GetActive()->GetAssetManager().GetAsset(luaScriptJson["scriptPath"]))
+		if (Asset* asset = Project::GetActive()->GetAsset(luaScriptJson["scriptPath"]))
 		{
 			luaScript.script = dynamic_cast<LuaScript*>(asset);
 		}
