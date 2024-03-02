@@ -147,6 +147,7 @@ void Scene::Start()
     for (auto [entity, audioSource] : audioView.each())
     {
         audioSource.audioSource = Audio::Get()->CreateAudioSource();
+        audioSource.audioSource->SetVolume(audioSource.volume);
     }
 
     auto cameraView = m_manager.m_registry.view<CameraComponent>();

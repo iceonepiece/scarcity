@@ -36,3 +36,8 @@ void OpenALAudioSource::SetLooping(bool looping)
 {
     alSourcei(m_source, AL_LOOPING, looping ? 1 : 0);
 }
+
+void OpenALAudioSource::SetVolume(float volume)
+{
+    alSourcef(m_source, AL_GAIN, volume);
+}

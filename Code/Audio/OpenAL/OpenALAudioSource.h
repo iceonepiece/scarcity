@@ -11,6 +11,7 @@ public:
 	virtual void Destroy() override;
 	virtual void Play(AudioClip* audioClip) override;
 	virtual void SetLooping(bool looping) override;
+	virtual void SetVolume(float volume) override;
 
 private:
 	ALuint m_source;
