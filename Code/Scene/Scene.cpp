@@ -39,7 +39,6 @@ Scene::Scene(const std::string& name, const std::filesystem::path& path)
     m_systems.push_back(std::make_unique<NativeScriptSystem>(*this));
     m_systems.push_back(std::make_unique<LuaScriptSystem>(*this));
     m_systems.push_back(std::make_unique<PhysicsSystem>(*this));
-    m_systems.push_back(std::make_unique<HierarchySystem>(*this));
     m_systems.push_back(std::make_unique<AnimatorSystem>(*this));
 
     m_luaEngine = std::make_unique<LuaEngine>();

@@ -28,6 +28,14 @@ struct RenderOptions
 	bool collisionVisible = true;
 };
 
+enum class SystemType
+{
+	NativeScript,
+	LuaScript,
+	Physics,
+	Animator
+};
+
 class Scene : public Asset
 {
 public:
@@ -47,6 +55,14 @@ public:
 
 	void SetProject(Project* project);
 	void SetCamera(Camera& camera);
+
+	void SetSystemActive(SystemType type, bool value)
+	{
+		size_t index = (size_t)type;
+
+		if (index < m_systems.size())
+			m_systems[index]->SetActive(value);
+	}
 	
 	bool HasSaved();
 

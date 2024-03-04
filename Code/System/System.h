@@ -16,6 +16,11 @@ public:
 	virtual void Update(float deltaTime) = 0;
 	virtual void Render() {}
 
+	void SetActive(bool value)
+	{
+		m_active = value;
+	}
+
 	bool IsActive() const
 	{
 		return m_active;
