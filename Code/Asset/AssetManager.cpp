@@ -163,6 +163,15 @@ Asset* AssetManager::LoadAsset(const std::filesystem::path& path)
 		std::unique_ptr<LuaScript> luaScript = std::make_unique<LuaScript>(path);
 		m_assetMap.insert({ path.string(), std::move(luaScript) });
 	}
+	else if (FileSystem::IsFontFile(path))
+	{
+		std::cout << "[Font] : " << path << '\n';
+		std::unique_ptr<Font> font = std::make_unique<Font>(path);
+		m_assetMap.insert({ path.string(), std::make_unique<Font>(path) });
+
+		if (Font* loadedFont = dynamic_cast<Font*>(m_assetMap[path.string()].get()))
+			Application::Get().GetRenderer().AddFont(loadedFont->GetName(), loadedFont);
+	}
 
     return GetAsset(path);
 }

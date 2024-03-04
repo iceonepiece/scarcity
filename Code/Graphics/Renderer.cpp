@@ -54,9 +54,9 @@ Renderer::~Renderer()
     delete[] m_quadVertexBufferBase;
 };
 
-void Renderer::DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color)
+void Renderer::DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, const std::string& fontName)
 {
-    m_drawTextCommands.push_back({ text, position, scale, color });
+    m_drawTextCommands.push_back({ text, position, scale, color, fontName });
 }
 
 void Renderer::DrawSprite(Sprite& sprite, const glm::vec2& position, const glm::vec2& scale, float angle, glm::vec4 color)
@@ -161,6 +161,7 @@ void Renderer::Flush()
 
     for (auto& drawCommand : m_drawTextCommands)
     {
+        m_fontSystem->SetFont(drawCommand.fontName);
         m_fontSystem->RenderText(drawCommand.text, drawCommand.position, drawCommand.size, drawCommand.color, m_screenSize);
     }
     m_drawTextCommands.clear();

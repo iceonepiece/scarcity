@@ -411,6 +411,7 @@
     <ClInclude Include="Code\Core\UniqueID.h" />
     <ClInclude Include="Code\File\FileSystem.h" />
     <ClInclude Include="Code\File\MetaSerializer.h" />
+    <ClInclude Include="Code\Graphics\Font.h" />
     <ClInclude Include="Code\Graphics\FontSystem.h" />
     <ClInclude Include="Code\Graphics\Framebuffer.h" />
     <ClInclude Include="Code\Graphics\VertexArray.h" />

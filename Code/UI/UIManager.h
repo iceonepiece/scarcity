@@ -24,6 +24,8 @@ public:
 	std::vector<std::unique_ptr<UIObject>> m_objects;
 
 	glm::vec4 s_backgroundColor = glm::vec4(1.0f);
-	glm::vec4 s_fontColor = glm::vec4(0.0f);float s_fontSize = 32.0f;
+	glm::vec4 s_fontColor = glm::vec4(0.0f);
+	float s_fontSize = 32.0f;
+	std::string m_fontName = "";
 	std::vector<UIRect> m_rectStack;
 };

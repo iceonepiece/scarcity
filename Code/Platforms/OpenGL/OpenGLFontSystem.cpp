@@ -5,81 +5,6 @@ int OpenGLFontSystem::Initialize()
 {
     shader.Compile("Shaders/font.vert", "Shaders/font.frag");
 
-    FT_Library ft;
-    // All functions return a value different than 0 whenever an error occurred
-    if (FT_Init_FreeType(&ft))
-    {
-        std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
-        return -1;
-    }
-
-    // find path to font
-    //std::string font_name = "Fonts/Xolonium-Regular.ttf";
-    std::string font_name = "Fonts/RobotoMono-Regular.ttf";
-
-    if (font_name.empty())
-    {
-        std::cout << "ERROR::FREETYPE: Failed to load font_name" << std::endl;
-        return -1;
-    }
-
-    // load font as face
-    FT_Face face;
-    if (FT_New_Face(ft, font_name.c_str(), 0, &face)) {
-        std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
-        return -1;
-    }
-    else {
-        // set size to load glyphs as
-        FT_Set_Pixel_Sizes(face, 0, FONT_PIXEL_HEIGHT);
-
-        // disable byte-alignment restriction
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-        // load first 128 characters of ASCII set
-        for (unsigned char c = 0; c < 128; c++)
-        {
-            // Load character glyph 
-            if (FT_Load_Char(face, c, FT_LOAD_RENDER))
-            {
-                std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
-                continue;
-            }
-            // generate texture
-            unsigned int texture;
-            glGenTextures(1, &texture);
-            glBindTexture(GL_TEXTURE_2D, texture);
-            glTexImage2D(
-                GL_TEXTURE_2D,
-                0,
-                GL_RED,
-                face->glyph->bitmap.width,
-                face->glyph->bitmap.rows,
-                0,
-                GL_RED,
-                GL_UNSIGNED_BYTE,
-                face->glyph->bitmap.buffer
-            );
-            // set texture options
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            // now store character for later use
-            Character character = {
-                texture,
-                glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
-                glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-                static_cast<unsigned int>(face->glyph->advance.x)
-            };
-            Characters.insert(std::pair<char, Character>(c, character));
-        }
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }
-    // destroy FreeType once we're finished
-    FT_Done_Face(face);
-    FT_Done_FreeType(ft);
-
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glBindVertexArray(VAO);
@@ -93,8 +18,91 @@ int OpenGLFontSystem::Initialize()
     return 0;
 }
 
+void OpenGLFontSystem::LoadFont(Font& font)
+{
+    FT_Library ft;
+    // All functions return a value different than 0 whenever an error occurred
+    if (FT_Init_FreeType(&ft))
+    {
+        std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+        return;
+    }
+
+    std::string fontName = font.GetPath().string();
+
+    for (unsigned int size : Font::DEFAULT_FONT_SIZES)
+    {
+        GlyphMap glyphMap;
+
+        FT_Face face;
+        if (FT_New_Face(ft, fontName.c_str(), 0, &face)) {
+            std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+            return;
+        }
+        else {
+            // set size to load glyphs as
+            FT_Set_Pixel_Sizes(face, 0, size);
+
+            // disable byte-alignment restriction
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+            // load first 128 characters of ASCII set
+            for (unsigned char c = 0; c < 128; c++)
+            {
+                // Load character glyph
+                if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+                {
+                    std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+                    continue;
+                }
+                // generate texture
+                unsigned int texture;
+                glGenTextures(1, &texture);
+                glBindTexture(GL_TEXTURE_2D, texture);
+                glTexImage2D(
+                    GL_TEXTURE_2D,
+                    0,
+                    GL_RED,
+                    face->glyph->bitmap.width,
+                    face->glyph->bitmap.rows,
+                    0,
+                    GL_RED,
+                    GL_UNSIGNED_BYTE,
+                    face->glyph->bitmap.buffer
+                );
+                // set texture options
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                // now store character for later use
+                Character character = {
+                    texture,
+                    glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+                    glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+                    static_cast<unsigned int>(face->glyph->advance.x)
+                };
+                glyphMap.insert(std::pair<char, Character>(c, character));
+
+            }
+            glBindTexture(GL_TEXTURE_2D, 0);
+        }
+
+        font.AddGlypMap(size, glyphMap);
+
+        FT_Done_Face(face);
+    }
+
+    FT_Done_FreeType(ft);
+}
+
 void OpenGLFontSystem::RenderText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, const glm::vec2& viewportSize)
 {
+    unsigned int fontSize = static_cast<unsigned int>(scale);
+
+    if (m_currentFont == nullptr  || !m_currentFont->HasSize(fontSize))
+        return;
+
     // activate corresponding render state	
     shader.Use();
     shader.SetVector4f("textColor", color);
@@ -109,10 +117,8 @@ void OpenGLFontSystem::RenderText(const std::string& text, const glm::vec2& posi
     float x = position.x;
     float y = viewportSize.y - position.y;
 
-    //float screenSizePercentage = Renderer::GetScreenSizePercentage();
     float screenSizePercentage = 1.0f;
-
-    float realScale = scale * screenSizePercentage / (float)FONT_PIXEL_HEIGHT;
+    float realScale = scale * screenSizePercentage / (float)fontSize;
 
     float xOffset = 0;
 
@@ -139,6 +145,7 @@ void OpenGLFontSystem::RenderText(const std::string& text, const glm::vec2& posi
     }
     */
 
+    auto& Characters = m_currentFont->GetCharacters(fontSize);
 
     float leftX = x;
     float rightX = leftX;

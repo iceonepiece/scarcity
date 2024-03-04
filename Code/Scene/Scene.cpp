@@ -270,7 +270,7 @@ void Scene::RenderTexts()
     auto textView = m_manager.m_registry.view<TransformComponent, CanvasComponent, TextComponent>();
     for (auto [entity, transform, canvas, text] : textView.each())
     {
-        renderer.DrawText(text.text, canvas.position, text.size, text.color);
+        renderer.DrawText(text.text, canvas.position, text.size, text.color, "");
     }
 
     renderer.PostRender(true);
@@ -678,16 +678,17 @@ void Scene::Render(RenderOptions renderOptions)
     glm::mat4 viewProj = glm::ortho(0.0f, screenSize.x, 0.0f, screenSize.y);
     renderer.SetViewProjectionMatrix(viewProj);
 
-    for (auto& uiObject : m_app->GetUIManager().m_objects)
+    UIManager& uiManager = m_app->GetUIManager();
+    for (auto& uiObject : uiManager.m_objects)
     {
         uiObject->HandleInput(Application::Get().GetInput());
 
         if (uiObject->type == UIType_Text)
-            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor);
+            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor, uiManager.m_fontName);
         else if (uiObject->type == UIType_Button)
         {
             renderer.DrawQuadUI(uiObject->position, uiObject->scale, uiObject->color);
-            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor);
+            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor, uiManager.m_fontName);
         }
         else if (uiObject->type == UIType_Image)
         {
@@ -697,10 +698,10 @@ void Scene::Render(RenderOptions renderOptions)
             renderer.DrawQuadUI(uiObject->position, uiObject->scale, uiObject->color);
     }
 
+    uiManager.Clear();
+
     renderer.EndFrame();
     renderer.PostRender();
-
-    m_app->GetUIManager().Clear();
 }
 
 void Scene::RenderEditor(RenderOptions renderOptions)

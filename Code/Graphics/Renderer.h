@@ -27,6 +27,7 @@ struct DrawTextCommand
 	glm::vec2 position;
 	float size;
 	glm::vec4 color;
+	std::string fontName;
 };
 
 class Renderer
@@ -59,11 +60,17 @@ public:
 	virtual void DrawCircle(const glm::vec2& position, float radius) = 0;
 	virtual void DrawCircle2D(const Circle2D& circle, float thickness = 1.0f) = 0;
 	
-	void DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color);
+	void DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, const std::string& fontName);
 
 	virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray, uint32_t indexCount) = 0;
 
 	virtual std::unique_ptr<Texture> LoadTexture(const std::string& name, const char* filename, bool alpha) = 0;
+
+	void AddFont(const std::string& name, Font* font)
+	{
+		m_fontSystem->m_fontMap.insert({ name, font });
+		m_fontSystem->LoadFont(*font);
+	}
 
 	virtual void Clear(const glm::vec4& color) = 0;
 	virtual void PreRender(bool font = false) = 0;

@@ -16,6 +16,7 @@ enum class AssetType
 	AudioClip,
 	AnimationClip,
 	LuaScript,
+	Font,
 	Count
 };
 

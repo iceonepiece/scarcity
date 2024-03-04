@@ -116,6 +116,11 @@ void BindLuaUI(LuaEngine& engine)
 		uiManager.s_fontSize = size;
 	});
 
+	m_state.set_function("UI_SetFontName", [&](const std::string& name)
+	{
+		uiManager.m_fontName = name;
+	});
+
 	m_state.set_function("UI_SetBackgroundColor", [&](float r, float g, float b, float a)
 	{
 		uiManager.s_backgroundColor = glm::vec4(r, g, b, a);

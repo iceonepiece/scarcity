@@ -226,6 +226,11 @@ bool FileSystem::IsPrefabFile(const std::filesystem::path& path)
 	return path.extension().generic_string() == ".prefab";
 }
 
+bool FileSystem::IsFontFile(const std::filesystem::path& path)
+{
+	return path.extension().generic_string() == ".ttf";
+}
+
 void FileSystem::GenerateImageMetaFile(const std::filesystem::path& path)
 {
 	if (!FileSystem::FileExists(path.string() + ".meta"))
