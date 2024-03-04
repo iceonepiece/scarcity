@@ -537,8 +537,6 @@ void EditorLayer::StopScene()
     m_gameLayer.DestroyAllScenes();
     m_activeProject->StopRunning();
 
-    m_app.ClearGlobalVariables();
-
     m_scenePlaying = false;
     m_stopGameThisFrame = false;
 }

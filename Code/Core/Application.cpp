@@ -34,18 +34,8 @@ Application::~Application()
 
 	m_nativeScriptEngine->ShutdownScriptableEntities();
 
-	ClearGlobalVariables();
-
 	Audio::Get()->Destroy();
 	Audio::Shutdown();
-}
-
-void Application::ClearGlobalVariables()
-{
-	for (auto& variable : m_globalVariables)
-		delete variable.second;
-
-	m_globalVariables.clear();
 }
 
 void Application::AddLayer(std::unique_ptr<Layer> layer)

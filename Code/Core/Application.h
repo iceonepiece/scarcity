@@ -73,24 +73,6 @@ public:
 	inline UIManager& GetUIManager() { return *m_uiManager; }
 	inline Audio& GetAudio() { return *m_audio; }
 
-	inline ScriptableEntity* GetGlobalVariable(const std::string& name)
-	{
-		if (m_globalVariables.find(name) != m_globalVariables.end())
-			return m_globalVariables[name];
-
-		return nullptr;
-	}
-
-	inline void AddGlobalVariable(const std::string& name, ScriptableEntity* data)
-	{
-		if (m_globalVariables.find(name) != m_globalVariables.end())
-			delete m_globalVariables[name];
-
-		m_globalVariables[name] = data;
-	}
-
-	void ClearGlobalVariables();
-
 protected:
 	virtual void ProcessInput() {}
 	virtual void Update() {}
@@ -108,8 +90,6 @@ protected:
 	std::unique_ptr<Input> m_input;
 	std::unique_ptr<UIManager> m_uiManager;
 	std::unique_ptr<Audio> m_audio;
-
-	std::unordered_map<std::string, ScriptableEntity*> m_globalVariables;
 
 	std::vector<std::unique_ptr<Layer>> m_layers;
 };

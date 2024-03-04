@@ -9,6 +9,8 @@
 #include "Lua/LuaScript.h"
 #include "Lua/LuaEngine.h"
 
+class ScriptableEntity;
+
 class NativeValue
 {
 public:
@@ -53,7 +55,10 @@ public:
 		s_activeProject = this;
 	}
 
-	virtual ~Project() = default;
+	virtual ~Project()
+	{
+		ClearGlobalEntities();
+	}
 
 	virtual void Initialize() = 0;
 
@@ -103,6 +108,10 @@ public:
 		m_nativeValueMap[name] = std::make_unique<NativeInt>(value);
 	}
 
+	ScriptableEntity* GetGlobalEntity(const std::string& name);
+	void AddGlobalEntity(const std::string& name, ScriptableEntity* data);
+	void ClearGlobalEntities();
+
 protected:
 	std::string m_name = "Untitled";
 	std::filesystem::path m_directory;
@@ -118,6 +127,7 @@ protected:
 	std::vector<LuaScript*> m_luaScripts;
 	std::unordered_map<std::string, LuaEngine> m_luaEngineMap;
 	std::unordered_map<std::string, std::unique_ptr<NativeValue>> m_nativeValueMap;
+	std::unordered_map<std::string, ScriptableEntity*> m_globalEntities;
 
 	TagManager m_tagManager;
 

@@ -7,7 +7,7 @@
 #include "Entity/ScriptableEntity.h"
 
 typedef void (*RegisterClassesFunction)();
-typedef void (*StartGameFunction)(Application& app);
+typedef void (*StartGameFunction)(Application& app, Project& project);
 typedef ScriptableEntity* (*CreateInstanceFunction)(const std::string&);
 
 class NativeScriptEngine
@@ -24,7 +24,7 @@ public:
     void RunStartGameFunction()
     {
         if (m_startGameFunction != nullptr)
-            m_startGameFunction(Application::Get());
+            m_startGameFunction(Application::Get(), *Project::GetActive());
     }
 
     inline void SetClassNames(std::vector<std::string> classNames)

@@ -4,6 +4,7 @@
 #include "Scene/SceneSerializer.h"
 #include "File/FileSystem.h"
 #include "Constants/GameEngine.h"
+#include "Entity/ScriptableEntity.h"
 
 void Project::StartRunning()
 {
@@ -30,6 +31,7 @@ void Project::StopRunning()
 {
 	m_luaEngineMap.clear();
 	m_nativeValueMap.clear();
+	ClearGlobalEntities();
 }
 
 void Project::AddPrefab(Entity entity)
@@ -74,4 +76,28 @@ Asset* Project::GetAsset(const std::filesystem::path& filePath)
 bool Project::SaveActive()
 {
 	return true;
+}
+
+ScriptableEntity* Project::GetGlobalEntity(const std::string& name)
+{
+	if (m_globalEntities.find(name) != m_globalEntities.end())
+		return m_globalEntities[name];
+
+	return nullptr;
+}
+
+void Project::AddGlobalEntity(const std::string& name, ScriptableEntity* data)
+{
+	if (m_globalEntities.find(name) != m_globalEntities.end())
+		delete m_globalEntities[name];
+
+	m_globalEntities[name] = data;
+}
+
+void Project::ClearGlobalEntities()
+{
+	for (auto& variable : m_globalEntities)
+		delete variable.second;
+
+	m_globalEntities.clear();
 }
