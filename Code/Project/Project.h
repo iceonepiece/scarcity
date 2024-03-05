@@ -99,6 +99,18 @@ public:
 		return nullptr;
 	}
 
+	int* GetInt(const std::string& name)
+	{
+		if (m_intMap.find(name) != m_intMap.end())
+			return &m_intMap[name];
+
+		return nullptr;
+	}
+
+	void SetInt(const std::string& name, int value)
+	{
+		m_intMap[name] = value;
+	}
 
 	void SetNativeInt(const std::string& name, int value)
 	{
@@ -127,6 +139,9 @@ protected:
 	std::vector<LuaScript*> m_luaScripts;
 	std::unordered_map<std::string, LuaEngine> m_luaEngineMap;
 	std::unordered_map<std::string, std::unique_ptr<NativeValue>> m_nativeValueMap;
+
+	std::unordered_map<std::string, int> m_intMap;
+
 	std::unordered_map<std::string, ScriptableEntity*> m_globalEntities;
 
 	TagManager m_tagManager;

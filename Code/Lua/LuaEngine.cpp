@@ -20,7 +20,7 @@ LuaEngine::LuaEngine()
 
 	m_state.set_function("DB_SetInt", [&](const std::string& name, int value)
 	{
-		return Project::GetActive()->SetNativeInt(name, value);
+		Project::GetActive()->SetInt(name, value);
 	});
 
 	m_state.set_function("Get", [&](const std::string& name)
