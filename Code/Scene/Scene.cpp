@@ -104,6 +104,7 @@ void Scene::DestroyEntity(entt::entity entity)
 void Scene::Start()
 {
     //StartPhysics();
+    s_activeScene = this;
 
     for (auto& system : m_systems)
     {

@@ -23,6 +23,19 @@ LuaEngine::LuaEngine()
 		Project::GetActive()->SetInt(name, value);
 	});
 
+	m_state.set_function("DB_GetInt", [&](const std::string& name)
+	{
+		if (int* value = Project::GetActive()->GetInt(name))
+			return *value;
+
+		return 0;
+	});
+
+	m_state.set_function("SetSystemActive", [&](int type, bool value)
+	{
+		Scene::GetActive()->SetSystemActive((SystemType)type, value);
+	});
+
 	m_state.set_function("Get", [&](const std::string& name)
 	{
 		return Project::GetActive()->GetGlobalLuaEngine().GetValue(name);

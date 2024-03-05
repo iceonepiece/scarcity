@@ -162,6 +162,9 @@ public:
 	std::vector<entt::entity> m_toDestroyEntities;
 	std::unique_ptr<Camera> m_camera;
 
+	static Scene* GetActive() { return s_activeScene; }
+	inline static Scene* s_activeScene = nullptr;
+
 	Physics m_physics;
 
 	EntityManager m_manager;
