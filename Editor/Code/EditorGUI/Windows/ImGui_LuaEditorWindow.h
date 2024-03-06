@@ -1,22 +1,18 @@
 #pragma once
 
+#include "ImGui_Window.h"
 #include <filesystem>
 #include <ImGuiColorTextEdit/TextEditor.h>
 
-class EditorLayer;
-
-class ImGui_LuaEditorPanel
+class ImGui_LuaEditorWindow : public ImGui_Window
 {
 public:
-	ImGui_LuaEditorPanel(EditorLayer& editor);
-	~ImGui_LuaEditorPanel();
+	ImGui_LuaEditorWindow(EditorLayer& editor);
+	virtual void Render() override;
 
 	void LoadScript(const std::filesystem::path& filepath);
-	void Render();
 
 private:
-	EditorLayer& m_editor;
 	TextEditor m_textEditor;
-
 	ImFont* m_font;
 };

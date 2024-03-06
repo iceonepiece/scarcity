@@ -14,6 +14,7 @@ enum class ImGuiWindowType
 	AnimationClip,
 	Animator,
 	ProjectSettings,
+	LuaEditor
 };
 
 class ImGui_Window

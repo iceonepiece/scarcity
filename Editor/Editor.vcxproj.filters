@@ -96,9 +96,6 @@
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\EditorGUI\ImGui_LuaEditorPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_ProjectSettingsWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -133,6 +130,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Wrappers\ImGui_SceneWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\EditorGUI\Windows\ImGui_LuaEditorWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -296,9 +296,6 @@
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\EditorGUI\ImGui_LuaEditorPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_ProjectSettingsWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -354,6 +351,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Wrappers\ImGui_PrefabWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\Windows\ImGui_LuaEditorWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,5 +1,6 @@
 #include "ImGui_LuaScriptWrapper.h"
 #include "../EditorLayer.h"
+#include "../EditorGUI/Windows/ImGui_LuaEditorWindow.h"
 
 void ImGui_LuaScriptWrapper::RenderBrowser(EditorLayer& editor)
 {
@@ -16,8 +17,13 @@ void ImGui_LuaScriptWrapper::RenderBrowser(EditorLayer& editor)
 
 	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 	{
+		/*
 		auto& luaEditor = editor.GetLuaEditorPanel();
 		luaEditor.LoadScript(m_luaScript->GetPath().string());
+		*/
+		ImGui_LuaEditorWindow* luaEditor = (ImGui_LuaEditorWindow*)EditorLayer::GetImGuiWindow(ImGuiWindowType::LuaEditor);
+		luaEditor->LoadScript(m_luaScript->GetPath().string());
+		luaEditor->SetOpen(true);
 	}
 
 	if (opened)

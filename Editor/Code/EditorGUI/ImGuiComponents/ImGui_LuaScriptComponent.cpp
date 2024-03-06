@@ -1,6 +1,8 @@
 #include "ImGui_Components.h"
 #include "Core/Application.h"
 #include <imgui/imgui.h>
+#include "../../EditorLayer.h"
+#include "../Windows/ImGui_LuaEditorWindow.h"
 
 void RenderImGui(LuaScriptComponent&  luaScript)
 {
@@ -14,7 +16,12 @@ void RenderImGui(LuaScriptComponent&  luaScript)
         scriptFilename = luaScript.script->GetName();
     }
 
-    ImGui::Button(scriptFilename.c_str(), ImVec2(200, 0));
+    if (ImGui::Button(scriptFilename.c_str(), ImVec2(200, 0)))
+    {
+        ImGui_LuaEditorWindow* luaEditor = (ImGui_LuaEditorWindow*)EditorLayer::GetImGuiWindow(ImGuiWindowType::LuaEditor);
+        luaEditor->LoadScript(luaScript.script->GetPath().string());
+        luaEditor->SetOpen(true);
+    }
 
     if (ImGui::BeginDragDropTarget())
     {

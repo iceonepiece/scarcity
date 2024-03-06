@@ -16,6 +16,7 @@
 #include "EditorGUI/Windows/ImGuiTagEditorWindow.h"
 #include "EditorGUI/Windows/ImGui_AnimationClipWindow.h"
 #include "EditorGUI/Windows/ImGui_ProjectSettingsWindow.h"
+#include "EditorGUI/Windows/ImGui_LuaEditorWindow.h"
 #include "Scene/SceneSerializer.h"
 #include "Scene/SceneManager.h"
 #include "Asset/AssetManager.h"
@@ -36,7 +37,6 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     , m_assetPanel(*this)
     , m_gameLayer(app)
     , m_editorSceneViewport(*this)
-    , m_luaEditorPanel(*this)
 {
     s_instance = this;
 
@@ -61,6 +61,7 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     m_imGuiWindowMap[ImGuiWindowType::AnimationClip] = std::make_unique<ImGui_AnimationClipWindow>(*this);
     m_imGuiWindowMap[ImGuiWindowType::Animator] = std::make_unique<ImGui_AnimatorWindow>(*this);
     m_imGuiWindowMap[ImGuiWindowType::ProjectSettings] = std::make_unique<ImGui_ProjectSettingsWindow>(*this);
+    m_imGuiWindowMap[ImGuiWindowType::LuaEditor] = std::make_unique<ImGui_LuaEditorWindow>(*this);
 
     OpenScene(m_activeProject->GetStartScene());
 
@@ -478,7 +479,8 @@ void EditorLayer::RenderImGui()
     if (GetImGuiWindow(ImGuiWindowType::AnimationClip))
         GetImGuiWindow(ImGuiWindowType::AnimationClip)->Render();
 
-    m_luaEditorPanel.Render();
+    if (GetImGuiWindow(ImGuiWindowType::LuaEditor))
+        GetImGuiWindow(ImGuiWindowType::LuaEditor)->Render();
 
     if (GetImGuiWindow(ImGuiWindowType::Animator))
         GetImGuiWindow(ImGuiWindowType::Animator)->Render();

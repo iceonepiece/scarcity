@@ -156,7 +156,6 @@
     <ClCompile Include="Code\EditorGUI\ImGuiUtils.cpp" />
     <ClCompile Include="Code\EditorGUI\EditorViewport.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGui_InspectorPanel.cpp" />
-    <ClCompile Include="Code\EditorGUI\ImGui_LuaEditorPanel.cpp" />
     <ClCompile Include="Code\EditorGUI\Inspectors\ImGui_AnimatorInspector.cpp" />
     <ClCompile Include="Code\EditorGUI\Inspectors\ImGui_AssetInspector.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiPrefabEditorWindow.cpp" />
@@ -164,6 +163,7 @@
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiTagEditorWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.cpp" />
+    <ClCompile Include="Code\EditorGUI\Windows\ImGui_LuaEditorWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_ProjectSettingsWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_Window.cpp" />
     <ClCompile Include="Code\Gizmos\Gizmo.cpp" />
@@ -226,13 +226,13 @@
     <ClInclude Include="Code\EditorGUI\ImGuiUtils.h" />
     <ClInclude Include="Code\EditorGUI\EditorViewport.h" />
     <ClInclude Include="Code\EditorGUI\ImGui_InspectorPanel.h" />
-    <ClInclude Include="Code\EditorGUI\ImGui_LuaEditorPanel.h" />
     <ClInclude Include="Code\EditorGUI\Inspectors\ImGui_AnimatorInspector.h" />
     <ClInclude Include="Code\EditorGUI\Inspectors\ImGui_AssetInspector.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiPrefabEditorWIndow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectAnimatorControllerWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiTagEditorWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.h" />
+    <ClInclude Include="Code\EditorGUI\Windows\ImGui_LuaEditorWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_ProjectSettingsWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_Window.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.h" />
