@@ -39,8 +39,9 @@ void GameLayer::Start()
 		m_activeScene->StartNativeScripts(m_app.GetNativeScriptEngine());
 		m_activeScene->Start();
 
-		AddScene(m_activeScene->m_name, m_activeScene);
-		ChangeScene(m_activeScene->m_name);
+		std::string sceneName = m_activeScene->m_name;
+		AddScene(sceneName, m_activeScene);
+		ChangeScene(sceneName);
 	}
 }
 
@@ -154,31 +155,36 @@ void GameLayer::ChangeScene(const std::string& name)
 {
 	std::cout << "GameLayer::ChangeScene() - " << name << std::endl;
 
-	if (m_sceneMap.find(name) == m_sceneMap.end())
-	{
-		if (Scene* sceneBlueprint = Project::GetActive()->GetAssetManager().GetScene(name))
-		{
-			std::unique_ptr<Scene> activeScene = SceneManager::LoadScene(sceneBlueprint->GetPath());
-
-			if (activeScene != nullptr)
-			{
-				activeScene->SetApplication(&m_app);
-				activeScene->Initialize();
-				activeScene->StartNativeScripts(m_app.GetNativeScriptEngine());
-				activeScene->Start();
-
-				m_sceneMap.insert({ name, activeScene.release() });
-				m_currentSceneName = name;
-
-				return;
-			}
-		}
-
-		std::cout << "Cannot find the scene " << name << "\t[ GameLayer::ChangeScene() ]\n";
+	if (name == m_currentSceneName)
 		return;
+
+	if (m_sceneMap.find(name) != m_sceneMap.end())
+	{
+		m_sceneMap[name]->Stop();
+		delete m_sceneMap[name];
+		m_sceneMap.erase(name);
 	}
 
-	m_currentSceneName = name;
+	if (Scene* sceneBlueprint = Project::GetActive()->GetAssetManager().GetScene(name))
+	{
+		std::unique_ptr<Scene> activeScene = SceneManager::LoadScene(sceneBlueprint->GetPath());
+
+		if (activeScene != nullptr)
+		{
+			activeScene->SetApplication(&m_app);
+			activeScene->Initialize();
+			activeScene->StartNativeScripts(m_app.GetNativeScriptEngine());
+			activeScene->Start();
+			activeScene->Enter();
+			m_sceneMap.insert({ name, activeScene.release() });
+
+			m_currentSceneName = name;
+		}
+	}
+	else
+	{
+		std::cout << "Cannot find the scene " << name << "\t[ GameLayer::ChangeScene() ]\n";
+	}
 }
 
 void GameLayer::AddScene(const std::string& name, const std::filesystem::path& filePath)

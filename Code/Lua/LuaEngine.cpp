@@ -68,7 +68,7 @@ LuaEngine::LuaEngine()
 
 	m_state.set_function("ChangeScene", [&](const std::string& name)
 	{
-		Application::Get().ChangeScene(name);
+		Application::Get().ScheduleChangeScene(name);
 	});
 
 	m_state.set_function("Shutdown", [&]()

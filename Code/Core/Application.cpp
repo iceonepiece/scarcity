@@ -78,6 +78,13 @@ void Application::Run()
 		for (auto& layer : m_layers)
 			layer->Update(Timer::GetDeltaTime());
 
+		if (m_changeSceneNextFrame)
+		{
+			ChangeScene(m_nextSceneName);
+			m_changeSceneNextFrame = false;
+			m_nextSceneName = "";
+		}
+
 		m_imguiManager->Begin();
 		{
 			for (auto& layer : m_layers)
@@ -93,5 +100,11 @@ void Application::Close()
 {
 	m_running = false;
 	return;
+}
+
+void Application::ScheduleChangeScene(const std::string& sceneName)
+{
+	m_changeSceneNextFrame = true;
+	m_nextSceneName = sceneName;
 }
 

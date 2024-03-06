@@ -45,6 +45,7 @@ public:
 	void Close();
 
 	virtual void StopGame() = 0;
+	void ScheduleChangeScene(const std::string& name);
 
 	virtual void OnEvent(Event& e);
 
@@ -80,6 +81,9 @@ protected:
 
 	static Application* s_instance;
 	ApplicationConfigs m_configs;
+
+	bool m_changeSceneNextFrame = false;
+	std::string m_nextSceneName = "";
 
 	bool m_running = true;
 	std::unique_ptr<Window> m_window;

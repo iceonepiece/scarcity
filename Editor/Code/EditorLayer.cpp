@@ -521,6 +521,7 @@ void EditorLayer::PlayScene()
 
         Scene* playingScene = SceneManager::Copy(*m_activeScene);
         playingScene->SetApplication(&m_app);
+        playingScene->Initialize();
         playingScene->StartNativeScripts(m_app.GetNativeScriptEngine());
         playingScene->Start();
 

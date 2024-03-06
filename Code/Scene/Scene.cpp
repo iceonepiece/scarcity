@@ -253,12 +253,14 @@ void Scene::StartNativeScripts(NativeScriptEngine& scriptEngine)
         }
     }
 
+    /*
     auto nativeScriptView = m_manager.m_registry.view<NativeScriptComponent>();
     for (auto [entity, script] : nativeScriptView.each())
     {
         if (script.instance != nullptr)
 			script.instance->Start();
     }
+    */
 }
 
 void Scene::RenderTexts()
@@ -558,7 +560,12 @@ void Scene::Update(float deltaTime)
 
 void Scene::Enter()
 {
-   Application::Get().GetRenderer().SetCamera(*m_camera);
+    auto nativeScriptView = m_manager.m_registry.view<NativeScriptComponent>();
+    for (auto [entity, script] : nativeScriptView.each())
+    {
+        if (script.instance != nullptr)
+            script.instance->Start();
+    }
 }
 
 void Scene::Exit()
