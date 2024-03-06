@@ -81,7 +81,13 @@ LuaEngine::LuaEngine()
 
 void LuaEngine::ReadScript(const std::string& fileName)
 {
-	m_state.script_file(fileName);
+	auto result = m_state.safe_script_file(fileName, sol::script_pass_on_error);
+
+	if (!result.valid())
+	{
+		sol::error err = result;
+		std::cerr << "[Lua script error]\n" << err.what() << std::endl;
+	}
 }
 
 sol::function LuaEngine::GetFunction(const std::string& name)
