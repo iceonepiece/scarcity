@@ -170,7 +170,7 @@ void OpenGLFontSystem::RenderText(const std::string& text, const glm::vec2& posi
     {
         Character ch = Characters[*c];
 
-        float xpos = x + ch.Bearing.x * realScale - xOffset;
+        float xpos = std::floor(x + ch.Bearing.x * realScale - xOffset);
         float ypos = y - (ch.Size.y - ch.Bearing.y) * realScale;
 
         float w = ch.Size.x * realScale;
