@@ -56,7 +56,9 @@ Renderer::~Renderer()
 
 void Renderer::DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, const std::string& fontName)
 {
-    m_drawTextCommands.push_back({ text, position, scale, color, fontName });
+    //m_drawTextCommands.push_back({ text, position, scale, color, fontName });
+    m_fontSystem->SetFont(fontName);
+    m_fontSystem->RenderText(text, position, scale, color, m_screenSize);
 }
 
 void Renderer::DrawSprite(Sprite& sprite, const glm::vec2& position, const glm::vec2& scale, float angle, glm::vec4 color)
