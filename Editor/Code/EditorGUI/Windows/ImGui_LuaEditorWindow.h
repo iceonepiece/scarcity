@@ -15,4 +15,5 @@ public:
 private:
 	TextEditor m_textEditor;
 	ImFont* m_font;
+	std::filesystem::path m_currentLuaScriptPath;
 };

@@ -12,12 +12,15 @@ ImGui_LuaEditorWindow::ImGui_LuaEditorWindow(EditorLayer& editor)
 
 void ImGui_LuaEditorWindow::LoadScript(const std::filesystem::path& filepath)
 {
-	FileSystem::ReadFile(filepath, [&](std::fstream& fs)
+	bool success = FileSystem::ReadFile(filepath, [&](std::fstream& fs)
 	{
 		std::stringstream ss;
 		ss << fs.rdbuf();
 		m_textEditor.SetText(ss.str());
 	});
+
+	if (success)
+		m_currentLuaScriptPath = filepath;
 }
 
 void ImGui_LuaEditorWindow::Render()
@@ -29,9 +32,9 @@ void ImGui_LuaEditorWindow::Render()
 	{
 		if (ImGui::Button("Save"))
 		{
-			if (LuaScript* script = (LuaScript*)m_editor.GetSelectedAsset())
+			if (FileSystem::FileExists(m_currentLuaScriptPath))
 			{
-				FileSystem::WriteFile(script->GetPath(), [&](std::fstream& fs)
+				FileSystem::WriteFile(m_currentLuaScriptPath, [&](std::fstream& fs)
 				{
 					fs << m_textEditor.GetText();
 				});
