@@ -130,12 +130,10 @@ void GameLayer::Update(float deltaTime)
 	app.GetWindow().PreRender();
 	app.GetRenderer().SetScreenSize(app.GetWindow().GetWidth(), app.GetWindow().GetHeight());
 
-	if (m_sceneMap.find(m_currentSceneName) != m_sceneMap.end())
+	if (m_activeScene != nullptr)
 	{
-		Scene* playingScene = m_sceneMap[m_currentSceneName];
-
-		playingScene->Update(deltaTime);
-		playingScene->Render({ false });
+		m_activeScene->Update(deltaTime);
+		m_activeScene->Render({ false });
 	}
 }
 
@@ -158,27 +156,34 @@ void GameLayer::ChangeScene(const std::string& name)
 	if (name == m_currentSceneName)
 		return;
 
-	if (m_sceneMap.find(name) != m_sceneMap.end())
+	Scene* previousScene = m_activeScene;
+
+	if (m_sceneMap.find(name) == m_sceneMap.end())
 	{
-		m_sceneMap[name]->Stop();
-		delete m_sceneMap[name];
-		m_sceneMap.erase(name);
+		if (Scene* sceneBlueprint = Project::GetActive()->GetAssetManager().GetScene(name))
+		{
+			std::unique_ptr<Scene> activeScene = SceneManager::LoadScene(sceneBlueprint->GetPath());
+
+			if (activeScene != nullptr)
+				m_sceneMap.insert({ name, activeScene.release() });
+		}
 	}
 
-	if (Scene* sceneBlueprint = Project::GetActive()->GetAssetManager().GetScene(name))
+	if (m_sceneMap.find(name) != m_sceneMap.end())
 	{
-		std::unique_ptr<Scene> activeScene = SceneManager::LoadScene(sceneBlueprint->GetPath());
+		m_activeScene = SceneManager::Copy(*m_sceneMap[name]);
+		m_activeScene->SetApplication(&m_app);
+		m_activeScene->Initialize();
+		m_activeScene->StartNativeScripts(m_app.GetNativeScriptEngine());
+		m_activeScene->Start();
+		m_activeScene->Enter();
 
-		if (activeScene != nullptr)
+		m_currentSceneName = name;
+
+		if (previousScene != nullptr)
 		{
-			activeScene->SetApplication(&m_app);
-			activeScene->Initialize();
-			activeScene->StartNativeScripts(m_app.GetNativeScriptEngine());
-			activeScene->Start();
-			activeScene->Enter();
-			m_sceneMap.insert({ name, activeScene.release() });
-
-			m_currentSceneName = name;
+			previousScene->Stop();
+			delete previousScene;
 		}
 	}
 	else
@@ -210,18 +215,22 @@ void GameLayer::AddScene(const std::string& name, Scene* scene)
 
 Scene* GameLayer::GetCurrentScene()
 {
-	if (m_sceneMap.find(m_currentSceneName) != m_sceneMap.end())
-		return m_sceneMap[m_currentSceneName];
-
-	return nullptr;
+	return m_activeScene;
 }
 
 void GameLayer::DestroyAllScenes()
 {
-	for (auto& scene : m_sceneMap) {
-		scene.second->Stop();
-		delete scene.second;
+	m_currentSceneName = "";
+
+	if (m_activeScene != nullptr)
+	{
+		m_activeScene->Stop();
+		delete m_activeScene;
+		m_activeScene = nullptr;
 	}
+
+	for (auto& scene : m_sceneMap)
+		delete scene.second;
 
 	m_sceneMap.clear();
 }

@@ -236,7 +236,6 @@
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_ProjectSettingsWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_Window.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.h" />
-    <ClInclude Include="Code\GameLayer.h" />
     <ClInclude Include="Code\Gizmos\Actionable.h" />
     <ClInclude Include="Code\Gizmos\ActionableCircle.h" />
     <ClInclude Include="Code\Gizmos\ActionableRect.h" />

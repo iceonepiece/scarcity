@@ -40,7 +40,7 @@ private:
 	Application& m_app;
 
 	std::unique_ptr<Project> m_activeProject;
-	Scene* m_activeScene;
+	Scene* m_activeScene = nullptr;
 
 	std::vector<std::string> m_nativeClassNames;
 

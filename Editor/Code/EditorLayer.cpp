@@ -518,16 +518,9 @@ void EditorLayer::PlayScene()
     if (m_activeScene != nullptr)
     {
         m_activeProject->StartRunning();
-
         m_app.GetNativeScriptEngine().RunStartGameFunction();
 
-        Scene* playingScene = SceneManager::Copy(*m_activeScene);
-        playingScene->SetApplication(&m_app);
-        playingScene->Initialize();
-        playingScene->StartNativeScripts(m_app.GetNativeScriptEngine());
-        playingScene->Start();
-
-        m_gameLayer.AddScene(m_activeScene->m_name, playingScene);
+        m_gameLayer.AddScene(m_activeScene->m_name, SceneManager::Copy(*m_activeScene));
         m_gameLayer.ChangeScene(m_activeScene->m_name);
 
         m_stopGameThisFrame = false;
