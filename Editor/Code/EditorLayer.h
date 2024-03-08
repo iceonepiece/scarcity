@@ -103,10 +103,7 @@ public:
 	inline bool IsScenePlaying() { return m_scenePlaying; }
 
 	Scene* GetScene() { return m_activeScene.get(); }
-	void ChangeScene(const std::string& name)
-	{
-		m_gameLayer.ChangeScene(name);
-	}
+	void ChangeScene(const std::string& name);
 
 	Camera& GetCamera() { return *m_camera; }
 

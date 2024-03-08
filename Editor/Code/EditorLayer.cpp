@@ -124,6 +124,8 @@ bool EditorLayer::OpenScene(std::filesystem::path absolutePath)
     std::cout << "OpenScene: " << absolutePath << std::endl;
     bool success = true;
 
+    UnselectObject();
+
     m_activeScene = m_activeProject->LoadScene(absolutePath);
 
     if (m_activeScene == nullptr)
@@ -535,6 +537,11 @@ void EditorLayer::StopScene()
 
     m_scenePlaying = false;
     m_stopGameThisFrame = false;
+}
+
+void EditorLayer::ChangeScene(const std::string& name)
+{
+    m_gameLayer.ChangeScene(name);
 }
 
 void EditorLayer::OnMouseScrolled(MouseScrolledEvent& event)
