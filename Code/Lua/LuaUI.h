@@ -80,6 +80,11 @@ void BindLuaUI(LuaEngine& engine)
 
 	UIManager& uiManager = engine.GetApplication().GetUIManager();
 
+	m_state.set_function("UI_SetActive", [&](bool active)
+	{
+		uiManager.s_active = active;
+	});
+
 	m_state.set_function("UI_Begin", [&](float x, float y, float width, float height, int flags)
 	{
 		UIRect offsetRect = GetOffsetRect(uiManager, engine);
@@ -148,6 +153,7 @@ void BindLuaUI(LuaEngine& engine)
 		absolutePosition.y += y;
 
 		UIObject* uiObject = new UIButtonObject();
+		uiObject->active = uiManager.s_active;
 		uiObject->type = UIType::UIType_Button;
 		uiObject->position = glm::vec3{ absolutePosition.x, absolutePosition.y, 0.0f };
 		uiObject->scale = glm::vec3{ width, height, 1 };
@@ -169,6 +175,7 @@ void BindLuaUI(LuaEngine& engine)
 		absolutePosition.y += y;
 
 		UIImageObject* uiObject = new UIImageObject();
+		uiObject->active = uiManager.s_active;
 		uiObject->type = UIType::UIType_Image;
 
 		if (Image* image = dynamic_cast<Image*>(Project::GetActive()->GetAssetManager().GetAsset(Project::GetActive()->GetAbsolutePath() / imagePath)))

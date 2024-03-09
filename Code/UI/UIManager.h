@@ -25,6 +25,7 @@ public:
 
 	glm::vec4 s_backgroundColor = glm::vec4(1.0f);
 	glm::vec4 s_fontColor = glm::vec4(0.0f);
+	bool s_active = true;
 	float s_fontSize = 32.0f;
 	std::string m_fontName = "";
 	std::vector<UIRect> m_rectStack;

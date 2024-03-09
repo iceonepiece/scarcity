@@ -40,7 +40,7 @@ public:
 
 	virtual void Render(Renderer& renderer) {}
 
-	bool active = false;
+	bool active = true;
 
 	UIType type = UIType_Box;
 	glm::vec3 position{ 0.0f };
@@ -96,6 +96,10 @@ public:
 	virtual void HandleInput(Input& input) override
 	{
 		currentImage = image;
+
+		if (!active)
+			return;
+
 		if (Math::Contains(position, scale, input.GetCursorPosition()))
 		{
 			if (hoverImage != nullptr)
@@ -121,6 +125,10 @@ public:
 	virtual void HandleInput(Input& input) override
 	{
 		color = backgroundColor;
+
+		if (!active)
+			return;
+
 		if (Math::Contains(position, scale, input.GetCursorPosition()))
 		{
 			color.x *= 1.5f;
