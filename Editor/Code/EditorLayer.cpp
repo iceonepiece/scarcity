@@ -25,6 +25,7 @@
 #include <stack>
 #include "Physics/GridUtils.h"
 #include <iostream>
+#include "Platforms/OpenGL/OpenGLTexture.h"
 
 EditorLayer* EditorLayer::s_instance = nullptr;
 
@@ -382,7 +383,32 @@ bool EditorLayer::CheckPicking2D(const glm::vec2& cursorPosition)
         if (!Shape2D::IsPointOnRectangle(cursorPosition, transform.position, transform.scale, transform.rotation.z))
             continue;
 
-        std::cout << "PICKED" << std::endl;
+        if (SpriteRendererComponent* sprite = m_activeScene->GetEntityManager().m_registry.try_get<SpriteRendererComponent>(entity))
+        {
+            glm::vec2 ratio = sprite->sprite->GetRatio();
+            float width = transform.scale.x * ratio.x;
+            float height = transform.scale.y * ratio.y;
+
+            glm::mat4 t = glm::translate(glm::mat4(1.0f), { transform.position.x, transform.position.y, 0.0f })
+                * glm::mat4(glm::quat({ 0.0f, 0.0f, transform.rotation.z }))
+                * glm::scale(glm::mat4(1.0f), { width, height, 1.0f });
+
+            glm::vec4 localPosition = glm::inverse(t) * glm::vec4(cursorPosition.x, cursorPosition.y, 0, 1);
+
+            unsigned int spriteWidth = sprite->sprite->GetWidth();
+            unsigned int spriteHeight = sprite->sprite->GetHeight();
+
+            int px = (localPosition.x + 0.5f) * spriteWidth;
+            int py = (localPosition.y + 0.5f) * spriteHeight;
+
+            bool isOutsideSprite = px < 0 || px >= spriteWidth || py < 0 || py >= spriteHeight;
+            bool isTransparent = sprite->sprite->GetTexture()->GetPixelAlpha(px, py) == 0;
+
+            if (isOutsideSprite || isTransparent)
+                continue;
+        }
+
+        std::cout << "PICKED\n";
 
         SetPickedEntity(entity);
 

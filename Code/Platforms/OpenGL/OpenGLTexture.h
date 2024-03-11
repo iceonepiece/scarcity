@@ -24,6 +24,8 @@ public:
 		return m_id == other.GetRendererID();
 	}
 
+	virtual uint8_t GetPixelAlpha(unsigned int x, unsigned int y) override;
+
 private:
 	GLuint m_id;
 	int m_width;

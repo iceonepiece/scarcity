@@ -16,6 +16,28 @@ OpenGLTexture::OpenGLTexture(const std::string& path)
     Generate(path.c_str());
 }
 
+uint8_t OpenGLTexture::GetPixelAlpha(unsigned int x, unsigned int y)
+{
+    GLuint framebuffer;
+    glGenFramebuffers(1, &framebuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_id, 0);
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    {
+        std::cout << "glCheckFramebufferStatus Error!!!\n";
+        return false;
+    }
+
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+    glReadBuffer(GL_COLOR_ATTACHMENT0);
+
+    GLubyte pixels[4];
+    glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+
+    return pixels[3];
+}
+
 bool OpenGLTexture::Generate(const char* filename, bool alpha)
 {
     bool success = false;
