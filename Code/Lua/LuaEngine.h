@@ -9,7 +9,7 @@ class LuaEngine
 public:
 	LuaEngine();
 
-	void ReadScript(const std::string& fileName);
+	void ReadScript(const std::filesystem::path& path);
 	sol::function GetFunction(const std::string& name);
 	sol::object GetValue(const std::string& name);
 	sol::table GetTable(const std::string& name);

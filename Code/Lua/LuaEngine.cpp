@@ -79,9 +79,9 @@ LuaEngine::LuaEngine()
 	BindLuaUI(*this);
 }
 
-void LuaEngine::ReadScript(const std::string& fileName)
+void LuaEngine::ReadScript(const std::filesystem::path& path)
 {
-	auto result = m_state.safe_script_file(fileName, sol::script_pass_on_error);
+	auto result = m_state.safe_script_file(path.string(), sol::script_pass_on_error);
 
 	if (!result.valid())
 	{

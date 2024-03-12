@@ -75,6 +75,11 @@ public:
 		return m_project->GetPrefabByName(name);
 	}
 
+	std::filesystem::path GetPath(const std::filesystem::path& relativePath)
+	{
+		return m_project->GetDirectory() / relativePath;
+	}
+
 protected:
 	Project* m_project = nullptr;
 	Application* m_app = nullptr;
