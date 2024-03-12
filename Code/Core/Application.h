@@ -10,7 +10,6 @@
 #include "Events/MouseEvent.h"
 #include "Events/WindowEvent.h"
 #include "Input/Input.h"
-#include "Scene/Scene.h"
 #include "Entity/EntityManager.h"
 #include "Asset/AssetManager.h"
 #include "Core/TagManager.h"

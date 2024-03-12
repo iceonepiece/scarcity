@@ -1,9 +1,7 @@
 #include "LuaEngine.h"
 #include "Core/Application.h"
 #include "Project/Project.h"
-#include "Graphics/Renderer.h"
 #include "LuaUI.h"
-#include "Game/GameLayer.h"
 
 std::unordered_map<std::string, KeyCode> keyMap{
 	{"left", Key::Left },

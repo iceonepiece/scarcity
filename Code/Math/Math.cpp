@@ -1,5 +1,4 @@
 #include "Math.h"
-#include <iostream>
 
 bool Math::Contains(const glm::vec2& position, const glm::vec2& size, const glm::vec2& point)
 {

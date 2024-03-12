@@ -3,6 +3,8 @@
 #include "Graphics/Image.h"
 #include "Audio/AudioClip.h"
 
+#include <fstream>
+
 std::filesystem::path FileSystem::GetRelativePath(const std::filesystem::path& basePath, const std::filesystem::path& filePath)
 {
 	if (basePath.root_name() != filePath.root_name())

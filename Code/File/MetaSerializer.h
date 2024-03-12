@@ -5,7 +5,6 @@
 #include <nlohmann/json.hpp>
 #include "Graphics/Sprite.h"
 #include "Graphics/Image.h"
-#include "Core/Application.h"
 
 using json = nlohmann::json;
 
