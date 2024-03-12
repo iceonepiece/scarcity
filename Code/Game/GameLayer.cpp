@@ -23,25 +23,22 @@ GameLayer::GameLayer(Application& app, std::unique_ptr<Project> project)
 	if (FileSystem::FileExists(luaFilePath))
 		m_app.GetLuaEngine().ReadScript(luaFilePath.string());
 
-	OpenScene(m_activeProject->GetStartScene());
-
 	Start();
 }
 
 void GameLayer::Start()
 {
+	std::unique_ptr<Scene> loadedScene = m_activeProject->LoadScene(m_activeProject->GetStartScene());
+	m_activeScene = loadedScene.release();
+	ReloadNativeScripts();
+
 	if (m_activeScene != nullptr)
 	{
 		m_activeProject->StartRunning();
 		m_app.GetNativeScriptEngine().RunStartGameFunction();
 
-		m_activeScene->SetApplication(&m_app);
-		m_activeScene->StartNativeScripts(m_app.GetNativeScriptEngine());
-		m_activeScene->Start();
-
-		std::string sceneName = m_activeScene->m_name;
-		AddScene(sceneName, m_activeScene);
-		ChangeScene(sceneName);
+		AddScene(m_activeScene->GetName(), SceneManager::Copy(*m_activeScene));
+		ChangeScene(m_activeScene->GetName());
 	}
 }
 
@@ -56,8 +53,8 @@ bool GameLayer::OpenScene(const std::filesystem::path& absolutePath)
 	SceneManager::ResolveUniqueIDs(*m_activeScene);
 	ReloadNativeScripts();
 
-	//m_activeScene->SetApplication(&m_app);
-	//m_activeScene->Initialize();
+	m_activeScene->SetApplication(&m_app);
+	m_activeScene->Initialize();
 
 	return success;
 }
