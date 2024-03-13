@@ -116,8 +116,6 @@ public:
 		return m_initializeFunction;
 	}
 
-	void RenderUI();
-
 	Entity InstantiateEntity(Entity entity, const glm::vec3& position, bool playing = true);
 
 	template<typename T, typename... Args>

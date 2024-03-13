@@ -623,7 +623,7 @@
     <ClInclude Include="Code\Lua\LuaEntity.h" />
     <ClInclude Include="Code\System\UISystem.h" />
     <ClInclude Include="Code\Graphics\FontSystem.h" />
-    <ClInclude Include="Code\Lua\LuaUI.h" />
+    <ClInclude Include="Code\Lua\LuaUIBinder.h" />
     <ClInclude Include="Code\UI\UIComponent.h" />
   </ItemGroup>
   <ItemGroup>

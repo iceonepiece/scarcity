@@ -36,13 +36,24 @@ struct UIRect
 class UIObject
 {
 public:
+	UIObject() = default;
+
+	UIObject(const glm::vec3& position, const glm::vec3& scale = glm::vec3{1.0f})
+		: position(position)
+		, scale(scale)
+	{}
+
 	virtual ~UIObject() = default;
 
 	virtual void Render(Renderer& renderer) {}
 
 	bool active = true;
 
-	UIType type = UIType_Box;
+	virtual UIType Type()
+	{
+		return UIType_Box;
+	}
+
 	glm::vec3 position{ 0.0f };
 	glm::vec3 scale{ 1.0f };
 	glm::vec3 rotation{ 0.0f, 0.0f, 0.0f };
@@ -69,6 +80,21 @@ public:
 	virtual void HandleInput(Input& input) { color = backgroundColor; }
 };
 
+class UIText : public UIObject
+{
+public:
+	UIText() = default;
+
+	UIText(const glm::vec3& position, const glm::vec3& scale = glm::vec3{ 1.0f })
+		: UIObject(position, scale)
+	{}
+
+	virtual UIType Type() override
+	{
+		return UIType_Text;
+	}
+};
+
 class UIImageObject : public UIObject
 {
 public:
@@ -77,6 +103,11 @@ public:
 	Image* currentImage = nullptr;
 	Image* hoverImage = nullptr;
 	glm::vec2 imageSize{ 1.0f, 1.0f };
+
+	virtual UIType Type() override
+	{
+		return UIType_Image;
+	}
 
 	virtual void Render(Renderer& renderer) override
 	{
@@ -120,7 +151,18 @@ public:
 class UIButtonObject : public UIObject
 {
 public:
+	UIButtonObject() = default;
+
+	UIButtonObject(const glm::vec3& position, const glm::vec3& scale = glm::vec3{ 1.0f })
+		: UIObject(position, scale)
+	{}
+
 	~UIButtonObject() = default;
+
+	virtual UIType Type() override
+	{
+		return UIType_Button;
+	}
 
 	virtual void HandleInput(Input& input) override
 	{

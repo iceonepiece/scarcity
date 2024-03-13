@@ -140,7 +140,7 @@ void Scene::Start()
         }
     }
 
-    m_app->GetUIManager().m_rectStack.clear();
+    m_app->GetUIManager().ClearStack();
 
     auto audioView = m_manager.m_registry.view<AudioSourceComponent>();
 
@@ -686,18 +686,20 @@ void Scene::Render(RenderOptions renderOptions)
     renderer.SetViewProjectionMatrix(viewProj);
 
     UIManager& uiManager = m_app->GetUIManager();
-    for (auto& uiObject : uiManager.m_objects)
+    uiManager.SetScreenSize(renderer.GetScreenSize());
+
+    for (auto& uiObject : uiManager.GetObjects())
     {
         uiObject->HandleInput(Application::Get().GetInput());
 
-        if (uiObject->type == UIType_Text)
-            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor, uiManager.m_fontName);
-        else if (uiObject->type == UIType_Button)
+        if (uiObject->Type() == UIType_Text)
+            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor, uiManager.GetFontName());
+        else if (uiObject->Type() == UIType_Button)
         {
             renderer.DrawQuadUI(uiObject->position, uiObject->scale, uiObject->color);
-            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor, uiManager.m_fontName);
+            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor, uiManager.GetFontName());
         }
-        else if (uiObject->type == UIType_Image)
+        else if (uiObject->Type() == UIType_Image)
         {
             uiObject->Render(renderer);
         }
@@ -760,8 +762,6 @@ void Scene::RenderEditor(RenderOptions renderOptions)
 
     renderer.PostRender();
 
-    RenderUI();
-
     if (renderOptions.collisionVisible)
         RenderCollisionComponents();
 
@@ -769,46 +769,6 @@ void Scene::RenderEditor(RenderOptions renderOptions)
 
     renderer.EndFrame();
     renderer.PostRender();
-}
-
-void Scene::RenderUI()
-{
-    Renderer& renderer = Application::Get().GetRenderer();
-    //renderer.SetScreenSize(m_viewportWidth, m_viewportHeight);
-
-    /*
-    auto canvas = m_manager.m_registry.view<TransformComponent, CanvasComponent, ButtonComponent>();
-    for (auto [entity, transform, canvas, button] : canvas.each())
-    {
-        renderer.DrawQuadUI(canvas.position, canvas.size, button.color, UIAlignment::NONE);
-    }
-    */
-
-    auto canvasView = m_manager.m_registry.view<TransformComponent, CanvasComponent>();
-    for (auto [entity, transform, canvas] : canvasView.each())
-    {
-        /*
-        float x = transform.position.x;
-        float y = transform.position.y;
-
-        switch (canvas.horizontalAligment)
-        {
-            case Center: x += m_viewportWidth / 2.0f; break;
-            case Right: x += m_viewportWidth; break;
-        }
-
-        switch (canvas.verticalAlignment)
-        {
-            case Middle: y += m_viewportHeight / 2.0f; break;
-            case Bottom: y += m_viewportHeight; break;
-        }
-        */
-
-        if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
-        {
-            renderer.DrawQuad2D(transform.position, canvas.size, 0.0f, button->color);
-        }
-    }
 }
 
 Entity Scene::InstantiateEntity(Entity entity, const glm::vec3& position, bool playing)

@@ -2,9 +2,70 @@
 #include "Math/Math.h"
 #include <iostream>
 
-void UIManager::ProcessButton(ButtonComponent& button, Input& input)
+UIRect UIManager::GetOffsetRect()
 {
+	if (!m_rectStack.empty())
+		return m_rectStack.back();
 
+	return UIRect{
+		 { m_screenSize.x / 2, m_screenSize.y / 2 },
+		m_screenSize,
+	};
+}
+
+glm::vec2 UIManager::GetAbsolutePosition(float width, float height, UIFlag flags)
+{
+	UIRect offsetRect = GetOffsetRect();
+
+	glm::vec2 topLeft = offsetRect.position;
+	topLeft.x -= offsetRect.scale.x / 2;
+	topLeft.y -= offsetRect.scale.y / 2;
+
+	glm::vec3 absolutePosition{ topLeft.x, topLeft.y, 0.0f };
+
+	if (flags == UIFlag::UIFlag_None)
+	{
+		absolutePosition.x += width / 2;
+		absolutePosition.y += height / 2;
+	}
+	else
+	{
+		if (flags & UIFlag::UIFlag_VerticalCenter)
+		{
+			absolutePosition.y += offsetRect.scale.y / 2;
+		}
+
+		if (flags & UIFlag::UIFlag_HorizontalCenter)
+		{
+			absolutePosition.x += offsetRect.scale.x / 2;
+		}
+
+		if (flags & UIFlag::UIFlag_Right)
+		{
+			absolutePosition.x = offsetRect.scale.x;
+			absolutePosition.x -= width / 2;
+		}
+
+		if (flags & UIFlag::UIFlag_Bottom)
+		{
+			absolutePosition.y = offsetRect.scale.y;
+			absolutePosition.y -= height / 2;
+		}
+
+		if (flags & UIFlag::UIFlag_Left)
+		{
+			absolutePosition.x = topLeft.x;
+			absolutePosition.x += width / 2;
+		}
+
+		if (flags & UIFlag::UIFlag_Top)
+		{
+			absolutePosition.y = topLeft.y;
+			absolutePosition.y += height / 2;
+		}
+	}
+
+	return absolutePosition;
 }
 
 bool UIManager::HandleInput(CanvasComponent& canvas, ButtonComponent& button, Input& input)
@@ -87,7 +148,6 @@ void UIManager::CreateUIComponent(sol::table& uiComponent, const UIRect& parentR
 		object = new UIObject();
 	}
 
-	object->type = uiType;
 	object->position = { x + parentRect.position.x, y + parentRect.position.y, 0 };
 	object->scale = { w,  h, 0 };
 	object->color = color;
@@ -115,7 +175,7 @@ void UIManager::CreateUIComponent(sol::table& uiComponent, const UIRect& parentR
 		object->position.y += (parentRect.scale.y / 2) + parentRect.position.y;
 	}
 
-	if (object->type == UIType_Text)
+	if (object->Type() == UIType_Text)
 	{
 		object->text = uiComponent["text"].get<std::string>();
 		object->fontSize = uiComponent["fontSize"].get<int>();

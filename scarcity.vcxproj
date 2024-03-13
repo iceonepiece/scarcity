@@ -425,7 +425,7 @@
     <ClInclude Include="Code\Lua\LuaEngine.h" />
     <ClInclude Include="Code\Lua\LuaEntity.h" />
     <ClInclude Include="Code\Lua\LuaScript.h" />
-    <ClInclude Include="Code\Lua\LuaUI.h" />
+    <ClInclude Include="Code\Lua\LuaUIBinder.h" />
     <ClInclude Include="Code\Math\Math.h" />
     <ClInclude Include="Code\NativeScript\NativeScriptEngine.h" />
     <ClInclude Include="Code\NativeScript\NativeScript.h" />
