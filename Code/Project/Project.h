@@ -40,12 +40,7 @@ public:
 class Project
 {
 public:
-	Project(const std::filesystem::path filepath)
-	{
-		s_activeProject = this;
-		m_absolutePath = filepath.parent_path();
-		m_directory = filepath.parent_path();
-	}
+	Project(const std::filesystem::path filepath);
 
 	Project(const std::string& name, const std::filesystem::path& path)
 		: m_name(name)

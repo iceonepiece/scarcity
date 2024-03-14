@@ -6,6 +6,23 @@
 #include "Constants/GameEngine.h"
 #include "Entity/ScriptableEntity.h"
 
+Project::Project(const std::filesystem::path filepath)
+{
+	s_activeProject = this;
+
+	if (filepath.is_absolute())
+	{
+		m_absolutePath = filepath.parent_path();
+		m_directory = filepath.parent_path();
+	}
+	else
+	{
+		std::filesystem::path currentPath = std::filesystem::current_path();
+		m_absolutePath = currentPath / filepath.parent_path();
+		m_directory = currentPath / filepath.parent_path();
+	}
+}
+
 void Project::StartRunning()
 {
 	std::filesystem::path globalLuaPath = m_absolutePath / (m_name + ".lua");
