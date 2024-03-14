@@ -29,16 +29,15 @@ GameLayer::GameLayer(Application& app, std::unique_ptr<Project> project)
 void GameLayer::Start()
 {
 	std::unique_ptr<Scene> loadedScene = m_activeProject->LoadScene(m_activeProject->GetStartScene());
-	m_activeScene = loadedScene.release();
 	ReloadNativeScripts();
 
-	if (m_activeScene != nullptr)
+	if (loadedScene != nullptr)
 	{
 		m_activeProject->StartRunning();
 		m_app.GetNativeScriptEngine().RunStartGameFunction();
 
-		AddScene(m_activeScene->GetName(), SceneManager::Copy(*m_activeScene));
-		ChangeScene(m_activeScene->GetName());
+		AddScene(loadedScene->GetName(), SceneManager::Copy(*loadedScene));
+		ChangeScene(loadedScene->GetName());
 	}
 }
 
