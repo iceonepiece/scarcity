@@ -172,10 +172,6 @@ void GenerateGridCollision(GridComponent& grid)
                 else if (currentEdge == EdgeOnCell::Top)
                     onCell = "Top";
 
-                std::cout << "Added edge: ";
-                std::cout << startCell.first << "," << startCell.second << " -> ";
-                std::cout << currentPos.first << ", " << currentPos.second << ", " << onCell << std::endl;
-
                 polygon.push_back({ startCell, currentPos, currentEdge });
                 startCell = nextPos;
             }
@@ -183,14 +179,6 @@ void GenerateGridCollision(GridComponent& grid)
             currentEdge = nextEdge;
             currentPos = nextPos;
         }
-
-
-        for (auto [pos, value] : connected)
-        {
-            std::cout << pos.first << "," << pos.second << ' ';
-        }
-
-        std::cout << '\n';
 
         for (auto& edge : polygon)
         {
@@ -202,14 +190,8 @@ void GenerateGridCollision(GridComponent& grid)
                 onCell = "Bottom";
             else if (edge.onCell == EdgeOnCell::Top)
                 onCell = "Top";
-
-            std::cout << onCell << " ";
-            std::cout << edge.startCell.first << "," << edge.startCell.second << " -> ";
-            std::cout << edge.endCell.first << "," << edge.endCell.second << "  ";
         }
 
         grid.polygons.push_back(polygon);
-
-        std::cout << '\n';
     }
 }
