@@ -2,6 +2,7 @@
 #include "MetaSerializer.h"
 #include "Graphics/Image.h"
 #include "Audio/AudioClip.h"
+#include "Constants/GameEngine.h"
 
 #include <fstream>
 
@@ -132,13 +133,13 @@ bool FileSystem::WriteFile(const std::filesystem::path& path, HandleFileCallback
 
 void FileSystem::HandleMetaFile(const std::filesystem::path& path)
 {
-	if (IsImageFile(path) && !FileSystem::FileExists(path.string() + ".meta"))
+	if (IsImageFile(path) && !FileSystem::FileExists(path.string() + META_FILE_EXTENSION))
 	{
 		std::cout << "No meta file exists for an image: " << path << std::endl;
 		GenerateImageMetaFile(path);
 	}
 	/*
-	else if (IsAudioFile(path) && !FileSystem::FileExists(path.string() + ".meta"))
+	else if (IsAudioFile(path) && !FileSystem::FileExists(path.string() + META_FILE_EXTENSION))
 	{
 		std::cout << "No meta file exists for an audio: " << path << std::endl;
 		GenerateAudioMetaFile(path);
@@ -235,7 +236,7 @@ bool FileSystem::IsFontFile(const std::filesystem::path& path)
 
 void FileSystem::GenerateImageMetaFile(const std::filesystem::path& path)
 {
-	if (!FileSystem::FileExists(path.string() + ".meta"))
+	if (!FileSystem::FileExists(path.string() + META_FILE_EXTENSION))
 	{
 		std::cout << "Create meta file for " << path << std::endl;
 		Image image(path, nullptr);
@@ -250,7 +251,7 @@ void FileSystem::GenerateImageMetaFile(const std::filesystem::path& path)
 
 void FileSystem::GenerateAudioMetaFile(const std::filesystem::path& path)
 {
-	if (!FileSystem::FileExists(path.string() + ".meta"))
+	if (!FileSystem::FileExists(path.string() + META_FILE_EXTENSION))
 	{
 		std::cout << "Create meta file for " << path << std::endl;
 	}

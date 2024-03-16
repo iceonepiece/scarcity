@@ -1,12 +1,13 @@
 #include "MetaSerializer.h"
 #include "Project/Project.h"
+#include "Constants/GameEngine.h"
 
 bool MetaSerializer::SerializeImage(Image& image, const std::filesystem::path & path)
 {
 	std::cout << "SerializeImage: " << path << std::endl;
 	std::ofstream metaFile;
 
-	metaFile.open(path.string() + ".meta");
+	metaFile.open(path.string() + META_FILE_EXTENSION);
 
 	if (metaFile.is_open())
 	{
@@ -57,7 +58,7 @@ bool MetaSerializer::DeserializeImage(Image& image, const std::filesystem::path&
 	std::cout << "DeserializeImage\n" << std::endl;
 	std::ifstream metaFile;
 
-	metaFile.open(path.string() + ".meta");
+	metaFile.open(path.string() + META_FILE_EXTENSION);
 
 	if (metaFile.is_open())
 	{
