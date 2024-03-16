@@ -97,7 +97,7 @@ public:
 	void SetAnimatorController(AnimatorController* controller);
 
 private:
-	inline static AnimatorController* s_animController = nullptr;
+	inline static AnimatorController s_animController{ "" };
 
 	ImNodes::Ez::Context* m_context;
 	bool m_toClear = false;

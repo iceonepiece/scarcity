@@ -8,16 +8,13 @@ ImGui_AnimatorWindow::ImGui_AnimatorWindow(EditorLayer& editor)
     : ImGui_Window(editor, "Animator")
     , m_animController(nullptr)
 {
-    s_animController = new AnimatorController("Untitled");
-    m_animController = s_animController;
+    m_animController = &s_animController;
     m_context = ImNodes::Ez::CreateContext();
 }
 
 
 ImGui_AnimatorWindow::~ImGui_AnimatorWindow()
 {
-    delete s_animController;
-
     for (auto node : nodes)
         delete node;
 

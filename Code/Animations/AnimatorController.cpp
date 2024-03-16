@@ -37,6 +37,34 @@ void AnimatorController::RemoveState(AnimatorState* state)
     {
         if (*it == state)
         {
+            for (auto& transition : state->GetOutgoingTransitions())
+            {
+                for (int i = 0; i < m_transitions.size(); i++)
+                {
+                    if (transition == m_transitions[i])
+                    {
+                        m_transitions.erase(m_transitions.begin() + i);
+                        break;
+                    }
+                }
+
+                delete transition;
+            }
+
+            for (auto& transition : state->GetIncomingTransitions())
+            {
+                for (int i = 0; i < m_transitions.size(); i++)
+                {
+                    if (transition == m_transitions[i])
+                    {
+                        m_transitions.erase(m_transitions.begin() + i);
+                        break;
+                    }
+                }
+
+                delete transition;
+            }
+
 			delete* it;
 			m_states.erase(it);
 
