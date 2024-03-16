@@ -226,6 +226,8 @@ void AnimationSerializer::Deserialize(AnimatorController& controller, const std:
 					transition->AddCondition(condition);
 				}
 			}
+
+			controller.AddTransition(transition);
 		}
 	}
 	else

@@ -54,6 +54,8 @@ public:
     void Initialize();
     void Process();
 
+    void AddTransition(AnimatorTransition* transition);
+
     AnimatorState& GetAnyState() { return *m_anyState; }
 
     void SetDefaultState(AnimatorState* state) { m_defaultState = state; }
@@ -110,6 +112,7 @@ private:
     std::vector<AnimatorParameter> m_parameters;
 
     std::vector<AnimatorState*> m_states;
+    std::vector<AnimatorTransition*> m_transitions;
 
     AnimatorState* m_currentState;
     AnimatorState* m_defaultState;

@@ -13,6 +13,9 @@ AnimatorController::~AnimatorController()
 {
     delete m_anyState;
 
+    for (auto& transition : m_transitions)
+        delete transition;
+
     for (auto& state : m_states)
         delete state;
 }
@@ -47,6 +50,11 @@ void AnimatorController::AddState(const std::string& name, AnimatorState state)
     //m_states.insert({ name, state });
 }
 
+void AnimatorController::AddTransition(AnimatorTransition* transition)
+{
+    m_transitions.push_back(transition);
+}
+
 void AnimatorController::AddTransition(const std::string& name, AnimatorTransition transition)
 {
     /*
@@ -76,7 +84,7 @@ void AnimatorController::Process()
     {
         auto& anyTransitions = m_anyState->GetOutgoingTransitions();
 
-        for (auto transition : anyTransitions)
+        for (auto& transition : anyTransitions)
 		{
 			checkingTransitions.push_back(transition);
 		}
@@ -84,14 +92,14 @@ void AnimatorController::Process()
 
     auto& stateTransitions = m_currentState->GetOutgoingTransitions();
 
-    for (auto transition : stateTransitions)
+    for (auto& transition : stateTransitions)
     {
         checkingTransitions.push_back(transition);
     }
 
     AnimatorState* nextState = nullptr;
 
-    for (auto t : checkingTransitions)
+    for (auto& t : checkingTransitions)
     {
         if (t->CheckConditions(*this))
         {

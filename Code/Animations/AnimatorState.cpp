@@ -15,11 +15,8 @@ AnimatorState::AnimatorState(const std::string& name)
 
 AnimatorState::~AnimatorState()
 {
-	for (auto& transition : m_outgoingTransitions)
-		delete transition;
-
-	for (auto& transition : m_incomingTransitions)
-		delete transition;
+	m_outgoingTransitions.clear();
+	m_incomingTransitions.clear();
 }
 
 void AnimatorState::OnEnter(AnimatorController& controller)
@@ -76,7 +73,7 @@ bool AnimatorState::RemoveTransition(AnimatorState* toState)
 	{
 		if (toState == m_outgoingTransitions[i]->GetNextState())
 		{
-			delete m_outgoingTransitions[i];
+			m_outgoingTransitions.erase(m_outgoingTransitions.begin() + i);
 
 			return true;
 		}
