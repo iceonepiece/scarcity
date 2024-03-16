@@ -69,13 +69,16 @@ public:
 
     inline void SetCurrentStateName(const std::string& name) { m_currentStateName = name; }
 
-    void SetInt(std::string name, int value);
-    int GetInt(std::string name);
+    void SetInt(const std::string& name, int value);
+    int GetInt(const std::string& name);
+
+    void SetFloat(const std::string& name, float value);
+    float GetFloat(const std::string& name);
 
     void SetTrigger(const std::string& name);
 
-    void SetBool(std::string name, bool value);
-    bool GetBool(std::string name);
+    void SetBool(const std::string& name, bool value);
+    bool GetBool(const std::string& name);
 
     bool ChangeParameterName(std::string oldName, std::string newName);
 

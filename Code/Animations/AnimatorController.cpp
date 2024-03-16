@@ -141,12 +141,12 @@ void AnimatorController::RemoveParameter(const std::string& name)
 	}
 }
 
-void AnimatorController::SetInt(std::string name, int value)
+void AnimatorController::SetInt(const std::string& name, int value)
 {
     GetParameter(name)->value = value;
 }
 
-int AnimatorController::GetInt(std::string name)
+int AnimatorController::GetInt(const std::string& name)
 {
     if (AnimatorParameter* param = GetParameter(name))
 		return std::get<int>(param->value);
@@ -154,12 +154,25 @@ int AnimatorController::GetInt(std::string name)
     return 0;
 }
 
-void AnimatorController::SetBool(std::string name, bool value)
+void AnimatorController::SetFloat(const std::string& name, float value)
 {
     GetParameter(name)->value = value;
 }
 
-bool AnimatorController::GetBool(std::string name)
+float AnimatorController::GetFloat(const std::string& name)
+{
+    if (AnimatorParameter* param = GetParameter(name))
+        return std::get<float>(param->value);
+
+    return 0;
+}
+
+void AnimatorController::SetBool(const std::string& name, bool value)
+{
+    GetParameter(name)->value = value;
+}
+
+bool AnimatorController::GetBool(const std::string& name)
 {
     if (AnimatorParameter* param = GetParameter(name))
         return std::get<bool>(param->value);
