@@ -2,6 +2,7 @@
 
 #include <map>
 #include "Asset/Asset.h"
+#include <glm/glm.hpp>
 
 struct Character {
 	unsigned int TextureID; // ID handle of the glyph texture

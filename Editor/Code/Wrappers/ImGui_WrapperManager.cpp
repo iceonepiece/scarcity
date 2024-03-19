@@ -10,6 +10,7 @@
 #include "ImGui_AudioClipWrapper.h"
 #include "ImGui_AnimationClipWrapper.h"
 #include "ImGui_LuaScriptWrapper.h"
+#include "ImGui_FontWrapper.h"
 
 /*
 	None,
@@ -22,6 +23,7 @@
 	AudioClip,
 	AnimationClip,
 	LuaScript,
+	Font,
 */
 
 std::unique_ptr<ImGui_AssetWrapper> ImGui_WrapperManager::s_assetWrappers[(size_t)AssetType::Count]
@@ -36,6 +38,7 @@ std::unique_ptr<ImGui_AssetWrapper> ImGui_WrapperManager::s_assetWrappers[(size_
 	std::make_unique<ImGui_AudioClipWrapper>(),
 	std::make_unique<ImGui_AnimationClipWrapper>(),
 	std::make_unique<ImGui_LuaScriptWrapper>(),
+	std::make_unique<ImGui_FontWrapper>(),
 };
 
 ImGui_AssetWrapper* ImGui_WrapperManager::GetWrapper(Asset& asset)

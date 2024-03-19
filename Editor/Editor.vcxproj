@@ -177,6 +177,7 @@
     <ClCompile Include="Code\Wrappers\ImGui_AnimationClipWrapper.cpp" />
     <ClCompile Include="Code\Wrappers\ImGui_AnimatorControllerWrapper.cpp" />
     <ClCompile Include="Code\Wrappers\ImGui_AudioClipWrapper.cpp" />
+    <ClCompile Include="Code\Wrappers\ImGui_FontWrapper.cpp" />
     <ClCompile Include="Code\Wrappers\ImGui_ImageWrapper.cpp" />
     <ClCompile Include="Code\Wrappers\ImGui_LuaScriptWrapper.cpp" />
     <ClCompile Include="Code\Wrappers\ImGui_NativeScriptWrapper.cpp" />
@@ -254,6 +255,7 @@
     <ClInclude Include="Code\Wrappers\ImGui_AnimationClipWrapper.h" />
     <ClInclude Include="Code\Wrappers\ImGui_AnimatorControllerWrapper.h" />
     <ClInclude Include="Code\Wrappers\ImGui_AudioClipWrapper.h" />
+    <ClInclude Include="Code\Wrappers\ImGui_FontWrapper.h" />
     <ClInclude Include="Code\Wrappers\ImGui_ImageWrapper.h" />
     <ClInclude Include="Code\Wrappers\ImGui_LuaScriptWrapper.h" />
     <ClInclude Include="Code\Wrappers\ImGui_NativeScriptWrapper.h" />
