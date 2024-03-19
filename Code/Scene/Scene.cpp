@@ -272,7 +272,7 @@ void Scene::RenderTexts()
     auto textView = m_manager.m_registry.view<TransformComponent, CanvasComponent, TextComponent>();
     for (auto [entity, transform, canvas, text] : textView.each())
     {
-        renderer.DrawText(text.text, canvas.position, text.size, text.color, "");
+       // renderer.DrawText(text.text, canvas.position, text.size, text.color, "");
     }
 
     renderer.PostRender(true);
@@ -693,11 +693,11 @@ void Scene::Render(RenderOptions renderOptions)
         uiObject->HandleInput(Application::Get().GetInput());
 
         if (uiObject->Type() == UIType_Text)
-            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor, uiManager.GetFontName());
+            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor, uiManager.GetFontName(), uiObject->parentRect, uiObject->flags);
         else if (uiObject->Type() == UIType_Button)
         {
             renderer.DrawQuadUI(uiObject->position, uiObject->scale, uiObject->color);
-            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor, uiManager.GetFontName());
+            renderer.DrawText(uiObject->text, uiObject->position, uiObject->fontSize, uiObject->fontColor, uiManager.GetFontName(), uiObject->parentRect, uiManager.GetFlag());
         }
         else if (uiObject->Type() == UIType_Image)
         {

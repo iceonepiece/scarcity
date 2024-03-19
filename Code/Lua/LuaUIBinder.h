@@ -6,6 +6,28 @@
 #include "Graphics/Renderer.h"
 #include "Project/Project.h"
 
+void Func_UI_Text(UIManager& uiManager, std::string text, float x, float y, float size, UIFlag flags = UIFlag_None)
+{
+	UIRect offsetRect = uiManager.GetOffsetRect();
+
+	glm::vec2 absolutePosition = offsetRect.position;
+
+	absolutePosition.x += x;
+	absolutePosition.y += y;
+
+	UIObject* uiObject = new UIText(
+		glm::vec3{ absolutePosition.x, absolutePosition.y, 0.0f }
+	);
+	uiObject->fontSize = size;
+	uiObject->fontColor = uiManager.GetFontColor();
+	uiObject->text = text;
+	uiObject->flags = flags != UIFlag_None ? flags : uiManager.GetFlag();
+	uiObject->parentRect = uiManager.GetOffsetRect();
+
+	uiManager.AddObject(uiObject);
+}
+
+
 void BindLuaUI(LuaEngine& engine)
 {
 	sol::state& m_state = engine.GetState();
@@ -126,23 +148,19 @@ void BindLuaUI(LuaEngine& engine)
 		uiManager.AddObject(uiText);
 	});
 
+	m_state.set_function("UI_SetFlag", [&](int flags)
+	{
+		uiManager.SetFlag((UIFlag)flags);
+	});
+
+	m_state.set_function("UI_Text", [&](std::string text, float x, float y, float size, int flags)
+	{
+		Func_UI_Text(uiManager, text, x, y, size, (UIFlag)flags);
+	});
+
 	m_state.set_function("UI_Text", [&](std::string text, float x, float y, float size)
 	{
-		UIRect offsetRect = uiManager.GetOffsetRect();
-
-		glm::vec2 absolutePosition = offsetRect.position;
-
-		absolutePosition.x += x;
-		absolutePosition.y += y;
-
-		UIObject* uiObject = new UIText(
-			glm::vec3{ absolutePosition.x, absolutePosition.y, 0.0f }
-		);
-		uiObject->fontSize = size;
-		uiObject->fontColor = uiManager.GetFontColor();
-		uiObject->text = text;
-
-		uiManager.AddObject(uiObject);
+		Func_UI_Text(uiManager, text, x, y, size);
 	});
 
 	m_state.set_function("UI_Select", [&](float x, float y, sol::object keys, int selected, bool active)

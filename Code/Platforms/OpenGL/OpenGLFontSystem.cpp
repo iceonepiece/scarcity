@@ -15,6 +15,9 @@ int OpenGLFontSystem::Initialize()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    s_defaultFont = std::make_unique<Font>("Fonts/RobotoMono-Regular.ttf");
+    LoadFont(*s_defaultFont);
+
     return 0;
 }
 
@@ -96,60 +99,42 @@ void OpenGLFontSystem::LoadFont(Font& font)
     FT_Done_FreeType(ft);
 }
 
-void OpenGLFontSystem::RenderText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, const glm::vec2& viewportSize)
+void OpenGLFontSystem::RenderText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, const glm::vec2& viewportSize, UIFlag flag)
 {
     unsigned int fontSize = static_cast<unsigned int>(scale);
 
-    if (m_currentFont == nullptr  || !m_currentFont->HasSize(fontSize))
+    Font* usingFont = s_defaultFont.get();
+
+    if (m_currentFont != nullptr)
+        usingFont = m_currentFont;
+
+    if (!usingFont->HasSize(fontSize))
         return;
 
     // activate corresponding render state	
     shader.Use();
     shader.SetVector4f("textColor", color);
 
-    glm::vec2 screenSize(viewportSize.x, viewportSize.y);
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(screenSize.x), 0.0f, static_cast<float>(screenSize.y));
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_screenSize.x), 0.0f, static_cast<float>(m_screenSize.y));
     shader.SetMatrix4("projection", projection);
 
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
 
     float x = position.x;
-    float y = viewportSize.y - position.y;
+    float y = m_screenSize.y - position.y;
 
     float screenSizePercentage = 1.0f;
     float realScale = scale * screenSizePercentage / (float)fontSize;
 
+    auto& Characters = usingFont->GetCharacters(fontSize);
+
     float xOffset = 0;
-
-    /*
-    if (uiText->alignment == UIAlignment::CENTER)
-    {
-        x = screenSize.x / 2;
-        y = screenSize.y / 2;
-
-        float leftX = x;
-        float rightX = leftX;
-        float _x = x;
-        std::string::const_iterator i;
-        for (i = uiText->text.begin(); i != uiText->text.end(); i++)
-        {
-            Character ch = Characters[*i];
-
-            float xpos = _x + ch.Bearing.x * realScale;
-            float w = ch.Size.x * realScale;
-            _x += (ch.Advance >> 6) * realScale;
-            rightX = xpos + w;
-        }
-        xOffset = (rightX - leftX) / 2;
-    }
-    */
-
-    auto& Characters = m_currentFont->GetCharacters(fontSize);
-
     float leftX = x;
     float rightX = leftX;
     float _x = x;
+
+
     std::string::const_iterator i;
     for (i = text.begin(); i != text.end(); i++)
     {
@@ -160,7 +145,17 @@ void OpenGLFontSystem::RenderText(const std::string& text, const glm::vec2& posi
         _x += (ch.Advance >> 6) * realScale;
         rightX = xpos + w;
     }
-    xOffset = (rightX - leftX) / 2;
+
+    float textWidth = rightX - leftX;
+
+    if (flag & UIFlag_HorizontalCenter)
+        xOffset = textWidth / 2;
+    else if (flag & UIFlag_Left)
+        xOffset = viewportSize.x / 2;
+    else if (flag & UIFlag_Right)
+    {
+        xOffset = -viewportSize.x / 2 + textWidth;
+    }
 
     //y += scale / 2;
     
@@ -195,6 +190,7 @@ void OpenGLFontSystem::RenderText(const std::string& text, const glm::vec2& posi
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         // render quad
         glDrawArrays(GL_TRIANGLES, 0, 6);
+
         // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
         x += (ch.Advance >> 6) * realScale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
     }

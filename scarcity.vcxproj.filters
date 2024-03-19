@@ -604,6 +604,7 @@
     <ClInclude Include="Code\Game\GameApplication.h" />
     <ClInclude Include="Code\Game\GameLayer.h" />
     <ClInclude Include="Code\Graphics\Font.h" />
+    <ClInclude Include="Code\UI\UIBase.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\Include\ImGuiColorTextEdit\TextEditor.h" />

@@ -17,7 +17,7 @@ class Font : public Asset
 public:
 
 	inline static unsigned int DEFAULT_FONT_SIZES[] = {
-		16, 18, 20, 24, 28, 32, 48, 64
+		16, 18, 20, 24, 28, 32, 48, 64, 72, 128
 	};
 
 	Font(const std::filesystem::path& path)

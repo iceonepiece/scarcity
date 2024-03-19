@@ -103,6 +103,16 @@ public:
 		return m_fontSize;
 	}
 
+	void SetFlag(UIFlag flags)
+	{
+		m_flags = flags;
+	}
+
+	UIFlag GetFlag()
+	{
+		return m_flags;
+	}
+
 private:
 	std::vector<std::unique_ptr<UIObject>> m_objects;
 
@@ -111,6 +121,7 @@ private:
 	glm::vec4 m_backgroundColor = glm::vec4(1.0f);
 	glm::vec4 m_fontColor = glm::vec4(0.0f);
 	float m_fontSize = 32.0f;
+	UIFlag m_flags = UIFlag_None;
 
 	std::string m_fontName = "";
 	std::vector<UIRect> m_rectStack;

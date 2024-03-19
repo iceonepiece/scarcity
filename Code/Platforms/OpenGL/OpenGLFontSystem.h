@@ -22,11 +22,10 @@ class OpenGLFontSystem : public FontSystem
 {
 public:
     virtual int Initialize() override;
-    virtual void RenderText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, const glm::vec2& viewportSize) override;
+    virtual void RenderText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, const glm::vec2& viewportSize, UIFlag flag) override;
     virtual void LoadFont(Font& font) override;
 
 private:
-    const uint8_t FONT_PIXEL_HEIGHT = 128;
     std::map<GLchar, Character> Characters;
 
     std::unordered_map<std::string, FontFace> fontFaceMap;

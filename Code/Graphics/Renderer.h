@@ -60,7 +60,7 @@ public:
 	virtual void DrawCircle(const glm::vec2& position, float radius) = 0;
 	virtual void DrawCircle2D(const Circle2D& circle, float thickness = 1.0f) = 0;
 	
-	void DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, const std::string& fontName);
+	void DrawText(const std::string& text, const glm::vec2& position, float scale, const glm::vec4& color, const std::string& fontName, UIRect rect, UIFlag flags = UIFlag_None);
 
 	virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray, uint32_t indexCount) = 0;
 
