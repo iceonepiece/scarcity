@@ -40,8 +40,6 @@
     <ClCompile Include="Code\Scene\SceneSerializer.cpp" />
     <ClCompile Include="Code\Entity\ScriptableEntity.cpp" />
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLTexture.cpp" />
-    <ClCompile Include="Code\UI\UIButton.cpp" />
-    <ClCompile Include="Code\UI\UIControl.cpp" />
     <ClCompile Include="Code\UI\UIManager.cpp" />
     <ClCompile Include="Code\Utils\FileDialog.cpp" />
     <ClCompile Include="External\Include\angelscript\scriptarray\scriptarray.cpp" />
@@ -95,7 +93,6 @@
     <ClInclude Include="Code\Components\CameraComponent.h" />
     <ClInclude Include="Code\Components\GroundDetectionComponent.h" />
     <ClInclude Include="Code\Components\ComponentSerializer.h" />
-    <ClInclude Include="Code\Components\ButtonComponent.h" />
     <ClInclude Include="Code\Components\IDComponent.h" />
     <ClInclude Include="Code\Components\MockComponent.h" />
     <ClInclude Include="Code\Components\NativeScriptComponent.h" />
@@ -103,8 +100,6 @@
     <ClInclude Include="Code\Components\Rigidbody2DComponent.h" />
     <ClInclude Include="Code\Components\SpriteRendererComponent.h" />
     <ClInclude Include="Code\Components\TimerComponent.h" />
-    <ClInclude Include="Code\Components\UIComponent.h" />
-    <ClInclude Include="Code\Components\UIComponents.h" />
     <ClInclude Include="Code\Constants\GameEngine.h" />
     <ClInclude Include="Code\Graphics\Camera.h" />
     <ClInclude Include="Code\Animations\Animation2D.h" />
@@ -167,9 +162,6 @@
     <ClInclude Include="Code\Shapes\Shape2D.h" />
     <ClInclude Include="Code\UI\UIManager.h" />
     <ClInclude Include="Code\Platforms\OpenGL\OpenGLTexture.h" />
-    <ClInclude Include="Code\UI\EventHandler.h" />
-    <ClInclude Include="Code\UI\UIButton.h" />
-    <ClInclude Include="Code\UI\UIControl.h" />
     <ClInclude Include="Code\Utils\FileDialog.h" />
     <ClInclude Include="External\Include\AL\al.h" />
     <ClInclude Include="External\Include\AL\alc.h" />
@@ -625,7 +617,7 @@
     <ClInclude Include="Code\System\UISystem.h" />
     <ClInclude Include="Code\Graphics\FontSystem.h" />
     <ClInclude Include="Code\Lua\LuaUIBinder.h" />
-    <ClInclude Include="Code\UI\UIComponent.h" />
+    <ClInclude Include="Code\UI\UIObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\Xolonium-Regular.ttf" />

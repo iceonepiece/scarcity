@@ -204,17 +204,14 @@
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiAudioSourceComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiBaseComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiBoxCollider2DComponent.h" />
-    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiButtonComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiCameraComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiCircleCollider2DComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiComponentRenderer.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiGridComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiGroundDetectionComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiNativeScriptComponent.h" />
-    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiRectTransformComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteAnimatorComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteRendererComponent.h" />
-    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiTextComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiTransformComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGui_Collider2DGroupComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGui_Components.h" />

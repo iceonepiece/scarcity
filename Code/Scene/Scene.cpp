@@ -164,37 +164,6 @@ void Scene::Start()
 
         camera.targetEntity = Entity{ &m_manager, target };
     }
-
-    auto canvasView = m_manager.m_registry.view<CanvasComponent>();
-    for (auto [entity, canvas] : canvasView.each())
-    {
-        if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
-        {
-            uint64_t id = button->targetID;
-            entt::entity target = entt::null;
-
-            if (m_manager.m_uniqueIDToEntity.find(id) != m_manager.m_uniqueIDToEntity.end())
-            {
-                target = m_manager.m_uniqueIDToEntity[id];
-            }
-
-            button->targetEntity = Entity{ &m_manager, target };
-
-            if (NativeScriptComponent* nativeScript = button->targetEntity.GetComponent<NativeScriptComponent>())
-            {
-                if (ScriptableEntity* scriptable = nativeScript->instance)
-                {
-                    scriptable->ExportFunctions();
-                    std::string functionName = button->functionName;
-
-                    button->mousePressedHandler += [functionName, scriptable](void* context, UIComponent& uiComponent)
-                    {
-                        scriptable->CallFunction(functionName);
-                    };
-                }
-            }
-        }
-    }
 }
 
 void Scene::Stop()
@@ -261,21 +230,6 @@ void Scene::StartNativeScripts(NativeScriptEngine& scriptEngine)
 			script.instance->Start();
     }
     */
-}
-
-void Scene::RenderTexts()
-{
-    Renderer& renderer = Application::Get().GetRenderer();
-    //renderer.SetScreenSize(m_viewportWidth, m_viewportHeight);
-    renderer.PreRender(true);
-
-    auto textView = m_manager.m_registry.view<TransformComponent, CanvasComponent, TextComponent>();
-    for (auto [entity, transform, canvas, text] : textView.each())
-    {
-       // renderer.DrawText(text.text, canvas.position, text.size, text.color, "");
-    }
-
-    renderer.PostRender(true);
 }
 
 void Scene::RenderCollisionComponents()
@@ -573,22 +527,6 @@ void Scene::Exit()
 
 }
 
-void Scene::UpdateUI(float deltaTime)
-{
-    /*
-    auto canvasUpdateView = m_manager.m_registry.view<CanvasComponent>();
-    for (auto [entity, canvas] : canvasUpdateView.each())
-    {
-        if (ButtonComponent* button = m_manager.m_registry.try_get<ButtonComponent>(entity))
-        {
-            button->instance.SetPosition(canvas.position);
-            button->instance.SetSize(canvas.size);
-            button->instance.SetBackgroundColor(button->color);
-        }
-    }
-    */
-}
-
 /*
 void Scene::OnViewportResize()
 {
@@ -764,8 +702,6 @@ void Scene::RenderEditor(RenderOptions renderOptions)
 
     if (renderOptions.collisionVisible)
         RenderCollisionComponents();
-
-    RenderTexts();
 
     renderer.EndFrame();
     renderer.PostRender();

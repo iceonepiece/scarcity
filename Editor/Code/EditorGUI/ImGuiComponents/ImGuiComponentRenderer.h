@@ -7,7 +7,6 @@
 #include "ImGuiAudioSourceComponent.h"
 #include "ImGuiBaseComponent.h"
 #include "ImGuiBoxCollider2DComponent.h"
-#include "ImGuiButtonComponent.h"
 #include "ImGuiCameraComponent.h"
 #include "ImGuiSpriteRendererComponent.h"
 #include "ImGuiSpriteAnimatorComponent.h"
@@ -16,8 +15,6 @@
 #include "ImGuiGridComponent.h"
 #include "ImGuiGroundDetectionComponent.h"
 #include "ImGuiCircleCollider2DComponent.h"
-#include "ImGuiRectTransformComponent.h"
-#include "ImGuiTextComponent.h"
 #include "ImGui_Components.h"
 #include <IconsFontAwesome6.h>
 

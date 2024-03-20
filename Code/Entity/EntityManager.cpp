@@ -91,17 +91,3 @@ Entity EntityManager::CreateEmptyEntity(entt::entity parent)
 
     return entity;
 }
-
-Entity EntityManager::CreateCanvasEntity(entt::entity parent)
-{
-    auto entity = CreateEntity();
-    entity.AddComponent<IDComponent>();
-    entity.AddComponent<BaseComponent>("Canvas");
-    entity.AddComponent<TransformComponent>();
-    entity.AddComponent<CanvasComponent>();
-
-    if (parent != entt::null)
-        AddChild(parent, entity);
-
-    return entity;
-}

@@ -1,16 +1,12 @@
 #pragma once
 
-#include "Components/UIComponents.h"
-#include "Components/ButtonComponent.h"
-#include "Input/Input.h"
-#include "UI/UIComponent.h"
+#include "UI/UIObject.h"
 #include <sol/sol.hpp>
 #include <vector>
 
 class UIManager
 {
 public:
-	bool HandleInput(CanvasComponent& canvas, ButtonComponent& button, Input& input);
 	void CreateUIComponent(sol::table& uiComponent, const UIRect& parentRect = {});
 
 	void Clear();

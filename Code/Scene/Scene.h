@@ -49,8 +49,6 @@ public:
 	virtual void Render(RenderOptions renderOptions = {});
 	virtual void RenderEditor(RenderOptions renderOptions = {});
 
-	void UpdateUI(float deltaTime);
-
 	std::filesystem::path GetAbsolutePath();
 
 	void SetProject(Project* project);
@@ -78,7 +76,6 @@ public:
 	void StopPhysics();
 	void StartNativeScripts(NativeScriptEngine& scriptEngine);
 	void RenderCollisionComponents();
-	void RenderTexts();
 
 	virtual void Enter();
 	virtual void Exit();

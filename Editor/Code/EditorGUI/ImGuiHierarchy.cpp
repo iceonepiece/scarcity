@@ -1,7 +1,6 @@
 #include "../EditorLayer.h"
 #include "ImGuiHierarchy.h"
 #include "Components/Components.h"
-#include "Components/UIComponents.h"
 #include "Components/Relationship.h"
 #include <IconsFontAwesome6.h>
 
@@ -54,11 +53,6 @@ void ImGuiHierarchy::RenderEntity(EntityManager& manager, entt::entity entity)
             manager.CreateEmptyEntity(entity);
         }
 
-        if (ImGui::MenuItem("Create UI Entity"))
-        {
-            manager.CreateCanvasEntity(entity);
-        }
-
         if (ImGui::MenuItem("Delete Entity"))
             entityDeleted = true;
 
@@ -109,11 +103,6 @@ void ImGuiHierarchy::Render()
             if (ImGui::MenuItem("Create Empty Entity"))
             {
                 manager.CreateEmptyEntity();
-            }
-
-            if (ImGui::MenuItem("Create UI Entity"))
-            {
-                manager.CreateCanvasEntity();
             }
 
             ImGui::EndPopup();

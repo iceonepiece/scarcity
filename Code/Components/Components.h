@@ -21,8 +21,6 @@
 #include "SpriteRendererComponent.h"
 #include "TimerComponent.h"
 #include "TransformComponent.h"
-#include "UIComponents.h"
-#include "ButtonComponent.h"
 
 #define RequiredComponents BaseComponent, \
 	TransformComponent
@@ -48,20 +46,14 @@
 using CopyToSceneComponents = std::tuple<
 	IDComponent,
 	RequiredComponents,
-	BasicComponents,
-	UIComponents
+	BasicComponents
 >;
 
 using ComponentList = std::tuple<
 	RequiredComponents,
-	BasicComponents,
-	UIComponents
+	BasicComponents
 >;
 
 using ToAddComponents = std::tuple<
 	BasicComponents
->;
-
-using ToAddUIComponents = std::tuple<
-	UIComponents
 >;

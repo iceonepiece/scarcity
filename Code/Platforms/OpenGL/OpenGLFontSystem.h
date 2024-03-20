@@ -11,10 +11,7 @@
 #include FT_FREETYPE_H
 
 #include "Platforms/OpenGL/OpenGLShader.h"
-#include "Components/UIComponents.h"
 #include "Graphics/FontSystem.h"
-
-class UIText;
 
 typedef std::map<GLchar, Character> FontFace;
 
