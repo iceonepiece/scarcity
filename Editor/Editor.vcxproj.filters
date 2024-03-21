@@ -138,6 +138,12 @@
     <ClCompile Include="Code\Wrappers\ImGui_FontWrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGui_TilemapComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\EditorGUI\Windows\ImGui_TilemapEditorWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\ImGuiComponent.h">
@@ -348,6 +354,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Wrappers\ImGui_FontWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\Windows\ImGui_TilemapEditorWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -148,6 +148,7 @@
     <ClCompile Include="Code\EditorGUI\ImGuiAssetPanel.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiBaseComponent.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGui_LuaScriptComponent.cpp" />
+    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGui_TilemapComponent.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiHierarchy.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiMainMenuBar.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_AnimatorWindow.cpp" />
@@ -165,6 +166,7 @@
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_LuaEditorWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_ProjectSettingsWindow.cpp" />
+    <ClCompile Include="Code\EditorGUI\Windows\ImGui_TilemapEditorWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_Window.cpp" />
     <ClCompile Include="Code\Gizmos\Gizmo.cpp" />
     <ClCompile Include="Code\Gizmos\GridGizmo.cpp" />
@@ -232,6 +234,7 @@
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_LuaEditorWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_ProjectSettingsWindow.h" />
+    <ClInclude Include="Code\EditorGUI\Windows\ImGui_TilemapEditorWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_Window.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.h" />
     <ClInclude Include="Code\Gizmos\Actionable.h" />

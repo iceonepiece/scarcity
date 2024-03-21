@@ -17,6 +17,7 @@
 #include "EditorGUI/Windows/ImGui_AnimationClipWindow.h"
 #include "EditorGUI/Windows/ImGui_ProjectSettingsWindow.h"
 #include "EditorGUI/Windows/ImGui_LuaEditorWindow.h"
+#include "EditorGUI/Windows/ImGui_TilemapEditorWindow.h"
 #include "Scene/SceneSerializer.h"
 #include "Scene/SceneManager.h"
 #include "Asset/AssetManager.h"
@@ -63,6 +64,7 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
     m_imGuiWindowMap[ImGuiWindowType::Animator] = std::make_unique<ImGui_AnimatorWindow>(*this);
     m_imGuiWindowMap[ImGuiWindowType::ProjectSettings] = std::make_unique<ImGui_ProjectSettingsWindow>(*this);
     m_imGuiWindowMap[ImGuiWindowType::LuaEditor] = std::make_unique<ImGui_LuaEditorWindow>(*this);
+    m_imGuiWindowMap[ImGuiWindowType::TilemapEditor] = std::make_unique<ImGui_TilemapEditorWindow>(*this);
 
     OpenScene(m_activeProject->GetStartScene());
 
@@ -512,6 +514,9 @@ void EditorLayer::RenderImGui()
 
     if (GetImGuiWindow(ImGuiWindowType::Animator))
         GetImGuiWindow(ImGuiWindowType::Animator)->Render();
+
+    if (GetImGuiWindow(ImGuiWindowType::TilemapEditor))
+        GetImGuiWindow(ImGuiWindowType::TilemapEditor)->Render();
 
     m_editorSceneViewport.Render();
 

@@ -84,7 +84,7 @@ void ImGui_ImageWrapper::RenderBrowser(EditorLayer& editor)
 
     bool opened = ImGui::TreeNodeEx(m_image->GetPath().string().c_str(), flags, (useIcon + m_image->GetName()).c_str());
 
-    if (ImGui::IsItemClicked())
+    if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Left))
         editor.SetSelectedObject(EditorObjectType::Asset, m_image);
 
     if (opened)
@@ -102,5 +102,12 @@ void ImGui_ImageWrapper::RenderBrowser(EditorLayer& editor)
         }
 
         ImGui::TreePop();
+    }
+
+    if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+    {
+        ImGui::SetDragDropPayload("IMAGE_FILE", m_image, sizeof(Image));
+
+        ImGui::EndDragDropSource();
     }
 }

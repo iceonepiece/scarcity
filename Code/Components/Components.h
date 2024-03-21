@@ -19,6 +19,7 @@
 #include "Rigidbody2DComponent.h"
 #include "SpriteAnimatorComponent.h"
 #include "SpriteRendererComponent.h"
+#include "TilemapComponent.h"
 #include "TimerComponent.h"
 #include "TransformComponent.h"
 
@@ -33,15 +34,11 @@
 	Collider2DGroupComponent, \
 	CameraComponent, \
 	GridComponent, \
+	TilemapComponent, \
 	GroundDetectionComponent, \
 	NativeScriptComponent, \
 	AudioSourceComponent, \
 	LuaScriptComponent
-
-#define UIComponents CanvasComponent, \
-	ButtonComponent, \
-	TextComponent
-
 
 using CopyToSceneComponents = std::tuple<
 	IDComponent,

@@ -597,6 +597,7 @@
     <ClInclude Include="Code\Game\GameLayer.h" />
     <ClInclude Include="Code\Graphics\Font.h" />
     <ClInclude Include="Code\UI\UIBase.h" />
+    <ClInclude Include="Code\Components\TilemapComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\Include\ImGuiColorTextEdit\TextEditor.h" />
