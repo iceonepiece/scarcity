@@ -211,49 +211,26 @@ void ImGuiAssetPanel::Render()
 	{
 		const auto& path = directoryEntry.path();
 
-		if (path.extension() == ".meta")
-			continue;
-
-		ImGuiTreeNodeFlags flags = (m_editor.GetSelectedPath() == path ? ImGuiTreeNodeFlags_Selected : 0);
-		flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
-
-		std::string filenameString = path.filename().string();
-		//ImGui::PushID(path.c_str());
-
-		if (directoryEntry.is_directory())
+		if (directoryEntry.is_directory() && !FileSystem::IsIgnoreDirectory(path))
 		{
-			RenderFolder(path, flags, [&]()
-				{
-					if (ImGui::IsItemClicked())
-						m_editor.SetSelectedPath(path);
+			ImGuiTreeNodeFlags flags = (m_editor.GetSelectedPath() == path ? ImGuiTreeNodeFlags_Selected : 0);
+			flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
 
-					if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-						m_currentDirectory /= path.filename();
-				});
+			RenderFolder(path, flags, [&]()
+			{
+				if (ImGui::IsItemClicked())
+					m_editor.SetSelectedPath(path);
+
+				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+					m_currentDirectory /= path.filename();
+			});
 
 		}
 		else if (Asset* asset = m_editor.GetAsset(path))
-		{
 			ImGui_WrapperManager::GetWrapper(*asset)->RenderBrowser(m_editor);
-		}
 		else
-		{
-			flags |= ImGuiTreeNodeFlags_Leaf;
+			continue;
 
-			std::string useIcon = (ICON_FA_FILE_LINES " ");
-
-			bool opened = ImGui::TreeNodeEx(path.string().c_str(), flags, (useIcon + path.filename().string()).c_str());
-
-			//if (ImGui::IsItemClicked())
-				//m_editor.SetSelectedPath(path);
-
-			if (opened)
-				ImGui::TreePop();
-		}
-
-		//ImGui::TextWrapped(filenameString.c_str());
-
-		//ImGui::PopID();
 		ImGui::NextColumn();
 	}
 
