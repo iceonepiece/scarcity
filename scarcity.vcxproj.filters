@@ -44,7 +44,6 @@
     <ClCompile Include="Code\Utils\FileDialog.cpp" />
     <ClCompile Include="External\Include\glad\glad.c" />
     <ClCompile Include="External\Include\glm\detail\glm.cpp" />
-    <ClCompile Include="External\Include\ImGuiFileDialog\ImGuiFileDialog.cpp" />
     <ClCompile Include="External\Include\ImGuiNodeEditor\crude_json.cpp" />
     <ClCompile Include="External\Include\ImGuiNodeEditor\imgui_canvas.cpp" />
     <ClCompile Include="External\Include\ImGuiNodeEditor\imgui_node_editor.cpp" />
@@ -548,9 +547,6 @@
     <ClInclude Include="External\Include\glm\vec3.hpp" />
     <ClInclude Include="External\Include\glm\vec4.hpp" />
     <ClInclude Include="External\Include\glm\vector_relational.hpp" />
-    <ClInclude Include="External\Include\ImGuiFileDialog\dirent\dirent.h" />
-    <ClInclude Include="External\Include\ImGuiFileDialog\ImGuiFileDialog.h" />
-    <ClInclude Include="External\Include\ImGuiFileDialog\ImGuiFileDialogConfig.h" />
     <ClInclude Include="External\Include\ImGuiNodeEditor\crude_json.h" />
     <ClInclude Include="External\Include\ImGuiNodeEditor\imgui_bezier_math.h" />
     <ClInclude Include="External\Include\ImGuiNodeEditor\imgui_canvas.h" />

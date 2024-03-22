@@ -2,7 +2,6 @@
 
 #include "Core/Layer.h"
 #include "EditorApplication.h"
-#include <ImGuiFileDialog/ImGuiFileDialog.h>
 
 class HubLayer : public Layer
 {
