@@ -8,7 +8,7 @@ ImGuiSelectSpriteWindow::ImGuiSelectSpriteWindow(EditorLayer& editor, const std:
 	, m_baseDirectory(path)
 	, m_currentDirectory(path)
 {
-
+	s_instance = this;
 }
 
 void ImGuiSelectSpriteWindow::Render()

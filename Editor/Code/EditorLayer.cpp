@@ -11,13 +11,6 @@
 #include "Lua/LuaEngine.h"
 #include "File/FileSystem.h"
 #include "File/MetaSerializer.h"
-#include "EditorGUI/Windows/ImGuiSelectSpriteWindow.h"
-#include "EditorGUI/Windows/ImGuiSelectAnimatorControllerWindow.h"
-#include "EditorGUI/Windows/ImGuiTagEditorWindow.h"
-#include "EditorGUI/Windows/ImGui_AnimationClipWindow.h"
-#include "EditorGUI/Windows/ImGui_ProjectSettingsWindow.h"
-#include "EditorGUI/Windows/ImGui_LuaEditorWindow.h"
-#include "EditorGUI/Windows/ImGui_TilemapEditorWindow.h"
 #include "Scene/SceneSerializer.h"
 #include "Scene/SceneManager.h"
 #include "Asset/AssetManager.h"
@@ -27,6 +20,8 @@
 #include "Physics/GridUtils.h"
 #include <iostream>
 #include "Platforms/OpenGL/OpenGLTexture.h"
+#include "EditorGUI/Windows/ImGui_WindowManager.h"
+#include "EditorGUI/Windows/ImGui_AnimatorWindow.h"
 
 EditorLayer* EditorLayer::s_instance = nullptr;
 
@@ -57,14 +52,7 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
 
     //m_activeProject->GetAssetManager().InitializeAssets(m_activeProject->GetDirectory());
 
-    m_imGuiWindowMap[ImGuiWindowType::SelectSprite] = std::make_unique<ImGuiSelectSpriteWindow>(*this, m_activeProject->GetDirectory());
-    m_imGuiWindowMap[ImGuiWindowType::SelectAnimatorController] = std::make_unique<ImGuiSelectAnimatorControllerWindow>(*this, m_activeProject->GetDirectory());
-    m_imGuiWindowMap[ImGuiWindowType::Tags] = std::make_unique<ImGuiTagEditorWindow>(*this);
-    m_imGuiWindowMap[ImGuiWindowType::AnimationClip] = std::make_unique<ImGui_AnimationClipWindow>(*this);
-    m_imGuiWindowMap[ImGuiWindowType::Animator] = std::make_unique<ImGui_AnimatorWindow>(*this);
-    m_imGuiWindowMap[ImGuiWindowType::ProjectSettings] = std::make_unique<ImGui_ProjectSettingsWindow>(*this);
-    m_imGuiWindowMap[ImGuiWindowType::LuaEditor] = std::make_unique<ImGui_LuaEditorWindow>(*this);
-    m_imGuiWindowMap[ImGuiWindowType::TilemapEditor] = std::make_unique<ImGui_TilemapEditorWindow>(*this);
+    ImGui_WindowManager::Initialize(*this);
 
     OpenScene(m_activeProject->GetStartScene());
 
@@ -165,7 +153,7 @@ void EditorLayer::SetPickedEntity(entt::entity picked)
 {
     UnselectObject();
 
-    ImGui_AnimatorWindow* animatorWindow = static_cast<ImGui_AnimatorWindow*>(m_imGuiWindowMap[ImGuiWindowType::Animator].get());
+    ImGui_AnimatorWindow* animatorWindow = ImGui_AnimatorWindow::Get();
     animatorWindow->ClearSelection();
 
     m_selectedObject.type = EditorObjectType::Entity;
@@ -183,9 +171,10 @@ void EditorLayer::SetPickedEntity(entt::entity picked)
 EditorObject& EditorLayer::SetSelectedObject(EditorObjectType type, void* objectPtr)
 {
     UnselectObject();
+
     if (type != EditorObjectType::AnimatorState)
     {
-        ImGui_AnimatorWindow* animatorWindow = static_cast<ImGui_AnimatorWindow*>(m_imGuiWindowMap[ImGuiWindowType::Animator].get());
+        ImGui_AnimatorWindow* animatorWindow = ImGui_AnimatorWindow::Get();
         animatorWindow->ClearSelection();
     }
 
@@ -503,20 +492,7 @@ void EditorLayer::RenderImGui()
 
     style.WindowMinSize.x = minWinSizeX;
 
-    if (GetImGuiWindow(ImGuiWindowType::ProjectSettings))
-        GetImGuiWindow(ImGuiWindowType::ProjectSettings)->Render();
-
-    if (GetImGuiWindow(ImGuiWindowType::AnimationClip))
-        GetImGuiWindow(ImGuiWindowType::AnimationClip)->Render();
-
-    if (GetImGuiWindow(ImGuiWindowType::LuaEditor))
-        GetImGuiWindow(ImGuiWindowType::LuaEditor)->Render();
-
-    if (GetImGuiWindow(ImGuiWindowType::Animator))
-        GetImGuiWindow(ImGuiWindowType::Animator)->Render();
-
-    if (GetImGuiWindow(ImGuiWindowType::TilemapEditor))
-        GetImGuiWindow(ImGuiWindowType::TilemapEditor)->Render();
+    ImGui_WindowManager::Render();
 
     m_editorSceneViewport.Render();
 
@@ -534,7 +510,7 @@ void EditorLayer::RenderImGui()
 
 void EditorLayer::SetAnimatorController(AnimatorController & animController)
 {
-    ImGui_AnimatorWindow* animatorWindow = static_cast<ImGui_AnimatorWindow*>(m_imGuiWindowMap[ImGuiWindowType::Animator].get());
+    ImGui_AnimatorWindow* animatorWindow = ImGui_AnimatorWindow::Get();
     animatorWindow->SetAnimatorController(&animController);
 }
 

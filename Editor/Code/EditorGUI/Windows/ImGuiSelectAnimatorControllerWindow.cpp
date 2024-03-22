@@ -8,6 +8,7 @@ ImGuiSelectAnimatorControllerWindow::ImGuiSelectAnimatorControllerWindow(EditorL
 	, m_currentDirectory(path)
 	, m_selectedController(nullptr)
 {
+	s_instance = this;
 }
 
 void ImGuiSelectAnimatorControllerWindow::Render()

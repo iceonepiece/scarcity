@@ -12,7 +12,14 @@ public:
 
 	void LoadScript(const std::filesystem::path& filepath);
 
+	static ImGui_LuaEditorWindow* Get()
+	{
+		return s_instance;
+	}
+
 private:
+	inline static ImGui_LuaEditorWindow* s_instance = nullptr;
+
 	TextEditor m_textEditor;
 	ImFont* m_font;
 	std::filesystem::path m_currentLuaScriptPath;

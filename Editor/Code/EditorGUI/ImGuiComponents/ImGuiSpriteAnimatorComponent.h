@@ -3,6 +3,7 @@
 #include "../Windows/ImGuiSelectAnimatorControllerWindow.h"
 #include "../../EditorLayer.h"
 #include "Utils/FileDialog.h"
+#include "../Windows/ImGui_WindowManager.h"
 
 static void RenderImGui(SpriteAnimatorComponent& spriteAnimator)
 {
@@ -19,7 +20,7 @@ static void RenderImGui(SpriteAnimatorComponent& spriteAnimator)
 
 	if (ImGui::BeginPopupModal("Select AnimatorController"))
 	{
-		ImGuiSelectAnimatorControllerWindow* window = dynamic_cast<ImGuiSelectAnimatorControllerWindow*>(EditorLayer::GetImGuiWindow(ImGuiWindowType::SelectAnimatorController));
+		ImGuiSelectAnimatorControllerWindow* window = ImGuiSelectAnimatorControllerWindow::Get();
 		window->Render();
 
 		ImGui::Separator();

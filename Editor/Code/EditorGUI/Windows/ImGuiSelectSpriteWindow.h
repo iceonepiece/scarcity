@@ -16,7 +16,14 @@ public:
 	inline Sprite* GetSelectedSprite() { return m_selectedSprite; }
 	inline size_t GetSpriteIndex() { return m_spriteIndex; }
 
+	static ImGuiSelectSpriteWindow* Get()
+	{
+		return s_instance;
+	}
+
 private:
+	inline static ImGuiSelectSpriteWindow* s_instance = nullptr;
+
 	Sprite* m_selectedSprite;
 	size_t m_spriteIndex;
 	std::filesystem::path m_baseDirectory;

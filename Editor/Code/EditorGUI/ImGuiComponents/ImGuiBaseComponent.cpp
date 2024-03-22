@@ -38,7 +38,7 @@ void RenderImGui(BaseComponent& base)
 
 	if (ImGui::BeginPopupModal("Tag Editor"))
 	{
-		ImGuiTagEditorWindow* window = dynamic_cast<ImGuiTagEditorWindow*>(EditorLayer::GetImGuiWindow(ImGuiWindowType::Tags));
+		ImGuiTagEditorWindow* window = ImGuiTagEditorWindow::Get();
 		window->Render();
 
 		ImGui::Separator();

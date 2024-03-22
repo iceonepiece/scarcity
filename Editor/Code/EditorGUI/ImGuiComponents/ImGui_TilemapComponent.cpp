@@ -8,7 +8,7 @@ void RenderImGui(TilemapComponent& tilemap)
 
     if (ImGui::Button(imageFilename.c_str(), ImVec2(200, 0)))
     {
-        ImGui_TilemapEditorWindow* tilemapEditor = (ImGui_TilemapEditorWindow*)EditorLayer::GetImGuiWindow(ImGuiWindowType::TilemapEditor);
+        ImGui_TilemapEditorWindow* tilemapEditor = ImGui_TilemapEditorWindow::Get();
         tilemapEditor->SetTilemap(&tilemap);
         tilemapEditor->SetOpen(true);
     }

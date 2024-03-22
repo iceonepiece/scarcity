@@ -168,6 +168,7 @@
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_ProjectSettingsWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_TilemapEditorWindow.cpp" />
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_Window.cpp" />
+    <ClCompile Include="Code\EditorGUI\Windows\ImGui_WindowManager.cpp" />
     <ClCompile Include="Code\Gizmos\Gizmo.cpp" />
     <ClCompile Include="Code\Gizmos\GridGizmo.cpp" />
     <ClCompile Include="Code\Helpers\FileHandler.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_TilemapEditorWindow.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_Window.h" />
     <ClInclude Include="Code\EditorGUI\Windows\ImGuiSelectSpriteWindow.h" />
+    <ClInclude Include="Code\EditorGUI\Windows\ImGui_WindowManager.h" />
     <ClInclude Include="Code\Gizmos\Actionable.h" />
     <ClInclude Include="Code\Gizmos\ActionableCircle.h" />
     <ClInclude Include="Code\Gizmos\ActionableRect.h" />

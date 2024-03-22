@@ -3,6 +3,7 @@
 #include "Core/Timer.h"
 #include <imgui/imgui_internal.h>
 #include <IconsFontAwesome6.h>
+#include "../EditorGUI/Windows/ImGui_WindowManager.h"
 
 ImGuiMainMenuBar::ImGuiMainMenuBar(EditorLayer& editor)
 	: m_editor(editor)
@@ -55,7 +56,7 @@ void ImGuiMainMenuBar::Render()
     {
         if (ImGui::MenuItem("Project Settings"))
         {
-            m_editor.GetImGuiWindow(ImGuiWindowType::ProjectSettings)->SetOpen(true);
+            ImGui_WindowManager::GetWindow(ImGuiWindowType::ProjectSettings)->SetOpen(true);
         }
 
         ImGui::EndMenu();
@@ -65,7 +66,7 @@ void ImGuiMainMenuBar::Render()
     {
         if (ImGui::MenuItem("Animator"))
         {
-            m_editor.GetImGuiWindow(ImGuiWindowType::Animator)->SetOpen(true);
+            ImGui_WindowManager::GetWindow(ImGuiWindowType::Animator)->SetOpen(true);
         }
 
         ImGui::EndMenu();

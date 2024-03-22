@@ -96,7 +96,13 @@ public:
 	void ClearSelection();
 	void SetAnimatorController(AnimatorController* controller);
 
+	static ImGui_AnimatorWindow* Get()
+	{
+		return s_instance;
+	}
+
 private:
+	inline static ImGui_AnimatorWindow* s_instance = nullptr;
 	inline static AnimatorController s_animController{ "" };
 
 	ImNodes::Ez::Context* m_context;

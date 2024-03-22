@@ -16,7 +16,14 @@ public:
 
 	inline AnimatorController* GetSelectedController() { return m_selectedController; }
 
+	static ImGuiSelectAnimatorControllerWindow* Get()
+	{
+		return s_instance;
+	}
+
 private:
+	inline static ImGuiSelectAnimatorControllerWindow* s_instance = nullptr;
+
 	AnimatorController* m_selectedController;
 	std::filesystem::path m_baseDirectory;
 	std::filesystem::path m_currentDirectory;

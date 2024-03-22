@@ -15,8 +15,7 @@ void ImGui_AnimatorControllerWrapper::RenderBrowser(EditorLayer& editor)
 	{
 		editor.SetSelectedObject(EditorObjectType::Asset, m_animController);
 		editor.SetAnimatorController(*m_animController);
-		ImGui_AnimatorWindow* animorWindow = static_cast<ImGui_AnimatorWindow*>(editor.GetImGuiWindow(ImGuiWindowType::Animator));
-		animorWindow->SetOpen(true);
+		ImGui_AnimatorWindow::Get()->SetOpen(true);
 	}
 
 	if (opened)

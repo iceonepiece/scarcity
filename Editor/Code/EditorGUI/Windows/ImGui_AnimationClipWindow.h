@@ -11,7 +11,14 @@ public:
 	virtual void Render() override;
 	void SetAnimationClip(AnimationClip* animationClip);
 
+	static ImGui_AnimationClipWindow* Get()
+	{
+		return s_instance;
+	}
+
 private:
+	inline static ImGui_AnimationClipWindow* s_instance = nullptr;
+
 	void Close();
 	void ResetPreview();
 

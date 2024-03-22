@@ -14,7 +14,14 @@ public:
 		m_tilemap = tilemap;
 	}
 
+	static ImGui_TilemapEditorWindow* Get()
+	{
+		return s_instance;
+	}
+
 private:
+	inline static ImGui_TilemapEditorWindow* s_instance = nullptr;
+
 	TilemapComponent* m_tilemap = nullptr;
 
 	std::set<size_t> m_selectedSprites;

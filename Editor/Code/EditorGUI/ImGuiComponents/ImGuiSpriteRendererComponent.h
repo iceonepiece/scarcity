@@ -38,7 +38,7 @@ static void RenderImGui(SpriteRendererComponent& spriteRenderer)
 
 	if (ImGui::BeginPopupModal("Select Sprite"))
 	{
-		ImGuiSelectSpriteWindow* window = dynamic_cast<ImGuiSelectSpriteWindow*>(EditorLayer::GetImGuiWindow(ImGuiWindowType::SelectSprite));
+		ImGuiSelectSpriteWindow* window = ImGuiSelectSpriteWindow::Get();
 		window->Render();
 
 		ImGui::Separator();

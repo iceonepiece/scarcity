@@ -6,7 +6,9 @@
 
 ImGui_AnimationClipWindow::ImGui_AnimationClipWindow(EditorLayer& editor)
 	: ImGui_Window(editor, "Animation Clip")
-{}
+{
+	s_instance = this;
+}
 
 void ImGui_AnimationClipWindow::SetAnimationClip(AnimationClip* animationClip)
 {

@@ -8,6 +8,7 @@ ImGui_AnimatorWindow::ImGui_AnimatorWindow(EditorLayer& editor)
     : ImGui_Window(editor, "Animator")
     , m_animController(nullptr)
 {
+    s_instance = this;
     m_animController = &s_animController;
     m_context = ImNodes::Ez::CreateContext();
 }

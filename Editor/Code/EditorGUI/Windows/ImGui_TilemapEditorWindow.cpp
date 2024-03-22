@@ -5,6 +5,7 @@
 ImGui_TilemapEditorWindow::ImGui_TilemapEditorWindow(EditorLayer& editor)
 	: ImGui_Window(editor, "Tilemap Editor")
 {
+	s_instance = this;
 }
 
 void ImGui_TilemapEditorWindow::Render()

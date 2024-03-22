@@ -5,19 +5,6 @@
 
 class EditorLayer;
 
-enum class ImGuiWindowType
-{
-	None,
-	SelectSprite,
-	Tags,
-	SelectAnimatorController,
-	AnimationClip,
-	Animator,
-	ProjectSettings,
-	LuaEditor,
-	TilemapEditor,
-};
-
 class ImGui_Window
 {
 public:

@@ -121,14 +121,6 @@ public:
 
 	static Asset* GetAsset(const std::filesystem::path& path);
 
-	static ImGui_Window* GetImGuiWindow(ImGuiWindowType windowType)
-	{
-		if (s_instance->m_imGuiWindowMap.find(windowType) != s_instance->m_imGuiWindowMap.end())
-			return s_instance->m_imGuiWindowMap.at(windowType).get();
-
-		return nullptr;
-	}
-
 	inline void SetMouseActive(bool active)
 	{
 		m_mouseActive = active;
@@ -234,6 +226,4 @@ private:
 	ImGui_InspectorPanel m_inspectorPanel;
 
 	EditorSceneViewport m_editorSceneViewport;
-
-	std::unordered_map<ImGuiWindowType, std::unique_ptr<ImGui_Window>> m_imGuiWindowMap;
 };

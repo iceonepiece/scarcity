@@ -21,7 +21,7 @@ void ImGui_LuaScriptWrapper::RenderBrowser(EditorLayer& editor)
 		auto& luaEditor = editor.GetLuaEditorPanel();
 		luaEditor.LoadScript(m_luaScript->GetPath().string());
 		*/
-		ImGui_LuaEditorWindow* luaEditor = (ImGui_LuaEditorWindow*)EditorLayer::GetImGuiWindow(ImGuiWindowType::LuaEditor);
+		ImGui_LuaEditorWindow* luaEditor = ImGui_LuaEditorWindow::Get();
 		luaEditor->LoadScript(m_luaScript->GetPath().string());
 		luaEditor->SetOpen(true);
 	}

@@ -17,7 +17,7 @@ void ImGui_AnimationClipWrapper::RenderBrowser(EditorLayer& editor)
 
 	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 	{
-		ImGui_AnimationClipWindow* animClipWindow = static_cast<ImGui_AnimationClipWindow*>(editor.GetImGuiWindow(ImGuiWindowType::AnimationClip));
+		ImGui_AnimationClipWindow* animClipWindow = ImGui_AnimationClipWindow::Get();
 		animClipWindow->SetAnimationClip(m_animationClip);
 		animClipWindow->SetOpen(true);
 	}

@@ -8,7 +8,7 @@
 ImGuiTagEditorWindow::ImGuiTagEditorWindow(EditorLayer& editor)
 	: ImGui_Window(editor)
 {
-
+	s_instance = this;
 }
 
 void ImGuiTagEditorWindow::Render()
