@@ -344,9 +344,6 @@
     <ClCompile Include="Code\Platforms\OpenGL\OpenGLTexture.cpp" />
     <ClCompile Include="Code\UI\UIManager.cpp" />
     <ClCompile Include="Code\Utils\FileDialog.cpp" />
-    <ClCompile Include="External\Include\angelscript\scriptarray\scriptarray.cpp" />
-    <ClCompile Include="External\Include\angelscript\scriptstdstring\scriptstdstring.cpp" />
-    <ClCompile Include="External\Include\angelscript\scriptstdstring\scriptstdstring_utils.cpp" />
     <ClCompile Include="External\Include\glad\glad.c" />
     <ClCompile Include="External\Include\glm\detail\glm.cpp" />
     <ClCompile Include="External\Include\ImGuiColorTextEdit\TextEditor.cpp" />
@@ -486,9 +483,6 @@
     <ClInclude Include="External\Include\AL\efx-creative.h" />
     <ClInclude Include="External\Include\AL\efx-presets.h" />
     <ClInclude Include="External\Include\AL\efx.h" />
-    <ClInclude Include="External\Include\angelscript\angelscript.h" />
-    <ClInclude Include="External\Include\angelscript\scriptarray\scriptarray.h" />
-    <ClInclude Include="External\Include\angelscript\scriptstdstring\scriptstdstring.h" />
     <ClInclude Include="External\Include\box2d\b2_api.h" />
     <ClInclude Include="External\Include\box2d\b2_block_allocator.h" />
     <ClInclude Include="External\Include\box2d\b2_body.h" />
