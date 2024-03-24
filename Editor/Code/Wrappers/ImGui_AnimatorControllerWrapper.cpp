@@ -1,4 +1,5 @@
 #include "ImGui_AnimatorControllerWrapper.h"
+#include "../EditorGUI/Windows/ImGui_AnimatorWindow.h"
 #include "../EditorLayer.h"
 
 void ImGui_AnimatorControllerWrapper::RenderBrowser(EditorLayer& editor)

@@ -1,8 +1,7 @@
 #include <imgui/imgui.h>
 #include "imgui/imgui_stdlib.h"
-#include "ImGuiBaseComponent.h"
+#include "ImGui_Components.h"
 #include "Components/BaseComponent.h"
-#include "Core/Application.h"
 #include "../Windows/ImGuiTagEditorWindow.h"
 #include "../../EditorLayer.h"
 #include "Core/TagManager.h"

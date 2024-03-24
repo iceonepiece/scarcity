@@ -26,10 +26,10 @@ void ImGui_ProjectSettingsWindow::RenderPhysics()
 		ImGui::TableNextColumn();
 		ImGui::Text("");
 
-		for (int i = availableLayers.size() - 1; i >= 0; i--)
+		for (auto it = availableLayers.rbegin(); it != availableLayers.rend(); it++)
 		{
 			ImGui::TableNextColumn();
-			ImGui::Text(collisionLayers[availableLayers[i]].c_str());
+			ImGui::Text(collisionLayers[*it].c_str());
 		}
 
 		auto& collisionMatrix = Physics::GetCollisionMatrix();

@@ -188,7 +188,7 @@ void ImGui_TilemapEditorWindow::Render()
 
                 if (startCell.x >= 0.0f && startCell.x < textureRenderer.width)
                 {
-                    startCol = startCell.x / GRID_STEP;
+                    startCol = (int)(startCell.x / GRID_STEP);
                 }
 
                 if (endCell.x >= 0.0f && endCell.x < textureRenderer.width)

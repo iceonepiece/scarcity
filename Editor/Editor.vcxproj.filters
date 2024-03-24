@@ -81,7 +81,7 @@
     <ClCompile Include="Code\EditorGUI\Windows\ImGuiTagEditorWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiBaseComponent.cpp">
+    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGui_BaseComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\EditorGUI\ImGui_InspectorPanel.cpp">
@@ -145,6 +145,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_WindowManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGui_CameraComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -221,9 +224,6 @@
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiComponentRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiBaseComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiSpriteAnimatorComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -257,9 +257,6 @@
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiAudioSourceComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiCameraComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Code\EditorGUI\ImGuiUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -290,9 +287,6 @@
     <ClInclude Include="Code\EditorGUI\Inspectors\ImGui_AnimatorInspector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Animator\ImGui_AnimatorState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_AnimationClipWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -320,13 +314,7 @@
     <ClInclude Include="Code\EditorCore\EditorProject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\EditorAsset\AudioClipAsset.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Code\Wrappers\ImGui_AudioClipWrapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\EditorAsset\EditorAsset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Wrappers\ImGui_WrapperManager.h">

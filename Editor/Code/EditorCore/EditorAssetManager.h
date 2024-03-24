@@ -4,7 +4,7 @@
 #include <functional>
 #include "Asset/AssetManager.h"
 #include "../Wrappers/ImGui_AssetWrapper.h"
-#include "../EditorAsset/EditorAsset.h"
+#include "Asset/Asset.h"
 
 class EditorAssetManager : public AssetManager
 {
@@ -13,5 +13,5 @@ public:
 
 
 private:
-	std::map<std::string, std::unique_ptr<EditorAsset>> m_editorAssetMap;
+	std::map<std::string, std::unique_ptr<Asset>> m_editorAssetMap;
 };

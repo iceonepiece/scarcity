@@ -2,9 +2,7 @@
 #include "Graphics/Camera2D.h"
 #include "File/FileSystem.h"
 #include "Utils/FileDialog.h"
-#include <iostream>
 #include "Input/Input.h"
-#include "Lua/LuaEngine.h"
 #include "File/FileSystem.h"
 #include "File/MetaSerializer.h"
 #include "Scene/SceneSerializer.h"
@@ -12,12 +10,13 @@
 #include "Asset/AssetManager.h"
 #include "Project/ProjectSerializer.h"
 #include "Platforms/OpenGL/OpenGLFramebuffer.h"
-#include <stack>
 #include "Physics/GridUtils.h"
-#include <iostream>
 #include "Platforms/OpenGL/OpenGLTexture.h"
 #include "EditorGUI/Windows/ImGui_WindowManager.h"
 #include "EditorGUI/Windows/ImGui_AnimatorWindow.h"
+
+#include <stack>
+#include <iostream>
 
 EditorLayer* EditorLayer::s_instance = nullptr;
 
@@ -49,33 +48,6 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
 
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-}
-
-void EditorLayer::OnFileEvent(const FileEvent& event)
-{
-    switch (event.type)
-    {
-        case filewatch::Event::added:
-        {
-            std::cout << "File Added at: " << event.path << std::endl;
-
-            if (FileSystem::IsImageFile(event.path))
-            {
-                std::cout << "Handle Image File!!!\n";
-                FileSystem::GenerateImageMetaFile(event.path);
-
-                m_activeProject->GetAssetManager().LoadTexture(event.path.string(), event.path.string().c_str(), true);
-            }
-        }
-        break;
-
-        case filewatch::Event::removed:
-        {
-            std::cout << "File Removed at: " << event.path << std::endl;
-            m_activeProject->GetAssetManager().RemoveTexture(event.path.string());
-        }
-        break;
-    }
 }
 
 void EditorLayer::Initialize()

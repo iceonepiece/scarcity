@@ -12,7 +12,6 @@
 #include "File/FileSystem.h"
 #include <filewatch/FileWatch.h>
 #include "Helpers/FileHandler.h"
-#include "Asset/Asset.h"
 #include "Graphics/Sprite.h"
 #include "EditorGUI/Windows/ImGui_Window.h"
 #include "EditorGUI/ImGuiMainMenuBar.h"
@@ -25,12 +24,12 @@
 #include "Commands/EditorCommand.h"
 #include "Graphics/Framebuffer.h"
 
+class Asset;
 
 struct EditorObject
 {
 	EditorObjectType type = EditorObjectType::None;
 	entt::entity entity = entt::null;
-	//Asset* asset = nullptr;
 	std::string note = "";
 	void* objectPtr = nullptr;
 };
@@ -55,16 +54,19 @@ public:
 
 	void CreatePrefab(entt::entity entity, const std::filesystem::path& path);
 
-	inline bool IsEntityPicked() { return m_entityPicked; }
+	inline bool IsEntityPicked() const
+	{
+		return m_entityPicked;
+	}
 
 	Entity GetSelectedEntity();
 
-	inline entt::entity GetPickedEntity()
+	inline entt::entity GetPickedEntity() const
 	{
 		return m_selectedObject.entity;
 	}
 
-	inline std::filesystem::path GetSelectedPath()
+	inline std::filesystem::path GetSelectedPath() const
 	{
 		if (m_selectedObject.type == EditorObjectType::Asset)
 		{
@@ -78,7 +80,10 @@ public:
 	EditorObject& SetSelectedObject(EditorObjectType type, void* objectPtr);
 	void SetSelectedAsset(Asset* asset, const std::string& note = "");
 
-	inline bool IsGridModeAvailable() { return m_gridModeAvailable; }
+	inline bool IsGridModeAvailable() const
+	{
+		return m_gridModeAvailable;
+	}
 
 	void SetPickedEntity(entt::entity picked);
 	void UnselectObject();
@@ -125,12 +130,12 @@ public:
 		m_mouseActive = active;
 	}
 
-	inline bool IsMouseActive()
+	inline bool IsMouseActive() const
 	{
 		return m_mouseActive;
 	}
 
-	inline EditorMode GetCurrentMode()
+	inline EditorMode GetCurrentMode() const
 	{
 		return m_currentMode;
 	}
@@ -168,11 +173,7 @@ private:
 	void OnKeyPressed(KeyPressedEvent& event);
 	void OnMouseScrolled(MouseScrolledEvent& event);
 
-	void OnFileEvent(const FileEvent& event);
-
 private:
-	std::unique_ptr<Framebuffer> m_sceneFramebuffer;
-
 	glm::vec2 m_viewportSize = { 0.0f, 0.0f };
 	bool m_viewportFocused = false;
 	bool m_viewportHovered = false;

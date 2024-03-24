@@ -1,10 +1,6 @@
-#pragma once
+#include "ImGui_Components.h"
 
-#include <imgui/imgui.h>
-#include "Components/CameraComponent.h"
-#include "Core/Application.h"
-
-static void RenderImGui(CameraComponent& camera)
+void RenderImGui(CameraComponent& camera)
 {
 	ImGui::InputFloat("Size", &camera.size);
 	ImGui::InputFloat("Near", &camera.near);

@@ -146,7 +146,8 @@
     <ClCompile Include="Code\EditorApplication.cpp" />
     <ClCompile Include="Code\EditorCore\EditorAssetManager.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiAssetPanel.cpp" />
-    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGuiBaseComponent.cpp" />
+    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGui_BaseComponent.cpp" />
+    <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGui_CameraComponent.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGui_LuaScriptComponent.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGui_TilemapComponent.cpp" />
     <ClCompile Include="Code\EditorGUI\ImGuiHierarchy.cpp" />
@@ -194,9 +195,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\Animator\ImGui_AnimatorState.h" />
-    <ClInclude Include="Code\EditorAsset\AudioClipAsset.h" />
-    <ClInclude Include="Code\EditorAsset\EditorAsset.h" />
     <ClInclude Include="Code\EditorCore\EditorAssetManager.h" />
     <ClInclude Include="Code\Commands\EditorCommand.h" />
     <ClInclude Include="Code\Commands\TranslateCommand.h" />
@@ -205,9 +203,7 @@
     <ClInclude Include="Code\EditorApplication.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiAssetPanel.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiAudioSourceComponent.h" />
-    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiBaseComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiBoxCollider2DComponent.h" />
-    <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiCameraComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiCircleCollider2DComponent.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiComponentRenderer.h" />
     <ClInclude Include="Code\EditorGUI\ImGuiComponents\ImGuiGridComponent.h" />
