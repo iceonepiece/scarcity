@@ -77,7 +77,6 @@ public:
 
 	EditorObject& SetSelectedObject(EditorObjectType type, void* objectPtr);
 	void SetSelectedAsset(Asset* asset, const std::string& note = "");
-	void SetSelectedPath(const std::filesystem::path& path, const std::string& note = "");
 
 	inline bool IsGridModeAvailable() { return m_gridModeAvailable; }
 

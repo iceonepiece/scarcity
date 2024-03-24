@@ -218,9 +218,6 @@ void ImGuiAssetPanel::Render()
 
 			RenderFolder(path, flags, [&]()
 			{
-				if (ImGui::IsItemClicked())
-					m_editor.SetSelectedPath(path);
-
 				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 					m_currentDirectory /= path.filename();
 			});

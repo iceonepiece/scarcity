@@ -1,9 +1,5 @@
 #include "EditorLayer.h"
 #include "Graphics/Camera2D.h"
-#include "Gizmos/ViewGizmo.h"
-#include "Gizmos/TranslateGizmo.h"
-#include "Gizmos/RotateGizmo.h"
-#include "Gizmos/ScaleGizmo.h"
 #include "File/FileSystem.h"
 #include "Utils/FileDialog.h"
 #include <iostream>
@@ -37,9 +33,6 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
 {
     s_instance = this;
 
-    //m_activeProject->Initialize();
-    //m_sceneFramebuffer = m_app.GetRenderer().CreateFramebuffer();
-
     m_fileWatcher = std::make_unique<filewatch::FileWatch<std::string>>(
         (m_activeProject->GetDirectory()).string(),
         [&](const std::string& path, const filewatch::Event change_type)
@@ -49,8 +42,6 @@ EditorLayer::EditorLayer(EditorApplication& app, std::unique_ptr<Project> projec
             m_fileEvents.push_back({ absolutePath, change_type });
         }
     );
-
-    //m_activeProject->GetAssetManager().InitializeAssets(m_activeProject->GetDirectory());
 
     ImGui_WindowManager::Initialize(*this);
 
@@ -91,21 +82,6 @@ void EditorLayer::Initialize()
 {
 	std::cout << "EditorLayer Initialize()\n\n";
 
-    /*
-    m_gizmos.push_back(std::make_unique<ViewGizmo>(*this));
-    m_gizmos.push_back(std::make_unique<TranslateGizmo>(*this));
-    m_gizmos.push_back(std::make_unique<RotateGizmo>(*this));
-    m_gizmos.push_back(std::make_unique<ScaleGizmo>(*this));
-
-    m_camera = std::make_unique<Camera2D>(
-        glm::vec3 { 0.0f, 0.0f, -1.0f },
-        glm::vec2 { 1.0f, 1.0f },
-        glm::vec2 { m_app.GetWindow().GetWidth(), m_app.GetWindow().GetHeight() }
-    );
-
-    m_camera->SetCameraType(CameraType::Orthographic);
-        */
-    
     if (m_activeProject != nullptr)
         m_assetPanel.SetProjectDirectory(m_activeProject->GetDirectory());
 }
@@ -193,16 +169,6 @@ void EditorLayer::SetSelectedAsset(Asset* asset, const std::string& note)
     m_selectedObject.note = note;
 
     m_gridModeAvailable = false;
-}
-
-void EditorLayer::SetSelectedPath(const std::filesystem::path& path, const std::string& note)
-{
-    /*
-    m_selectedObject.type = EditorObjectType::Path;
-    m_selectedObject.asset = GetAsset(path);
-    m_selectedObject.entity = entt::null;
-    m_selectedObject.note = note;
-    */
 }
 
 Asset* EditorLayer::GetAsset(const std::filesystem::path& path)
@@ -553,21 +519,7 @@ void EditorLayer::ChangeScene(const std::string& name)
 
 void EditorLayer::OnMouseScrolled(MouseScrolledEvent& event)
 {
-
     m_editorSceneViewport.OnMouseScrolled(event);
-
-    /*
-    if (m_camera->GetCameraType() == CameraType::Orthographic)
-    {
-        m_camera->SetZoom(m_camera->GetZoom() * (1.0f + event.GetY() * 0.1f));
-    }
-    else if (m_camera->GetCameraType() == CameraType::Perspective)
-    {
-        glm::vec3 newPosition = m_camera->GetPosition();
-        newPosition.z += event.GetY() * 0.5f;
-        m_camera->SetPosition(newPosition);
-    }
-    */
 }
 
 void EditorLayer::OnEvent(Event& event)
@@ -583,32 +535,6 @@ void EditorLayer::OnEvent(Event& event)
     EventType evenType = event.GetType();
 
     ImGuiIO& io = ImGui::GetIO();
-
-    /*
-    if (!m_viewportHovered && io.WantCaptureMouse &&
-        (
-            evenType == EventType::MouseButtonPressed ||
-            evenType == EventType::MouseScrolled
-        )
-    )
-    {
-        event.handled = true;
-        return;
-    }
-    */
-
-    /*
-    if (io.WantCaptureKeyboard &&
-        (
-            evenType == EventType::KeyPressed ||
-            evenType == EventType::KeyReleased
-        )
-    )
-    {
-        event.handled = true;
-        return;
-    }
-    */
 
     switch (evenType)
     {
