@@ -5,6 +5,7 @@
 #include "../Gizmos/RotateGizmo.h"
 #include "../Gizmos/ScaleGizmo.h"
 #include "../Gizmos/GridGizmo.h"
+#include "../Gizmos/TilemapGizmo.h"
 #include "Graphics/Camera2D.h"
 #include "Physics/GridUtils.h"
 #include <imgui/imgui.h>
@@ -30,6 +31,7 @@ EditorSceneViewport::EditorSceneViewport(EditorLayer& editor)
     m_gizmos.push_back(std::make_unique<RotateGizmo>(*this));
     m_gizmos.push_back(std::make_unique<ScaleGizmo>(*this));
     m_gizmos.push_back(std::make_unique<GridGizmo>(*this));
+    m_gizmos.push_back(std::make_unique<TilemapGizmo>(*this));
 }
 
 
@@ -242,7 +244,7 @@ void EditorSceneViewport::OnMouseMoved(MouseMovedEvent& event)
 
     if (m_editor.IsMouseActive())
     {
-        if (m_editor.GetCurrentMode() == EditorMode::GridMode)
+        if (m_editor.GetCurrentMode() == EditorMode::GridMode || m_editor.GetCurrentMode() == EditorMode::TilemapMode)
         {
             m_gizmos[m_editor.GetCurrentMode()]->OnPicking2D(worldCursorPosition);
         }
@@ -289,6 +291,22 @@ void EditorSceneViewport::OnMouseButtonPressed(MouseButtonPressedEvent& event)
                 GenerateGridCollision(*grid);
             }
         }
+    }
+    else if (m_editor.GetCurrentMode() == EditorMode::TilemapMode)
+    {
+        TilemapGizmoMode mode = TilemapGizmoMode::None;
+        TilemapGizmo* tilemapGizmo = (TilemapGizmo*)m_gizmos[m_editor.GetCurrentMode()].get();
+
+        if (event.GetMouseButton() == Mouse::ButtonLeft)
+            mode = TilemapGizmoMode::Draw;
+        else if (event.GetMouseButton() == Mouse::ButtonRight)
+            mode = TilemapGizmoMode::Erase;
+
+        if (mode != TilemapGizmoMode::None)
+            m_editor.SetMouseActive(true);
+
+        tilemapGizmo->SetMode(mode);
+        tilemapGizmo->OnPicking2D(worldCursorPosition);
     }
     else if (event.GetMouseButton() == Mouse::ButtonLeft)
     {

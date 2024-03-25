@@ -1,6 +1,7 @@
 #include "ImGui_TilemapEditorWindow.h"
 #include "Graphics/Texture.h"
 #include "Asset/AssetManager.h"
+#include "../../EditorLayer.h"
 
 ImGui_TilemapEditorWindow::ImGui_TilemapEditorWindow(EditorLayer& editor)
 	: ImGui_Window(editor, "Tilemap Editor")
@@ -10,8 +11,6 @@ ImGui_TilemapEditorWindow::ImGui_TilemapEditorWindow(EditorLayer& editor)
 
 void ImGui_TilemapEditorWindow::Render()
 {
-    static int rows = 1;
-    static int cols = 1;
     static ImVec2 scrolling(0.0f, 0.0f);
     static bool opt_enable_grid = true;
     static bool selecting = false;
@@ -21,15 +20,17 @@ void ImGui_TilemapEditorWindow::Render()
 	if (!m_isOpen)
 		return;
 
+    m_editor.SetCurrentMode(EditorMode::TilemapMode);
+
 	if (ImGui::Begin("Tilemap Editor", &m_isOpen, ImGuiWindowFlags_NoScrollbar))
 	{
-        if (m_tilemap != nullptr && m_tilemap->image != nullptr)
+        if (m_tilemap != nullptr && m_tilemap->originalImage != nullptr)
         {
-			if (Texture* texture = m_tilemap->image->GetTexture())
+			if (Texture* texture = m_tilemap->originalImage->GetTexture())
 			{
                 if (ImGui::IsWindowFocused())
                 {
-                    if (ImGui::GetIO().MouseWheel > 0.0f && m_zoomIndex < 6)
+                    if (ImGui::GetIO().MouseWheel > 0.0f && m_zoomIndex < S_ZOOM_VALUES.size() - 1)
                     {
                         m_zoomIndex++;
                     }
@@ -42,8 +43,19 @@ void ImGui_TilemapEditorWindow::Render()
 				ImGui::Text("size = %d x %d", texture->GetWidth(), texture->GetHeight());
                 ImGui::Text("Zoom = %f", S_ZOOM_VALUES[m_zoomIndex]);
 
-				ImGui::InputInt("Rows:", &rows);
-				ImGui::InputInt("Cols:", &cols);
+                ImGui::PushItemWidth(150);
+                ImGui::InputInt("Rows:", &m_rows); ImGui::SameLine();
+				ImGui::InputInt("Cols:", &m_cols);
+                ImGui::PopItemWidth();
+
+                if (ImGui::Button("Generate Sprites"))
+                {
+                    m_tilemap->tilemapSprites.clear();
+                    m_tilemap->rows = m_rows;
+                    m_tilemap->cols = m_cols;
+
+                    m_tilemap->GenerateSprites();
+                }
 
                 ImGui::Checkbox("Enable grid", &opt_enable_grid);
 
@@ -170,14 +182,18 @@ void ImGui_TilemapEditorWindow::Render()
 
                 draw_list->PushClipRect(canvas_p0, canvas_p1, true);
 
-                const float GRID_STEP = textureRenderer.height / rows;
+                //int usingRows = m_tilemapImage != nullptr ? m_tilemapImage->GetRows() : 1;
+                //int usingCols = m_tilemapImage != nullptr ? m_tilemapImage->GetCols() : 1;
+
+                const float GRID_ROW_STEP = textureRenderer.height / m_tilemap->rows;
+                const float GRID_COL_STEP = textureRenderer.width / m_tilemap->cols;
 
                 if (opt_enable_grid)
                 {
-                    for (float x = fmodf(scrolling.x, GRID_STEP); x < canvas_sz.x; x += GRID_STEP)
-                        draw_list->AddLine(ImVec2(canvas_p0.x + x, canvas_p0.y), ImVec2(canvas_p0.x + x, canvas_p1.y), IM_COL32(200, 200, 200, 100));
-                    for (float y = fmodf(scrolling.y, GRID_STEP); y < canvas_sz.y; y += GRID_STEP)
-                        draw_list->AddLine(ImVec2(canvas_p0.x, canvas_p0.y + y), ImVec2(canvas_p1.x, canvas_p0.y + y), IM_COL32(200, 200, 200, 100));
+                    for (float x = fmodf(scrolling.x, GRID_COL_STEP); x < canvas_sz.x; x += GRID_COL_STEP)
+                        draw_list->AddLine(ImVec2(canvas_p0.x + x, canvas_p0.y), ImVec2(canvas_p0.x + x, canvas_p1.y), IM_COL32(200, 200, 200, 80));
+                    for (float y = fmodf(scrolling.y, GRID_ROW_STEP); y < canvas_sz.y; y += GRID_ROW_STEP)
+                        draw_list->AddLine(ImVec2(canvas_p0.x, canvas_p0.y + y), ImVec2(canvas_p1.x, canvas_p0.y + y), IM_COL32(200, 200, 200, 80));
                 }
 
                 int startRow = -1;
@@ -188,23 +204,23 @@ void ImGui_TilemapEditorWindow::Render()
 
                 if (startCell.x >= 0.0f && startCell.x < textureRenderer.width)
                 {
-                    startCol = (int)(startCell.x / GRID_STEP);
+                    startCol = (int)(startCell.x / GRID_COL_STEP);
                 }
 
                 if (endCell.x >= 0.0f && endCell.x < textureRenderer.width)
                 {
-                    endCol = endCell.x / GRID_STEP;
+                    endCol = endCell.x / GRID_COL_STEP;
                 }
 
 
                 if (startCell.y >= 0.0f && startCell.y < textureRenderer.height)
                 {
-                    startRow = startCell.y / GRID_STEP;
+                    startRow = startCell.y / GRID_ROW_STEP;
                 }
 
                 if (endCell.y >= 0.0f && endCell.y < textureRenderer.height)
                 {
-                    endRow = endCell.y / GRID_STEP;
+                    endRow = endCell.y / GRID_ROW_STEP;
                 }
 
                 if (startRow != -1 && startCol != -1 && endRow != -1 && endCol != -1)
@@ -218,9 +234,9 @@ void ImGui_TilemapEditorWindow::Render()
                     int numCols = endCol - startCol + 1;
                     int numRows = endRow - startRow + 1;
 
-                    ImVec2 topLeft = ImVec2(origin.x + (startCol * GRID_STEP), origin.y + (startRow * GRID_STEP));
-                    ImVec2 topRight = ImVec2(topLeft.x + (numCols * GRID_STEP), topLeft.y);
-                    ImVec2 bottomLeft = ImVec2(topLeft.x, topLeft.y + (numRows * GRID_STEP));
+                    ImVec2 topLeft = ImVec2(origin.x + (startCol * GRID_COL_STEP), origin.y + (startRow * GRID_ROW_STEP));
+                    ImVec2 topRight = ImVec2(topLeft.x + (numCols * GRID_COL_STEP), topLeft.y);
+                    ImVec2 bottomLeft = ImVec2(topLeft.x, topLeft.y + (numRows * GRID_ROW_STEP));
                     ImVec2 bottomRight = ImVec2(topRight.x, bottomLeft.y);
 
                     draw_list->AddLine(topLeft, topRight, IM_COL32(255, 255, 0, 255), 2.0f);
@@ -228,6 +244,11 @@ void ImGui_TilemapEditorWindow::Render()
                     draw_list->AddLine(bottomLeft, bottomRight, IM_COL32(255, 255, 0, 255), 2.0f);
                     draw_list->AddLine(topRight, bottomRight, IM_COL32(255, 255, 0, 255), 2.0f);
                 }
+
+                startTile.x = startCol;
+                startTile.y = startRow;
+                endTile.x = endCol;
+                endTile.y = endRow;
 
                 draw_list->PopClipRect();
             }

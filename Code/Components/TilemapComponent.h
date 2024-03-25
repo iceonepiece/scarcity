@@ -13,10 +13,45 @@ struct TilemapComponent
 {
 	static std::string Name() { return "Tilemap"; }
 
-    Image* image = nullptr;
+	Image* originalImage = nullptr;
+	std::vector<Sprite> tilemapSprites;
+
+	unsigned int rows = 1;
+	unsigned int cols = 1;
+
 	int order;
 
-	std::map<std::pair<int, int>, unsigned int> data;
+	std::map<std::pair<int, int>, std::pair<int, int>> data;
+
+	void GenerateSprites()
+	{
+		if (originalImage == nullptr)
+			return;
+
+		if (Texture* texture = originalImage->GetTexture())
+		{
+			int spriteWidth = texture->GetWidth() / cols;
+			int spriteHeight = texture->GetHeight() / rows;
+
+			for (int i = 0; i < rows; i++)
+			{
+				for (int j = 0; j < cols; j++)
+				{
+					Sprite sprite{
+						std::to_string(i),
+						originalImage,
+						(float)spriteWidth * j,
+						(float)spriteHeight * i,
+						(float)spriteWidth,
+						(float)spriteHeight
+					};
+
+					sprite.SetRatio({ 1.0f, 1.0f });
+					tilemapSprites.push_back(sprite);
+				}
+			}
+		}
+	}
 };
 
 static void DoSerialize(const TilemapComponent& tilemap, json& entityJson)
@@ -24,20 +59,21 @@ static void DoSerialize(const TilemapComponent& tilemap, json& entityJson)
 	json tilemapJson = json::object();
 	tilemapJson["imageID"] = 0;
 
-	if (tilemap.image != nullptr)
+	if (tilemap.originalImage != nullptr)
 	{
-		tilemapJson["imageID"] = (uint64_t)tilemap.image->GetID();
+		tilemapJson["imageID"] = (uint64_t)tilemap.originalImage->GetID();
+		tilemapJson["rows"] = tilemap.rows;
+		tilemapJson["cols"] = tilemap.cols;
 	}
 
 	json dataJson = json::array();
 
 	for (auto& [key, value] : tilemap.data)
 	{
-		json block = json::object();
-		block["row"] = key.first;
-		block["col"] = key.second;
-		block["index"] = value;
-		dataJson.push_back(block);
+		json tileJson = json::object();
+		tileJson["worldPosition"] = key;
+		tileJson["texturePosition"] = value;
+		dataJson.push_back(tileJson);
 	}
 	tilemapJson["data"] = dataJson;
 	
@@ -49,17 +85,20 @@ static void DoDeserialize(TilemapComponent& tilemap, json& tilemapJson)
 	UniqueID imageID = tilemapJson["imageID"].get<uint64_t>();
 	if (Image* image = dynamic_cast<Image*>(Project::GetActive()->GetAssetManager().GetAssetByID(imageID)))
 	{
-		tilemap.image = image;
+		tilemap.originalImage = image;
+		tilemap.rows = tilemapJson["rows"].get<unsigned int>();
+		tilemap.cols = tilemapJson["cols"].get<unsigned int>();
+		tilemap.GenerateSprites();
 	}
 
 	if (tilemapJson["data"].is_array())
 	{
 		for (auto& blockJson : tilemapJson["data"])
 		{
-			tilemap.data.insert({ 
-				std::make_pair(blockJson["row"], blockJson["col"]),
-				blockJson["index"]
-			});
+			std::pair<int, int> worldPair = blockJson["worldPosition"].get<std::pair<int, int>>();
+			std::pair<int, int> texturePair = blockJson["texturePosition"].get<std::pair<int, int>>();
+
+			tilemap.data.insert({ worldPair, texturePair });
 		}
 	}
 }

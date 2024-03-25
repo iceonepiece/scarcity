@@ -29,6 +29,7 @@ public:
 	inline float GetHeight() { return m_height; }
 
 	inline glm::vec2 GetRatio() { return m_ratio; }
+	inline void SetRatio(const glm::vec2& ratio) { m_ratio = ratio; }
 	inline Image* GetImage() { return m_image; }
 	Texture* GetTexture();
 

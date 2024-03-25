@@ -4,7 +4,7 @@
 
 void RenderImGui(TilemapComponent& tilemap)
 {
-    std::string imageFilename = tilemap.image != nullptr ? tilemap.image->GetName() : "";
+    std::string imageFilename = tilemap.originalImage != nullptr ? tilemap.originalImage->GetName() : "";
 
     if (ImGui::Button(imageFilename.c_str(), ImVec2(200, 0)))
     {
@@ -19,7 +19,7 @@ void RenderImGui(TilemapComponent& tilemap)
         {
             if (Image* image = (Image*)payload->Data)
             {
-                tilemap.image = (Image*)Project::GetActive()->GetAsset(image->GetPath());
+                tilemap.originalImage = (Image*)Project::GetActive()->GetAsset(image->GetPath());
             }
         }
 

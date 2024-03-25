@@ -172,6 +172,7 @@
     <ClCompile Include="Code\EditorGUI\Windows\ImGui_WindowManager.cpp" />
     <ClCompile Include="Code\Gizmos\Gizmo.cpp" />
     <ClCompile Include="Code\Gizmos\GridGizmo.cpp" />
+    <ClCompile Include="Code\Gizmos\TilemapGizmo.cpp" />
     <ClCompile Include="Code\Helpers\FileHandler.cpp" />
     <ClCompile Include="Code\HubLayer.cpp" />
     <ClCompile Include="Code\ImGuiComponent.cpp" />
@@ -242,6 +243,7 @@
     <ClInclude Include="Code\Gizmos\GridGizmo.h" />
     <ClInclude Include="Code\Gizmos\RotateGizmo.h" />
     <ClInclude Include="Code\Gizmos\ScaleGizmo.h" />
+    <ClInclude Include="Code\Gizmos\TilemapGizmo.h" />
     <ClInclude Include="Code\Gizmos\ViewGizmo.h" />
     <ClInclude Include="Code\Helpers\FileHandler.h" />
     <ClInclude Include="Code\HubLayer.h" />

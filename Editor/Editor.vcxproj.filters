@@ -150,6 +150,9 @@
     <ClCompile Include="Code\EditorGUI\ImGuiComponents\ImGui_CameraComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Gizmos\TilemapGizmo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\ImGuiComponent.h">
@@ -351,6 +354,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\EditorGUI\Windows\ImGui_WindowManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Gizmos\TilemapGizmo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

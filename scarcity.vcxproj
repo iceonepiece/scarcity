@@ -470,6 +470,7 @@
     <ClInclude Include="Code\Entity\ScriptableEntity.h" />
     <ClInclude Include="Code\Shapes\Shape2D.h" />
     <ClInclude Include="Code\System\LuaScriptSystem.h" />
+    <ClInclude Include="Code\System\TilemapSystem.h" />
     <ClInclude Include="Code\System\UISystem.h" />
     <ClInclude Include="Code\UI\UIBase.h" />
     <ClInclude Include="Code\UI\UIObject.h" />

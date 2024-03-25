@@ -21,6 +21,7 @@
 #include "System/PhysicsSystem.h"
 #include "System/HierarchySystem.h"
 #include "System/AnimatorSystem.h"
+#include "System/TilemapSystem.h"
 
 struct RenderCommand
 {
@@ -40,6 +41,7 @@ Scene::Scene(const std::string& name, const std::filesystem::path& path)
     m_systems.push_back(std::make_unique<LuaScriptSystem>(*this));
     m_systems.push_back(std::make_unique<PhysicsSystem>(*this));
     m_systems.push_back(std::make_unique<AnimatorSystem>(*this));
+    m_systems.push_back(std::make_unique<TilemapSystem>(*this));
 
     m_luaEngine = std::make_unique<LuaEngine>();
 }
@@ -607,11 +609,11 @@ void Scene::Render(RenderOptions renderOptions)
         renderer.DrawSprite(*command.sprite, command.transform.position, command.transform.scale, command.transform.rotation.z);
     }
 
-    renderer.EndFrame();
-    renderer.PostRender();
-
     for (auto& system : m_systems)
         system->Render();
+
+    renderer.EndFrame();
+    renderer.PostRender();
 
     if (renderOptions.collisionVisible)
         RenderCollisionComponents();
@@ -698,6 +700,10 @@ void Scene::RenderEditor(RenderOptions renderOptions)
         }
     }
 
+    for (auto& system : m_systems)
+        system->Render();
+
+    renderer.EndFrame();
     renderer.PostRender();
 
     if (renderOptions.collisionVisible)

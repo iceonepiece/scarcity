@@ -78,6 +78,9 @@ bool MetaSerializer::DeserializeImage(Image& image, const std::filesystem::path&
 
 		image.m_spriteMode = (SpriteMode)imageJson["spriteMode"];
 
+		image.m_rows = 1;
+		image.m_cols = 1;
+
 		if (image.m_spriteMode == SpriteMode::Multiple)
 		{
 			json json_sprites = imageJson["sprites"];
