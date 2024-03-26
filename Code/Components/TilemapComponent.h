@@ -16,10 +16,10 @@ struct TilemapComponent
 	Image* originalImage = nullptr;
 	std::vector<Sprite> tilemapSprites;
 
-	unsigned int rows = 1;
-	unsigned int cols = 1;
+	int rows = 1;
+	int cols = 1;
 
-	int order;
+	int order = 0;
 
 	std::map<std::pair<int, int>, std::pair<int, int>> data;
 
@@ -58,6 +58,7 @@ static void DoSerialize(const TilemapComponent& tilemap, json& entityJson)
 {
 	json tilemapJson = json::object();
 	tilemapJson["imageID"] = 0;
+	tilemapJson["order"] = tilemap.order;
 
 	if (tilemap.originalImage != nullptr)
 	{
@@ -90,6 +91,8 @@ static void DoDeserialize(TilemapComponent& tilemap, json& tilemapJson)
 		tilemap.cols = tilemapJson["cols"].get<unsigned int>();
 		tilemap.GenerateSprites();
 	}
+
+	tilemap.order = tilemapJson["order"].get<int>();
 
 	if (tilemapJson["data"].is_array())
 	{

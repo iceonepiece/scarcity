@@ -25,4 +25,6 @@ void RenderImGui(TilemapComponent& tilemap)
 
         ImGui::EndDragDropTarget();
     }
+
+    ImGui::InputInt("Order", &tilemap.order);
 }

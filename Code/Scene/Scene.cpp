@@ -41,7 +41,7 @@ Scene::Scene(const std::string& name, const std::filesystem::path& path)
     m_systems.push_back(std::make_unique<LuaScriptSystem>(*this));
     m_systems.push_back(std::make_unique<PhysicsSystem>(*this));
     m_systems.push_back(std::make_unique<AnimatorSystem>(*this));
-    m_systems.push_back(std::make_unique<TilemapSystem>(*this));
+    //m_systems.push_back(std::make_unique<TilemapSystem>(*this));
 
     m_luaEngine = std::make_unique<LuaEngine>();
 }
@@ -598,6 +598,35 @@ void Scene::Render(RenderOptions renderOptions)
         }
     }
 
+    auto tilemapView = m_manager.m_registry.view<TilemapComponent>();
+    for (auto [entity, tilemap] : tilemapView.each())
+    {
+        if (tilemap.originalImage == nullptr)
+            continue;
+
+        if (Texture* texture = tilemap.originalImage->GetTexture())
+        {
+            for (auto& [pos, value] : tilemap.data)
+            {
+                int row = tilemap.rows - value.first - 1;
+
+                int spriteIndex = row * tilemap.cols;
+                spriteIndex += value.second;
+
+                if (spriteIndex < tilemap.tilemapSprites.size())
+                {
+                    Sprite& targetSprite = tilemap.tilemapSprites[spriteIndex];
+                    TransformComponent tileTransform;
+                    tileTransform.position = { pos.first + 0.5f, pos.second + 0.5f, 0.0f };
+                    tileTransform.scale = { 1.0f, 1.0f, 0.0f };
+                    tileTransform.rotation = { 0.0f, 0.0f, 0.0f };
+
+                    renderCommands.push_back({ &targetSprite, tileTransform, tilemap.order });
+                }
+            }
+        }
+    }
+
     std::sort(renderCommands.begin(), renderCommands.end(),
     [](const RenderCommand& a, const RenderCommand& b)
     {
@@ -697,6 +726,30 @@ void Scene::RenderEditor(RenderOptions renderOptions)
         for (auto& [pos, second] : grid.cellMap)
         {
             renderer.DrawQuad2D({ pos.first * grid.size + halfSize, pos.second * grid.size + halfSize }, cellSize, 0.0f, grid.color);
+        }
+    }
+
+    auto tilemapView = m_manager.m_registry.view<TilemapComponent>();
+
+    for (auto [entity, tilemap] : tilemapView.each())
+    {
+        if (tilemap.originalImage == nullptr)
+            continue;
+
+        if (Texture* texture = tilemap.originalImage->GetTexture())
+        {
+            for (auto& [pos, value] : tilemap.data)
+            {
+                int row = tilemap.rows - value.first - 1;
+
+                int spriteIndex = row * tilemap.cols;
+                spriteIndex += value.second;
+
+                if (spriteIndex < tilemap.tilemapSprites.size())
+                {
+                    renderer.DrawSprite(tilemap.tilemapSprites[spriteIndex], { pos.first + 0.5f, pos.second + 0.5f }, { 1, 1 }, 0.0f);
+                }
+            }
         }
     }
 
